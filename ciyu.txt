@@ -414,6 +414,8 @@
 列表 lxbc
 趔趄 lxqx
 滤波器 lyboq
+旅行 lyx;
+履行 lyx;2
 类型 lzx;
 名称 m;ig
 明天 m;tm
@@ -890,6 +892,7 @@
 详细 xdxi
 西班牙 xibjy
 西北 xibz3
+喜欢 xihr
 习近平 xijnp
 西南 xinj2
 系统 xits

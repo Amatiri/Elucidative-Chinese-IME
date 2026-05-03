@@ -552,11 +552,11 @@ def initial(event):
         elif event.name in ["-", "=", "!", "@", "#", "$", "%", "space", "up", "down", "left", "right", "backspace","enter"] and code_char_before_cursor + code_char_after_cursor != 0:
             if event.name == "-":
                 navigate_parts("prev")
-                time.sleep(0.05)
+                time.sleep(0.04)
                 keyboard.press_and_release("backspace")
             elif event.name == "=":
                 navigate_parts("next")
-                time.sleep(0.05)
+                time.sleep(0.04)
                 keyboard.press_and_release("backspace")
             elif event.name == "up":
                 navigate_pages("up")
@@ -623,7 +623,7 @@ def paste_text(text, reset_entry=True):
     code_char_after_cursor = 0
 
     keyboard.release("shift")
-    time.sleep(0.01)
+    time.sleep(0.02)
     keyboard.press_and_release('ctrl+v')
 
     if reset_entry:

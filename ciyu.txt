@@ -138,6 +138,7 @@
 东西 dsx
 ！ dth
 … dul
+肚腩 dunj3
 独体字 dutiz
 》 duy
 读音 duyn
@@ -217,6 +218,8 @@
 Μ gmuc
 ν gnu
 Ν gnuc
+过渡 godu
+过度 godu4
 过程 goig
 国家 gojw
 ω gome
@@ -380,6 +383,7 @@
 家庭 jwt;
 价值 jwvi
 结构 jxgb
+桔槔 jxgk1m
 结合 jxhe
 接纳 jxna
 介绍 jxuk
@@ -907,6 +911,7 @@
 响亮 xdld
 向量 xdld4
 项目 xdmu
+相同 xdts2
 详细 xdxi
 西班牙 xibjy
 西北 xibz3
@@ -1009,6 +1014,7 @@
 自己 zij
 自我 ziwo
 自行车 zix;i
+坐标 zobc
 做到 zodk
 昨天 zotm
 遵循 zpxp

@@ -426,6 +426,7 @@
 矬 co2u
 嵯 co2uh
 厝 co4c
+剉 co4d
 错 co4j
 锉 co4jz
 挫 co4u
@@ -1503,6 +1504,7 @@
 斛 hu2d
 弧 hu2g
 囫 hu2gw
+煳 hu2h
 蝴 hu2i
 觳 hu2k
 糊 hu2m
@@ -3031,6 +3033,7 @@
 黾 mg3k
 勐 mg3l
 猛 mg3q
+懵 mg3x
 梦 mg4t
 孟 mg4z
 牤 mh1n
@@ -3158,7 +3161,7 @@
 莫 mo4c
 茉 mo4cm
 殁 mo4d
-秣 mo4hm
+秣 mo4h
 蓦 mo4m
 默 mo4q
 貊 mo4qb
@@ -4229,6 +4232,7 @@
 泗 si4us
 肆 si4y
 笥 si4z
+思 si0x
 三 sj13
 叁 sj13.
 伞 sj3r
@@ -4280,6 +4284,8 @@
 淞 ss1u
 嵩 ss1ug
 忪 ss1x
+㞞 ss2s
+𪨊 ss2s.
 竦 ss3d
 耸 ss3o
 㧐 ss3u.
@@ -4365,6 +4371,7 @@
 滕 tg2u
 誊 tg2y
 汤 th1u
+蹚 th1z
 唐 th2g
 糖 th2m
 樘 th2mt
@@ -6691,9 +6698,9 @@
 兹 zi1d
 锱 zi1j
 咨 zi1k
-呲 zi1kc
 嗞 zi1kd
 姿 zi1n
+龇 zi1nc
 缁 zi1s
 滋 zi1u
 嵫 zi1ud

@@ -88,6 +88,7 @@
 餐馆 cjgr3 
 操作 ckzo
 菜单 cldj
+剉冰 cob;1
 错误 cowu
 存在 cpzl
 。 d..
@@ -962,6 +963,7 @@
 游玩 ybwj
 游戏 ybxi
 优秀 ybxq
+有意思 ybyisi0
 由于 ybyu
 样子 yhzi
 一次 yici
@@ -971,6 +973,7 @@
 已经 yij
 以及 yiji24
 旖旎 yini3
+意思 yisi0
 艺术 yiuu
 以下 yixw
 一些 yixx

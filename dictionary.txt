@@ -2454,6 +2454,7 @@
 氪 ke4q
 克 ke4s
 缂 ke4sg
+溘 ke4u
 恪 ke4x
 课 ke4y
 啃 kf3k
@@ -2724,6 +2725,7 @@
 珞 li4s.w
 砺 li4sc
 沥 li4u
+溧 li4ux
 栗 li4x
 詈 li4y
 笠 li4z
@@ -3063,6 +3065,7 @@
 硭 mh2s
 忙 mh2x
 莽 mh3c
+漭 mh3u
 咪 mi1k
 眯 mi1m
 靡 mi2f
@@ -3802,6 +3805,7 @@
 普 pu3r
 埔 pu3t
 浦 pu3u
+溥 pu3uc
 谱 pu3y
 铺 pu4j
 曝 pu4r
@@ -3989,6 +3993,7 @@
 矜 qn2m
 禽 qn2r
 擒 qn2u
+溱 qn2uh
 琴 qn2w
 寝 qn3b
 吣 qn4k
@@ -4187,6 +4192,7 @@
 入 ru42
 蓐 ru4c
 洳 ru4u
+溽 ru4uc
 褥 ru4y
 蕤 rv2c
 蕊 rv3c
@@ -4627,6 +4633,7 @@
 砂 ua1su
 沙 ua1u
 鲨 ua1y
+裟 ua1yu
 啥 ua2k
 傻 ua3r
 厦 ua4c
@@ -5001,6 +5008,7 @@
 砧 vf1s
 祯 vf1sb
 坫 vf1t
+溱 vf1u
 珍 vf1w
 甄 vf1wt
 箴 vf1z
@@ -6684,6 +6692,7 @@
 楹 y;2mm
 萦 y;2s
 茔 y;2t
+滢 y;2u
 莹 y;2w
 迎 y;2z
 郢 y;3b

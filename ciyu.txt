@@ -267,6 +267,8 @@
 Σ gsic
 工程 gsig
 公交车 gsjci
+攻击 gsji
+供给 gsji3
 工具 gsju
 功能 gsng 
 公司 gssi
@@ -310,6 +312,7 @@
 还有 hlyb
 孩子 hlzi
 获得 hode
+火柴 hoil
 或者 hove
 活着 hove0
 换行 hrhh
@@ -342,6 +345,7 @@
 超市 ikui
 拆分 ilff1 
 传播 irbo
+传递 irdi
 传统 irts
 串通 irts1
 重复 isfu
@@ -356,6 +360,7 @@
 经济 j;ji 
 经纪 j;ji4s 
 境界 j;jx
+竞争 j;vg
 教科书 jckeu
 交流 jclq
 教育 jcyu
@@ -393,6 +398,7 @@
 金属 jnuu
 进行 jnx; 
 进一步 jnyib
+均衡 jphg
 纠偏 jqpm
 决定 jtd;
 觉得 jtde
@@ -406,6 +412,7 @@
 纪释析义输入法 juxf juxyurf
 纪释析义 juxy jiuixiyi
 解书音形 juyx jxuuynx
+价格 jwge
 家庭 jwt;
 价值 jwvi
 结构 jxgb
@@ -451,6 +458,7 @@
 吝啬 lnse
 逻辑 loji
 论文 lpwf
+垄断 lsdr
 路人 lurf
 录入 luru
 列表 lxbc
@@ -922,6 +930,7 @@
 网盘 whpj
 王者 whve
 完成 wjig
+完全 wjqr
 晚上 wjuh
 完善 wjuj
 完整 wjvg

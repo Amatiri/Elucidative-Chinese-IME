@@ -53,6 +53,7 @@
 婊 bc3n
 表 bc3q
 俵 bc4r
+鳔 bc4y
 𰻝 bd2z
 贲 bf1b
 奔 bf1c
@@ -262,7 +263,7 @@
 啵 bo1k
 波 bo1u
 拨 bo1uf
-播 bo1um
+播 bo1ut
 饽 bo1uz
 玻 bo1w
 趵 bo1z
@@ -666,6 +667,7 @@
 哆 do1kt
 多 do1t
 掇 do1u
+裰 do1y
 夺 do2c
 铎 do2j
 踱 do2z
@@ -766,6 +768,7 @@
 垤 dx2tv
 谍 dx2y
 迭 dx2z
+蹀 dx2zm
 得 dz3t
 丁 d;11
 疔 d;1b
@@ -959,6 +962,7 @@
 腐 fu3rg
 腑 fu3rr
 抚 fu3u
+滏 fu3uj
 拊 fu3ur
 父 fu44
 富 fu4b
@@ -1128,10 +1132,11 @@
 稿 gk3h
 镐 gk3j
 杲 gk3r
+缟 gk3s
 搞 gk3u
 郜 gk4b
 锆 gk4j
-告 gk4n
+告 gk4k
 诰 gk4y
 赅 gl1b
 陔 gl1bh
@@ -1171,6 +1176,7 @@
 矜 gr1mj
 倌 gr1r
 纶 gr1s
+鳏 gr1y
 莞 gr3c
 馆 gr3u
 琯 gr3w
@@ -1462,6 +1468,7 @@
 魂 hp2v
 珲 hp2w
 混 hp4u
+溷 hp4ug
 浑 hp4uj
 诨 hp4y
 欢 hr1q
@@ -1744,6 +1751,7 @@
 持 ii2u
 池 ii2uy
 迟 ii2z
+踟 ii2zv
 尺 ii32
 齿 ii3c
 齒 ii3c.
@@ -1846,6 +1854,7 @@
 橱 iu2m
 滁 iu2u
 雏 iu2w
+躇 iu2z
 楚 iu3m
 楮 iu3mv
 杵 iu3mw
@@ -2526,6 +2535,7 @@
 控 ks4u
 空 ks4x
 刳 ku1d
+骷 ku1g
 哭 ku1k
 枯 ku1m
 窟 ku1x
@@ -2589,6 +2599,7 @@
 辣 la4x
 搂 lb1u
 蒌 lb2c
+髅 lb2g
 喽 lb2k
 楼 lb2m
 娄 lb2n
@@ -2865,9 +2876,10 @@
 栾 lr2m
 娈 lr2n
 鸾 lr2ny
+脔 lr2r
 峦 lr2u
+滦 lr2um
 挛 lr2uy
-脔 lr2y
 孪 lr2z
 卵 lr35
 乱 lr4k
@@ -3251,6 +3263,7 @@
 鸣 m;2k
 明 m;2r
 名 m;2t
+溟 m;2u
 酩 m;3y
 命 m;4r
 你 ni3r
@@ -3672,6 +3685,7 @@
 碰 pg4s
 乓 ph19
 雱 ph1i
+滂 ph1u
 旁 ph2d
 庞 ph2g
 房 ph2h.u
@@ -4182,6 +4196,7 @@
 冗 rs3d
 茹 ru2c
 蠕 ru2i
+颥 ru2ix
 铷 ru2j
 如 ru2n
 儒 ru2r
@@ -4343,6 +4358,7 @@
 溯 su4u
 涑 su4uu
 粟 su4x
+愫 su4xq
 诉 su4y
 谡 su4yt
 速 su4z
@@ -4367,6 +4383,7 @@
 铊 ta1j
 她 ta1n
 塌 ta1t
+溻 ta1u
 遢 ta1z
 趿 ta1zj
 塔 ta3t
@@ -4413,6 +4430,7 @@
 堂 th2t
 塘 th2tg
 搪 th2u
+溏 th2ug
 帑 th3j
 倘 th3r
 傥 th3ro
@@ -5329,6 +5347,7 @@
 问 wf4k
 汶 wf4u
 嗡 wg1k
+滃 wg1u
 翁 wg1y
 蓊 wg3c
 瓮 wg4w
@@ -5700,6 +5719,7 @@
 薪 xn1cj
 辛 xn1d
 馨 xn1h
+馫 xn1h.x
 炘 xn1hj
 新 xn1j
 锌 xn1jl
@@ -5744,12 +5764,14 @@
 馐 xq1u
 宿 xq3b
 朽 xq3m
+滫 xq3u
 宿 xq4b
 秀 xq4h
 锈 xq4j
 嗅 xq4k
 绣 xq4s
 岫 xq4u
+溴 xq4uz
 琇 xq4w
 袖 xq4y
 宣 xr1b
@@ -5829,6 +5851,7 @@
 瞎 xw1m
 岈 xw1u
 辖 xw2c
+黠 xw2h
 霞 xw2i
 柙 xw2m
 匣 xw2o
@@ -5872,6 +5895,7 @@
 懈 xx4x
 谢 xx4y
 亵 xx4yv
+躞 xx4z
 兴 x;1b
 猩 x;1q
 星 x;1r
@@ -6657,6 +6681,7 @@
 彧 yu4mi
 妪 yu4n
 鹆 yu4ng
+鹬 yu4nm
 欲 yu4q
 狱 yu4qy
 育 yu4r
@@ -6668,6 +6693,7 @@
 御 yu4tx
 浴 yu4u
 峪 yu4ug
+滪 yu4ui
 饫 yu4uy
 愈 yu4x
 誉 yu4y
@@ -6767,6 +6793,7 @@
 姊 zi3n
 仔 zi3r
 紫 zi3s
+滓 zi3u
 訾 zi3y
 自 zi40
 字 zi4b

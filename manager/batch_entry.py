@@ -6,14 +6,21 @@ from manager.file_processor import process_file
 
 
 def generate_pending_list(hanzi_string):
-    """生成待录入列表"""
+    """生成待录入列表，拼音转换失败时提示手动输入音码"""
     existing_dict, full_dict = load_dictionary()
     pending_list = []
     for hanzi in hanzi_string:
         abc_codes = hanzi_to_abc(hanzi)
         if not abc_codes:
-            pending_list.append((hanzi, 'bb0'))  # 空码码区
-            continue
+            manual_code = input(f"{hanzi} 音码转换失败，请手动输入，回车则bb0: ").strip()
+            if manual_code:
+                if len(manual_code) == 3 and not manual_code[0].isdigit() and not manual_code[1].isdigit() and manual_code[2].isdigit():
+                    abc_codes = [manual_code]
+                else:
+                    print(f"{manual_code}格式错误，使用bb0")
+                    abc_codes = ['bb0']
+            else:
+                abc_codes = ['bb0']
         missing_codes = []
         all_exist = True
         for abc_code in abc_codes:

@@ -74,19 +74,17 @@ def process_multi_char_word(word):
         codes = codes_per_char[i].split('/')
         print(f"{char}{codes_per_char[i]}")
         if len(codes) > 1:
-            try:
-                choice = input(f"{char} 读音选")
+            while True:
+                choice = input(f"{char} 读音选 (1-{len(codes)}): ").strip()
                 if not choice.isdigit():
-                    return None
-                choice = int(choice) - 1
-                if 0 <= choice < len(codes):
-                    selected_codes.append(codes[choice])
+                    print("请输入数字")
+                    continue
+                choice_num = int(choice)
+                if 1 <= choice_num <= len(codes):
+                    selected_codes.append(codes[choice_num - 1])
+                    break
                 else:
-                    print("输入无效，使用第一个编码")
-                    selected_codes.append(codes[0])
-            except Exception:
-                print("输入无效，使用第一个编码")
-                selected_codes.append(codes[0])
+                    print(f"请输入1到{len(codes)}之间的数字")
         else:
             selected_codes.append(codes[0])
     default_code = generate_default_codes_for_word(word, selected_codes)

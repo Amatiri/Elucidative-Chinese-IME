@@ -2790,7 +2790,6 @@
 莲 lm2c
 奁 lm2d
 廉 lm2g
-临 lm2i
 镰 lm2j
 梿 lm2m
 联 lm2o
@@ -4455,6 +4454,7 @@
 剃 ti4d
 薙 ti4d.c
 剔 ti4d.y
+嚏 ti4k
 替 ti4r
 倜 ti4rv
 屉 ti4s
@@ -5078,7 +5078,7 @@
 长 vh34
 涨 vh3u
 仉 vh3u.r
-掌 vh3uh
+掌 vh3uu
 丈 vh44
 账 vh4b
 障 vh4bl
@@ -5892,6 +5892,7 @@
 绁 xx4su
 泄 xx4u
 泻 xx4ud
+瀣 xx4un
 懈 xx4x
 谢 xx4y
 亵 xx4yv
@@ -5955,7 +5956,7 @@
 幽 yb1t
 攸 yb1u
 忧 yb1x
-悠 yb1xr
+悠 yb1xu
 尤 yb24
 由 yb25
 邮 yb2b

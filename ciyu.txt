@@ -166,6 +166,7 @@
 对的 dvd
 对话 dvhw
 】 dvy
+对应 dvy;4
 对于 dvyu 
 【 dvz
 ？ dwh
@@ -187,6 +188,7 @@
 反提 fjti2
 繁体字 fjtiz
 反正 fjvg
+繁文缛节 fjwfruj fwrj
 反应 fjy;
 反映 fjy;4
 翻译 fjyi
@@ -304,7 +306,7 @@
 寒暑 hjuu3
 汉语 hjyu
 韩语 hjyu3
-汉字 hjzi4 
+汉字 hjzi
 好吧 hkb
 好罢 hkba
 胡克希伍 hkxw hukexiw
@@ -439,6 +441,7 @@
 控制 ksvi
 酷狗 kugb
 领导 l;dk
+零重码 l;ism
 拉风 lafg
 拉缝 lafg4
 了解 lcjx 
@@ -468,10 +471,13 @@
 履行 lyx;2
 类型 lzx;
 名称 m;ig
+明令禁止 m;l;jnv mljv
 明天 m;tm
 名字 m;zi
+码表 mabc3
 麻将 majd
 麻酱 majd4
+马上 mauh
 描述 mcuu
 盲打 mhda3 
 米哈游 mihay
@@ -884,6 +890,9 @@
 直播 vibo
 知道 vidk
 支付宝 vifub
+指挥 vihv1
+只会 vihv4r
+智慧 vihv4x
 支持 viii
 直接 vijx
 质量 vild
@@ -1005,6 +1014,7 @@
 下午 xwwu
 下限 xwxm4
 下载 xwzl
+歇斯底里 xxsidil
 写作 xxzo
 协作 xxzo4
 应该 y;gl

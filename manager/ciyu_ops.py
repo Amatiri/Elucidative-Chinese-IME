@@ -17,28 +17,39 @@ def process_two_char_word(word):
     code2 = codes_per_char[1].split('/')
     print(f"{word[0]}{codes_per_char[0]}")
     print(f"{word[1]}{codes_per_char[1]}")
+    
+    # 处理第一个字的读音选择
     if len(code1) > 1:
-        xr1 = input(f"{word[0]} 读音选")
-        if not xr1.isdigit():
-            return None
-        xr1 = int(xr1) - 1
-        if 0 <= xr1 < len(code1):
-            code1xr = code1[xr1]
-        else:
-            code1xr = code1[0]
+        while True:
+            choice = input(f"{word[0]} 读音选: ").strip()
+            if not choice.isdigit():
+                print("请输入数字")
+                continue
+            choice_num = int(choice)
+            if 1 <= choice_num <= len(code1):
+                code1xr = code1[choice_num - 1]
+                break
+            else:
+                print(f"请输入1到{len(code1)}之间的数字")
     else:
         code1xr = code1[0]
+    
+    # 处理第二个字的读音选择
     if len(code2) > 1:
-        xr2 = input(f"{word[1]} 读音选")
-        if not xr2.isdigit():
-            return None
-        xr2 = int(xr2) - 1
-        if 0 <= xr2 < len(code2):
-            code2xr = code2[xr2]
-        else:
-            code2xr = code2[0]
+        while True:
+            choice = input(f"{word[1]} 读音选: ").strip()
+            if not choice.isdigit():
+                print("请输入数字")
+                continue
+            choice_num = int(choice)
+            if 1 <= choice_num <= len(code2):
+                code2xr = code2[choice_num - 1]
+                break
+            else:
+                print(f"请输入1到{len(code2)}之间的数字")
     else:
         code2xr = code2[0]
+    
     all_combinations = generate_all_combinations(code1xr, code2xr)
     if not all_combinations:
         print("无法生成任何编码组合")
@@ -47,8 +58,8 @@ def process_two_char_word(word):
         print(f"{i:2d}.{combo}")
     while True:
         try:
-            choice = input("编码选(0跳过)：")
-            if choice == "0":
+            choice = input("编码选：")
+            if choice == "":
                 return None
             start_index = int(choice)
             if 1 <= start_index <= len(all_combinations):
@@ -75,7 +86,7 @@ def process_multi_char_word(word):
         print(f"{char}{codes_per_char[i]}")
         if len(codes) > 1:
             while True:
-                choice = input(f"{char} 读音选 (1-{len(codes)}): ").strip()
+                choice = input(f"{char} 读音选: ").strip()
                 if not choice.isdigit():
                     print("请输入数字")
                     continue

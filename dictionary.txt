@@ -52,6 +52,7 @@
 杓 bc1mu
 婊 bc3n
 表 bc3q
+裱 bc3y
 俵 bc4r
 鳔 bc4y
 𰻝 bd2z
@@ -498,6 +499,7 @@
 斗 db44
 痘 db4b
 豆 db4k
+窦 db4x
 读 db4y
 逗 db4z
 刁 dc13
@@ -515,6 +517,7 @@
 锝 de2j
 得 de2t
 德 de2tx
+𫞮 de0b.j
 地 de0t
 得 de0tr
 登 dg1b
@@ -1034,6 +1037,7 @@
 购 gb4b
 彀 gb4g
 构 gb4m
+媾 gb4n
 够 gb4t
 垢 gb4th
 诟 gb4y
@@ -1308,6 +1312,7 @@
 后 hb4k
 後 hb4k.
 候 hb4r
+鲎 hb4y
 逅 hb4z
 荒 hd1c
 肓 hd1r
@@ -1861,6 +1866,7 @@
 储 iu3r
 础 iu3s
 处 iu3u
+褚 iu3y
 亍 iu41
 豖 iu44
 触 iu4k
@@ -1911,7 +1917,7 @@
 狡 jc3q
 脚 jc3r
 佼 jc3rd
-侥 jc3rt
+侥 jc3ry
 绞 jc3s
 缴 jc3su
 饺 jc3u
@@ -2124,6 +2130,7 @@
 妗 jn4n
 晋 jn4r
 禁 jn4s
+缙 jn4sr
 浸 jn4u
 浕 jn4um
 近 jn4z
@@ -2256,6 +2263,7 @@
 掬 ju1ul
 雎 ju1w
 琚 ju1ws
+裾 ju1y
 趄 ju1z
 菊 ju2c
 焗 ju2h
@@ -2448,6 +2456,7 @@
 磕 ke1s
 坷 ke1tk
 珂 ke1w
+窠 ke1x
 颏 ke2i
 咳 ke2k
 壳 ke2u
@@ -2630,6 +2639,7 @@
 料 lc4m
 瞭 lc4mx
 撩 lc4u
+撂 lc4ut
 尞 lc4x
 尥 lc4y
 良 ld29
@@ -2862,6 +2872,7 @@
 旒 lq2f
 鎏 lq2j
 榴 lq2m
+骝 lq2mt
 硫 lq2s
 留 lq2t
 流 lq2u
@@ -3179,6 +3190,7 @@
 摸 mo1u
 蘑 mo2c
 模 mo2m
+嫫 mo2n
 膜 mo2r
 磨 mo2s
 摩 mo2u
@@ -3209,10 +3221,10 @@
 模 mu2m
 毪 mu2mn
 母 mu37
-亩 mu3d
 牡 mu3n
 姥 mu3nl
 姆 mu3nm
+亩 mu3t
 拇 mu3u
 木 mu46
 目 mu40
@@ -3723,6 +3735,7 @@
 匹 pi3o
 圮 pi3t
 睥 pi4m
+媲 pi4n
 僻 pi4r
 屁 pi4s
 埤 pi4t
@@ -3780,6 +3793,7 @@
 拼 pn1u
 贫 pn2b
 频 pn2i
+嫔 pn2n
 玭 pn2w
 品 pn3k
 牝 pn4n
@@ -3833,6 +3847,7 @@
 陪 pz2b
 赔 pz2bk
 培 pz2t
+辔 pz4c
 旆 pz4f
 帔 pz4j
 佩 pz4r
@@ -3963,6 +3978,7 @@
 牵 qm1d
 铅 qm1j
 钎 qm1jq
+骞 qm1m
 鹐 qm1n
 佥 qm1r
 扦 qm1u
@@ -3993,6 +4009,7 @@
 倩 qm4r
 堑 qm4t
 嵌 qm4u
+慊 qm4x
 亲 qn1d
 钦 qn1j
 骎 qn1m
@@ -4205,6 +4222,7 @@
 乳 ru3v
 入 ru42
 蓐 ru4c
+缛 ru4s
 洳 ru4u
 溽 ru4uc
 褥 ru4y
@@ -4345,6 +4363,7 @@
 苏 su1c
 甦 su1c.g
 稣 su1h
+窣 su1x
 酥 su1y
 俗 su2r
 肃 su49
@@ -4695,6 +4714,7 @@
 涉 ue4u
 赦 ue4ui
 摄 ue4uo
+慑 ue4x
 设 ue4y
 申 uf15
 身 uf17
@@ -5008,9 +5028,11 @@
 蜇 ve2iu
 哲 ve2k
 折 ve2u
+谪 ve2y
 锗 ve3j
 者 ve3l
 褶 ve3y
+褚 ve3yl
 蔗 ve4c
 柘 ve4m
 浙 ve4u
@@ -5033,6 +5055,7 @@
 疹 vf3b
 轸 vf3c
 枕 vf3m
+缜 vf3s
 畛 vf3t
 诊 vf3y
 阵 vf4b
@@ -5292,6 +5315,7 @@
 瞩 vu3m
 拄 vu3u
 渚 vu3ul
+褚 vu3y
 贮 vu4b
 著 vu4c
 苎 vu4cb
@@ -5666,6 +5690,7 @@
 细 xi4s
 系 xi4sp
 饩 xi4u
+禊 xi4y
 先 xm19
 锨 xm1j
 籼 xm1m

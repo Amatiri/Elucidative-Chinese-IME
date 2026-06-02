@@ -592,12 +592,14 @@ def initial(event):
                 code_char_after_cursor = 0
                 keyboard.press_and_release("left")
             elif event.name in ["!", "@", "#", "$", "%", "space"]:
-                code_char_before_cursor += 1
-            
+  
                 if event.name == "space":
+                    code_char_before_cursor += 1
                     entry_box.insert(tk.INSERT, " ")
 
                 else:
+                    time.sleep(0.04)
+                    keyboard.press_and_release("backspace")
                     char = event.name
                     ev = tk.Event()
                     ev.char = char
@@ -884,6 +886,7 @@ entry_count_label.pack(side=tk.LEFT, padx=(0, 2))
 def on_main_window_close():
     global window_closing
     window_closing = True
+    keyboard.unhook_all()  # 移除所有热键和全局监听钩子
     window.destroy()
 window.protocol("WM_DELETE_WINDOW", on_main_window_close)
 window.mainloop()

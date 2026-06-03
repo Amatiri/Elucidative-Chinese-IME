@@ -149,6 +149,7 @@
 电视机 dmuij
 电影院 dmy;y
 多邻国 dolng
+多少 douk
 — dpv
 ￥ dqm
 动画 dshw
@@ -284,6 +285,7 @@
 υ gup
 Υ gupc
 故事 guui
+故乡 guxd
 规范 gvfj
 规模 gvmo
 规则 gvze
@@ -338,6 +340,7 @@
 尝试 ihui4 
 常用 ihys
 常用字 ihysz
+翅膀 iibh
 彳亍 iii
 魑魅魍魉 iimzwhl imwl
 产品 ijpn
@@ -1044,6 +1047,7 @@
 一样 yiyh
 意义 yiyi44
 研究 yjjq
+眼泪 yjlz
 要点 ykdm
 要求 ykqq
 一目了然 ymlr yimulcr

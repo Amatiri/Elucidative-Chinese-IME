@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>解书音形 · 调码、形码与操作键位图</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none; /* 避免拖动时意外选中文字，不影响功能 */
+        }
+
+        :root {
+            /* 基础色板 – 融合编码键位图与操作键位图 */
+            --key-bg: #e8e8e8;
+            --key-border: #b0b0b0;
+            --key-shadow: rgba(0, 0, 0, 0.18);
+            --key-text: #1a1a1a;
+            --key-special-bg: #d5d5d5;
+            --bg: #f0f0f3;
+            --container-bg: #ffffff;
+            --surface-shadow: 0 2px 16px rgba(0, 0, 0, 0.10);
+            --key-radius: 6px;
+            --gap-row: 4px;
+            --gap-col: 4px;
+
+            /* 绿色 – 操作/辅助 (取自操作键位图更鲜活的绿色) */
+            --action-bg: #a8e6a3;
+            --action-border: #70c76f;
+            --action-hover: #95d690;
+            --action-active: #82c67d;
+
+            /* 蓝色 – 部首码 (保持原编码键位图的清爽蓝) */
+            --encode-bg: #a3d8f0;
+            --encode-border: #6aa8cc;
+            --encode-hover: #8fcbe6;
+            --encode-active: #7bbcd9;
+
+            /* 亮黄色 – 操作/编码 (选字数字、Shift等) */
+            --bright-bg: #fff9a3;
+            --bright-border: #d4c02a;
+            --bright-hover: #f2eb95;
+            --bright-active: #e5de85;
+            --bright-text: #5c4d00;
+
+            /* 暗黄色 – 调码/主码 (保留主码数字6-9,0) */
+	    --dark-bg: #ffc90e;
+	    --dark-border: #cca300;
+	    --dark-hover: #ffe54d;
+	    --dark-active: #e6b800;
+	    --dark-text: #332b00;
+
+            /* 浅红色 – 副码、补码用符 */
+            --func-bg: #f4c2c2;
+            --func-border: #d99b9b;
+            --func-hover: #eab0b0;
+            --func-active: #e09e9e;
+            --func-text: #6b2c2c;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', 'Helvetica Neue', sans-serif;
+            background: #e2e3e7;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .page-wrapper {
+            background: var(--container-bg);
+            border-radius: 20px;
+            padding: 36px 30px 30px;
+            box-shadow: var(--surface-shadow), 0 8px 40px rgba(0, 0, 0, 0.08);
+            max-width: 980px;
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .page-title {
+            text-align: center;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #2c2c2c;
+            margin-bottom: 6px;
+        }
+
+        .page-subtitle {
+            text-align: center;
+            font-size: 0.85rem;
+            color: #888;
+            margin-bottom: 18px;
+        }
+
+        /* 图例 */
+        .legend {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px 24px;
+            margin-bottom: 24px;
+            padding: 12px 16px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 1px solid #eee;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.82rem;
+            color: #444;
+            font-weight: 500;
+        }
+        .legend-color {
+            width: 18px;
+            height: 18px;
+            border-radius: 4px;
+            border: 1.5px solid;
+            flex-shrink: 0;
+        }
+        .legend-color.encode { background: var(--encode-bg); border-color: var(--encode-border); }
+        .legend-color.bright { background: var(--bright-bg); border-color: var(--bright-border); }
+        .legend-color.dark { background: var(--dark-bg); border-color: var(--dark-border); }
+        .legend-color.func { background: var(--func-bg); border-color: var(--func-border); }
+        .legend-color.action { background: var(--action-bg); border-color: var(--action-border); }
+
+        /* 键盘网格系统 — 基于60列 */
+        .keyboard {
+            display: flex;
+            flex-direction: column;
+            gap: var(--gap-row);
+            min-width: 820px;
+            width: 100%;
+        }
+        .keyboard-row {
+            display: grid;
+            gap: var(--gap-col);
+            width: 100%;
+        }
+        .row-15u {
+            grid-template-columns: repeat(60, 1fr);
+        }
+
+        /* 通用键样式 */
+        .key {
+            position: relative;
+            background: var(--key-bg);
+            border: 1.5px solid var(--key-border);
+            border-radius: var(--key-radius);
+            cursor: default;
+            display: flex;
+            align-items: flex-start;
+            justify-content: flex-start;
+            padding: 6px 0 0 7px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--key-text);
+            line-height: 1;
+            min-height: 48px;
+            box-shadow: 0 2px 4px var(--key-shadow), 0 0 0 1px rgba(255,255,255,0.7) inset, 0 -1px 2px rgba(0,0,0,0.06) inset;
+            transition: all 0.12s ease;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .key.key-special {
+            background: var(--key-special-bg);
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: #3a3a3a;
+        }
+
+        /* 右下角标注通用样式 */
+        .key::after {
+            content: attr(data-label);
+            position: absolute;
+            bottom: 4px;
+            right: 6px;
+            font-size: 0.6rem;
+            font-weight: 700;
+            color: #000;
+            opacity: 0.75;
+        }
+        .no-label::after { display: none; }
+
+        /* -------------------- 色彩体系 -------------------- */
+        /* 1. 绿色操作键 */
+        .key-action {
+            background: var(--action-bg);
+            border-color: var(--action-border);
+            color: #1a4d1a;
+        }
+        .key-action::after { color: #1a4d1a; opacity: 0.85; }
+        .key-action:hover {
+            background: var(--action-hover);
+            border-color: #5eb85e;
+            transform: translateY(-1px);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.20), 0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+        }
+        .key-action:active {
+            background: var(--action-active);
+            border-color: #4da64d;
+            transform: translateY(1px);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+            transition: all 0.05s ease;
+        }
+
+        /* 2. 蓝色部首码 (附别码部首标注) */
+        .key-encode {
+            background: var(--encode-bg);
+            border-color: var(--encode-border);
+            color: #1a3d4d;
+        }
+        .key-encode[data-bie]::after {
+            content: attr(data-bie);
+            display: block;
+            position: absolute;
+            bottom: 4px;
+            right: 6px;
+            font-size: 0.55rem;
+            font-weight: 600;
+            color: #1a3d4d;
+            opacity: 0.9;
+            line-height: 1.2;
+            max-width: 90%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .key-encode:hover {
+            background: var(--encode-hover);
+            border-color: #5599bb;
+            transform: translateY(-1px);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.20), 0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+        }
+        .key-encode:active {
+            background: var(--encode-active);
+            border-color: #4488aa;
+            transform: translateY(1px);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+            transition: all 0.05s ease;
+        }
+
+        /* 3. 亮黄色 – 操作/编码 (数字选字, Shift选字) */
+        .key-bright {
+            background: var(--bright-bg);
+            border-color: var(--bright-border);
+            color: var(--bright-text);
+        }
+        .key-bright::after { color: var(--bright-text); opacity: 0.9; }
+        .key-bright:hover {
+            background: var(--bright-hover);
+            border-color: #b8a515;
+            transform: translateY(-1px);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.20), 0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+        }
+        .key-bright:active {
+            background: var(--bright-active);
+            border-color: #9c8a10;
+            transform: translateY(1px);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+            transition: all 0.05s ease;
+        }
+        /* 兼容原有的key-tone-bright类，之后和key-bright合并 */
+        .key-tone-bright {
+            background: var(--bright-bg);
+            border-color: var(--bright-border);
+            color: var(--bright-text);
+        }
+        .key-tone-bright::after { color: var(--bright-text); opacity: 0.9; }
+        .key-tone-bright:hover {
+            background: var(--bright-hover);
+            border-color: #b8a515;
+            transform: translateY(-1px);
+        }
+        .key-tone-bright:active {
+            background: var(--bright-active);
+            transform: translateY(1px);
+        }
+
+        /* 4. 暗黄色 – 调码/主码 (数字6-9, 0) */
+        .key-tone-dark {
+            background: var(--dark-bg);
+            border-color: var(--dark-border);
+            color: var(--dark-text);
+        }
+        .key-tone-dark::after { color: var(--dark-text); opacity: 0.9; }
+        .key-tone-dark:hover {
+            background: var(--dark-hover);
+            border-color: #a89530;
+            transform: translateY(-1px);
+        }
+        .key-tone-dark:active {
+            background: var(--dark-active);
+            transform: translateY(1px);
+        }
+        /* 让暗黄键也支持显示声调小字（如果有data-tone） */
+        .key-tone-dark::before {
+            content: attr(data-tone);
+            position: absolute;
+            top: 4px;
+            right: 6px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: #4a3f00;
+        }
+        /* 亮黄键的声调标识字号加大 */
+        .key-tone-bright::before {
+            content: attr(data-tone);
+            position: absolute;
+            top: 4px;
+            right: 6px;
+            font-size: 0.8rem;
+            font-weight: 800;
+            color: #5c4d00;
+        }
+
+        /* 5. 浅红色功能键 (副码/补码符) */
+        .key-func {
+            background: var(--func-bg);
+            border-color: var(--func-border);
+            color: var(--func-text);
+        }
+        .key-func::after {
+            content: attr(data-func);
+            display: block;
+            position: absolute;
+            bottom: 4px;
+            right: 6px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: var(--func-text);
+        }
+        .key-func:hover {
+            background: var(--func-hover);
+            border-color: #c07a7a;
+            transform: translateY(-1px);
+        }
+        .key-func:active {
+            background: var(--func-active);
+            transform: translateY(1px);
+        }
+
+        /* ★★★ 修复：亮黄键与暗黄键右下角显示 data-func ★★★ */
+        .key-tone-bright::after,
+        .key-tone-dark::after {
+            content: attr(data-func);
+            position: absolute;
+            bottom: 4px;
+            right: 6px;
+            font-size: 0.6rem;
+            font-weight: 700;
+            color: inherit;
+            opacity: 0.85;
+        }
+
+        /* 特殊灰色键交互 */
+        .key.key-special:hover {
+            background: #c8c8c8;
+            border-color: #999;
+            transform: translateY(-1px);
+        }
+        .key.key-special:active {
+            background: #b8b8b8;
+            transform: translateY(1px);
+        }
+
+        /* 空格键 (绿色操作) */
+        .row-spacebar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            padding: 0;
+        }
+        .key-spacebar {
+            position: relative;
+            background: var(--action-bg);
+            border: 1.5px solid var(--action-border);
+            border-radius: var(--key-radius);
+            cursor: default;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #1a4d1a;
+            min-height: 48px;
+            width: 41.5%;
+            box-shadow: 0 2px 4px var(--key-shadow), 0 0 0 1px rgba(255,255,255,0.7) inset;
+            transition: all 0.12s ease;
+        }
+        .key-spacebar::after {
+            content: attr(data-label);
+            position: absolute;
+            bottom: 4px;
+            right: 8px;
+            font-size: 0.6rem;
+            font-weight: 700;
+            color: #1a4d1a;
+        }
+        .key-spacebar:hover {
+            background: var(--action-hover);
+            border-color: #5eb85e;
+            transform: translateY(-1px);
+        }
+        .key-spacebar:active {
+            background: var(--action-active);
+            transform: translateY(1px);
+        }
+
+        /* 列跨度 */
+        .span-4 { grid-column: span 4; }
+        .span-6 { grid-column: span 6; }
+        .span-7 { grid-column: span 7; }
+        .span-8 { grid-column: span 8; }
+        .span-9 { grid-column: span 9; }
+        .span-11 { grid-column: span 11; }
+
+        /* 方向键区 (绿色操作) */
+        .arrow-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px dashed #ddd;
+        }
+        .arrow-section-label {
+            text-align: center;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 16px;
+        }
+        .arrow-cluster {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 3px;
+            width: 156px;
+            margin: 0 auto;
+        }
+        .arrow-key {
+            position: relative;
+            background: var(--action-bg);
+            border: 1.5px solid var(--action-border);
+            border-radius: 5px;
+            cursor: default;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1a4d1a;
+            min-height: 42px;
+            min-width: 48px;
+            box-shadow: 0 2px 3px rgba(0,0,0,0.15), 0 0 0 1px rgba(255,255,255,0.6) inset;
+            transition: all 0.12s ease;
+        }
+        .arrow-key::after {
+            content: attr(data-label);
+            position: absolute;
+            bottom: 2px;
+            right: 4px;
+            font-size: 0.55rem;
+            font-weight: 700;
+            color: #1a4d1a;
+        }
+        .arrow-key:hover {
+            background: var(--action-hover);
+            border-color: #5eb85e;
+            transform: translateY(-1px);
+        }
+        .arrow-key:active {
+            background: var(--action-active);
+            transform: translateY(1px);
+        }
+        .arrow-placeholder {
+            visibility: hidden;
+            min-height: 42px;
+            min-width: 48px;
+        }
+
+        /* 注释区域 */
+        .key-notes {
+            margin: 24px 0 16px;
+            padding: 14px 18px;
+            background: #f5f7fb;
+            border-radius: 14px;
+            font-size: 0.8rem;
+            color: #2c3e4e;
+            border-left: 4px solid #6aa8cc;
+            line-height: 1.5;
+        }
+        .note-item {
+            margin-bottom: 6px;
+        }
+        .note-item:last-child {
+            margin-bottom: 0;
+        }
+
+        /* 响应式微调 */
+        @media (max-width: 880px) {
+            .page-wrapper { padding: 20px 12px 16px; }
+            .keyboard { min-width: 720px; }
+            .key { font-size: 0.68rem; padding: 4px 0 0 4px; min-height: 38px; }
+            .key-encode[data-bie]::after { font-size: 0.5rem; bottom: 2px; right: 4px; }
+            .key-spacebar { min-height: 38px; width: 40%; }
+            .arrow-key { min-height: 34px; min-width: 38px; font-size: 0.9rem; }
+            .arrow-cluster { width: 126px; }
+            .key-tone-bright::before, .key-tone-dark::before { font-size: 0.7rem; top: 3px; right: 4px; }
+            /* 响应式下也确保修复后右下角内容正确缩放 */
+            .key-tone-bright::after,
+            .key-tone-dark::after {
+                font-size: 0.55rem;
+                bottom: 2px;
+                right: 4px;
+            }
+        }
+        @media (max-width: 500px) {
+            .page-wrapper { padding: 14px 6px 10px; }
+            .keyboard { min-width: 560px; }
+            .key { font-size: 0.56rem; padding: 3px 0 0 3px; min-height: 28px; border-width: 1px; }
+            .key-encode[data-bie]::after { font-size: 0.45rem; bottom: 1px; right: 2px; }
+            .key-spacebar { min-height: 28px; width: 38%; font-size: 0.5rem; }
+            .arrow-key { min-height: 26px; min-width: 28px; font-size: 0.7rem; }
+            .arrow-cluster { width: 96px; }
+            .key-tone-bright::before, .key-tone-dark::before { font-size: 0.6rem; top: 2px; right: 3px; }
+            .key-notes { font-size: 0.7rem; padding: 10px 12px; }
+            /* 极小屏下调整右下角偏移 */
+            .key-tone-bright::after,
+            .key-tone-dark::after {
+                font-size: 0.5rem;
+                bottom: 1px;
+                right: 2px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="page-wrapper">
+    <h1 class="page-title">解书音形 · 调码、形码与操作键位图</h1>
+    <p class="page-subtitle">ANSI 标准布局 · 双拼音码参考搜狗双拼官方键位表</p>
+
+    <div class="legend">
+        <div class="legend-item"><span class="legend-color encode"></span><span>蓝色为部首码（附别码部首）</span></div>
+        <div class="legend-item"><span class="legend-color bright"></span><span>亮黄为调/形/shift+12345选字</span></div>
+        <div class="legend-item"><span class="legend-color dark"></span><span>暗黄为声调/独体构形</span></div>
+        <div class="legend-item"><span class="legend-color func"></span><span>浅红为副/补码用符</span></div>
+        <div class="legend-item"><span class="legend-color action"></span><span>绿色为操作键位</span></div>
+    </div>
+
+    <div class="keyboard">
+        <!-- 第一排 -->
+        <div class="keyboard-row row-15u">
+            <div class="key key-special no-label span-4">`</div>
+            <!-- 数字1-4亮黄 (操作/编码)，右下角将显示 data-func -->
+            <div class="key key-tone-bright span-4" data-tone="阴" data-func="丨">1</div>
+            <div class="key key-tone-bright span-4" data-tone="阳" data-func="一">2</div>
+            <div class="key key-tone-bright span-4" data-tone="上" data-func="八">3</div>
+            <div class="key key-tone-bright span-4" data-tone="去" data-func="㐅">4</div>
+            <!-- 5亮黄 -->
+            <div class="key key-tone-bright span-4" data-tone="" data-func="中">5</div>
+            <!-- 6-9暗黄 (调码/主码) -->
+            <div class="key key-tone-dark span-4" data-tone="" data-func="大">6</div>
+            <div class="key key-tone-dark span-4" data-tone="" data-func="厂">7</div>
+            <div class="key key-tone-dark span-4" data-tone="" data-func="乙">8</div>
+            <div class="key key-tone-dark span-4" data-tone="" data-func="复">9</div>
+            <!-- 0暗黄 -->
+            <div class="key key-tone-dark span-4" data-tone="轻" data-func="口">0</div>
+            <!-- 操作键绿色 -->
+            <div class="key key-action span-4" data-label="前字">-</div>
+            <div class="key key-action span-4" data-label="后字">=</div>
+            <div class="key key-action span-8" data-label="删除">Backspace</div>
+        </div>
+
+        <!-- 第二排 -->
+        <div class="keyboard-row row-15u">
+            <div class="key key-special no-label span-6">Tab</div>
+            <div class="key key-encode no-label span-4" data-bie="豸">Q</div>
+            <div class="key key-encode no-label span-4" data-bie="隹">W</div>
+            <div class="key key-func span-4" data-func="次">E</div>
+            <div class="key key-encode no-label span-4" data-bie="リ">R</div>
+            <div class="key key-encode no-label span-4" data-bie="彳幺夕">T</div>
+            <div class="key key-encode no-label span-4" data-bie="黾">Y</div>
+            <div class="key key-encode no-label span-4" data-bie="攵">U</div>
+            <div class="key key-encode no-label span-4" data-bie="页雨弋彐彑">I</div>
+            <div class="key key-encode no-label span-4" data-bie="匚㔾">O</div>
+            <div class="key key-encode no-label span-4" data-bie="殳髟㐅">P</div>
+            <div class="key key-special no-label span-4">[</div>
+            <div class="key key-special no-label span-4">]</div>
+            <div class="key key-special no-label span-6">\</div>
+        </div>
+
+        <!-- 第三排 -->
+        <div class="keyboard-row row-15u">
+            <div class="key key-special no-label span-7">Caps</div>
+            <div class="key key-func span-4" data-func="常">A</div>
+            <div class="key key-encode no-label span-4" data-bie="示石尸十">S</div>
+            <div class="key key-encode no-label span-4" data-bie="亠冖丷">D</div>
+            <div class="key key-encode no-label span-4" data-bie="臼辰">F</div>
+            <div class="key key-encode no-label span-4">G</div>
+            <div class="key key-encode no-label span-4" data-bie="⺌羊">H</div>
+            <div class="key key-encode no-label span-4">J</div>
+            <div class="key key-encode no-label span-4" data-bie="又舌用角">K</div>
+            <div class="key key-encode no-label span-4" data-bie="云勹">L</div>
+            <div class="key key-func span-4" data-func="未">;</div>
+            <div class="key key-action span-4" data-label="分隔">'</div>
+            <div class="key key-action span-9" data-label="留码">Enter</div>
+        </div>
+
+        <!-- 第四排 -->
+        <div class="keyboard-row row-15u">
+            <!-- 左Shift亮黄色 (选字操作) -->
+            <div class="key key-bright span-9" data-label="选字">Shift</div>
+            <div class="key key-encode no-label span-4" data-bie="辶竹">Z</div>
+            <div class="key key-encode no-label span-4" data-bie="巛">X</div>
+            <div class="key key-encode no-label span-4" data-bie="车厂凵">C</div>
+            <div class="key key-encode no-label span-4" data-bie="乑鬼">V</div>
+            <div class="key key-encode no-label span-4" data-bie="阝">B</div>
+            <div class="key key-encode no-label span-4" data-bie="耒齿">N</div>
+            <div class="key key-encode no-label span-4" data-bie="彡釆">M</div>
+            <div class="key key-special no-label span-4">,</div>
+            <div class="key key-func span-4" data-func="补">.</div>
+            <div class="key key-special no-label span-4">/</div>
+            <div class="key key-special span-11">Shift</div>
+        </div>
+
+        <!-- 第五排 空格 -->
+        <div class="row-spacebar">
+            <div class="key-spacebar" data-label="上屏">Space</div>
+        </div>
+    </div>
+
+    <!-- 注释区 (融合操作键位图注释 + esc+1) -->
+    <div class="key-notes">
+        <div class="note-item">※ Shift+1 也可用于上屏词语（当词语候选存在时）</div>
+        <div class="note-item">※ ← + → 键同时按下可切换内输/外输模式</div>
+        <div class="note-item">※ 按 esc+1 禁用外输，防止与其他快捷键冲突</div>
+    </div>
+
+    <!-- 方向键区域 (绿色操作) -->
+    <div class="arrow-section">
+        <p class="arrow-section-label">方向键与翻页</p>
+        <div class="arrow-cluster">
+            <div class="arrow-placeholder"></div>
+            <div class="arrow-key" data-label="上页">↑</div>
+            <div class="arrow-placeholder"></div>
+            <div class="arrow-key" data-label="左">←</div>
+            <div class="arrow-key" data-label="下页">↓</div>
+            <div class="arrow-key" data-label="右">→</div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

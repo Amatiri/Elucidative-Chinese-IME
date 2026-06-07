@@ -38,6 +38,8 @@ def process_file(input_file, output_file):
     entries = []
     global first_level_map
     entries_by_first_char = {}
+
+    # ---------- 原有：按行去重 ----------
     with open(input_file, 'r', encoding='utf-8') as f:
         for line in f:
             line = line.rstrip()
@@ -54,18 +56,38 @@ def process_file(input_file, output_file):
             if entry_key not in seen_entries:
                 seen_entries.add(entry_key)
                 entries.append((hanzi, non_han_clean))
+
+    # ---------- 原有：按完整编码去重 ----------
     seen_codes = set()
     code_unique_entries = []
     for hanzi, code in entries:
         if code not in seen_codes:
             seen_codes.add(code)
             code_unique_entries.append((hanzi, code))
+
+    # ========== 新增过滤：相同前三码中，同一汉字只保留第一次出现 ==========
+    # 记录 (前三码, 汉字) 是否已经出现过
+    seen_prefix_hanzi = set()
+    filtered_entries = []
+    for hanzi, code in code_unique_entries:
+        prefix = get_abc_code(code)          # 获取前三码
+        key = (prefix, hanzi)
+        if key not in seen_prefix_hanzi:
+            seen_prefix_hanzi.add(key)
+            filtered_entries.append((hanzi, code))
+    # 用过滤后的列表替代原列表，后续流程不变
+    code_unique_entries = filtered_entries
+    # =================================================================
+
+    # ---------- 原有：按编码首字母分组 ----------
     for hanzi, code in code_unique_entries:
         if code and code[0].isalpha():
             first_char = code[0]
             if first_char not in entries_by_first_char:
                 entries_by_first_char[first_char] = []
             entries_by_first_char[first_char].append((hanzi, code))
+
+    # ---------- 原有：组内首字置顶与排序 ----------
     for first_char, entry_list in entries_by_first_char.items():
         first_level_hanzi = None
         for hanzi, target_code in first_level_map.items():
@@ -82,12 +104,16 @@ def process_file(input_file, output_file):
             tail_entries = entry_list[1:]
             tail_entries.sort(key=lambda x: sort_key(x[1]))
             entry_list[1:] = tail_entries
+
+    # ---------- 原有：按首字母顺序输出 ----------
     all_entries = []
     for first_char in sorted(entries_by_first_char.keys()):
         all_entries.extend(entries_by_first_char[first_char])
+
     with open(output_file, 'w', encoding='utf-8') as f:
         for hanzi, non_han in all_entries:
             f.write(f"{hanzi} {non_han}\n")
+
     return len(all_entries)
 
 

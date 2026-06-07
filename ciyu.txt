@@ -2,6 +2,7 @@
 丶 bad
 乛 bag
 𠃌 bak
+罢了 bal
 ㇏ ban
 乀 banv
 𡿨 bav
@@ -118,6 +119,7 @@
 答案 daoj
 大众 davs
 大小 daxc
+大学 daxt
 豆包 dbb
 ’ ddy
 ‘ ddz
@@ -235,6 +237,8 @@
 κ gka
 Κ gkac
 高考 gkkk
+高中 gkvs
+告终 gkvs1
 高效 gkxc
 搞笑 gkxc4
 λ gla
@@ -248,6 +252,7 @@
 过度 godu4
 过程 goig
 国家 gojw
+过来 goll
 ω gome
 Ω gomec
 ο gomi
@@ -357,6 +362,8 @@
 充满 ismj
 重新 isxn
 处理 iuli3
+初中 iuvs
+初衷 iuvs1
 出现 iuxm
 出租车 iuzui
 警纪 j;3ji4 
@@ -690,6 +697,7 @@
 ソ rsok
 す rsu
 ス rsuk
+容易 rsyi
 た rta
 タ rtak
 て rte
@@ -891,6 +899,7 @@
 震撼首发 vhuf vfhjubf
 旨意 vi3yi4
 直播 vibo
+只不过 vibug
 知道 vidk
 支付宝 vifub
 指挥 vihv1
@@ -1020,6 +1029,7 @@
 歇斯底里 xxsidil
 写作 xxzo
 协作 xxzo4
+应付 y;fu
 应该 y;gl
 英吉利 y;jil
 英语 y;yu

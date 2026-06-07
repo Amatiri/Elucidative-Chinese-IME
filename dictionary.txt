@@ -456,6 +456,7 @@
 粗 cu1m
 殂 cu2d
 徂 cu2t
+蔟 cu4c
 猝 cu4q
 促 cu4r
 醋 cu4y
@@ -480,6 +481,7 @@
 搭 da1u
 答 da1z
 瘩 da2b
+靼 da2g
 龘 da2l
 妲 da2n
 沓 da2u
@@ -493,6 +495,7 @@
 瘩 da0b
 跶 da0z
 都 db1b
+蔸 db1c
 兜 db1o
 斗 db34
 陡 db3b
@@ -2840,6 +2843,7 @@
 遴 ln2z
 凛 ln3b
 赁 ln4b
+蔺 ln4c
 吝 ln4k
 淋 ln4u
 躏 ln4z
@@ -3079,6 +3083,7 @@
 盟 mg2m
 檬 mg2mc
 儚 mg2r
+甍 mg2w
 朦 mg2y
 蒙 mg3c
 锰 mg3j
@@ -5156,7 +5161,7 @@
 直 vi2s
 埴 vi2t
 执 vi2u
-摭 vi2ug
+摭 vi2uu
 跖 vi2z
 止 vi32
 祁 vi3b
@@ -6059,6 +6064,7 @@
 谒 ye4y
 央 yh16
 殃 yh1d
+鞅 yh1g
 秧 yh1h
 鸯 yh1n
 泱 yh1u
@@ -6078,6 +6084,7 @@
 养 yh3d
 氧 yh3q
 仰 yh3r
+鞅 yh4g
 烊 yh4h
 样 yh4m
 漾 yh4u
@@ -6532,6 +6539,7 @@
 窈 yk3x
 药 yk4c
 耀 yk4g
+靿 yk4gt
 钥 yk4j
 要 yk4x
 阴 yn1b

@@ -492,6 +492,7 @@
 名称 m;ig
 明令禁止 m;l;jnv mljv
 明天 m;tm
+明知故问 m;viguw mvgw
 名字 m;zi
 码表 mabc3
 麻将 majd
@@ -522,6 +523,7 @@
 能够 nggb
 你好 nihk 
 你说得对 niuodedv
+男娘 njnd
 年龄 nml;
 年轻 nmq;
 俄罗斯 oelos

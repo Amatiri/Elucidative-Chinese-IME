@@ -268,6 +268,7 @@
 拨 bo1uf
 播 bo1ut
 饽 bo1uz
+癶 bo1v.b
 玻 bo1w
 趵 bo1z
 薄 bo2c
@@ -292,6 +293,7 @@
 孛 bo2zs
 跛 bo3z
 簸 bo3zq
+卜 bo01
 啵 bo0k
 晡 bu1r
 不 bu24
@@ -340,6 +342,7 @@
 孛 bz4z
 呗 bz0k
 兵 b;1b
+冫 b;1b;1u.b
 冰 b;1u
 氷 b;1u.j
 丙 b;35
@@ -412,6 +415,8 @@
 槽 ck2m
 曹 ck2r
 草 ck3c
+艹 ck3c.b
+屮 ck3c.i
 肏 ck4r
 猜 cl1q
 才 cl24
@@ -1670,6 +1675,7 @@
 车 ie14
 砗 ie1s
 扯 ie3u
+屮 ie45.b
 彻 ie4t
 坼 ie4ti
 撤 ie4u
@@ -1975,6 +1981,7 @@
 鸡 ji1n
 姬 ji1ni
 犄 ji1nq
+㚻 ji1nt
 肌 ji1r
 缉 ji1s
 矶 ji1sj
@@ -2512,6 +2519,7 @@
 侃 kj3r
 砍 kj3s
 坎 kj3t
+凵 kj3t.b
 看 kj4m
 尻 kk1s
 烤 kk3h
@@ -3174,6 +3182,7 @@
 脉 ml4r
 卖 ml4s
 迈 ml4z
+宀 mm22.b
 眠 mm2m
 棉 mm2mb
 绵 mm2s
@@ -3316,6 +3325,7 @@
 娘 nd2n
 酿 nd4y
 呢 ne1k
+疒 ne47.b
 讷 ne4y
 呢 ne0k
 嫩 nf4n
@@ -3380,6 +3390,7 @@
 捻 nm3u
 撵 nm3uc
 廿 nm45
+卄 nm45.b
 埝 nm4t
 念 nm4x
 您 nn2x
@@ -4434,6 +4445,7 @@
 踏 ta4z
 蹋 ta4zr
 偷 tb1r
+亠 tb23.d
 头 tb26
 骰 tb2g
 投 tb2u

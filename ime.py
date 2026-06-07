@@ -134,9 +134,10 @@ def split_sequence(original):
                     condition2 = True
                     positions.append(index)
                 if (char.isdigit() and index > 0 and part[index-1].isdigit()
-                        and index + 1 < len(part) and not part[index+1].isdigit()):
-                    condition3 = True
-                    positions3.append(index)
+                        and index + 1 < len(part)):
+                    if part[index+1]!="." and not part[index+1].isdigit():
+                        condition3 = True
+                        positions3.append(index)
             if len(part) > 5 and '.' not in part:
                 condition4 = True
             if '.' in part and len(part.split(".")[1]) > 1:

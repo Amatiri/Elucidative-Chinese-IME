@@ -44,6 +44,7 @@
 巴 ba09
 吧 ba0k
 叭 ba0kb
+𣬶 ba0m
 罢 ba0w
 飑 bc1f
 彪 bc1h
@@ -385,6 +386,7 @@
 呲 ci1k
 跐 ci1z
 茨 ci2c
+兹 ci2d.u
 辞 ci2k
 磁 ci2s
 祠 ci2sk
@@ -877,9 +879,9 @@
 访 fh3y
 放 fh4u
 藩 fj1c
-蕃 fj1cm
+蕃 fj1ct
 帆 fj1j
-番 fj1m
+番 fj1t
 翻 fj1y
 蕃 fj2c
 樊 fj2d
@@ -1978,6 +1980,7 @@
 叽 ji1k
 唧 ji1kj
 机 ji1m
+𣬠 ji1mj
 鸡 ji1n
 姬 ji1ni
 犄 ji1nq
@@ -2139,6 +2142,8 @@
 锦 jn3j
 仅 jn3r
 紧 jn3s
+馑 jn3u
+瑾 jn3w
 谨 jn3y
 荩 jn4c
 靳 jn4g
@@ -3774,7 +3779,7 @@
 淠 pi4u
 辟 pi4x
 譬 pi4y
-番 pj1m
+番 pj1t
 潘 pj1u
 攀 pj1uf
 爿 pj24
@@ -4068,6 +4073,7 @@
 裙 qp2y
 丘 qq12
 邱 qq1b
+龟 qq1d.u
 秋 qq1h
 蚯 qq1i
 楸 qq1m

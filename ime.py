@@ -521,19 +521,18 @@ def on_key_press(event):
 # ==================== 全局输入监听（外输模式） ====================
 
 def toggle():
-    """切换内外输模式，热键：左+右"""
     global external_mode, code_char_before_cursor, code_char_after_cursor
     if external_mode:
         external_mode = False
         window.title("解书音形-内输")
-        window.geometry(f"+2250+1250")
+        window.geometry(f"{win_w}x{win_h_norm}+{init_x}+{init_y}")
     else:
         external_mode = True
         window.title("解书音形-外输")
         x, y = win32api.GetCursorPos()
-        x -= 230
-        y -= 10
-        window.geometry(f"+{x}+{y}")
+        x -= int(100 * scale)
+        y -= int(10 * scale)
+        window.geometry(f"{win_w}x{win_h_norm}+{x}+{y}")
     entry_box.delete(0, tk.END)
     entry_count_var.set(f"{get_entry_count()}")
     keyboard.press_and_release("shift")
@@ -673,14 +672,41 @@ try:
 except:
     pass
 
+def get_dpi_scale(window):
+    try:
+        dpi = window.winfo_fpixels('1i')
+        return dpi / 96.0
+    except:
+        return 1.0
+    
 window = tk.Tk()
+scale = get_dpi_scale(window)
+def scale_size(x):
+    return int(round(x * scale))
+BASE_WINDOW_W = 300
+BASE_WINDOW_H_NORMAL = 110
+BASE_WINDOW_H_EXPANDED = 280
+BASE_PAD = 1
+BASE_BORDER = 0.5
+BASE_ROW_PADY = 1
+LABEL_SPACING = scale_size(5)   
+SMALL_SPACING = scale_size(1) 
+win_w = scale_size(BASE_WINDOW_W)
+win_h_norm = scale_size(BASE_WINDOW_H_NORMAL)
+win_h_exp = scale_size(BASE_WINDOW_H_EXPANDED)
+screen_width = window.winfo_screenwidth()
+screen_height = window.winfo_screenheight()
+base_width = 2880
+base_height = 1920
+init_x = int(screen_width * (2250 / base_width))
+init_y = int(screen_height * (1250 / base_height))
+
 window.title("解书音形-内输")
-window.geometry(f"600x215+2250+1250")
+window.geometry(f"{win_w}x{win_h_norm}+{init_x}+{init_y}")
 window.configure(bg='#FFF3C7')
 window.attributes('-topmost', True)
 window.attributes('-alpha', 0.95)
 
-# 窗口拖动功能
 drag_start_x = 0
 drag_start_y = 0
 def start_drag(event):
@@ -700,12 +726,12 @@ label_bg = '#EFE3AE'
 real_time_var = tk.StringVar()
 real_time_var.trace_add("write", main_function)
 
-main_frame = tk.Frame(window, bg=bg_color, padx=2, pady=0)
+main_frame = tk.Frame(window, bg=bg_color, padx=scale_size(BASE_PAD), pady=0)
 main_frame.pack(fill=tk.BOTH, expand=False)
 
 entry_box = tk.Entry(main_frame, textvariable=real_time_var, font=font_medium, width=44,
                     relief=tk.FLAT, bg='#EFE3AE', highlightthickness=1, highlightcolor='#000000')
-entry_box.pack(pady=(0, 2))
+entry_box.pack(pady=(0, scale_size(BASE_PAD)))
 entry_box.focus_set()
 entry_box.bind("<KeyPress>", on_key_press)
 
@@ -715,14 +741,14 @@ display_frame.bind("<ButtonPress-1>", start_drag)
 display_frame.bind("<B1-Motion>", do_drag)
 
 first_chars_label = tk.Label(display_frame, text="", font=font_medium, bg=label_bg,
-                            relief=tk.RAISED, bd=1, padx=2, pady=2, width=0, anchor='w')
-first_chars_label.pack(fill=tk.X, pady=(0, 2))
+                            relief=tk.RAISED, bd=scale_size(BASE_BORDER), padx=scale_size(BASE_PAD), pady=scale_size(BASE_PAD), width=0, anchor='w')
+first_chars_label.pack(fill=tk.X, pady=(0, scale_size(BASE_PAD)))
 first_chars_label.bind("<ButtonPress-1>", start_drag)
 first_chars_label.bind("<B1-Motion>", do_drag)
 
 current_part_label = tk.Label(display_frame, text="", font=font_medium, bg=label_bg,
-                             relief=tk.RAISED, bd=1, padx=2, pady=2, width=0, anchor='w')
-current_part_label.pack(fill=tk.X, pady=(0, 2))
+                             relief=tk.RAISED, bd=scale_size(BASE_BORDER), padx=scale_size(BASE_PAD), pady=scale_size(BASE_PAD), width=0, anchor='w')
+current_part_label.pack(fill=tk.X, pady=(0, scale_size(BASE_PAD)))
 current_part_label.bind("<ButtonPress-1>", start_drag)
 current_part_label.bind("<B1-Motion>", do_drag)
 
@@ -732,11 +758,11 @@ page_label.pack(fill=tk.X)
 page_label.bind("<ButtonPress-1>", start_drag)
 page_label.bind("<B1-Motion>", do_drag)
 
-main_status_frame = tk.Frame(window, bg='#FFF3C7', padx=2, pady=2)
+main_status_frame = tk.Frame(window, bg='#FFF3C7', padx=scale_size(BASE_PAD), pady=scale_size(BASE_PAD))
 main_status_frame.pack(fill=tk.BOTH, expand=False)
 
 settings_frame = tk.Frame(main_status_frame, bg='#FFF3C7')
-settings_frame.pack(fill=tk.X, pady=(0, 2))
+settings_frame.pack(fill=tk.X, pady=(0, scale_size(BASE_PAD)))
 
 # 自动上字开关
 auto_commit_var = tk.StringVar(value=auto_commit_enabled)
@@ -752,7 +778,7 @@ auto_commit_label = tk.Label(settings_frame, text="自动上字",
                             font=("楷体", 14), bg='#FFF3C7',
                             fg='#006600' if auto_commit_enabled == '1' else '#990000',
                             cursor="hand2")
-auto_commit_label.pack(side=tk.LEFT, padx=(0, 10))
+auto_commit_label.pack(side=tk.LEFT, padx=(0, LABEL_SPACING))
 def toggle_auto_commit_click(event):
     global auto_commit_enabled
     auto_commit_enabled = "1" if auto_commit_enabled != "1" else ""
@@ -774,7 +800,7 @@ phrase_priority_label = tk.Label(settings_frame, text="优先上词",
                                font=("楷体", 14), bg='#FFF3C7',
                                fg='#006600' if phrase_priority == '1' else '#990000',
                                cursor="hand2")
-phrase_priority_label.pack(side=tk.LEFT, padx=(0, 10))
+phrase_priority_label.pack(side=tk.LEFT, padx=(0, LABEL_SPACING))
 def toggle_phrase_priority_click(event):
     global phrase_priority
     phrase_priority = "1" if phrase_priority != "1" else ""
@@ -818,17 +844,16 @@ radical_table_data = {
 }
 
 def create_radical_table():
-    """创建部首表内容（带滚动条）"""
     for widget in radical_table_frame.winfo_children():
         widget.destroy()
     title_frame = tk.Frame(radical_table_frame, bg='#FFF3C7')
-    title_frame.pack(fill=tk.X, pady=(2, 2))
+    title_frame.pack(fill=tk.X, pady=(scale_size(BASE_PAD), scale_size(BASE_PAD)))
     tk.Label(title_frame, text="部首码", font=("华文中宋", 11),
-            bg='#FFF3C7', fg='#000000', width=8, anchor='w').pack(side=tk.LEFT, padx=(2, 0))
+            bg='#FFF3C7', fg='#000000', width=8, anchor='w').pack(side=tk.LEFT, padx=(scale_size(BASE_PAD), 0))
     tk.Label(title_frame, text="对应部首", font=("华文中宋", 11),
-            bg='#FFF3C7', fg='#000000', anchor='w').pack(side=tk.LEFT, padx=(10, 0))
-    separator = tk.Frame(radical_table_frame, height=1, bg='#000000')
-    separator.pack(fill=tk.X, pady=2)
+            bg='#FFF3C7', fg='#000000', anchor='w').pack(side=tk.LEFT, padx=(scale_size(10), 0))
+    separator = tk.Frame(radical_table_frame, height=scale_size(1), bg='#000000')
+    separator.pack(fill=tk.X, pady=scale_size(BASE_PAD))
 
     table_container = tk.Frame(radical_table_frame, bg='#FFF3C7')
     table_container.pack(fill=tk.BOTH, expand=False)
@@ -852,7 +877,7 @@ def create_radical_table():
 
     for i, (letter, radicals) in enumerate(radical_table_data.items()):
         row_frame = tk.Frame(scrollable_frame, bg='#FFF3C7')
-        row_frame.pack(fill=tk.X, pady=1)
+        row_frame.pack(fill=tk.X, pady=scale_size(BASE_ROW_PADY))
         letter_label = tk.Label(row_frame, text=letter, font=("华文中宋", 11),
                                bg='#FFF3C7', fg='#3232BE', width=8, anchor='w')
         letter_label.pack(side=tk.LEFT, padx=(2, 0))
@@ -867,22 +892,21 @@ def create_radical_table():
 create_radical_table()
 
 def toggle_radical_table():
-    """展开/折叠部首表"""
     if radical_table_var.get():
-        radical_table_frame.pack(fill=tk.BOTH, expand=True, pady=(0, 10))
+        radical_table_frame.pack(fill=tk.BOTH, expand=True, pady=(0, scale_size(10)))
         radical_table_label.config(text="部首表", fg='#006600')
-        window.geometry("600x565")
+        window.geometry(f"{win_w}x{win_h_exp}")
         create_radical_table()
     else:
         radical_table_frame.pack_forget()
         radical_table_label.config(text="部首表", fg='#990000')
-        window.geometry("600x215")
+        window.geometry(f"{win_w}x{win_h_norm}")
 
 radical_table_label = tk.Label(settings_frame, text="部首表",
                               font=("楷体", 14), bg='#FFF3C7',
                               fg='#006600' if radical_table_var.get() else '#990000',
                               cursor="hand2")
-radical_table_label.pack(side=tk.LEFT, padx=(0, 10))
+radical_table_label.pack(side=tk.LEFT, padx=(0, LABEL_SPACING))
 def toggle_radical_table_click(event):
     current_state = radical_table_var.get()
     radical_table_var.set(not current_state)
@@ -895,7 +919,7 @@ entry_count_var = tk.StringVar()
 entry_count_var.set(f"{get_entry_count()}")
 entry_count_label = tk.Label(settings_frame, textvariable=entry_count_var,
                            font=("华文中宋", 14), bg='#FFF3C7', fg='#000000')
-entry_count_label.pack(side=tk.LEFT, padx=(0, 2))
+entry_count_label.pack(side=tk.LEFT, padx=(0, SMALL_SPACING))
 
 def on_main_window_close():
     global window_closing

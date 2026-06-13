@@ -4,13 +4,13 @@ from config import CIYU_FILE
 
 def check_code_exists(code):
     if not os.path.exists(CIYU_FILE):
-        return False
+        return None
     with open(CIYU_FILE, 'r', encoding="utf-8") as f:
         for line in f:
             parts = line.strip().split()
             if len(parts) > 1 and code in parts[1:]:
-                return True
-    return False
+                return line.strip()
+    return None
 
 
 def parse_code(code):

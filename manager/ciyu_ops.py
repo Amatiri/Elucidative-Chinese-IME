@@ -1,6 +1,6 @@
 import os
 from config import CIYU_FILE
-from manager.code_parser import parse_code, generate_all_combinations, generate_default_codes_for_word
+from manager.code_parser import parse_code, generate_all_combinations, generate_default_codes_for_word, check_code_exists
 from manager.dictionary import query_chars
 
 
@@ -133,6 +133,53 @@ def add_to_ciyu(word, codes, overwrite=False):
     return True
 
 
+def resolve_code_conflicts(word, codes):
+    """检测编码重码，报告冲突条目，允许用户重输或放弃。"""
+    if not codes:
+        return None, False
+
+    # 第一轮检查
+    conflicts = []
+    for code in codes:
+        conflict_line = check_code_exists(code)
+        if conflict_line:
+            conflicts.append((code, conflict_line))
+
+    # 无冲突，直接放行
+    if not conflicts:
+        return codes, True
+
+    # 有冲突，逐条报告
+    for code, conflict_line in conflicts:
+        print(f"{code}与「{conflict_line}」重码")
+
+    # 用户重输
+    new_input = input("重新输入：").strip()
+
+    if not new_input:
+        print("已放弃添加")
+        return None, False
+
+    new_codes = new_input.split()
+
+    # 逐个检查新编码
+    final_codes = []
+    all_conflicted = True
+    for code in new_codes:
+        conflict_line = check_code_exists(code)
+        if conflict_line:
+            print(f"{code}仍与「{conflict_line}」重码，放弃")
+        else:
+            final_codes.append(code)
+            all_conflicted = False
+
+    if all_conflicted:
+        print("全重码，放弃添加该条目")
+        return None, False
+
+    return final_codes, True
+
+
 def ciyumain():
     """词语添加主入口"""
     if not os.path.exists(CIYU_FILE):
@@ -154,6 +201,9 @@ def ciyumain():
                 codes = process_multi_char_word(word)
             if not word or not codes:
                 print(f"跳过 {word}")
+                continue
+            codes, proceed = resolve_code_conflicts(word, codes)
+            if not proceed or not codes:
                 continue
             print(f"{word}{' '.join(codes)}")
             add_to_ciyu(word, codes, overwrite=True)

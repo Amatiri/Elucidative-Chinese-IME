@@ -6,8 +6,8 @@ from manager.file_processor import process_file
 
 def add_entry(char, code):
     """添加条目，递归处理重码冲突"""
-    if len(code) < 3:
-        print(f"编码 '{code}' 过短，至少需要3位")
+    if len(code) < 4:
+        print(f"{code}过短，至少4位")
         return None
 
     abc_code = code[:3]
@@ -29,16 +29,15 @@ def add_entry(char, code):
             return current_code, mod_entries
 
         conflict_hanzi, conflict_code = conflict
-        print(f"编码 '{current_code}' 已分配给 '{conflict_hanzi}'")
-        print("请处理重码冲突:")
+        print(f"{current_code}已有{conflict_hanzi}，处理重码：")
         # 临时检查列表（排除当前冲突项）
         temp_list = [e for e in check_list if not (e[0] == conflict_hanzi and e[1] == conflict_code)]
 
         # 为冲突汉字重新生成编码
-        new_conflict_code = abc_code + input(f"为 '{conflict_hanzi}' 输入新的形码: ")
+        new_conflict_code = abc_code + input(f"{conflict_hanzi}新形码: ")
         while any(e[1] == new_conflict_code for e in temp_list):
-            print(f"新编码 '{new_conflict_code}' 仍与其他条目冲突")
-            new_conflict_code = abc_code + input(f"为 '{conflict_hanzi}' 输入另一个新的形码: ")
+            print(f"{new_conflict_code}仍冲突")
+            new_conflict_code = abc_code + input(f"{conflict_hanzi}' 新形码: ")
         # 递归处理冲突汉字的冲突
         final_conflict_code, mod_entries = resolve_conflict(
             conflict_hanzi, new_conflict_code, temp_list, mod_entries
@@ -48,10 +47,10 @@ def add_entry(char, code):
         temp_list.append((conflict_hanzi, final_conflict_code))
 
         # 为当前汉字重新生成编码
-        new_code = abc_code + input(f"为 '{hanzi}' 输入新的形码: ")
+        new_code = abc_code + input(f"{hanzi}新形码: ")
         while any(e[1] == new_code for e in temp_list):
-            print(f"新编码 '{new_code}' 仍与其他条目冲突")
-            new_code = abc_code + input(f"为 '{hanzi}' 输入另一个新的形码: ")
+            print(f"{new_code}仍冲突")
+            new_code = abc_code + input(f"{hanzi}新形码: ")
         # 递归处理当前汉字的新编码
         final_code, mod_entries = resolve_conflict(hanzi, new_code, temp_list, mod_entries)
         return final_code, mod_entries
@@ -120,22 +119,16 @@ def update_or_delete_by_code(old_code, new_code):
             old_code_hanzis.append(parts[0])
 
     if not old_code_exists:
-        print(f"编码 '{old_code}' 不存在")
-        choice = input("是否要将此编码作为新条目添加？(y/n): ").strip().lower()
-        if choice == 'y' or choice == 'yes':
-            char = input("请输入要添加的汉字: ").strip()
-            if not char:
-                print("汉字不能为空，操作取消")
-                return "操作取消"
-            result = add_entry(char, old_code)
-            if result:
-                return f"添加成功: {result}"
-            else:
-                return "添加失败"
-        else:
+        print(f"{old_code}不存在")
+        char = input("添加汉字？: ").strip()
+        if not char:
             return "操作取消"
+        result = add_entry(char, old_code)
+        if result:
+            return f"添加成功: {result}"
+        else:
+            return "添加失败"
 
-    # 删除模式
     if new_code == 'x':
         new_entries = []
         for entry in entries:
@@ -149,8 +142,8 @@ def update_or_delete_by_code(old_code, new_code):
         process_file(DATA_FILE, DATA_FILE)
         return f"已删除编码 '{old_code}' 的所有条目"
 
-    if len(new_code) < 3:
-        print(f"新编码 '{new_code}' 过短，至少需要3位")
+    if len(new_code) < 4:
+        print(f"{new_code}过短，至少4位")
         return "操作失败：编码过短"
 
     abc_code = new_code[:3]
@@ -167,24 +160,23 @@ def update_or_delete_by_code(old_code, new_code):
             return target_code, mod_entries
 
         conflict_hanzi, conflict_code = conflict
-        print(f"新编码 '{target_code}' 已分配给 '{conflict_hanzi}'")
-        print("请处理重码冲突:")
+        print(f"{target_code}已有{conflict_hanzi}，处理重码：")
         temp_list = [e for e in check_list if not (e[0] == conflict_hanzi and e[1] == conflict_code)]
 
-        new_conflict_code = abc_code + input(f"为 '{conflict_hanzi}' 输入新的形码: ")
+        new_conflict_code = abc_code + input(f"{conflict_hanzi}新形码: ")
         while any(e[1] == new_conflict_code for e in temp_list):
-            print(f"新编码 '{new_conflict_code}' 仍与其他条目冲突")
-            new_conflict_code = abc_code + input(f"为 '{conflict_hanzi}' 输入另一个新的形码: ")
+            print(f"{new_conflict_code}仍冲突")
+            new_conflict_code = abc_code + input(f"{conflict_hanzi}新形码: ")
         final_conflict_code, mod_entries = resolve_conflict(
             conflict_hanzi, new_conflict_code, temp_list, mod_entries
         )
         mod_entries.append((conflict_hanzi, conflict_code, final_conflict_code))
         temp_list.append((conflict_hanzi, final_conflict_code))
 
-        new_target_code = abc_code + input(f"为 '{hanzi}' 输入新的形码: ")
+        new_target_code = abc_code + input(f"{hanzi}新形码: ")
         while any(e[1] == new_target_code for e in temp_list):
-            print(f"新编码 '{new_target_code}' 仍与其他条目冲突")
-            new_target_code = abc_code + input(f"为 '{hanzi}' 输入另一个新的形码: ")
+            print(f"{new_target_code}仍冲突")
+            new_target_code = abc_code + input(f"{hanzi}新形码: ")
         final_target_code, mod_entries = resolve_conflict(hanzi, new_target_code, temp_list, mod_entries)
         return final_target_code, mod_entries
 
@@ -204,7 +196,7 @@ def update_or_delete_by_code(old_code, new_code):
 
     if not chars_to_update:
         # 未找到旧编码，询问添加新汉字
-        char = input(f"未找到编码 '{old_code}'，请输入要添加的汉字: ").strip()
+        char = input(f"{old_code}暂空，输入要添加的汉字: ").strip()
         if not char:
             print("汉字不能为空")
             return "操作取消"
@@ -265,8 +257,8 @@ def single_add_entry():
     if not code:
         print("编码不能为空")
         return
-    if len(code) < 3:
-        print("编码至少需要3位")
+    if len(code) < 4:
+        print("编码至少需要4位")
         return
     result = add_entry(char, code)
     if result:
@@ -281,8 +273,8 @@ def modify_entry():
     if not old_code:
         print("编码不能为空")
         return
-    if len(old_code) < 3:
-        print("编码至少需要3位")
+    if len(old_code) < 4:
+        print("编码至少需要4位")
         return
     new_code = input("新编码（x删除）: ").strip()
     if not new_code:

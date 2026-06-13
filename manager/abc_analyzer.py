@@ -69,9 +69,9 @@ def generate_tables(zone_entries):
                 if e_code in two_dim_table[d_code]:
                     two_dim_table[d_code][e_code].append(hanzi)
                 else:
-                    print(f"警告：汉字 '{hanzi}' 的副码 '{e_code}' 不在有效范围内")
+                    print(f"{hanzi}副码{e_code}不在有效范围内")
             else:
-                print(f"警告：汉字 '{hanzi}' 的主码 '{d_code}' 不在有效范围内")
+                print(f"{hanzi}主码{d_code}不在有效范围内")
     return one_dim_table, two_dim_table, d_letters, e_letters
 
 
@@ -181,7 +181,7 @@ def interactive_mode():
         if user_input == '':
             break
         elif len(user_input) < 2 or not (user_input[0].isalpha() and user_input[-1].isdigit()):
-            print("错误：音码格式不正确")
+            print("音码格式错误")
             continue
         analyze_abc_zone(user_input)
         print()

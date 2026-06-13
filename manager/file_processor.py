@@ -162,6 +162,16 @@ def sort_file_by_second_part(input_file, output_file):
             merged_code_str = ' '.join(codes)
             merged_entries.append((word, merged_code_str))
 
+        # ---------- 清理：剔除单字编码（len<=1视为不合理） ----------
+        # 若某条目所有编码均被剔除，则整个条目删除
+        cleaned_entries = []
+        for word, code_str in merged_entries:
+            codes = code_str.split()
+            filtered_codes = [c for c in codes if len(c) > 1]
+            if filtered_codes:
+                cleaned_entries.append((word, ' '.join(filtered_codes)))
+        merged_entries = cleaned_entries
+
         # ---------- 排序 ----------
         merged_entries.sort(key=lambda x: x[1])
 

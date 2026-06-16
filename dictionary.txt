@@ -1686,7 +1686,7 @@
 杈 ia4m
 姹 ia4n
 岔 ia4u
-汊 ia4ui
+汊 ia4uk
 衩 ia4y
 诧 ia4yv
 妯 ib1n
@@ -6205,7 +6205,7 @@
 旸 yh2ry
 徉 yh2t
 扬 yh2u
-洋 yh2ud
+洋 yh2uh
 痒 yh3b
 养 yh3d
 氧 yh3q

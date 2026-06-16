@@ -106,8 +106,7 @@ def add_entry(char, code):
 def update_or_delete_by_code(old_code, new_code):
     """通过编码更新或删除条目，递归处理重码冲突"""
     entries = []
-    old_code_exists = False
-    old_code_hanzis = []
+    chars_to_update = []
 
     if os.path.exists(DATA_FILE):
         with open(DATA_FILE, 'r', encoding='utf-8') as f:
@@ -115,10 +114,9 @@ def update_or_delete_by_code(old_code, new_code):
     for entry in entries:
         parts = entry.strip().split(' ', 1)
         if len(parts) == 2 and parts[1] == old_code:
-            old_code_exists = True
-            old_code_hanzis.append(parts[0])
+            chars_to_update.append(parts[0])
 
-    if not old_code_exists:
+    if not chars_to_update:
         print(f"{old_code}不存在")
         char = input("添加汉字？: ").strip()
         if not char:
@@ -129,18 +127,21 @@ def update_or_delete_by_code(old_code, new_code):
         else:
             return "添加失败"
 
+    # 码表保证零重码，old_code 只对应一个汉字
+    hanzi = chars_to_update[0]
+
     if new_code == 'x':
+        # 删除该条目
         new_entries = []
         for entry in entries:
             parts = entry.strip().split(' ', 1)
             if len(parts) == 2 and parts[1] == old_code:
-                print(f"找到并删除: {entry.strip()}")
-            else:
-                new_entries.append(entry)
+                continue          # 跳过该行，完成删除
+            new_entries.append(entry)
         with open(DATA_FILE, 'w', encoding='utf-8') as f:
             f.writelines(new_entries)
         process_file(DATA_FILE, DATA_FILE)
-        return f"已删除编码 '{old_code}' 的所有条目"
+        return f"删除：{hanzi} {old_code}"
 
     if len(new_code) < 4:
         print(f"{new_code}过短，至少4位")
@@ -149,7 +150,7 @@ def update_or_delete_by_code(old_code, new_code):
     abc_code = new_code[:3]
     _, full_dict = load_dictionary()
 
-    # 递归解决重码的内部函数（与 add_entry 类似，但结合更新场景）
+    # 递归解决重码的内部函数
     def resolve_conflict(hanzi, target_code, check_list, mod_entries):
         conflict = None
         for h, c in check_list:
@@ -187,65 +188,31 @@ def update_or_delete_by_code(old_code, new_code):
             if c != old_code:
                 check_list.append((h, c))
 
-    # 收集所有使用 old_code 的汉字
-    chars_to_update = []
-    for entry in entries:
-        parts = entry.strip().split(' ', 1)
-        if len(parts) == 2 and parts[1] == old_code:
-            chars_to_update.append(parts[0])
+    # 获取该汉字的新编码并解决冲突
+    final_code, mod_entries = resolve_conflict(hanzi, new_code, check_list, [])
 
-    if not chars_to_update:
-        # 未找到旧编码，询问添加新汉字
-        char = input(f"{old_code}暂空，输入要添加的汉字: ").strip()
-        if not char:
-            print("汉字不能为空")
-            return "操作取消"
-        # 直接将新汉字加入，需解决重码
-        final_new_code, modified_entries = resolve_conflict(char, new_code, check_list, [])
-        # 添加新条目
-        new_entries = entries + [f"{char} {final_new_code}\n"]
-        # 应用修改（冲突条目替换）
-        for h, old_c, new_c in modified_entries:
-            for i, line in enumerate(new_entries):
-                parts = line.strip().split(' ', 1)
-                if len(parts) == 2 and parts[0] == h and parts[1] == old_c:
-                    new_entries[i] = f"{h} {new_c}\n"
-                    break
-        with open(DATA_FILE, 'w', encoding='utf-8') as f:
-            f.writelines(new_entries)
-        process_file(DATA_FILE, DATA_FILE)
-        return f"添加成功: {char} {final_new_code}"
+    # 构建最终条目列表
+    final_entries = entries[:]
+    # 替换当前汉字的编码
+    for i, line in enumerate(final_entries):
+        parts = line.strip().split(' ', 1)
+        if len(parts) == 2 and parts[0] == hanzi and parts[1] == old_code:
+            final_entries[i] = f"{hanzi} {final_code}\n"
+            break
 
-    # 更新所有使用 old_code 的汉字
-    modified_entries = []  # (汉字, 旧编码, 新编码)
-    final_entries = entries[:]  # 复制一份
-    for hanzi in chars_to_update:
-        # 为该汉字生成新编码，解决冲突
-        final_code, mods = resolve_conflict(hanzi, new_code, check_list, [])
-        modified_entries.extend(mods)
-        # 替换该汉字的旧编码行
-        for i, line in enumerate(final_entries):
-            parts = line.strip().split(' ', 1)
-            if len(parts) == 2 and parts[0] == hanzi and parts[1] == old_code:
-                final_entries[i] = f"{hanzi} {final_code}\n"
-                break
-        # 将本次新编码加入检查列表，避免同一批次内重复
-        check_list.append((hanzi, final_code))
-
-    # 应用所有冲突条目修改（替换其他汉字的编码）
-    for h, old_c, new_c in modified_entries:
+    # 应用冲突导致的连带修改
+    for h, old_c, new_c in mod_entries:
         for i, line in enumerate(final_entries):
             parts = line.strip().split(' ', 1)
             if len(parts) == 2 and parts[0] == h and parts[1] == old_c:
                 final_entries[i] = f"{h} {new_c}\n"
                 break
 
-    # 写入文件
     with open(DATA_FILE, 'w', encoding='utf-8') as f:
         f.writelines(final_entries)
     process_file(DATA_FILE, DATA_FILE)
-    return f"操作成功，已更新 {len(chars_to_update)} 个条目"
 
+    return f"修改：{hanzi} {old_code}→{final_code}"
 
 def single_add_entry():
     """添加单字"""

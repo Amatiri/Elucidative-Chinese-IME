@@ -206,6 +206,7 @@
 保 bk3r
 堡 bk3t
 饱 bk3u
+褓 bk3y
 刨 bk4d
 爆 bk4h
 豹 bk4q
@@ -424,6 +425,7 @@
 嘈 ck2k
 槽 ck2m
 曹 ck2r
+漕 ck2u
 草 ck3c
 艹 ck3c.b
 屮 ck3c.i
@@ -497,6 +499,7 @@
 嗒 da1k
 耷 da1o
 搭 da1u
+褡 da1y
 答 da1z
 瘩 da2b
 靼 da2g
@@ -537,6 +540,7 @@
 吊 dc4k
 掉 dc4u
 调 dc4y
+嘚 de1k
 锝 de2j
 得 de2t
 德 de2tx
@@ -1098,6 +1102,7 @@
 葛 ge2c
 骼 ge2g
 蛤 ge2i
+镉 ge2j
 嗝 ge2k
 鬲 ge2kj
 格 ge2m
@@ -2073,7 +2078,7 @@
 給 ji3s.
 挤 ji3u
 际 ji4b
-寄 ji4bq
+寄 ji4bd
 冀 ji4bt
 寂 ji4bu
 蓟 ji4c
@@ -2412,7 +2417,7 @@
 杰 jx2h
 颉 jx2i
 劫 jx2l
-劼 jx2lu
+劼 jx2lk
 睫 jx2m
 桔 jx2mk
 桀 jx2mt
@@ -3011,7 +3016,8 @@
 鲁 lu3y
 陆 lu4b
 赂 lu4bg
-辂 lu4c
+辘 lu4c
+辂 lu4cg
 蓼 lu4cy
 鹿 lu4g
 露 lu4i
@@ -3019,7 +3025,8 @@
 盝 lu4m
 禄 lu4s
 碌 lu4si
-渌 lu4u
+漉 lu4u
+渌 lu4ui
 路 lu4z
 逯 lu4zi
 俩 lw3r
@@ -3766,10 +3773,12 @@
 剽 pc1d
 飘 pc1f
 嘌 pc1k
+缥 pc1s
 漂 pc1u
 瓢 pc2g
 朴 pc2m
 殍 pc3d
+缥 pc3s
 漂 pc3u
 嘌 pc4k
 漂 pc4u
@@ -3995,6 +4004,7 @@
 羌 qd14
 戗 qd1g
 蜣 qd1i
+锵 qd1j
 呛 qd1k
 枪 qd1m
 戕 qd1p
@@ -4241,7 +4251,8 @@
 窃 qx4x
 惬 qx4xo
 怯 qx4xt
-趄 qx4z
+箧 qx4z
+趄 qx4zq
 轻 q;1c
 圊 q;1g
 蜻 q;1i
@@ -5574,6 +5585,7 @@
 握 wo4u
 渥 wo4us
 沃 wo4uy
+我 wo7g
 乌 wu17
 邬 wu1b
 巫 wu1g
@@ -6048,8 +6060,9 @@
 偕 xx2rj
 协 xx2s
 携 xx2u
+撷 xx2ui
 挟 xx2uj
-接 xx2un
+接 xx2uj.j
 谐 xx2y
 血 xx32
 写 xx3d
@@ -6618,7 +6631,7 @@
 燕 yj4h
 焰 yj4hd
 咽 yj4k
-唁 yj4kd
+唁 yj4kk
 验 yj4m
 彦 yj4mi
 晏 yj4r

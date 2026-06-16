@@ -6,7 +6,6 @@ class GuessCodingGame:
     def __init__(self):
         self.all_entries = []          # 原 self.dictionary
         self.entries_with_e = []       # 原 self.e_codes_dict
-        # 原 self.current_mode 已删除
 
     def load_dictionary(self):
         try:
@@ -52,21 +51,9 @@ class GuessCodingGame:
             return code[4]
         return None
 
-    # ---------- 重构：公共输入处理 ----------
     def _ask_for_code(self, word, code, extract_func, prompt_text, success_msg_func, on_fail=None):
-        """
-        公共方法：显示词条，循环接收用户输入，按 'a' 返回 False，猜对返回 True。
-        :param word: 当前词
-        :param code: 完整编码
-        :param extract_func: 函数，接收code，返回要猜的目标码
-        :param prompt_text: 输入提示文本，如 "猜主码: "
-        :param success_msg_func: 函数，接收目标码和完整code，返回正确时的提示字符串
-        :param on_fail: 可选函数，每次猜错时调用，参数 (attempt_count, target_code, d_code)
-        :return: bool，True表示猜对后继续下一个词；False表示用户按a返回上级菜单
-        """
         target = extract_func(code)
         if target is None:
-            # 防御：如果没有目标码，直接返回（实际不会发生，因为调用前已确保有）
             print("该词无此编码位，跳过。")
             return True
 
@@ -75,9 +62,10 @@ class GuessCodingGame:
         attempts = 0
         while True:
             user_input = input(prompt_text).strip()
-            if user_input.lower() == 'a':
+            # 修改点：输入 'a' 或 空字符串 均退出
+            if user_input.lower() == 'a' or user_input == '':
                 return False
-            if not user_input or len(user_input) != 1:
+            if len(user_input) != 1:
                 print("请输入一个字符")
                 continue
             attempts += 1
@@ -90,7 +78,7 @@ class GuessCodingGame:
                     on_fail(attempts, target, self.get_d_code(code) if hasattr(self, 'get_d_code') else None)
 
     def guess_d_mode(self):
-        print("猜主码, a返回")
+        print("猜主码")
         while True:
             item = self.get_random_word_with_d()
             if not item:
@@ -108,7 +96,7 @@ class GuessCodingGame:
                 return
 
     def guess_e_mode(self):
-        print("猜E码, a返回")
+        print("猜副码")
         while True:
             item = self.get_random_word_with_e()
             if not item:

@@ -3,6 +3,19 @@ from config import CIYU_FILE
 from manager.code_parser import parse_code, generate_all_combinations, generate_default_codes_for_word, check_code_exists
 from manager.dictionary import query_chars
 
+def get_existing_word_info(word):
+    """获取词语的原编码信息，返回 (是否存在, 原编码字符串)"""
+    if not os.path.exists(CIYU_FILE):
+        return False, ""
+    with open(CIYU_FILE, 'r', encoding='utf-8') as f:
+        for line in f:
+            if line.startswith(word + ' '):
+                parts = line.strip().split()
+                if len(parts) >= 2:
+                    return True, " ".join(parts[1:])
+                else:
+                    return True, ""
+    return False, ""
 
 def process_two_char_word(word):
     """处理双字词语的编码生成"""
@@ -112,23 +125,29 @@ def process_multi_char_word(word):
 
 
 def add_to_ciyu(word, codes, overwrite=False):
-    """添加词语到 ciyu.txt"""
+    """添加词语到 ciyu.txt，利用 get_existing_word_info 判断存在性"""
     if not word or not codes:
         return False
+
+    exists, old_codes = get_existing_word_info(word)
+    if exists and not overwrite:
+        print(f"词语 '{word}' 已存在（原编码：{old_codes}），保留原有编码。若要覆盖，请使用覆盖模式。")
+        return False
+
+    # 读取所有行，过滤掉该词语的旧记录
     lines = []
     if os.path.exists(CIYU_FILE):
-        with open(CIYU_FILE, 'r', encoding="utf-8") as f:
+        with open(CIYU_FILE, 'r', encoding='utf-8') as f:
             lines = f.readlines()
-    new_lines = [line for line in lines if not line.startswith(word + " ")]
-    existing = (len(new_lines) != len(lines))
-    if existing and not overwrite:
-        print(f"词语 '{word}' 已存在，原有编码将被保留。若要覆盖，请使用覆盖模式。")
-        return False
+
+    new_lines = [line for line in lines if not line.startswith(word + ' ')]
     entry = word + " " + " ".join(codes) + "\n"
     new_lines.append(entry)
-    with open(CIYU_FILE, 'w', encoding="utf-8") as f:
+
+    with open(CIYU_FILE, 'w', encoding='utf-8') as f:
         f.writelines(new_lines)
-    if existing:
+
+    if exists:
         print(f"已覆盖原编码")
     return True
 
@@ -192,6 +211,11 @@ def ciyumain():
         words = line.split()
         for word in words:
             print(f"========{word}========")
+            # 检查词语是否已存在并显示原编码
+            exists, old_codes = get_existing_word_info(word)
+            if exists:
+                print(f"该编码已存在：{old_codes}")
+
             if len(word) == 2:
                 codes = process_two_char_word(word)
             elif len(word) == 1:
@@ -199,11 +223,14 @@ def ciyumain():
                 codes = general_symbol.split()
             else:
                 codes = process_multi_char_word(word)
+
             if not word or not codes:
                 print(f"跳过 {word}")
                 continue
+
             codes, proceed = resolve_code_conflicts(word, codes)
             if not proceed or not codes:
                 continue
-            print(f"{word}{' '.join(codes)}")
+
+            print(f"{word} {' '.join(codes)}")
             add_to_ciyu(word, codes, overwrite=True)

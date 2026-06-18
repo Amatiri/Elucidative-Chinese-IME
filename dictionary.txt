@@ -2046,7 +2046,6 @@
 笄 ji1zk
 箕 ji1zq
 及 ji24
-亟 ji29
 疾 ji2b
 辑 ji2c
 蒺 ji2cb
@@ -2055,6 +2054,7 @@
 戢 ji2g
 即 ji2j
 吉 ji2k
+亟 ji2kl
 极 ji2m
 棘 ji2mc
 楫 ji2mk
@@ -2090,7 +2090,7 @@
 霁 ji4i
 既 ji4j
 觊 ji4jq
-骥 ji4mb
+骥 ji4m
 妓 ji4n
 髻 ji4p
 伎 ji4r

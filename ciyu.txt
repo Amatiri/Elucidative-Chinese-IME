@@ -1,4 +1,5 @@
 病毒 b;du
+并非 b;fz
 冰箱 b;xd
 丶 bad
 乛 bag
@@ -53,6 +54,7 @@
 卩 bjs
 冂 bjt
 廴 bjz
+报错 bkco
 保存 bkcp
 报告 bkgk
 保护 bkhu
@@ -170,6 +172,8 @@
 对不起 dvbuq
 对的 dvd
 对话 dvhw
+对齐 dvqi
+堆砌 dvqi4
 】 dvy
 对应 dvy;4
 对于 dvyu
@@ -239,6 +243,8 @@
 κ gka
 Κ gkac
 高考 gkkk
+告诉 gksu
+高速 gksu4
 高中 gkvs
 告终 gkvs1
 高效 gkxc
@@ -284,6 +290,16 @@
 功能 gsng
 公司 gssi
 共同 gsts
+公式 gsui
+工时 gsui2
+共时 gsui2r
+共识 gsui2y
+公使 gsui3
+宫室 gsui4
+公室 gsui4b
+公事 gsui4k
+攻势 gsui4l
+公示 gsui4o
 共享 gsxd
 工作 gsz
 τ gta
@@ -490,6 +506,9 @@
 了结 lcjx2
 良莠不齐 ldybbuq lybq
 厉害 lihl
+例句 liju
+例举 liju3
+理据 liju4
 理解 lijx
 离开 likl
 理论 lilp
@@ -514,6 +533,7 @@
 类型 lzx;
 名称 m;ig
 明令禁止 m;l;jnv mljv
+明确 m;qt
 明天 m;tm
 明知故问 m;viguw mvgw
 名字 m;zi
@@ -589,6 +609,9 @@
 气势 qiui4l
 启示 qiui4o
 其中 qivs
+歧义 qiyi
+起义 qiyi4
+奇异 qiyi4c
 黔驴技穷 qljq qmlyjiq
 钱库 qmku
 前面 qmmm
@@ -748,6 +771,7 @@
 つ rtu
 ツ rtuk
 如果 rugo
+如何 ruhe
 わ rwa
 ワ rwak
 を rwo
@@ -845,6 +869,8 @@
 射击 ueji1
 涉及 ueji2
 社稷 ueji4
+设为 uewz
+蛇尾 uewz3
 身份证 ufffv
 什么 ufm
 神秘 ufmi
@@ -984,7 +1010,37 @@
 ⿼ vl.y
 ⿷ vl.z
 着重 vovs
+ā vpa1
+á vpa2
+ǎ vpa3
+à vpa4
+ē vpe1
+é vpe2
+ě vpe3
+è vpe4
+ī vpi1
+í vpi2
+ǐ vpi3
+ì vpi4
 屯蹶否塞 vpjtpis vjps
+ vpm2
+ń vpn2
+ň vpn3
+ vpn4
+ō vpo1
+ó vpo2
+ǒ vpo3
+ò vpo4
+ū vpu1
+ú vpu2
+ǔ vpu3
+ù vpu4
+ê vpx0
+ü vpy0
+ǖ vpy1
+ǘ vpy2
+ǚ vpy3
+ǜ vpy4
 这期神了 vqul veqiufl
 ⿰ vr.
 转化 vrhw
@@ -998,6 +1054,48 @@
 注意 vuyi
 ⿿ vvr.
 ⿻ vx.
+˙ vyd0
+ˉ vyd1
+ˊ vyd2
+ˇ vyd3
+ˋ vyd4
+ㄅ vyib
+ㄘ vyic
+ㄉ vyid
+ㄈ vyif
+ㄍ vyig
+ㄏ vyih
+ㄔ vyii
+ㄐ vyij
+ㄎ vyik
+ㄌ vyil
+ㄇ vyim
+ㄋ vyin
+ㄆ vyip
+ㄑ vyiq
+ㄖ vyir
+ㄙ vyis
+ㄊ vyit
+ㄕ vyiu
+ㄓ vyiv
+ㄒ vyix
+ㄗ vyiz
+ㄚ vyya
+ㄡ vyyb
+ㄜ vyye
+ㄣ vyyf
+ㄥ vyyg
+ㄤ vyyh
+ㄧ vyyi
+ㄢ vyyj
+ㄠ vyyk
+ㄞ vyyl
+ㄛ vyyo
+ㄦ vyyr
+ㄨ vyyu
+ㄝ vyyx
+ㄩ vyyy
+ㄟ vyyz
 ⿾ vzy.
 文本 wfbf
 文档 wfdh
@@ -1111,6 +1209,7 @@
 一次 yici
 一定 yid;
 意大利 yidal
+一旦 yidj
 一点 yidm
 已经 yij yij;
 意境 yij;4

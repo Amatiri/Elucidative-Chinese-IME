@@ -147,26 +147,26 @@ def analyze_abc_zone(abc_code):
         print(f"独体率：{single_count}/{total_count} {single_ratio:.1f}%")
     else:
         print("独体率：0/0 0.0%")
-    d_code_stats = {}
+    combined_d_stats = {}
     for hanzi, info in zone_entries.items():
         d_code = info['d_code']
-        d_code_stats[d_code] = d_code_stats.get(d_code, 0) + 1
-    print(f"主码分布：")
-    if total_count > 0:
-        for d_code, count in sorted(d_code_stats.items()):
-            percentage = count / total_count * 100
-            print(f"  D={d_code}: {count}字 ({percentage:.1f}%)")
-    used_d_codes = set(d_code_stats.keys())
-    print(f"使用的主码数量：{len(used_d_codes)}")
+        if not d_code.isdigit():
+            combined_d_stats[d_code] = combined_d_stats.get(d_code, 0) + 1
+    print(f"合体字主码分布：")
+    for d_code, count in sorted(combined_d_stats.items()):
+        print(f"  {d_code}: {count}")
+    print(f"合体字使用的主码数量：{len(combined_d_stats)}")
     e_not_a_count = 0
     for hanzi, info in zone_entries.items():
         if info['e_code'] != 'a':
             e_not_a_count += 1
-    if total_count > 0:
-        e_rate = e_not_a_count / total_count * 100
+    if combined_count > 0:
+        e_rate = e_not_a_count / combined_count * 100
         print(f"副码率：{e_rate:.1f}%")
     else:
         print(f"副码率：0.0%")
+
+
 
 
 def interactive_mode():

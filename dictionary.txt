@@ -803,6 +803,7 @@
 谍 dx2y
 迭 dx2z
 蹀 dx2zm
+嘚 dz1k
 得 dz3t
 丁 d;11
 疔 d;1b
@@ -2846,6 +2847,7 @@
 榄 lj3m
 缆 lj3s
 揽 lj3u
+罱 lj3w
 懒 lj3x
 烂 lj4h
 滥 lj4u
@@ -3198,6 +3200,7 @@
 幂 mi4d
 秘 mi4h
 蜜 mi4i
+嘧 mi4k
 密 mi4u
 泌 mi4ub
 汨 mi4ur
@@ -3210,6 +3213,7 @@
 谩 mj2y
 满 mj3u
 蔓 mj4c
+幔 mj4j
 曼 mj4r
 墁 mj4t
 漫 mj4u
@@ -3828,6 +3832,7 @@
 疲 pi2b
 郫 pi2bb
 陂 pi2bk
+罴 pi2h
 蚍 pi2i
 蜱 pi2ib
 铍 pi2j
@@ -4374,6 +4379,7 @@
 馊 sb1uk
 艘 sb1v
 叟 sb3k
+嗾 sb3kz
 嗽 sb4k
 色 se4d
 铯 se4j
@@ -5250,6 +5256,7 @@
 杖 vh4m
 仗 vh4r
 胀 vh4ri
+嶂 vh4u
 之 vi12
 氏 vi14
 芝 vi1c

@@ -10,26 +10,70 @@ import win32api
 from config import DATA_FILE, CODE_CHARS, SURROUND_CHARS, SELECTION_SYMBOLS, SYMBOL_TO_INDEX, CIYU_FILE
 from manager.dictionary_frontend import ensure_data_file, query_phrase, get_entry_count, query_by_prefix, process_input, split_sequence, query_single_char, query_multi_chars
 
-# ==================== 全局状态变量 ====================
-current_page = 0                           # 当前候选页码（0起始）
-current_query_type = ""                     # 当前查询类型："single"单字 / "multi_part"多字
-current_phrase = ""                         # 当前匹配到的短语，格式如"(词语)"
-current_part_index = -1                      # 多字选择时当前部件索引
-current_split_parts = []                     # 多字输入时拆分后的部件列表
-in_part_selection = False                    # 是否处于多字部件选择模式
-last_input_text = ""                         # 上一次输入的文本，用于检测变化重置状态
-selection_updating = False                   # 标记：是否正在由选择操作更新输入框（用于保护 resolved_chars）
-resolved_chars = {}                          # {part_index: "汉字"} 多字模式下已选中的部件
-original_split_count = 0                     # 多字模式下原始拆分的部件总数
-auto_commit_enabled = "1"                    # 自动上字开关（"1"启用）
-phrase_priority = "1"                        # 优先上词开关（"1"启用）
-external_mode = False                        # 外输模式开关（True表示外输）
-window = None                               # 主窗口对象
-window_closing = False   # 窗口是否正在关闭
-# 外输模式下的辅助变量
-key_press_counter = 0           # 按键计数防抖
-code_char_before_cursor = 0     # 光标前的编码字符数
-code_char_after_cursor = 0      # 光标后的编码字符数
+# ==================== 上下文对象：替代全部全局变量 ====================
+
+class InputContext:
+    """封装输入法前端的所有可变状态，替代散落的 18 个全局变量。"""
+
+    def __init__(self):
+        # ── 输入流程状态 ──
+        self.current_page = 0                  # 当前候选页码（0起始）
+        self.query_type = ""                   # "single" | "multi_part"
+        self.current_phrase = ""               # 当前匹配到的短语
+        self.current_part_index = -1           # 多字选择时当前部件索引
+        self.split_parts = []                  # 多字输入时拆分后的部件列表
+        self.in_part_selection = False         # 是否处于多字部件选择模式
+        self.last_input_text = ""              # 上一次输入文本，用于检测变化
+        self.selection_updating = False        # 是否正在由选择操作更新输入框（保护 resolved_chars）
+        self.resolved_chars = {}               # {part_index: "汉字"} 多字模式下已选中的部件
+        self.original_split_count = 0          # 多字模式下原始拆分的部件总数
+
+        # ── 设置开关 ──
+        self.auto_commit_enabled = "1"         # 自动上字开关（"1"启用）
+        self.phrase_priority = "1"             # 优先上词开关（"1"启用）
+
+        # ── 外输模式 ──
+        self.external_mode = False             # 外输模式开关
+        self.window_closing = False            # 窗口是否正在关闭
+        self.key_press_counter = 0             # 按键计数防抖
+        self.code_char_before_cursor = 0       # 光标前的编码字符数
+        self.code_char_after_cursor = 0        # 光标后的编码字符数
+
+        # ── 主窗口引用（创建后赋值） ──
+        self.window = None
+
+    # ── 集中操作 ──
+
+    def reset(self):
+        """集中重置输入相关状态（不清除外输 / 设置开关 / 窗口引用）。"""
+        self.current_page = 0
+        self.current_part_index = -1
+        self.query_type = ""
+        self.split_parts = []
+        self.in_part_selection = False
+        self.current_phrase = ""
+        self.resolved_chars = {}
+        self.original_split_count = 0
+
+    @property
+    def resolved_count(self) -> int:
+        return len(self.resolved_chars)
+
+    def is_all_resolved(self) -> bool:
+        """是否所有多字部件都已解析完毕。"""
+        return len(self.resolved_chars) == self.original_split_count
+
+    # ── 外输模式便捷方法 ──
+
+    def reset_cursor_counters(self):
+        self.code_char_before_cursor = 0
+        self.code_char_after_cursor = 0
+
+    def has_code_chars(self) -> bool:
+        return self.code_char_before_cursor + self.code_char_after_cursor != 0
+
+
+ctx = InputContext()
 
 # ==================== 输入处理核心函数 ====================
 
@@ -63,7 +107,7 @@ def replace_content(original, processed, do_paste=True, reset_entry=True):
         suffix = original[last_letter_pos:]
         output = prefix + processed + suffix
     output = output.strip()
-    if do_paste and external_mode:
+    if do_paste and ctx.external_mode:
         paste_text(output, reset_entry)
     else:
         pyperclip.copy(output)
@@ -99,57 +143,55 @@ def navigate_parts(direction):
     跳过已解析（resolved_chars 中已有）的部件，只在未解析部件之间跳转。
     direction: "next" 或 "prev"
     """
-    global current_part_index, current_page, in_part_selection, current_phrase, resolved_chars
-    if current_query_type != "multi_part" or not current_split_parts:
+    if ctx.query_type != "multi_part" or not ctx.split_parts:
         return
-    if not in_part_selection:
+    if not ctx.in_part_selection:
         if direction == "next":
-            in_part_selection = True
-            current_phrase = ""
+            ctx.in_part_selection = True
+            ctx.current_phrase = ""
             # 从第一个未解部件开始
-            for idx in range(len(current_split_parts)):
-                if idx not in resolved_chars:
-                    current_part_index = idx
+            for idx in range(len(ctx.split_parts)):
+                if idx not in ctx.resolved_chars:
+                    ctx.current_part_index = idx
                     break
     else:
-        current_phrase = ""
-        n = len(current_split_parts)
+        ctx.current_phrase = ""
+        n = len(ctx.split_parts)
         if direction == "next":
             # 找下一个未解部件，循环
             for offset in range(1, n + 1):
-                candidate = (current_part_index + offset) % n
-                if candidate not in resolved_chars:
-                    current_part_index = candidate
+                candidate = (ctx.current_part_index + offset) % n
+                if candidate not in ctx.resolved_chars:
+                    ctx.current_part_index = candidate
                     break
         elif direction == "prev":
             for offset in range(1, n + 1):
-                candidate = (current_part_index - offset) % n
-                if candidate not in resolved_chars:
-                    current_part_index = candidate
+                candidate = (ctx.current_part_index - offset) % n
+                if candidate not in ctx.resolved_chars:
+                    ctx.current_part_index = candidate
                     break
-    current_page = 0
+    ctx.current_page = 0
     update_display()
 
 def navigate_pages(direction):
     """
     翻页：direction "down" 下一页， "up" 上一页。
     """
-    global current_page
     if direction == "down":
         input_text = real_time_var.get()
         processed = process_input(input_text)
         split_text = split_sequence(processed)
-        if current_query_type == "single":
-            next_page_candidates = query_single_char(split_text, (current_page + 1) * 5)
+        if ctx.query_type == "single":
+            next_page_candidates = query_single_char(split_text, (ctx.current_page + 1) * 5)
             if next_page_candidates:
-                current_page += 1
-        elif current_query_type == "multi_part" and current_split_parts and current_part_index >= 0:
-            part = current_split_parts[current_part_index]
-            next_page_candidates = query_single_char(part, (current_page + 1) * 5)
+                ctx.current_page += 1
+        elif ctx.query_type == "multi_part" and ctx.split_parts and ctx.current_part_index >= 0:
+            part = ctx.split_parts[ctx.current_part_index]
+            next_page_candidates = query_single_char(part, (ctx.current_page + 1) * 5)
             if next_page_candidates:
-                current_page += 1
-    elif direction == "up" and current_page > 0:
-        current_page -= 1
+                ctx.current_page += 1
+    elif direction == "up" and ctx.current_page > 0:
+        ctx.current_page -= 1
     update_display()
 
 def update_display():
@@ -159,24 +201,22 @@ def update_display():
       - current_part_label: 当前部件的候选列表
       - page_label: 页码信息（含已选/总数）
     """
-    global current_part_index, current_page, current_query_type, current_split_parts, in_part_selection, current_phrase
-    global resolved_chars, original_split_count
     input_text = real_time_var.get()
     processed = process_input(input_text)
     split_text = split_sequence(processed)
-    current_phrase = query_phrase(processed)
+    ctx.current_phrase = query_phrase(processed)
 
     # 清空标签，准备重新显示
     first_chars_label.config(text='')
     current_part_label.config(text='')
     page_label.config(text='')
 
-    if current_query_type == "multi_part":
+    if ctx.query_type == "multi_part":
         char_codes = split_text.split("'")
         preview_chars = []
         for idx, code in enumerate(char_codes):
-            if idx in resolved_chars:
-                preview_chars.append(resolved_chars[idx])
+            if idx in ctx.resolved_chars:
+                preview_chars.append(ctx.resolved_chars[idx])
             else:
                 candidates = query_by_prefix(code)
                 if candidates:
@@ -184,47 +224,46 @@ def update_display():
         first_chars = query_multi_chars(split_text)
 
         if first_chars:
-            if current_phrase and not in_part_selection:
+            if ctx.current_phrase and not ctx.in_part_selection:
                 # 如果短语存在且不在部件选择模式，显示预览串和短语
-                if first_chars == current_phrase[1:-1]:
+                if first_chars == ctx.current_phrase[1:-1]:
                     first_chars_label.config(text=first_chars)
-                    current_phrase = ""
+                    ctx.current_phrase = ""
                 else:
-                    first_chars_label.config(text=first_chars + "   " + current_phrase)
+                    first_chars_label.config(text=first_chars + "   " + ctx.current_phrase)
             else:
                 first_chars_label.config(text=first_chars)
-        elif current_phrase:
-            first_chars_label.config(text=current_phrase)
+        elif ctx.current_phrase:
+            first_chars_label.config(text=ctx.current_phrase)
 
-        if first_chars and in_part_selection and current_part_index >= 0 and current_part_index < len(current_split_parts):
-            part = current_split_parts[current_part_index]
-            candidates = query_single_char(part, current_page * 5)
+        if first_chars and ctx.in_part_selection and ctx.current_part_index >= 0 and ctx.current_part_index < len(ctx.split_parts):
+            part = ctx.split_parts[ctx.current_part_index]
+            candidates = query_single_char(part, ctx.current_page * 5)
             if candidates:
-                current_phrase = ""
+                ctx.current_phrase = ""
                 current_part_label.config(text=candidates)
-                selected_count = len(resolved_chars)
-                total_count = original_split_count if original_split_count > 0 else len(current_split_parts)
-                page_label.config(text=f"字 {selected_count + 1}/{total_count} 页 {current_page + 1}")
+                selected_count = len(ctx.resolved_chars)
+                total_count = ctx.original_split_count if ctx.original_split_count > 0 else len(ctx.split_parts)
+                page_label.config(text=f"字 {selected_count + 1}/{total_count} 页 {ctx.current_page + 1}")
 
-    elif current_query_type == "single":
-        candidates = query_single_char(split_text, current_page * 5)
+    elif ctx.query_type == "single":
+        candidates = query_single_char(split_text, ctx.current_page * 5)
         if candidates:
             current_part_label.config(text=candidates)
-            page_label.config(text=f"页 {current_page + 1}")
+            page_label.config(text=f"页 {ctx.current_page + 1}")
 
 def handle_special_keys(input_text):
     """
     处理输入中的 '=' 和 '-' 键，用于多字部件导航。
     返回 (新文本, 新光标位置, 是否已处理) 三元组。
     """
-    global current_phrase
     if '=' in input_text or '-' in input_text:
         cursor_pos = entry_box.index(tk.INSERT)
-        if current_query_type == "multi_part" and current_split_parts:
+        if ctx.query_type == "multi_part" and ctx.split_parts:
             equals_pos = input_text.find('=')
             minus_pos = input_text.find('-')
             if equals_pos != -1:
-                current_phrase = ""
+                ctx.current_phrase = ""
                 navigate_parts("next")
                 new_text = input_text[:equals_pos] + input_text[equals_pos+1:]
                 if cursor_pos > equals_pos:
@@ -233,7 +272,7 @@ def handle_special_keys(input_text):
                     new_cursor_pos = cursor_pos
                 return new_text, new_cursor_pos, True
             if minus_pos != -1:
-                current_phrase = ""
+                ctx.current_phrase = ""
                 navigate_parts("prev")
                 new_text = input_text[:minus_pos] + input_text[minus_pos+1:]
                 if cursor_pos > minus_pos:
@@ -251,15 +290,15 @@ def get_current_candidates():
     input_text = real_time_var.get()
     processed = process_input(input_text)
     split_text = split_sequence(processed)
-    if current_query_type == "single":
-        candidates = query_single_char(split_text, current_page * 5)
+    if ctx.query_type == "single":
+        candidates = query_single_char(split_text, ctx.current_page * 5)
         if candidates:
             return candidates.split("/")
-    elif current_query_type == "multi_part" and current_split_parts and current_part_index >= 0:
-        part = current_split_parts[current_part_index]
-        candidates = query_single_char(part, current_page * 5)
+    elif ctx.query_type == "multi_part" and ctx.split_parts and ctx.current_part_index >= 0:
+        part = ctx.split_parts[ctx.current_part_index]
+        candidates = query_single_char(part, ctx.current_page * 5)
         if candidates:
-            current_phrase = ""
+            ctx.current_phrase = ""
             return candidates.split("/")
     return []
 
@@ -271,11 +310,9 @@ def handle_selection_keys(event):
     多字模式新机制：选择字符时补全剩余编码，而非替换为汉字。
     直到所有部件都解析完毕（unresolved == 0），才拼接最终汉字串上屏。
     """
-    global current_split_parts, current_phrase, resolved_chars, original_split_count
-    global current_part_index, selection_updating, in_part_selection
     # 短语直接上屏：当前有短语且按下 !
-    if event.char == "!" and current_phrase:
-        phrase_content = current_phrase[1:-1]
+    if event.char == "!" and ctx.current_phrase:
+        phrase_content = ctx.current_phrase[1:-1]
         input_text = real_time_var.get()
         replace_content(input_text, phrase_content, do_paste=True, reset_entry=True)
         reset_input_state()
@@ -291,50 +328,40 @@ def handle_selection_keys(event):
             selected_char = candidate_str[0]  # 候选的第一个汉字
             remaining = candidate_str[1:]       # 剩余编码
             input_text = real_time_var.get()
-            if current_query_type == "single":
+            if ctx.query_type == "single":
                 replace_content(input_text, selected_char, do_paste=True, reset_entry=True)
                 reset_input_state()
-            elif current_query_type == "multi_part" and current_split_parts and current_part_index >= 0:
-                i = current_part_index
-                parts = list(current_split_parts)  # 当前所有编码部件
+            elif ctx.query_type == "multi_part" and ctx.split_parts and ctx.current_part_index >= 0:
+                i = ctx.current_part_index
+                parts = list(ctx.split_parts)  # 当前所有编码部件
                 if i >= len(parts):
                     return "break"
-                resolved_chars[i] = selected_char
-                if original_split_count == 0:
-                    original_split_count = len(parts)
+                ctx.resolved_chars[i] = selected_char
+                if ctx.original_split_count == 0:
+                    ctx.original_split_count = len(parts)
                 prefix = parts[i]
                 parts[i] = prefix + remaining
                 new_code_sequence = "'".join(parts)
-                unresolved = original_split_count - len(resolved_chars)
-                if unresolved == 0:
+                if ctx.is_all_resolved():
                     # 末字：拼接最终汉字串上屏
                     final_text = "".join(
-                        resolved_chars[j] for j in sorted(resolved_chars.keys())
+                        ctx.resolved_chars[j] for j in sorted(ctx.resolved_chars.keys())
                     )
-                    selection_updating = True
+                    ctx.selection_updating = True
                     replace_content(input_text, final_text, do_paste=True, reset_entry=True)
-                    selection_updating = False
+                    ctx.selection_updating = False
                     reset_input_state()
                 else:
                     # 非末字：更新输入框编码，跳到下一个未解部件
-                    selection_updating = True
+                    ctx.selection_updating = True
                     replace_content(input_text, new_code_sequence, do_paste=False, reset_entry=False)
-                    selection_updating = False
+                    ctx.selection_updating = False
                     navigate_parts("next")
         return "break"
 
 def reset_input_state():
-    """重置所有输入相关的状态变量，并清空显示标签。"""
-    global current_page, current_part_index, current_query_type, current_split_parts, in_part_selection, current_phrase
-    global resolved_chars, original_split_count
-    current_page = 0
-    current_part_index = -1
-    current_query_type = ""
-    current_split_parts = []
-    in_part_selection = False
-    current_phrase = ""
-    resolved_chars = {}
-    original_split_count = 0
+    """重置所有输入相关的状态，并清空显示标签。"""
+    ctx.reset()
     first_chars_label.config(text='')
     current_part_label.config(text='')
     page_label.config(text='')
@@ -344,32 +371,29 @@ def main_function(*args):
     输入框内容变化时的回调函数（由 real_time_var 的 trace 触发）。
     处理输入解析、自动上字、空格上屏等核心逻辑。
     """
-    global current_page, current_part_index, current_query_type, current_split_parts, last_input_text
-    global in_part_selection, current_phrase, auto_commit_enabled
-    global selection_updating, resolved_chars, original_split_count
     input_text = real_time_var.get()
 
     # 处理特殊键（= 和 -）
     processed_text, new_cursor_pos, key_processed = handle_special_keys(input_text)
     if key_processed:
-        selection_updating = True
+        ctx.selection_updating = True
         entry_box.delete(0, tk.END)
         entry_box.insert(0, processed_text)
-        selection_updating = False
+        ctx.selection_updating = False
         if new_cursor_pos is not None:
             entry_box.icursor(new_cursor_pos)
         return
 
-    if input_text.strip() != last_input_text:
-        current_page = 0
-        current_part_index = -1
-        current_query_type = ""
-        current_split_parts = []
-        in_part_selection = False
-        current_phrase = ""
-        if not selection_updating:
-            resolved_chars = {}
-            original_split_count = 0
+    if input_text.strip() != ctx.last_input_text:
+        ctx.current_page = 0
+        ctx.current_part_index = -1
+        ctx.query_type = ""
+        ctx.split_parts = []
+        ctx.in_part_selection = False
+        ctx.current_phrase = ""
+        if not ctx.selection_updating:
+            ctx.resolved_chars = {}
+            ctx.original_split_count = 0
 
     processed = process_input(input_text)
     split_text = split_sequence(processed)
@@ -380,10 +404,10 @@ def main_function(*args):
     if split_text != "" and ' ' not in split_text:
         if "'" not in split_text:
             # 单字模式
-            current_query_type = "single"
-            candidates = query_single_char(split_text, current_page * 5)
+            ctx.query_type = "single"
+            candidates = query_single_char(split_text, ctx.current_page * 5)
             # 自动上字逻辑
-            if candidates and auto_commit_enabled == "1" and len(processed) > 3:
+            if candidates and ctx.auto_commit_enabled == "1" and len(processed) > 3:
                 candidates_list = candidates.split("/")
                 non_dot_candidates = []
                 for candidate in candidates_list:
@@ -403,22 +427,22 @@ def main_function(*args):
                     output_text = candidates[0]
         else:
             # 多字模式
-            current_query_type = "multi_part"
-            current_split_parts = split_text.split("'")
+            ctx.query_type = "multi_part"
+            ctx.split_parts = split_text.split("'")
             first_chars = query_multi_chars(split_text)
             update_display()
             output_text = first_chars
 
     if key_processed:
-        current_phrase = ""
+        ctx.current_phrase = ""
 
     # 处理空格上屏
     if " " in input_text:
-        if phrase_priority == "1" and current_query_type == "multi_part" and current_phrase:
-            output_text = current_phrase[1:-1]
+        if ctx.phrase_priority == "1" and ctx.query_type == "multi_part" and ctx.current_phrase:
+            output_text = ctx.current_phrase[1:-1]
         elif output_text == "":
-            if current_phrase:
-                output_text = current_phrase[1:-1]
+            if ctx.current_phrase:
+                output_text = ctx.current_phrase[1:-1]
             else:
                 output_text = processed
                 
@@ -427,7 +451,7 @@ def main_function(*args):
         return
 
     clear_display_if_no_code(input_text)
-    last_input_text = input_text
+    ctx.last_input_text = input_text
 
 def on_key_press(event):
     """处理输入框内的按键事件（上下翻页和候选选择符号）。"""
@@ -443,48 +467,45 @@ def on_key_press(event):
 # ==================== 全局输入监听（外输模式） ====================
 
 def toggle():
-    global external_mode, code_char_before_cursor, code_char_after_cursor
-    if external_mode:
-        external_mode = False
-        window.title("解书音形-内输")
-        window.geometry(f"{win_w}x{win_h_norm}+{init_x}+{init_y}")
+    if ctx.external_mode:
+        ctx.external_mode = False
+        ctx.window.title("解书音形-内输")
+        ctx.window.geometry(f"{win_w}x{win_h_norm}+{init_x}+{init_y}")
     else:
-        external_mode = True
-        window.title("解书音形-外输")
+        ctx.external_mode = True
+        ctx.window.title("解书音形-外输")
         x, y = win32api.GetCursorPos()
         x -= int(100 * scale)
         y -= int(10 * scale)
-        window.geometry(f"{win_w}x{win_h_norm}+{x}+{y}")
+        ctx.window.geometry(f"{win_w}x{win_h_norm}+{x}+{y}")
     entry_box.delete(0, tk.END)
     entry_count_var.set(f"{get_entry_count()}")
     keyboard.press_and_release("shift")
     # 重置计数器
-    code_char_before_cursor = 0
-    code_char_after_cursor = 0
+    ctx.reset_cursor_counters()
+
 def initial(event):
     """
     全局键盘监听回调（外输模式时有效）。
     捕获按键并模拟输入到输入框，同时处理功能键。
     """
-    global key_press_counter, code_char_before_cursor, code_char_after_cursor, external_mode, window_closing
     if keyboard.is_pressed('ctrl') or keyboard.is_pressed('alt') or keyboard.is_pressed('win'):
         return
-    if not external_mode or window_closing:
-        key_press_counter = 0
-        code_char_before_cursor = 0
-        code_char_after_cursor = 0
+    if not ctx.external_mode or ctx.window_closing:
+        ctx.key_press_counter = 0
+        ctx.reset_cursor_counters()
         return
 
-    key_press_counter += 1
-    if key_press_counter == 2:
-        key_press_counter = 1
+    ctx.key_press_counter += 1
+    if ctx.key_press_counter == 2:
+        ctx.key_press_counter = 1
         # 处理字母数字等编码键
-        if event.name in "qwertyuiopasdfghjklzcxvbnm" or (event.name in ";.'1234567890" and code_char_before_cursor + code_char_after_cursor != 0):
+        if event.name in "qwertyuiopasdfghjklzcxvbnm" or (event.name in ";.'1234567890" and ctx.has_code_chars()):
             # 在光标位置插入字符，因此只增加光标前的编码计数
-            code_char_before_cursor += 1
+            ctx.code_char_before_cursor += 1
             entry_box.insert(tk.INSERT, event.name)
         # 处理功能键
-        elif event.name in ["-", "=", "!", "@", "#", "$", "%", "space", "up", "down", "left", "right", "backspace","enter"] and code_char_before_cursor + code_char_after_cursor != 0:
+        elif event.name in ["-", "=", "!", "@", "#", "$", "%", "space", "up", "down", "left", "right", "backspace","enter"] and ctx.has_code_chars():
             if event.name == "-":
                 navigate_parts("prev")
                 time.sleep(0.04)
@@ -499,15 +520,15 @@ def initial(event):
                 navigate_pages("down")
             elif event.name == "left":
                 # 光标左移：光标前编码数减1，光标后编码数加1
-                if code_char_before_cursor > 0:
-                    code_char_before_cursor -= 1
-                    code_char_after_cursor += 1
+                if ctx.code_char_before_cursor > 0:
+                    ctx.code_char_before_cursor -= 1
+                    ctx.code_char_after_cursor += 1
                 entry_box.icursor(entry_box.index(tk.INSERT) - 1)
             elif event.name == "right":
                 # 光标右移：光标后编码数减1，光标前编码数加1
-                if code_char_after_cursor > 0:
-                    code_char_after_cursor -= 1
-                    code_char_before_cursor += 1
+                if ctx.code_char_after_cursor > 0:
+                    ctx.code_char_after_cursor -= 1
+                    ctx.code_char_before_cursor += 1
                 entry_box.icursor(entry_box.index(tk.INSERT) + 1)
             elif event.name == "backspace":
                 current_text = entry_box.get()
@@ -518,18 +539,17 @@ def initial(event):
                     entry_box.delete(0, tk.END)
                     entry_box.insert(0, new_text)
                     entry_box.icursor(cursor_pos - 1)
-                if code_char_before_cursor > 0:
-                    code_char_before_cursor -= 1
+                if ctx.code_char_before_cursor > 0:
+                    ctx.code_char_before_cursor -= 1
             elif event.name == "enter":
                 entry_box.delete(0, tk.END)
-                code_char_before_cursor = 0
-                code_char_after_cursor = 0
+                ctx.reset_cursor_counters()
                 time.sleep(0.11)
                 keyboard.press_and_release("backspace")
             elif event.name in ["!", "@", "#", "$", "%", "space"]:
   
                 if event.name == "space":
-                    code_char_before_cursor += 1
+                    ctx.code_char_before_cursor += 1
                     entry_box.insert(tk.INSERT, " ")
 
                 else:
@@ -539,7 +559,7 @@ def initial(event):
                     ev = tk.Event()
                     ev.char = char
                     handle_selection_keys(ev)
-    if code_char_before_cursor + code_char_after_cursor == 0:
+    if not ctx.has_code_chars():
         entry_box.delete(0, tk.END)
 
 def paste_text(text, reset_entry=True):
@@ -547,18 +567,16 @@ def paste_text(text, reset_entry=True):
     将文本粘贴到外部程序（外输模式）。
     先退格删除光标前的编码字符，再按 Delete 删除光标后的编码字符，然后模拟 Ctrl+V 粘贴。
     """
-    global external_mode, code_char_before_cursor, code_char_after_cursor
-    if not external_mode or not text:
+    if not ctx.external_mode or not text:
         return
     pyperclip.copy(text)
-    for _ in range(code_char_before_cursor):
+    for _ in range(ctx.code_char_before_cursor):
         keyboard.press_and_release("backspace")
-    for _ in range(code_char_after_cursor):
+    for _ in range(ctx.code_char_after_cursor):
         keyboard.press_and_release("delete")
 
     # 重置计数器
-    code_char_before_cursor = 0
-    code_char_after_cursor = 0
+    ctx.reset_cursor_counters()
 
     keyboard.release("shift")
     time.sleep(0.02)
@@ -570,17 +588,15 @@ def paste_text(text, reset_entry=True):
     return True
 
 def start_keyboard_listener():
-    global external_mode, key_press_counter, code_char_before_cursor, code_char_after_cursor
     keyboard.add_hotkey('left+right', toggle, suppress=False)
     keyboard.on_press(initial, suppress=False)
     keyboard.wait('esc+1')
     keyboard.clear_all_hotkeys()
-    external_mode = False
-    key_press_counter = 0
-    code_char_before_cursor = 0
-    code_char_after_cursor = 0
-    if window:
-        window.title("解书音形-仅内输")
+    ctx.external_mode = False
+    ctx.key_press_counter = 0
+    ctx.reset_cursor_counters()
+    if ctx.window:
+        ctx.window.title("解书音形-仅内输")
 
 # 启动监听线程
 keyboard_thread = threading.Thread(target=start_keyboard_listener, daemon=True)
@@ -602,6 +618,7 @@ def get_dpi_scale(window):
         return 1.0
     
 window = tk.Tk()
+ctx.window = window
 scale = get_dpi_scale(window)
 def scale_size(x):
     return int(round(x * scale))
@@ -687,47 +704,43 @@ settings_frame = tk.Frame(main_status_frame, bg='#FFF3C7')
 settings_frame.pack(fill=tk.X, pady=(0, scale_size(BASE_PAD)))
 
 # 自动上字开关
-auto_commit_var = tk.StringVar(value=auto_commit_enabled)
+auto_commit_var = tk.StringVar(value=ctx.auto_commit_enabled)
 def toggle_auto_commit():
-    global auto_commit_enabled
     if auto_commit_var.get() == "1":
-        auto_commit_enabled = "1"
+        ctx.auto_commit_enabled = "1"
         auto_commit_label.config(text="自动上字", fg='#006600')
     else:
-        auto_commit_enabled = ""
+        ctx.auto_commit_enabled = ""
         auto_commit_label.config(text="自动上字", fg='#990000')
 auto_commit_label = tk.Label(settings_frame, text="自动上字",
                             font=("楷体", 14), bg='#FFF3C7',
-                            fg='#006600' if auto_commit_enabled == '1' else '#990000',
+                            fg='#006600' if ctx.auto_commit_enabled == '1' else '#990000',
                             cursor="hand2")
 auto_commit_label.pack(side=tk.LEFT, padx=(0, LABEL_SPACING))
 def toggle_auto_commit_click(event):
-    global auto_commit_enabled
-    auto_commit_enabled = "1" if auto_commit_enabled != "1" else ""
-    auto_commit_label.config(fg='#006600' if auto_commit_enabled == '1' else '#990000')
-    auto_commit_var.set(auto_commit_enabled)
+    ctx.auto_commit_enabled = "1" if ctx.auto_commit_enabled != "1" else ""
+    auto_commit_label.config(fg='#006600' if ctx.auto_commit_enabled == '1' else '#990000')
+    auto_commit_var.set(ctx.auto_commit_enabled)
 auto_commit_label.bind("<Button-1>", toggle_auto_commit_click)
 
 # 优先上词开关
-phrase_priority_var = tk.StringVar(value=phrase_priority)
+phrase_priority_var = tk.StringVar(value=ctx.phrase_priority)
 def toggle_phrase_priority():
-    global phrase_priority
     if phrase_priority_var.get() == "1":
-        phrase_priority = "1"
+        ctx.phrase_priority = "1"
         phrase_priority_label.config(text="优先上词", fg='#006600')
     else:
-        phrase_priority = ""
+        ctx.phrase_priority = ""
         phrase_priority_label.config(text="优先上词", fg='#990000')
 phrase_priority_label = tk.Label(settings_frame, text="优先上词",
                                font=("楷体", 14), bg='#FFF3C7',
-                               fg='#006600' if phrase_priority == '1' else '#990000',
+                               fg='#006600' if ctx.phrase_priority == '1' else '#990000',
                                cursor="hand2")
 phrase_priority_label.pack(side=tk.LEFT, padx=(0, LABEL_SPACING))
 def toggle_phrase_priority_click(event):
-    global phrase_priority
-    phrase_priority = "1" if phrase_priority != "1" else ""
-    phrase_priority_label.config(fg='#006600' if phrase_priority == '1' else '#990000')
-    phrase_priority_var.set(phrase_priority)
+    ctx.phrase_priority = "1" if ctx.phrase_priority != "1" else ""
+    phrase_priority_label.config(fg='#006600' if ctx.phrase_priority == '1' else '#990000')
+    phrase_priority_var.set(ctx.phrase_priority)
 phrase_priority_label.bind("<Button-1>", toggle_phrase_priority_click)
 
 # 部首表开关
@@ -844,9 +857,8 @@ entry_count_label = tk.Label(settings_frame, textvariable=entry_count_var,
 entry_count_label.pack(side=tk.LEFT, padx=(0, SMALL_SPACING))
 
 def on_main_window_close():
-    global window_closing
-    window_closing = True
+    ctx.window_closing = True
     keyboard.unhook_all()  # 移除所有热键和全局监听钩子
-    window.destroy()
+    ctx.window.destroy()
 window.protocol("WM_DELETE_WINDOW", on_main_window_close)
 window.mainloop()

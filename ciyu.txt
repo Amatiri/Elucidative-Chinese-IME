@@ -536,6 +536,7 @@
 明确 m;qt
 明天 m;tm
 明知故问 m;viguw mvgw
+命运 m;yp
 名字 m;zi
 码表 mabc3
 麻将 majd
@@ -693,6 +694,7 @@
 コ rkok
 く rku
 ク rkuk
+人类命运共同体 rlmygtt rlmt
 ま rma
 マ rmak
 め rme

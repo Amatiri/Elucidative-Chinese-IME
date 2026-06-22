@@ -311,6 +311,7 @@
 捕 bu3u
 补 bu3y
 部 bu4b
+蔀 bu4c
 布 bu4j
 钚 bu4jb
 埠 bu4t
@@ -460,6 +461,7 @@
 忖 cp3x
 寸 cp44
 汆 cr1u
+爨 cr4h
 篡 cr4s
 窜 cr4x
 匆 cs17
@@ -1000,6 +1002,7 @@
 抚 fu3u
 滏 fu3uj
 拊 fu3ur
+黼 fu3y
 父 fu44
 富 fu4b
 附 fu4br
@@ -1791,6 +1794,7 @@
 场 ih3t
 敞 ih3u
 惝 ih3x
+鬯 ih4b
 唱 ih4k
 倡 ih4r
 畅 ih4t
@@ -2641,6 +2645,7 @@
 睽 kv2m
 暌 kv2r
 揆 kv2u
+夔 kv2ud
 魁 kv2v
 逵 kv2z
 傀 kv3r
@@ -3408,6 +3413,7 @@
 能 ng2s
 囊 nh2s
 曩 nh3r
+齉 nh4z
 妮 ni1n
 铌 ni2j
 倪 ni2r
@@ -4229,6 +4235,7 @@
 渠 qu2m
 鸲 qu2n
 朐 qu2r
+衢 qu2t
 曲 qu30
 苣 qu3c
 娶 qu3n
@@ -6241,6 +6248,7 @@
 痍 yi2bd
 贻 yi2bt
 疑 yi2bu
+彝 yi2c
 移 yi2h
 颐 yi2i
 咦 yi2k

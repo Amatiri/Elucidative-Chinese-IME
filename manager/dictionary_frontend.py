@@ -170,3 +170,92 @@ def query_multi_chars(split_text):
         else:
             return ""
     return first_chars
+
+
+def query_multi_chars_phrase(processed):
+    """
+    用户手动用单引号分隔的多段输入，优先查询词语码表。
+
+    流程：
+      1. 按用户手动输入的 ' 分隔 processed（注意：processed 中的 ' 都是用户打的，
+         自动拆分的 ' 只出现在 split_sequence 输出里）
+      2. 对每段：
+         - 长度 < 3 → 自动拆分后取首选字
+         - 长度 >= 3 → 先 query_phrase，命中则用词语文字；
+           未命中则自动拆分取首选字
+      3. 任一段无候选（含 query_phrase 未命中且首选字也为空）→ 返回 ""
+
+    Args:
+        processed: process_input() 的输出，即用户输入的合法编码字符（可含 '）
+
+    Returns:
+        拼接后的预览串，或 "" (表示某段无法解析)
+    """
+    segments = processed.split("'")
+    result = ''
+    for seg in segments:
+        if len(seg) < 3:
+            # 短段不走词语查询，直接自动拆分取首选字
+            split_seg = split_sequence(seg)
+            chars = query_multi_chars(split_seg)
+            if chars:
+                result += chars
+            else:
+                return ""
+        else:
+            # 先查词语
+            phrase = query_phrase(seg)
+            if phrase:
+                # 命中词语，去掉括号直接取词语文字
+                result += phrase[1:-1]
+            else:
+                # 未命中，降级到自动拆分取首选字
+                split_seg = split_sequence(seg)
+                chars = query_multi_chars(split_seg)
+                if chars:
+                    result += chars
+                else:
+                    return ""
+    return result
+
+
+def get_phrase_segments(processed):
+    """
+    将用户手动 ' 分隔的各段解析为 (display_text, split_parts_list) 的列表。
+    display_text 为预览显示用的文字（词语或首选字组合），split_parts_list
+    为每段经自动拆分后的部件列表（供逐字选择）。
+
+    某段无候选则返回 None。
+    """
+    segments = processed.split("'")
+    parts_list = []
+    display_parts = []
+    for seg in segments:
+        if len(seg) < 3:
+            split_seg = split_sequence(seg)
+            chars = query_multi_chars(split_seg)
+            if chars:
+                display_parts.append(chars)
+                parts_list.append(split_seg.split("'"))
+            else:
+                return None
+        else:
+            phrase = query_phrase(seg)
+            if phrase:
+                display_parts.append(phrase[1:-1])
+                # 词语命中时仍需自动拆分供逐字选择
+                split_seg = split_sequence(seg)
+                parts_list.append(split_seg.split("'"))
+            else:
+                split_seg = split_sequence(seg)
+                chars = query_multi_chars(split_seg)
+                if chars:
+                    display_parts.append(chars)
+                    parts_list.append(split_seg.split("'"))
+                else:
+                    return None
+    # 展平所有部件的 split_parts
+    all_parts = []
+    for part_group in parts_list:
+        all_parts.extend(part_group)
+    return (''.join(display_parts), all_parts)

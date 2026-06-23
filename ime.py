@@ -8,7 +8,12 @@ import win32api
 
 # ==================== 导入模块化组件 ====================
 from config import DATA_FILE, CODE_CHARS, SURROUND_CHARS, SELECTION_SYMBOLS, SYMBOL_TO_INDEX, CIYU_FILE
-from manager.dictionary_frontend import ensure_data_file, query_phrase, get_entry_count, query_by_prefix, process_input, split_sequence, query_single_char, query_multi_chars
+from manager.dictionary_frontend import (
+    ensure_data_file, query_phrase, get_entry_count,
+    query_by_prefix, process_input, split_sequence,
+    query_single_char, query_multi_chars, query_multi_chars_phrase,
+    get_phrase_segments
+)
 
 # ==================== 上下文对象：替代全部全局变量 ====================
 
@@ -204,7 +209,13 @@ def update_display():
     input_text = real_time_var.get()
     processed = process_input(input_text)
     split_text = split_sequence(processed)
-    ctx.current_phrase = query_phrase(processed)
+
+    # 整串查询短语（不含手动单引号分隔的场景）
+    if "'" not in processed:
+        ctx.current_phrase = query_phrase(processed)
+    else:
+        
+        ctx.current_phrase = ""
 
     # 清空标签，准备重新显示
     first_chars_label.config(text='')
@@ -212,16 +223,26 @@ def update_display():
     page_label.config(text='')
 
     if ctx.query_type == "multi_part":
-        char_codes = split_text.split("'")
-        preview_chars = []
-        for idx, code in enumerate(char_codes):
-            if idx in ctx.resolved_chars:
-                preview_chars.append(ctx.resolved_chars[idx])
+        # 优先上词开启 + 用户手动输入单引号 → 使用词语增强预览
+        if "'" in processed and ctx.phrase_priority == "1":
+            phrase_result = get_phrase_segments(processed)
+            if phrase_result:
+                first_chars = phrase_result[0]
+                ctx.split_parts = phrase_result[1]
             else:
-                candidates = query_by_prefix(code)
-                if candidates:
-                    preview_chars.append(candidates[0][0])
-        first_chars = query_multi_chars(split_text)
+                first_chars = ""
+                ctx.split_parts = []
+        else:
+            char_codes = split_text.split("'")
+            preview_chars = []
+            for idx, code in enumerate(char_codes):
+                if idx in ctx.resolved_chars:
+                    preview_chars.append(ctx.resolved_chars[idx])
+                else:
+                    candidates = query_by_prefix(code)
+                    if candidates:
+                        preview_chars.append(candidates[0][0])
+            first_chars = query_multi_chars(split_text)
 
         if first_chars:
             if ctx.current_phrase and not ctx.in_part_selection:
@@ -428,8 +449,20 @@ def main_function(*args):
         else:
             # 多字模式
             ctx.query_type = "multi_part"
-            ctx.split_parts = split_text.split("'")
-            first_chars = query_multi_chars(split_text)
+            if "'" in processed and ctx.phrase_priority == "1":
+                # 优先上词开启 + 用户手动输入单引号 → 词语增强预览
+                phrase_result = get_phrase_segments(processed)
+                if phrase_result:
+                    display_text, all_parts = phrase_result
+                    ctx.split_parts = all_parts
+                    first_chars = display_text
+                else:
+                    # 某段无候选 → 清空（打错）
+                    ctx.split_parts = []
+                    first_chars = ""
+            else:
+                ctx.split_parts = split_text.split("'")
+                first_chars = query_multi_chars(split_text)
             update_display()
             output_text = first_chars
 

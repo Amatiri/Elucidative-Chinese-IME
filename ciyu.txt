@@ -108,6 +108,7 @@
 餐馆 cjgr3
 操作 ckzo
 菜单 cldj
+才会 clhv
 剉冰 cob;1
 错误 cowu
 存在 cpzl
@@ -224,6 +225,7 @@
 Δ gdec
 疙瘩 geda0
 格局 geju
+革命 gem;
 ε gep
 Ε gepc
 η get
@@ -251,6 +253,8 @@
 搞笑 gkxc4
 λ gla
 Λ glac
+改变 glbm
+改编 glbm1
 改动 glds
 μ gmu
 Μ gmuc
@@ -282,6 +286,7 @@
 σ gsi
 Σ gsic
 工程 gsig
+共产党 gsijd
 公交车 gsjci
 攻击 gsji
 供给 gsji3
@@ -434,6 +439,7 @@
 季姬击鸡记 jjjjj
 简单 jmdj
 监控 jmks
+建立 jmli
 键盘 jmpj
 简体 jmti
 健体 jmti3
@@ -518,6 +524,7 @@
 理由 liyb
 劳动 lkds
 老师 lkui
+联邦 lmbh
 连续 lmxu
 吝啬 lnse
 逻辑 loji
@@ -533,6 +540,7 @@
 类型 lzx;
 名称 m;ig
 明令禁止 m;l;jnv mljv
+明明 m;m;2
 明确 m;qt
 明天 m;tm
 明知故问 m;viguw mvgw
@@ -623,6 +631,7 @@
 龟兹 qqci2d
 权当 qrdh1
 全能 qrng
+确认 qtrf
 确实 qtui2
 驱动 quds
 ー r;;
@@ -1134,6 +1143,7 @@
 渭城朝雨浥轻尘 wzigvkyuyiq;i wivyyqi
 微积分 wzjif
 为了 wzle
+委内瑞拉 wznzrvl wnrl
 微软 wzrr
 葳蕤 wzrv
 为什么 wzufm

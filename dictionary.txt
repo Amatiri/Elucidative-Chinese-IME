@@ -1,4 +1,4 @@
-不 bu44
+﻿不 bu44
 八 ba13
 捌 ba13.
 巴 ba19
@@ -596,6 +596,7 @@
 氐 di34
 邸 di3b
 底 di3g
+骶 di3gu
 柢 di3m
 砥 di3s
 坻 di3t
@@ -863,6 +864,7 @@
 愤 ff4x
 忿 ff4xb
 丰 fg15
+豐 fg15.
 疯 fg1b
 封 fg1c
 葑 fg1cc
@@ -1005,6 +1007,7 @@
 黼 fu3y
 父 fu44
 富 fu4b
+赙 fu4bc
 附 fu4br
 赋 fu4bw
 负 fu4d
@@ -1583,7 +1586,8 @@
 糊 hu2m
 核 hu2md
 鹄 hu2n
-鹕 hu2ng
+鹘 hu2ng
+鹕 hu2nr
 狐 hu2q
 猢 hu2qr
 胡 hu2r
@@ -1669,6 +1673,7 @@
 成 ig2g
 叉 ia14
 差 ia1h
+锸 ia1j
 杈 ia1m
 插 ia1u
 馇 ia1um
@@ -2591,6 +2596,7 @@
 揩 kl1u
 剀 kl3d
 铠 kl3j
+锴 kl3jj
 凯 kl3jq
 楷 kl3m
 闿 kl3mq
@@ -2685,6 +2691,7 @@
 剌 la4d
 蜡 la4i
 腊 la4r
+臘 la4r.
 辣 la4x
 䁖 lb1m
 搂 lb1u
@@ -3586,6 +3593,7 @@
 轭 oe4cc
 萼 oe4ck
 颚 oe4i
+锷 oe4j
 呃 oe4k
 噩 oe4kw
 𫫇 oe4kx
@@ -4281,6 +4289,8 @@
 顷 q;3i
 请 q;3y
 庆 q;4g
+慶 q;4g.
+箐 q;4z
 人 rf22
 柔 rb2m
 揉 rb2u
@@ -4405,6 +4415,7 @@
 私 si1h
 蛳 si1i
 斯 si1j
+锶 si1jx
 司 si1k
 嘶 si1kj
 咝 si1ks
@@ -5260,6 +5271,7 @@
 账 vh4b
 障 vh4bl
 帐 vh4j
+幛 vh4jl
 杖 vh4m
 仗 vh4r
 胀 vh4ri
@@ -6968,6 +6980,7 @@
 澤 ze2uk.
 舴 ze2v
 笮 ze2z
+箦 ze2zq
 迮 ze2zv
 仄 ze4c
 昃 ze4r

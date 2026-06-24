@@ -287,6 +287,7 @@
 钹 bo2jk
 勃 bo2l
 驳 bo2m
+柏 bo2mb
 鹁 bo2n
 伯 bo2r
 膊 bo2rf
@@ -4544,7 +4545,7 @@
 睢 sv1m
 眭 sv1mg
 随 sv2b
-隋 sv2br
+隋 sv2bz
 绥 sv2s
 髓 sv3g
 隧 sv4b
@@ -4791,6 +4792,7 @@
 土 tu35
 钍 tu3j
 吐 tu3k
+菟 tu4c
 兔 tu4d
 吐 tu4k
 堍 tu4t
@@ -4853,7 +4855,7 @@
 首 ub3d
 瘦 ub4b
 寿 ub4c
-兽 ub4d
+兽 ub4k
 狩 ub4q
 绶 ub4s
 授 ub4u

@@ -76,6 +76,7 @@
 匚 bob
 㔾 boe
 博士 boui
+博物馆 bowug
 丬 bpj
 㐅 bpn
 乄 bpng
@@ -133,6 +134,7 @@
 ； dfh
 等待 dgdl
 等级 dgji
+地点 didm
 地方 difh
 地府 difu3
 地理 dili3
@@ -579,6 +581,7 @@
 男娘 njnd
 年龄 nml;
 年轻 nmq;
+内容 nzrs
 俄罗斯 oelos
 安全 ojqr
 按下 ojxw
@@ -600,6 +603,7 @@
 培养 pzyh
 清楚 q;iu
 情况 q;kd
+请你 q;ni
 庆祝 q;vu
 罄竹难书 q;vunju qvnu
 巧妙 qcmc
@@ -904,6 +908,8 @@
 × uig2
 时候 uihb
 市场 uiih
+世纪 uiji4s
+实际上 uijiu
 时间 uijm
 事件 uijm4
 实践 uijm4z
@@ -1146,6 +1152,7 @@
 无穷 wuqs
 物是人非 wurf wuuirff
 无所谓 wusow
+乌兹别克斯坦 wzbkst wzbt
 维护 wzhu
 渭城朝雨浥轻尘 wzigvkyuyiq;i wivyyqi
 微积分 wzjif
@@ -1214,6 +1221,7 @@
 应付 y;fu
 应该 y;gl
 英吉利 y;jil
+影响 y;xd
 英语 y;yu
 有关 ybgr1
 友好 ybhk
@@ -1293,3 +1301,4 @@
 总之 zsvi
 最后 zvhb
 最近 zvjn
+场景 ihj;

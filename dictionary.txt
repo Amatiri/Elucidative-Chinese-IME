@@ -1,4 +1,4 @@
-﻿不 bu44
+不 bu44
 八 ba13
 捌 ba13.
 巴 ba19
@@ -170,6 +170,7 @@
 跸 bi4zb
 躄 bi4zk
 筚 bi4zs
+箅 bi4zt
 篦 bi4zx
 瘢 bj1b
 颁 bj1i
@@ -623,6 +624,7 @@
 耽 dj1o
 聃 dj1or
 担 dj1u
+箪 dj1z
 疸 dj3b
 赕 dj3by
 亶 dj3d
@@ -2170,6 +2172,7 @@
 牮 jm4n
 件 jm4r
 健 jm4rj
+僭 jm4rr
 腱 jm4ry
 渐 jm4u
 溅 jm4ub
@@ -2476,6 +2479,7 @@
 颈 j;3i
 景 j;3r
 肼 j;3rj
+儆 j;3ru
 警 j;3y
 净 j;4b
 痉 j;4bg
@@ -2622,6 +2626,7 @@
 倥 ks1r
 崆 ks1u
 空 ks1x
+箜 ks1z
 倥 ks3r
 恐 ks3x
 孔 ks3z
@@ -3043,6 +3048,7 @@
 渌 lu4ui
 路 lu4z
 逯 lu4zi
+箓 lu4zu
 俩 lw3r
 咧 lx1k
 咧 lx3k
@@ -3998,6 +4004,7 @@
 评 p;2y
 鲆 p;2yp
 去 qu4t
+劁 qc1d
 锹 qc1j
 敲 qc1p
 缲 qc1s
@@ -4339,6 +4346,7 @@
 芮 ro4cn
 弱 ro4g
 偌 ro4r
+箬 ro4z
 闰 rp4m
 润 rp4u
 阮 rr3b
@@ -4522,6 +4530,7 @@
 嗉 su4k
 觫 su4ku
 素 su4q
+僳 su4r
 塑 su4t
 溯 su4u
 涑 su4uu
@@ -4757,6 +4766,7 @@
 瞳 ts2ml
 佟 ts2r
 侗 ts2rk
+僮 ts2rl
 砼 ts2s
 垌 ts2t
 峒 ts2u
@@ -5589,6 +5599,7 @@
 挽 wj3u
 琬 wj3w
 惋 wj3x
+箢 wj3z
 万 wj44
 蔓 wj4c
 腕 wj4r
@@ -6767,6 +6778,7 @@
 鸳 yr1n
 鸢 yr1ni
 渊 yr1u
+箢 yr1z
 阮 yr2b
 原 yr2c
 芫 yr2co

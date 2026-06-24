@@ -163,6 +163,8 @@ def query_multi_chars(split_text):
     char_codes = split_text.split("'")
     first_chars = ''
     for code in char_codes:
+        if not code:
+            return ""
         candidates = query_by_prefix(code)
         if candidates:
             first_char = candidates[0][0]
@@ -194,6 +196,8 @@ def query_multi_chars_phrase(processed):
     segments = processed.split("'")
     result = ''
     for seg in segments:
+        if not seg:
+            return ""
         if len(seg) < 3:
             # 短段不走词语查询，直接自动拆分取首选字
             split_seg = split_sequence(seg)
@@ -231,6 +235,8 @@ def get_phrase_segments(processed):
     parts_list = []
     display_parts = []
     for seg in segments:
+        if not seg:
+            return None
         if len(seg) < 3:
             split_seg = split_sequence(seg)
             chars = query_multi_chars(split_seg)

@@ -106,6 +106,7 @@
 词汇 cihv
 词语 ciyu
 餐馆 cjgr3
+参考 cjkk
 操作 ckzo
 菜单 cldj
 才会 clhv
@@ -491,7 +492,7 @@
 科技 keji
 课堂 keth
 科学 kext
-可以 key
+可以 keyi
 肯定 kfd;
 看来 kjll
 看着 kjve
@@ -629,6 +630,7 @@
 秋词 qqci
 秋辞 qqci2
 龟兹 qqci2d
+全部 qrbu
 权当 qrdh1
 全能 qrng
 确认 qtrf
@@ -656,10 +658,13 @@
 づ rdu
 ヅ rduk
 热门 remf
+任何 rfhe
+人间 rfjm
 人类 rflz
 人民币 rfmnb
 忍耐 rfnl
 认真 rfvf
+任务 rfwu
 认为 rfwz
 が rga
 ガ rgak
@@ -1010,6 +1015,7 @@
 占时 vjui2r
 战士 vjui4
 战事 vjui4k
+找到 vkdk
 召唤 vkhr
 ⿹ vl.1
 ⿽ vl.2
@@ -1119,6 +1125,7 @@
 文件夹 wfjmj
 文明 wfm;
 问题 wfti
+文献 wfxm
 温馨 wfxn
 网络 whlo
 网盘 whpj
@@ -1235,6 +1242,9 @@
 意义 yiyi44
 研究 yjjq
 眼泪 yjlz
+验证 yjvg
+炎症 yjvg4
+严正 yjvg44
 要点 ykdm
 要求 ykqq
 一目了然 ymlr yimulcr

@@ -160,8 +160,10 @@
 电影院 dmy;y
 多邻国 dolng
 多少 douk
+敦煌 dphd
 — dpv
 ￥ dqm
+动词 dsci
 动画 dshw
 动漫 dsmj
 动态 dstl
@@ -312,6 +314,7 @@
 公事 gsui4k
 攻势 gsui4l
 公示 gsui4o
+公主 gsvu
 共享 gsxd
 工作 gsz
 τ gta
@@ -358,6 +361,7 @@
 还有 hlyb
 孩子 hlzi
 获得 hode
+活动 hods
 火柴 hoil
 或者 hove
 活着 hove0
@@ -503,6 +507,7 @@
 结合 jxhe
 接触 jxiu4
 接纳 jxna
+解释 jxui
 介绍 jxuk
 结束 jxuu
 借助 jxvu
@@ -548,16 +553,19 @@
 连续 lmxu
 吝啬 lnse
 逻辑 loji
+论述 lpuu
 论文 lpwf
 垄断 lsdr
 路人 lurf
 录入 luru
+路线 luxm
 列表 lxbc
 趔趄 lxqx
 滤波器 lyboq
 旅行 lyx;
 履行 lyx;2
 类型 lzx;
+名词 m;ci
 名称 m;ig
 明令禁止 m;l;jnv mljv
 明明 m;m;2
@@ -574,6 +582,7 @@
 盲打 mhda3
 米哈游 mihay
 耄耋 mkdx
+贸易 mkyi
 腼腆 mmtm
 泯灭 mnmx
 模式 moui
@@ -869,8 +878,10 @@
 体系 tixi
 体现 tixm
 体育 tiyu
+探险 tjxm
 淘宝 tkbk
 韬光养晦 tkgdyhh tgyh
+塔克拉玛干 tklmg
 讨论 tklp
 讨厌 tkyj
 涂蜡的氧化切制铜楼梯 tldt tldyhqvtlt
@@ -880,6 +891,7 @@
 填写 tmxx
 团队 trdv
 同步 tsbu
+通道 tsdk
 通过 tsgo
 痛苦 tsku
 同时 tsui
@@ -896,6 +908,7 @@
 → tyb
 ← tzo
 ∀ uaa
+沙漠 uamo
 ∪ ub;4
 ≠ ubdy
 手机 ubji
@@ -916,6 +929,7 @@
 社稷 ueji4
 设为 uewz
 蛇尾 uewz3
+身份 ufff
 身份证 ufffv
 什么 ufm
 神秘 ufmi
@@ -1191,8 +1205,11 @@
 微软 wzrr
 葳蕤 wzrv
 为什么 wzufm
+位置 wzvi
+未知 wzvi1
 微信 wzxn
 形成 x;ig
+形容词 x;rsc
 性质 x;vi
 兴致 x;vi4
 行为 x;wz
@@ -1276,6 +1293,7 @@
 以及 yiji
 旖旎 yini3
 意思 yisi0
+伊斯兰 yisil
 艺术 yiuu
 以下 yixw
 一些 yixx
@@ -1290,6 +1308,7 @@
 要求 ykqq
 一目了然 ymlr yimulcr
 因此 ynci
+印度 yndu
 银行 ynhh
 印刷 ynuw
 因为 ynwz

@@ -7,7 +7,12 @@ import time
 import win32api
 
 # ==================== 导入模块化组件 ====================
-from config import DATA_FILE, CODE_CHARS, SURROUND_CHARS, SELECTION_SYMBOLS, SYMBOL_TO_INDEX, CIYU_FILE
+from config import (DATA_FILE, CODE_CHARS, SURROUND_CHARS, SELECTION_SYMBOLS,
+                         SYMBOL_TO_INDEX, CIYU_FILE,
+                         FONT_SIZE_INPUT, FONT_SIZE_COUNT, FONT_SIZE_RADICAL,
+                         FONT_SIZE_SMALL, FONT_SIZE_BUTTON,
+                         FONT_SMALL_NAME, FONT_BUTTON_NAME,
+                         get_primary_font_name)
 from manager.dictionary_frontend import (
     ensure_data_file, query_phrase, get_entry_count,
     query_by_prefix, process_input, split_sequence,
@@ -566,14 +571,15 @@ def initial(event):
             elif event.name == "backspace":
                 current_text = entry_box.get()
                 cursor_pos = entry_box.index(tk.INSERT)
+                if ctx.code_char_before_cursor > 0:
+                    ctx.code_char_before_cursor -= 1
                 if cursor_pos > 0:
                     # 如果光标前有编码字符，则退格会删除一个编码字符
                     new_text = current_text[:cursor_pos-1] + current_text[cursor_pos:]
                     entry_box.delete(0, tk.END)
                     entry_box.insert(0, new_text)
                     entry_box.icursor(cursor_pos - 1)
-                if ctx.code_char_before_cursor > 0:
-                    ctx.code_char_before_cursor -= 1
+
             elif event.name == "enter":
                 entry_box.delete(0, tk.END)
                 ctx.reset_cursor_counters()
@@ -612,7 +618,7 @@ def paste_text(text, reset_entry=True):
     ctx.reset_cursor_counters()
 
     keyboard.release("shift")
-    time.sleep(0.02)
+    time.sleep(0.04)
     keyboard.press_and_release('ctrl+v')
 
     if reset_entry:
@@ -690,8 +696,9 @@ def do_drag(event):
     y = window.winfo_y() + (event.y - drag_start_y)
     window.geometry(f"+{x}+{y}")
 
-font_medium = ("华文中宋", 13)
-font_small = ("黑体", 8)
+primary_font = get_primary_font_name(window)
+font_medium = (primary_font, FONT_SIZE_INPUT)
+font_small = (FONT_SMALL_NAME, FONT_SIZE_SMALL)
 bg_color = '#FFF3C7'
 label_bg = '#EFE3AE'
 
@@ -746,7 +753,7 @@ def toggle_auto_commit():
         ctx.auto_commit_enabled = ""
         auto_commit_label.config(text="自动上字", fg='#990000')
 auto_commit_label = tk.Label(settings_frame, text="自动上字",
-                            font=("楷体", 14), bg='#FFF3C7',
+                            font=(FONT_BUTTON_NAME, FONT_SIZE_BUTTON), bg='#FFF3C7',
                             fg='#006600' if ctx.auto_commit_enabled == '1' else '#990000',
                             cursor="hand2")
 auto_commit_label.pack(side=tk.LEFT, padx=(0, LABEL_SPACING))
@@ -766,7 +773,7 @@ def toggle_phrase_priority():
         ctx.phrase_priority = ""
         phrase_priority_label.config(text="优先上词", fg='#990000')
 phrase_priority_label = tk.Label(settings_frame, text="优先上词",
-                               font=("楷体", 14), bg='#FFF3C7',
+                               font=(FONT_BUTTON_NAME, FONT_SIZE_BUTTON), bg='#FFF3C7',
                                fg='#006600' if ctx.phrase_priority == '1' else '#990000',
                                cursor="hand2")
 phrase_priority_label.pack(side=tk.LEFT, padx=(0, LABEL_SPACING))
@@ -816,9 +823,9 @@ def create_radical_table():
         widget.destroy()
     title_frame = tk.Frame(radical_table_frame, bg='#FFF3C7')
     title_frame.pack(fill=tk.X, pady=(scale_size(BASE_PAD), scale_size(BASE_PAD)))
-    tk.Label(title_frame, text="部首码", font=("华文中宋", 11),
+    tk.Label(title_frame, text="部首码", font=(primary_font, FONT_SIZE_RADICAL),
             bg='#FFF3C7', fg='#000000', width=8, anchor='w').pack(side=tk.LEFT, padx=(scale_size(BASE_PAD), 0))
-    tk.Label(title_frame, text="对应部首", font=("华文中宋", 11),
+    tk.Label(title_frame, text="对应部首", font=(primary_font, FONT_SIZE_RADICAL),
             bg='#FFF3C7', fg='#000000', anchor='w').pack(side=tk.LEFT, padx=(scale_size(10), 0))
     separator = tk.Frame(radical_table_frame, height=scale_size(1), bg='#000000')
     separator.pack(fill=tk.X, pady=scale_size(BASE_PAD))
@@ -846,10 +853,10 @@ def create_radical_table():
     for i, (letter, radicals) in enumerate(radical_table_data.items()):
         row_frame = tk.Frame(scrollable_frame, bg='#FFF3C7')
         row_frame.pack(fill=tk.X, pady=scale_size(BASE_ROW_PADY))
-        letter_label = tk.Label(row_frame, text=letter, font=("华文中宋", 11),
+        letter_label = tk.Label(row_frame, text=letter, font=(primary_font, FONT_SIZE_RADICAL),
                                bg='#FFF3C7', fg='#3232BE', width=8, anchor='w')
         letter_label.pack(side=tk.LEFT, padx=(2, 0))
-        radical_label = tk.Label(row_frame, text=radicals, font=("华文中宋", 11),
+        radical_label = tk.Label(row_frame, text=radicals, font=(primary_font, FONT_SIZE_RADICAL),
                                 bg='#FFF3C7', fg='#000000', anchor='w')
         radical_label.pack(side=tk.LEFT, padx=(2, 0))
         if i % 2 == 0:
@@ -871,7 +878,7 @@ def toggle_radical_table():
         window.geometry(f"{win_w}x{win_h_norm}")
 
 radical_table_label = tk.Label(settings_frame, text="部首表",
-                              font=("楷体", 14), bg='#FFF3C7',
+                              font=(FONT_BUTTON_NAME, FONT_SIZE_BUTTON), bg='#FFF3C7',
                               fg='#006600' if radical_table_var.get() else '#990000',
                               cursor="hand2")
 radical_table_label.pack(side=tk.LEFT, padx=(0, LABEL_SPACING))
@@ -886,7 +893,7 @@ radical_table_label.bind("<Button-1>", toggle_radical_table_click)
 entry_count_var = tk.StringVar()
 entry_count_var.set(f"{get_entry_count()}")
 entry_count_label = tk.Label(settings_frame, textvariable=entry_count_var,
-                           font=("华文中宋", 14), bg='#FFF3C7', fg='#000000')
+                           font=(primary_font, FONT_SIZE_COUNT), bg='#FFF3C7', fg='#000000')
 entry_count_label.pack(side=tk.LEFT, padx=(0, SMALL_SPACING))
 
 def on_main_window_close():

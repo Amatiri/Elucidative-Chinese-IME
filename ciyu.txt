@@ -211,6 +211,7 @@
 复合 fuhe2
 负荷 fuhe4
 附和 fuhe4h
+福建 fujm
 服务 fuwu
 复兴 fux;
 敷衍 fuyj
@@ -223,9 +224,11 @@
 Β gbec
 χ gch
 Χ gchc
+广东 gdds
 高德地图 gddt gkdedit
 δ gde
 Δ gdec
+广西 gdxi
 疙瘩 geda0
 格局 geju
 革命 gem;
@@ -245,6 +248,7 @@
 Ι gioc
 干部 gjbu
 感觉 gjjt
+甘肃 gjsu
 κ gka
 Κ gkac
 高考 gkkk
@@ -321,6 +325,7 @@
 规定 gvd;
 规范 gvfj
 规模 gvmo
+贵州 gvvb
 规则 gvze
 恭喜发财 gxfc gsxifac
 ξ gxi
@@ -330,7 +335,9 @@
 后面 hbmm
 候选 hbxr
 黄昏 hdhp
+河北 hebz
 合理 heli
+河南 henj
 核心 hexn
 何意味 heyiwz
 鹤发童颜 hfty hefatsy
@@ -346,6 +353,7 @@
 好罢 hkba
 胡克希伍 hkxw hukexiw
 还能 hlng
+海南 hlnj
 还是 hlui
 还有 hlyb
 孩子 hlzi
@@ -355,11 +363,14 @@
 活着 hove0
 换行 hrhh
 环境 hrj;
+湖北 hubz
 互联网 hulmw
+湖南 hunj
 回答 hvda
 话说 hwuo
 化学 hwxt
 华夏 hwxw
+黑龙江 hzlsj
 ɑ iaa
 差不多 iabud
 æ iae
@@ -378,6 +389,7 @@
 程序 igxu
 程序员 igxuy
 常规 ihgv
+场景 ihj;
 尝试 ihui4
 常用 ihys
 常用字 ihysz
@@ -404,6 +416,7 @@
 重复 isfu
 ʃ ish
 充满 ismj
+重庆 isq;
 ˈ istress
 重新 isxn
 处理 iuli3
@@ -426,9 +439,12 @@
 教育 jcyu
 将计就计 jdjijqj
 讲解 jdjx
+江苏 jdsu
+江西 jdxi
 鞠躬尽瘁 jgjc jugsjnc
 基本 jibf
 机会 jihv
+吉林 jiln
 纪录片 jilup
 计算 jisr
 计算机 jisrj
@@ -513,6 +529,7 @@
 拉缝 lafg4
 了解 lcjx
 了结 lcjx2
+辽宁 lcn;
 良莠不齐 ldybbuq lybq
 厉害 lihl
 例句 liju
@@ -571,6 +588,7 @@
 美少女 mzukn
 美术 mzuu
 没有 mzy
+宁夏 n;xw
 哪个 nage
 那些 naxx
 哪些 naxx1
@@ -581,11 +599,14 @@
 男娘 njnd
 年龄 nml;
 年轻 nmq;
+内蒙古 nzmgg
 内容 nzrs
 俄罗斯 oelos
+安徽 ojhv
 安全 ojqr
 按下 ojxw
 奥地利 okdil
+澳门 okmf
 二次元 orciy
 而且 orqx
 苹果 p;go
@@ -601,6 +622,7 @@
 葡萄牙 putky
 培训 pzxp
 培养 pzyh
+青海 q;hl
 清楚 q;iu
 情况 q;kd
 请你 q;ni
@@ -826,6 +848,7 @@
 搜索 sbso
 四个 sige
 丝绸 siib
+四川 siir
 思考 sikk
 思想 sixd
 扫描 skmc
@@ -851,6 +874,8 @@
 讨论 tklp
 讨厌 tkyj
 涂蜡的氧化切制铜楼梯 tldt tldyhqvtlt
+台湾 tlwj
+天津 tmjn
 添加 tmjw
 填写 tmxx
 团队 trdv
@@ -900,6 +925,7 @@
 生活 ugh
 生物 ugwu
 ≡ uhdy
+上海 uhhl
 上课 uhke
 上面 uhmm
 上午 uhwu
@@ -932,7 +958,10 @@
 ³ ujb3
 ∩ ujc1
 ∠ ujc3
+山东 ujds
 ∫ ujf
+山西 ujxi
+陕西 ujxi1
 ∅ uksji
 ∏ uli
 色子 ulzi
@@ -971,6 +1000,7 @@
 周榜 vbb
 状况 vdkd
 装修 vdxq
+浙江 vejd
 这里 veli
 这些 vexx
 这样 veyh
@@ -1170,6 +1200,7 @@
 消息 xcxi
 想法 xdfa
 相辅相成 xdfuxdi xfxi
+香港 xdgh
 相关 xdgr
 响亮 xdld
 向量 xdld4
@@ -1185,6 +1216,7 @@
 喜上眉梢 xiuhmzu
 蟋蟀 xiuy
 希望 xiwh
+西藏 xizh
 洗澡 xizk
 现代 xmdl
 现实 xmui
@@ -1192,6 +1224,7 @@
 线性方程组 xmx;fhigz
 线性相关 xmx;xdg xxxg
 现在 xmzl
+新疆 xnjd
 新建 xnjm
 信笺 xnjm1
 信件 xnjm4
@@ -1267,6 +1300,7 @@
 音韵 ynyp
 氤氲 ynyp1
 音乐 ynyt
+云南 ypnj
 运行 ypx;
 愿景 yrj;
 原理 yrli
@@ -1301,4 +1335,3 @@
 总之 zsvi
 最后 zvhb
 最近 zvjn
-场景 ihj;

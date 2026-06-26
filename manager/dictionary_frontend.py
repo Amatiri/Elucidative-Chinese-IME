@@ -140,7 +140,10 @@ def split_sequence(original):
                 new_parts.append(part)
         parts = new_parts
     parts = [part for part in parts if part != '']
-    return "'".join(parts)
+    result = "'".join(parts)
+    if original.endswith("'") and not result.endswith("'"):
+        result += "'"
+    return result
 
 
 def query_single_char(split_text, start_idx=0):
@@ -164,7 +167,7 @@ def query_multi_chars(split_text):
     first_chars = ''
     for code in char_codes:
         if not code:
-            return ""
+            continue
         candidates = query_by_prefix(code)
         if candidates:
             first_char = candidates[0][0]
@@ -197,7 +200,7 @@ def query_multi_chars_phrase(processed):
     result = ''
     for seg in segments:
         if not seg:
-            return ""
+            continue
         if len(seg) < 3:
             # 短段不走词语查询，直接自动拆分取首选字
             split_seg = split_sequence(seg)
@@ -236,7 +239,7 @@ def get_phrase_segments(processed):
     display_parts = []
     for seg in segments:
         if not seg:
-            return None
+            continue
         if len(seg) < 3:
             split_seg = split_sequence(seg)
             chars = query_multi_chars(split_seg)

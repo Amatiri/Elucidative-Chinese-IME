@@ -241,6 +241,8 @@ def update_display():
             char_codes = split_text.split("'")
             preview_chars = []
             for idx, code in enumerate(char_codes):
+                if not code:
+                    continue
                 if idx in ctx.resolved_chars:
                     preview_chars.append(ctx.resolved_chars[idx])
                 else:
@@ -429,11 +431,10 @@ def main_function(*args):
 
     if split_text != "" and ' ' not in split_text:
         if "'" not in split_text:
-            # 单字模式
             ctx.query_type = "single"
             candidates = query_single_char(split_text, ctx.current_page * 5)
             # 自动上字逻辑
-            if candidates and ctx.auto_commit_enabled == "1" and len(processed) > 3:
+            if candidates and ctx.auto_commit_enabled == "1" and len(split_text) > 3:
                 candidates_list = candidates.split("/")
                 non_dot_candidates = []
                 for candidate in candidates_list:
@@ -466,7 +467,7 @@ def main_function(*args):
                     ctx.split_parts = []
                     first_chars = ""
             else:
-                ctx.split_parts = split_text.split("'")
+                ctx.split_parts = [p for p in split_text.split("'") if p]
                 first_chars = query_multi_chars(split_text)
             update_display()
             output_text = first_chars

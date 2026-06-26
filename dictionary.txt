@@ -265,6 +265,7 @@
 玢 bn1wf
 殡 bn4d
 鬓 bn4p
+膑 bn4r
 摈 bn4u
 菠 bo1c
 蕃 bo1cf
@@ -757,6 +758,7 @@
 冻 ds4b
 动 ds4l
 栋 ds4m
+姛 ds4n
 侗 ds4r
 胨 ds4rd
 胴 ds4rt
@@ -1321,6 +1323,7 @@
 硅 gv1s
 圭 gv1t
 瑰 gv1w
+鲑 gv1y
 癸 gv3b
 轨 gv3c
 庋 gv3g
@@ -1978,6 +1981,7 @@
 礁 jc1s
 教 jc1u
 浇 jc1ut
+鲛 jc1y
 跤 jc1z
 嚼 jc2k
 矫 jc2u
@@ -2122,6 +2126,7 @@
 悸 ji4xh
 记 ji4y
 鲫 ji4yj
+鲚 ji4yq
 计 ji4ys
 迹 ji4z
 戋 jm17
@@ -2960,7 +2965,8 @@
 洛 lo4u
 泺 lo4ul
 摞 lo4us
-珞 lo4w
+雒 lo4w
+珞 lo4wg
 咯 lo0k
 啰 lo0kw
 抡 lp1u
@@ -2988,6 +2994,7 @@
 绺 lq3s
 六 lq43
 遛 lq4z
+銮 lr2j
 栾 lr2m
 娈 lr2n
 鸾 lr2ny
@@ -3188,6 +3195,7 @@
 黾 mg3k
 勐 mg3l
 猛 mg3q
+艋 mg3v
 懵 mg3x
 梦 mg4t
 孟 mg4z
@@ -4618,9 +4626,9 @@
 瑭 th2w
 帑 th3j
 倘 th3r
-傥 th3ro
+傥 th3rd
 躺 th3u
-淌 th3uh
+淌 th3uu
 烫 th4h
 趟 th4z
 剔 ti1d
@@ -5274,6 +5282,7 @@
 张 vh1g
 彰 vh1m
 樟 vh1md
+獐 vh1q
 漳 vh1u
 璋 vh1w
 长 vh34
@@ -5725,6 +5734,7 @@
 洧 wz3u
 玮 wz3w
 诿 wz3y
+鲔 wz3yy
 卫 wz42
 为 wz44
 未 wz46
@@ -5961,6 +5971,7 @@
 珣 xp2w
 恂 xp2x
 询 xp2y
+鲟 xp2yc
 巡 xp2z
 殉 xp4d
 驯 xp4m
@@ -6044,6 +6055,7 @@
 胥 xu1r
 墟 xu1t
 圩 xu1t.y
+魆 xu1v
 顼 xu1w
 虚 xu1y
 徐 xu2t
@@ -6131,8 +6143,8 @@
 硎 x;2s
 行 x;2t
 型 x;2td
-饧 x;2u
-荥 x;2uc
+荥 x;2u
+饧 x;2ur
 省 x;3m
 擤 x;3u
 醒 x;3y
@@ -6578,7 +6590,7 @@
 𦌩 yi4wh
 𤬩 yi4wi
 𤤺 yi4wr
-𤧕 yi4wx
+𤧕 yi4wt
 忆 yi4x
 憶 yi4x.
 悒 yi4xb
@@ -6691,14 +6703,14 @@
 腰 yk1r
 要 yk1x
 邀 yk1z
+尧 yk2g
 铫 yk2j
 姚 yk2n
 爻 yk2p
 肴 yk2r
-尧 yk2t
 徭 yk2tf
 摇 yk2u
-峣 yk2ut
+峣 yk2ug
 瑶 yk2w
 珧 yk2wv
 窑 yk2x
@@ -6733,8 +6745,9 @@
 吟 yn2k
 龈 yn2n
 狺 yn2q
+垠 yn2t
 圻 yn2t.
-垠 yn2tg
+夤 yn2tb
 淫 yn2u
 沂 yn2uj
 訚 yn2y

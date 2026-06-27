@@ -40,7 +40,7 @@ def process_file(input_file, output_file):
     entries_by_first_char = {}
 
     # ---------- 原有：按行去重 ----------
-    with open(input_file, 'r', encoding='utf-8') as f:
+    with open(input_file, 'r', encoding='utf-8-sig') as f:
         for line in f:
             line = line.rstrip()
             if not line:
@@ -127,7 +127,7 @@ def process_file(input_file, output_file):
 def sort_file_by_second_part(input_file, output_file):
     """按第二部分排序并去重，合并同词条目"""
     try:
-        with open(input_file, 'r', encoding='utf-8') as f:
+        with open(input_file, 'r', encoding='utf-8-sig') as f:
             lines = f.readlines()
 
         # ---------- 初级去重：完全相同的行只保留一次 ----------
@@ -203,7 +203,7 @@ def merge_files_to_ahk(dictionary_file, ciyu_file, output_file):
     """合并词典和词库生成AHK热键文件"""
     result_dict = {}
     try:
-        with open(dictionary_file, 'r', encoding='utf-8') as f:
+        with open(dictionary_file, 'r', encoding='utf-8-sig') as f:
             for line_num, line in enumerate(f, 1):
                 line = line.strip()
                 if not line or line.startswith(';'):
@@ -219,7 +219,7 @@ def merge_files_to_ahk(dictionary_file, ciyu_file, output_file):
         print(f"错误: 找不到文件 {dictionary_file}")
         return
     try:
-        with open(ciyu_file, 'r', encoding='utf-8') as f:
+        with open(ciyu_file, 'r', encoding='utf-8-sig') as f:
             for line_num, line in enumerate(f, 1):
                 line = line.strip()
                 if not line or line.startswith(';'):
@@ -297,7 +297,7 @@ def process_second_part(text):
 def process_filey(input_file, output_file):
     """处理词典文件生成简化编码版本"""
     try:
-        with open(input_file, 'r', encoding='utf-8') as infile:
+        with open(input_file, 'r', encoding='utf-8-sig') as infile:
             lines = infile.readlines()
         with open(output_file, 'w', encoding='utf-8') as outfile:
             for line in lines:

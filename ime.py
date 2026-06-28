@@ -16,14 +16,12 @@ from config import (DATA_FILE, CODE_CHARS, SURROUND_CHARS, SELECTION_SYMBOLS,
 from manager.dictionary_frontend import (
     ensure_data_file, query_phrase, get_entry_count,
     query_by_prefix, process_input, split_sequence,
-    query_single_char, query_multi_chars, query_multi_chars_phrase,
-    get_phrase_segments
+    query_single_char, query_multi_chars,get_phrase_segments
 )
 
 # ==================== 上下文对象：替代全部全局变量 ====================
 
 class InputContext:
-    """封装输入法前端的所有可变状态，替代散落的 18 个全局变量。"""
 
     def __init__(self):
         # ── 输入流程状态 ──
@@ -34,6 +32,8 @@ class InputContext:
         self.split_parts = []                  # 多字输入时拆分后的部件列表
         self.in_part_selection = False         # 是否处于多字部件选择模式
         self.last_input_text = ""              # 上一次输入文本，用于检测变化
+        self.last_output_text = ""             # 上次计算的首候选首字/预览串，供空格快速上屏
+        self.current_candidates = []           # 缓存的候选列表（已分割），供 get_current_candidates 直达
         self.selection_updating = False        # 是否正在由选择操作更新输入框（保护 resolved_chars）
         self.resolved_chars = {}               # {part_index: "汉字"} 多字模式下已选中的部件
         self.original_split_count = 0          # 多字模式下原始拆分的部件总数
@@ -62,6 +62,8 @@ class InputContext:
         self.split_parts = []
         self.in_part_selection = False
         self.current_phrase = ""
+        self.last_output_text = ""
+        self.current_candidates = []
         self.resolved_chars = {}
         self.original_split_count = 0
 
@@ -204,22 +206,29 @@ def navigate_pages(direction):
         ctx.current_page -= 1
     update_display()
 
-def update_display():
+def update_display(processed=None, candidates=None, first_chars=None):
     """
     根据当前状态更新下方的三个显示标签：
       - first_chars_label: 多字预览串（已解部件显示汉字，未解部件显示首候选首字）或短语
       - current_part_label: 当前部件的候选列表
       - page_label: 页码信息（含已选/总数）
-    """
-    input_text = real_time_var.get()
-    processed = process_input(input_text)
-    split_text = split_sequence(processed)
 
-    # 整串查询短语（不含手动单引号分隔的场景）
-    if "'" not in processed:
+    可选参数供 main_function 传入已算数据，避免重复扫描：
+      processed:  process_input() 的结果
+      candidates: 单字模式下的候选字符串
+      first_chars: 多字模式下的预览串
+    未传入时自行计算（navigate_pages/navigate_parts 路径）。
+    """
+    # ── 补充未传入的计算结果 ──
+    if processed is None:
+        processed = process_input(real_time_var.get())
+    if candidates is None and first_chars is None:
+        split_text = split_sequence(processed)
+
+    # 整串查询短语（仅多字模式需要，单字模式下词语不显示，直接跳过）
+    if ctx.query_type == "multi_part" and "'" not in processed:
         ctx.current_phrase = query_phrase(processed)
     else:
-        
         ctx.current_phrase = ""
 
     # 清空标签，准备重新显示
@@ -228,32 +237,21 @@ def update_display():
     page_label.config(text='')
 
     if ctx.query_type == "multi_part":
-        # 优先上词开启 + 用户手动输入单引号 → 使用词语增强预览
-        if "'" in processed and ctx.phrase_priority == "1":
-            phrase_result = get_phrase_segments(processed)
-            if phrase_result:
-                first_chars = phrase_result[0]
-                ctx.split_parts = phrase_result[1]
-            else:
-                first_chars = ""
-                ctx.split_parts = []
-        else:
-            char_codes = split_text.split("'")
-            preview_chars = []
-            for idx, code in enumerate(char_codes):
-                if not code:
-                    continue
-                if idx in ctx.resolved_chars:
-                    preview_chars.append(ctx.resolved_chars[idx])
+        # 未传入 first_chars → 需要完整计算（navigate_pages / navigate_parts 路径）
+        if first_chars is None:
+            if "'" in processed and ctx.phrase_priority == "1":
+                phrase_result = get_phrase_segments(processed)
+                if phrase_result:
+                    first_chars = phrase_result[0]
+                    ctx.split_parts = phrase_result[1]
                 else:
-                    candidates = query_by_prefix(code)
-                    if candidates:
-                        preview_chars.append(candidates[0][0])
-            first_chars = query_multi_chars(split_text)
+                    first_chars = ""
+                    ctx.split_parts = []
+            else:
+                first_chars = query_multi_chars(split_sequence(processed))
 
         if first_chars:
             if ctx.current_phrase and not ctx.in_part_selection:
-                # 如果短语存在且不在部件选择模式，显示预览串和短语
                 if first_chars == ctx.current_phrase[1:-1]:
                     first_chars_label.config(text=first_chars)
                     ctx.current_phrase = ""
@@ -266,19 +264,23 @@ def update_display():
 
         if first_chars and ctx.in_part_selection and ctx.current_part_index >= 0 and ctx.current_part_index < len(ctx.split_parts):
             part = ctx.split_parts[ctx.current_part_index]
-            candidates = query_single_char(part, ctx.current_page * 5)
-            if candidates:
+            part_candidates = query_single_char(part, ctx.current_page * 5)
+            if part_candidates:
                 ctx.current_phrase = ""
-                current_part_label.config(text=candidates)
+                ctx.current_candidates = part_candidates.split("/")
+                current_part_label.config(text=part_candidates)
                 selected_count = len(ctx.resolved_chars)
                 total_count = ctx.original_split_count if ctx.original_split_count > 0 else len(ctx.split_parts)
                 page_label.config(text=f"字 {selected_count + 1}/{total_count} 页 {ctx.current_page + 1}")
 
     elif ctx.query_type == "single":
-        candidates = query_single_char(split_text, ctx.current_page * 5)
+        if candidates is None:
+            candidates = query_single_char(split_text, ctx.current_page * 5)
         if candidates:
+            ctx.current_candidates = candidates.split("/")
             current_part_label.config(text=candidates)
             page_label.config(text=f"页 {ctx.current_page + 1}")
+            ctx.last_output_text = candidates.split("/")[0][0]
 
 def handle_special_keys(input_text):
     """
@@ -313,22 +315,10 @@ def handle_special_keys(input_text):
 def get_current_candidates():
     """
     获取当前状态下显示的候选列表（用于选择符号上屏）。
-    返回字符串列表，若无候选返回空列表。
+    直接从 ctx.current_candidates 缓存读取，不重复扫描码表。
+    若无缓存返回空列表。
     """
-    input_text = real_time_var.get()
-    processed = process_input(input_text)
-    split_text = split_sequence(processed)
-    if ctx.query_type == "single":
-        candidates = query_single_char(split_text, ctx.current_page * 5)
-        if candidates:
-            return candidates.split("/")
-    elif ctx.query_type == "multi_part" and ctx.split_parts and ctx.current_part_index >= 0:
-        part = ctx.split_parts[ctx.current_part_index]
-        candidates = query_single_char(part, ctx.current_page * 5)
-        if candidates:
-            ctx.current_phrase = ""
-            return candidates.split("/")
-    return []
+    return ctx.current_candidates
 
 def handle_selection_keys(event):
     """
@@ -423,6 +413,20 @@ def main_function(*args):
             ctx.resolved_chars = {}
             ctx.original_split_count = 0
 
+    # ── 空格快速路径：跳过重复扫描，直接用缓存上屏 ──
+    if " " in input_text:
+        output_text = ctx.last_output_text
+        if ctx.phrase_priority == "1" and ctx.query_type == "multi_part" and ctx.current_phrase:
+            output_text = ctx.current_phrase[1:-1]
+        elif output_text == "":
+            if ctx.current_phrase:
+                output_text = ctx.current_phrase[1:-1]
+            else:
+                output_text = process_input(input_text)
+        replace_content(input_text, output_text, do_paste=True, reset_entry=True)
+        reset_input_state()
+        return
+
     processed = process_input(input_text)
     split_text = split_sequence(processed)
     output_text = ''
@@ -446,7 +450,7 @@ def main_function(*args):
                     replace_content(input_text, selected_char, do_paste=True, reset_entry=True)
                     reset_input_state()
                     return
-            update_display()
+            update_display(processed=processed, candidates=candidates)
             if candidates != '':
                 if "/" in candidates:
                     output_text = candidates.split("/")[0][0]
@@ -469,26 +473,14 @@ def main_function(*args):
             else:
                 ctx.split_parts = [p for p in split_text.split("'") if p]
                 first_chars = query_multi_chars(split_text)
-            update_display()
+            update_display(processed=processed, first_chars=first_chars)
             output_text = first_chars
 
     if key_processed:
         ctx.current_phrase = ""
 
-    # 处理空格上屏
-    if " " in input_text:
-        if ctx.phrase_priority == "1" and ctx.query_type == "multi_part" and ctx.current_phrase:
-            output_text = ctx.current_phrase[1:-1]
-        elif output_text == "":
-            if ctx.current_phrase:
-                output_text = ctx.current_phrase[1:-1]
-            else:
-                output_text = processed
-                
-        replace_content(input_text, output_text, do_paste=True, reset_entry=True)
-        reset_input_state()
-        return
-
+    # 缓存计算结果，供空格快速上屏使用
+    ctx.last_output_text = output_text
     clear_display_if_no_code(input_text)
     ctx.last_input_text = input_text
 

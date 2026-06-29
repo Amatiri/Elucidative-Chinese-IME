@@ -38,6 +38,14 @@ class InputContext:
         self.resolved_chars = {}               # {part_index: "汉字"} 多字模式下已选中的部件
         self.original_split_count = 0          # 多字模式下原始拆分的部件总数
 
+        # ── 缓存：避免 navigate / update_display 重复计算 ──
+        self._cached_processed = ""
+        self._cached_processed_input = ""
+        self._cached_split_text = ""
+        self._cached_first_chars = ""
+        self._cached_first_chars_input = ""
+        self._cached_phrase_result = None       # get_phrase_segments 的完整结果
+
         # ── 设置开关 ──
         self.auto_commit_enabled = "1"         # 自动上字开关（"1"启用）
         self.phrase_priority = "1"             # 优先上词开关（"1"启用）
@@ -66,6 +74,13 @@ class InputContext:
         self.current_candidates = []
         self.resolved_chars = {}
         self.original_split_count = 0
+        # ── 清空缓存 ──
+        self._cached_processed = ""
+        self._cached_processed_input = ""
+        self._cached_split_text = ""
+        self._cached_first_chars = ""
+        self._cached_first_chars_input = ""
+        self._cached_phrase_result = None
 
     @property
     def resolved_count(self) -> int:
@@ -153,7 +168,6 @@ def navigate_parts(direction):
     """
     在多字选择模式中切换当前部件。
     跳过已解析（resolved_chars 中已有）的部件，只在未解析部件之间跳转。
-    direction: "next" 或 "prev"
     """
     if ctx.query_type != "multi_part" or not ctx.split_parts:
         return
@@ -161,7 +175,6 @@ def navigate_parts(direction):
         if direction == "next":
             ctx.in_part_selection = True
             ctx.current_phrase = ""
-            # 从第一个未解部件开始
             for idx in range(len(ctx.split_parts)):
                 if idx not in ctx.resolved_chars:
                     ctx.current_part_index = idx
@@ -170,7 +183,6 @@ def navigate_parts(direction):
         ctx.current_phrase = ""
         n = len(ctx.split_parts)
         if direction == "next":
-            # 找下一个未解部件，循环
             for offset in range(1, n + 1):
                 candidate = (ctx.current_part_index + offset) % n
                 if candidate not in ctx.resolved_chars:
@@ -183,28 +195,46 @@ def navigate_parts(direction):
                     ctx.current_part_index = candidate
                     break
     ctx.current_page = 0
-    update_display()
+
+    input_text = real_time_var.get()
+    # 输入未变 → 复用 main_function 缓存的 processed 和 first_chars
+    if input_text == ctx._cached_processed_input:
+        processed = ctx._cached_processed
+        cached_first_chars = ctx._cached_first_chars if ctx._cached_first_chars else None
+    else:
+        processed = process_input(input_text)
+        cached_first_chars = None
+    update_display(processed=processed, first_chars=cached_first_chars)
 
 def navigate_pages(direction):
     """
     翻页：direction "down" 下一页， "up" 上一页。
     """
-    if direction == "down":
-        input_text = real_time_var.get()
+    input_text = real_time_var.get()
+    # 输入未变 → 复用 main_function 缓存的 processed 和 split_text
+    if input_text == ctx._cached_processed_input:
+        processed = ctx._cached_processed
+        split_text = ctx._cached_split_text
+    else:
         processed = process_input(input_text)
         split_text = split_sequence(processed)
+
+    candidates = None
+    if direction == "down":
         if ctx.query_type == "single":
-            next_page_candidates = query_single_char(split_text, (ctx.current_page + 1) * 5)
-            if next_page_candidates:
+            if query_single_char(split_text, (ctx.current_page + 1) * 5):
                 ctx.current_page += 1
+                candidates = query_single_char(split_text, ctx.current_page * 5)
         elif ctx.query_type == "multi_part" and ctx.split_parts and ctx.current_part_index >= 0:
             part = ctx.split_parts[ctx.current_part_index]
-            next_page_candidates = query_single_char(part, (ctx.current_page + 1) * 5)
-            if next_page_candidates:
+            if query_single_char(part, (ctx.current_page + 1) * 5):
                 ctx.current_page += 1
     elif direction == "up" and ctx.current_page > 0:
         ctx.current_page -= 1
-    update_display()
+        if ctx.query_type == "single":
+            candidates = query_single_char(split_text, ctx.current_page * 5)
+
+    update_display(processed=processed, candidates=candidates)
 
 def update_display(processed=None, candidates=None, first_chars=None):
     """
@@ -219,9 +249,11 @@ def update_display(processed=None, candidates=None, first_chars=None):
       first_chars: 多字模式下的预览串
     未传入时自行计算（navigate_pages/navigate_parts 路径）。
     """
+    input_text = real_time_var.get()
+
     # ── 补充未传入的计算结果 ──
     if processed is None:
-        processed = process_input(real_time_var.get())
+        processed = process_input(input_text)
     if candidates is None and first_chars is None:
         split_text = split_sequence(processed)
 
@@ -249,6 +281,9 @@ def update_display(processed=None, candidates=None, first_chars=None):
                     ctx.split_parts = []
             else:
                 first_chars = query_multi_chars(split_sequence(processed))
+            # 缓存 first_chars，供下次 navigate_parts 输入未变时复用
+            ctx._cached_first_chars = first_chars
+            ctx._cached_first_chars_input = input_text
 
         if first_chars:
             if ctx.current_phrase and not ctx.in_part_selection:
@@ -479,8 +514,11 @@ def main_function(*args):
     if key_processed:
         ctx.current_phrase = ""
 
-    # 缓存计算结果，供空格快速上屏使用
+    # 缓存计算结果，供 navigate_pages/navigate_parts 复用，供空格快速上屏使用
     ctx.last_output_text = output_text
+    ctx._cached_processed = processed
+    ctx._cached_processed_input = input_text
+    ctx._cached_split_text = split_text
     clear_display_if_no_code(input_text)
     ctx.last_input_text = input_text
 

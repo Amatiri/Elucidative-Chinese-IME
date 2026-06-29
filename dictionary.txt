@@ -3902,6 +3902,7 @@
 票 pc4x
 喷 pf1k
 盆 pf2m
+湓 pf2u
 烹 pg1h
 嘭 pg1k
 砰 pg1s
@@ -5258,9 +5259,11 @@
 谁 uz2y
 这 ve4z
 喳 va1k
+哳 va1ku
 楂 va1m
+查 va1md
 扎 va1u
-揸 va1ui
+揸 va1ud
 渣 va1um
 轧 va2c
 炸 va2h
@@ -5524,6 +5527,7 @@
 湛 vj4u
 钊 vk1j
 啁 vk1k
+嘲 vk1ky
 昭 vk1r
 招 vk1u
 朝 vk1y

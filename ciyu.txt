@@ -75,6 +75,7 @@
 彡 bms
 匚 bob
 㔾 boe
+播放 bofh
 博士 boui
 博物馆 bowug
 丬 bpj
@@ -153,6 +154,7 @@
 ︵ dku
 倒数 dkuu
 导数 dkuu4
+导致 dkvi
 ︶ dkx
 ） dky
 （ dkz
@@ -224,6 +226,7 @@
 福建 fujm
 服务 fuwu
 复兴 fux;
+复习 fuxi
 敷衍 fuyj
 复杂 fuza
 非常 fzih
@@ -362,6 +365,7 @@
 汉字 hjzi
 好吧 hkb
 好罢 hkba
+好像 hkxd
 胡克希伍 hkxw hukexiw
 还能 hlng
 海南 hlnj
@@ -446,6 +450,7 @@
 经纪 j;ji4s
 境界 j;jx
 竞争 j;vg
+经验 j;yj
 教科书 jckeu
 交流 jclq
 教育 jcyu
@@ -456,6 +461,7 @@
 鞠躬尽瘁 jgjc jugsjnc
 基本 jibf
 机会 jihv
+基础 jiiu
 吉林 jiln
 纪录片 jilup
 计算 jisr
@@ -543,6 +549,7 @@
 了解 lcjx
 了结 lcjx2
 辽宁 lcn;
+粮食 ldui
 良莠不齐 ldybbuq lybq
 厉害 lihl
 例句 liju
@@ -645,6 +652,7 @@
 请你 q;ni
 庆祝 q;vu
 罄竹难书 q;vunju qvnu
+清晰 q;xi
 巧妙 qcmc
 启动 qids
 奇怪 qigy4
@@ -868,6 +876,7 @@
 四川 siir
 思考 sikk
 思想 sixd
+私信 sixn
 扫描 skmc
 死而后已 sohy siorhby
 所以 soyi
@@ -1075,6 +1084,7 @@
 战事 vjui4k
 找到 vkdk
 召唤 vkhr
+照片 vkpm
 ⿹ vl.1
 ⿽ vl.2
 ⿺ vl.3
@@ -1221,6 +1231,7 @@
 性质 x;vi
 兴致 x;vi4
 行为 x;wz
+消费者 xcfzv
 效率 xcly
 消息 xcxi
 想法 xdfa
@@ -1253,6 +1264,7 @@
 新建 xnjm
 信笺 xnjm1
 信件 xnjm4
+信息 xnxi
 修改 xqgl
 选拔 xrba
 选项 xrxd
@@ -1337,6 +1349,7 @@
 原式 yrui4
 院士 yrui45
 远视 yrui4s
+原因 yryn
 涌动 ysds
 用户 yshu
 拥护 yshu4
@@ -1358,6 +1371,7 @@
 坐标 zobc
 做到 zodk
 昨天 zotm
+左右 zoyb
 遵循 zpxp
 总之 zsvi
 最后 zvhb

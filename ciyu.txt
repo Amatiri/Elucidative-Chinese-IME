@@ -1,5 +1,6 @@
 病毒 b;du
 并非 b;fz
+并且 b;qx
 冰箱 b;xd
 丶 bad
 乛 bag
@@ -59,6 +60,7 @@
 报告 bkgk
 保护 bkhu
 保持 bkii
+包括 bkko
 保证 bkvg
 拜拜 blbl
 百度 bldu
@@ -209,6 +211,7 @@
 方面 fhmm
 方案 fhoj
 方式 fhui
+反馈 fjkv
 繁体 fjti
 反提 fjti2
 繁体字 fjtiz
@@ -298,6 +301,7 @@
 关闭 grbi
 ρ grh
 Ρ grhc
+关键 grjm
 管理 grli
 官吏 grli4
 惯例 grli4r
@@ -338,6 +342,9 @@
 故乡 guxd
 规定 gvd;
 规范 gvfj
+规划 gvhw
+桂花 gvhw1
+归化 gvhw4
 规模 gvmo
 贵州 gvvb
 规则 gvze
@@ -440,6 +447,7 @@
 初中 iuvs
 初衷 iuvs1
 处刑 iux;2
+雏形 iux;2m
 出现 iuxm
 出租车 iuzui
 ʒ izh
@@ -450,6 +458,9 @@
 经纪 j;ji4s
 境界 j;jx
 竞争 j;vg
+经营 j;y;
+精英 j;y;1
+晶莹 j;y;2
 经验 j;yj
 教科书 jckeu
 交流 jclq
@@ -461,6 +472,7 @@
 鞠躬尽瘁 jgjc jugsjnc
 基本 jibf
 机会 jihv
+计划 jihw
 基础 jiiu
 吉林 jiln
 纪录片 jilup
@@ -559,6 +571,7 @@
 离开 likl
 理论 lilp
 里面 limm
+理念 linm
 例如 liru
 历史 liui
 理由 liyb
@@ -601,6 +614,7 @@
 腼腆 mmtm
 泯灭 mnmx
 模式 moui
+模型 mox;
 明日方舟 mrfv m;rifhv
 目标 mubc
 没关系 mzgrx
@@ -670,6 +684,7 @@
 气势 qiui4l
 启示 qiui4o
 其中 qivs
+企业 qiye4
 歧义 qiyi
 起义 qiyi4
 奇异 qiyi4c
@@ -684,6 +699,7 @@
 全部 qrbu
 权当 qrdh1
 全能 qrng
+全球 qrqq
 确认 qtrf
 确实 qtui2
 驱动 quds
@@ -982,6 +998,7 @@
 实实在在 uiuizlz
 ⊥ uivvi
 实现 uixm
+适应 uiy;
 使用 uiys
 º ujb0
 ¹ ujb1
@@ -1055,6 +1072,7 @@
 直播 vibo
 只不过 vibug
 知道 vidk
+制度 vidu
 支付宝 vifub
 指挥 vihv1
 只会 vihv4r
@@ -1067,6 +1085,7 @@
 智能 ving2
 々 vis
 只是 viui
+知识 viui2
 至少 viuk
 只有 viyb
 质疑 viyi2
@@ -1217,9 +1236,11 @@
 乌兹别克斯坦 wzbkst wzbt
 维护 wzhu
 渭城朝雨浥轻尘 wzigvkyuyiq;i wivyyqi
+危机 wzji
 微积分 wzjif
 为了 wzle
 委内瑞拉 wznzrvl wnrl
+围绕 wzrk
 微软 wzrr
 葳蕤 wzrv
 为什么 wzufm
@@ -1252,6 +1273,7 @@
 喜上眉梢 xiuhmzu
 蟋蟀 xiuy
 希望 xiwh
+吸引 xiyn
 西藏 xizh
 洗澡 xizk
 现代 xmdl
@@ -1265,6 +1287,7 @@
 信笺 xnjm1
 信件 xnjm4
 信息 xnxi
+寻找 xpvk
 修改 xqgl
 选拔 xrba
 选项 xrxd
@@ -1277,6 +1300,7 @@
 许多 xudo
 畜牧 xumu
 序幕 xumu4
+需求 xuqq
 需要 xuyk
 仙之人兮列如麻 xvrm xvrxlrm
 下课 xwke
@@ -1286,6 +1310,7 @@
 下限 xwxm4
 下载 xwzl
 歇斯底里 xxsidil
+协调 xxtc
 写作 xxzo
 协作 xxzo4
 应付 y;fu
@@ -1354,6 +1379,7 @@
 用户 yshu
 拥护 yshu4
 欲速则不达 yszd yszbd
+阅读 ytdu
 越野 ytye
 雨尘 yuif
 雨尘さま yuifsama

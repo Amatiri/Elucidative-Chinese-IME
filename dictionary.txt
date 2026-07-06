@@ -1038,6 +1038,7 @@
 负 fu4d
 副 fu4dt
 馥 fu4h
+蝮 fu4i
 咐 fu4k
 驸 fu4m
 妇 fu4n
@@ -1952,6 +1953,7 @@
 龊 io4n
 绰 io4s
 趠 io4z.
+蝽 ip1i
 椿 ip1m
 春 ip1r
 莼 ip2c
@@ -2742,6 +2744,7 @@
 葵 kv2c
 奎 kv2d
 馗 kv2dj
+蝰 kv2i
 喹 kv2k
 睽 kv2m
 暌 kv2r
@@ -2794,6 +2797,7 @@
 搂 lb1u
 蒌 lb2c
 髅 lb2g
+蝼 lb2i
 喽 lb2k
 楼 lb2m
 娄 lb2n
@@ -3165,6 +3169,7 @@
 路 lu4z
 逯 lu4zi
 箓 lu4zu
+泪 lv4u
 俩 lw3r
 咧 lx1k
 咧 lx3k
@@ -3594,6 +3599,7 @@
 男 nj2t
 难 nj2w
 赧 nj3i
+蝻 nj3is
 腩 nj3r
 难 nj4w
 孬 nk1n
@@ -4285,11 +4291,11 @@
 仟 qm11.
 阡 qm1b
 芊 qm1c
-牵 qm1d
 铅 qm1j
 钎 qm1jq
 骞 qm1m
-鹐 qm1n
+牵 qm1n
+鹐 qm1nd
 佥 qm1r
 扦 qm1u
 搴 qm1ub
@@ -4531,6 +4537,7 @@
 戎 rs2g
 熔 rs2h
 融 rs2i
+蝾 rs2im
 荣 rs2m
 榕 rs2mb
 狨 rs2q
@@ -4573,6 +4580,7 @@
 萨 sa4c
 飒 sa4d
 飕 sb1f
+螋 sb1i
 嗖 sb1k
 搜 sb1u
 溲 sb1uf
@@ -6410,8 +6418,9 @@
 疣 yb2by
 莜 yb2c
 莸 yb2cq
-蚰 yb2i
+蝣 yb2i
 蝤 yb2iq
+蚰 yb2iy
 铀 yb2j
 柚 yb2m
 犹 yb2q

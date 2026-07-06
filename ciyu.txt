@@ -254,6 +254,7 @@
 Η getc
 各种 gevs
 根据 gfju
+跟随 gfsv
 γ gga
 Γ ggac
 更多 ggdo
@@ -508,6 +509,7 @@
 尽量 jnld
 进入 jnru
 今天 jntm
+进退 jntv
 金属 jnuu
 进行 jnx;
 进一步 jnyib
@@ -575,6 +577,7 @@
 例如 liru
 历史 liui
 理由 liyb
+褴褛 ljly
 劳动 lkds
 老师 lkui
 联邦 lmbh
@@ -597,6 +600,7 @@
 名称 m;ig
 明令禁止 m;l;jnv mljv
 明明 m;m;2
+明媚 m;mz
 明确 m;qt
 明天 m;tm
 明知故问 m;viguw mvgw
@@ -667,6 +671,7 @@
 庆祝 q;vu
 罄竹难书 q;vunju qvnu
 清晰 q;xi
+憔悴 qccv
 巧妙 qcmc
 启动 qids
 奇怪 qigy4
@@ -1218,6 +1223,7 @@
 网盘 whpj
 王者 whve
 完成 wjig
+完美 wjmz
 完全 wjqr
 晚上 wjuh
 完善 wjuj
@@ -1402,3 +1408,6 @@
 总之 zsvi
 最后 zvhb
 最近 zvjn
+温柔 wfrb
+懵懂 mgds3
+依稀 yixi

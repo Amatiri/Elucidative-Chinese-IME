@@ -90,6 +90,7 @@
 不仅 bujn
 布局 buju
 不列颠 bulxd
+部门 bumf
 部署配置 bupv buuupzv
 补贴 butx
 部首 buub3
@@ -137,6 +138,7 @@
 ； dfh
 等待 dgdl
 等级 dgji
+登录 dglu
 地点 didm
 地方 difh
 地府 difu3
@@ -503,6 +505,11 @@
 浸入 jn4ru42
 进步 jnbu
 进化 jnhw4
+紧急 jnji
+进击 jnji1
+晋级 jnji2
+禁忌 jnji4
+谨记 jnji4y
 仅仅 jnjn
 斤斤计较 jnjnjij jjjj
 津津有味 jnjnybw jjyw
@@ -611,6 +618,7 @@
 麻酱 majd4
 马上 mauh
 描述 mcuu
+懵懂 mgds3
 盲打 mhda3
 米哈游 mihay
 耄耋 mkdx
@@ -923,6 +931,7 @@
 讨论 tklp
 讨厌 tkyj
 涂蜡的氧化切制铜楼梯 tldt tldyhqvtlt
+台风 tlfg
 台湾 tlwj
 天津 tmjn
 添加 tmjw
@@ -1216,6 +1225,7 @@
 稳健 wfjm4
 文件夹 wfjmj
 文明 wfm;
+温柔 wfrb
 问题 wfti
 文献 wfxm
 温馨 wfxn
@@ -1346,6 +1356,7 @@
 意思 yisi0
 伊斯兰 yisil
 艺术 yiuu
+依稀 yixi
 以下 yixw
 一些 yixx
 一样 yiyh
@@ -1408,6 +1419,13 @@
 总之 zsvi
 最后 zvhb
 最近 zvjn
-温柔 wfrb
-懵懂 mgds3
-依稀 yixi
+前后 qmhb
+极端 jidr
+学校 xtxc
+全体 qrti
+作为 zowz
+座位 zowz4
+武器 wuqi
+雾气 wuqi4
+集合 jihe
+几何 jihe2

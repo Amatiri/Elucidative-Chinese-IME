@@ -114,6 +114,7 @@
 参考 cjkk
 操作 ckzo
 菜单 cldj
+采访 clfh
 才会 clhv
 剉冰 cob;1
 错误 cowu
@@ -377,6 +378,7 @@
 好罢 hkba
 好像 hkxd
 胡克希伍 hkxw hukexiw
+还会 hlhv
 还能 hlng
 海南 hlnj
 还是 hlui
@@ -474,6 +476,9 @@
 江西 jdxi
 鞠躬尽瘁 jgjc jugsjnc
 基本 jibf
+极端 jidr
+集合 jihe
+几何 jihe2
 机会 jihv
 计划 jihw
 基础 jiiu
@@ -542,6 +547,8 @@
 结合 jxhe
 接触 jxiu4
 接纳 jxna
+街头 jxtb
+接头 jxtb2
 解释 jxui
 介绍 jxuk
 结束 jxuu
@@ -651,6 +658,7 @@
 年轻 nmq;
 内蒙古 nzmgg
 内容 nzrs
+偶尔 obor
 俄罗斯 oelos
 安徽 ojhv
 安全 ojqr
@@ -670,6 +678,7 @@
 拼音 pnyn
 扑克 puke
 葡萄牙 putky
+配合 pzhe
 培训 pzxp
 培养 pzyh
 青海 q;hl
@@ -702,6 +711,7 @@
 起义 qiyi4
 奇异 qiyi4c
 黔驴技穷 qljq qmlyjiq
+前后 qmhb
 钱库 qmku
 前面 qmmm
 潜能 qmng
@@ -713,6 +723,7 @@
 权当 qrdh1
 全能 qrng
 全球 qrqq
+全体 qrti
 确认 qtrf
 确实 qtui2
 驱动 quds
@@ -1162,6 +1173,7 @@
 这期神了 vqul veqiufl
 ⿰ vr.
 转化 vrhw
+赚钱 vrqm
 ⿲ vrr.
 转向 vrxd
 中国 vsg
@@ -1246,6 +1258,8 @@
 五官 wugr1
 无关痛痒 wugrtsy wgty
 物理 wuli
+武器 wuqi
+雾气 wuqi4
 无穷 wuqs
 物是人非 wurf wuuirff
 无所谓 wusow
@@ -1312,6 +1326,7 @@
 学期 xtqi
 噱头 xttb
 学生 xtug
+学校 xtxc
 学习 xtxi
 许多 xudo
 畜牧 xumu
@@ -1361,6 +1376,8 @@
 一些 yixx
 一样 yiyh
 意义 yiyi44
+眼睛 yjj;
+眼镜 yjj;4
 研究 yjjq
 眼泪 yjlz
 验证 yjvg
@@ -1414,18 +1431,10 @@
 坐标 zobc
 做到 zodk
 昨天 zotm
+作为 zowz
+座位 zowz4
 左右 zoyb
 遵循 zpxp
 总之 zsvi
 最后 zvhb
 最近 zvjn
-前后 qmhb
-极端 jidr
-学校 xtxc
-全体 qrti
-作为 zowz
-座位 zowz4
-武器 wuqi
-雾气 wuqi4
-集合 jihe
-几何 jihe2

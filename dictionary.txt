@@ -1905,6 +1905,7 @@
 豉 ii3d
 耻 ii3o
 侈 ii3r
+褫 ii3y
 彳 ii41
 斥 ii44
 瘛 ii4b
@@ -2469,6 +2470,7 @@
 犋 ju4n
 俱 ju4r
 倨 ju4rs
+屦 ju4s
 据 ju4u
 拒 ju4uj
 聚 ju4v
@@ -4776,6 +4778,7 @@
 她 ta1n
 塌 ta1t
 溻 ta1u
+褟 ta1y
 遢 ta1z
 趿 ta1zj
 獭 ta3q
@@ -5628,6 +5631,7 @@
 瞻 vj1md
 沾 vj1u
 詹 vj1y
+谵 vj1yy
 斩 vj3c
 辗 vj3cs
 盏 vj3m
@@ -6955,6 +6959,7 @@
 餍 yj4uc
 雁 yj4w
 谚 yj4y
+谳 yj4yx
 酽 yj4yy
 讌 yj4y;
 䜩 yj4y;.
@@ -7184,6 +7189,7 @@
 俣 yu3rw
 屿 yu3u
 羽 yu3x
+窳 yu3xg
 语 yu3y
 聿 yu41
 玉 yu44

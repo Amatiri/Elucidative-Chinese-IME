@@ -54,8 +54,8 @@ def main():
             elif choice == '4':
                 interactive_mode()
             elif choice == '5':
-                single, phrase = main_menu()
-                print(f"整理完成！码表条目：{single}+{phrase} ")
+                single, phrase, web_chars, web_phrases = main_menu()
+                print(f"整理完成！码表条目：{single}+{phrase}")
             elif choice == '6':
                 run_input_method()
             elif choice == '7':

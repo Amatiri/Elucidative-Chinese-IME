@@ -1,5 +1,8 @@
 import re
-from config import DATA_FILE, CIYU_FILE, DATA_NO_NUMBER_FILE
+import os
+import json
+from datetime import datetime
+from config import DATA_FILE, CIYU_FILE, DATA_NO_NUMBER_FILE, BASE_DIR
 
 
 def char_priority(c):
@@ -322,12 +325,63 @@ def process_filey(input_file, output_file):
         print(f"处理文件时发生错误: {e}")
 
 
+def build_web_data():
+    """生成网页查询用的 JS 数据文件"""
+    help_dir = os.path.join(BASE_DIR, "help/webpage")
+    output_path = os.path.join(help_dir, "dictionary-data.js")
+
+    # 汉字码表 → charMap
+    entry_count = 0
+    char_map = {}
+    with open(DATA_FILE, "r", encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            parts = re.split(r"\s+", line, maxsplit=1)
+            if len(parts) == 2:
+                char, code = parts[0], parts[1]
+                char_map.setdefault(char, []).append(code)
+                entry_count += 1
+
+    # 词语码表 → phraseMap
+    phrase_map = {}
+    with open(CIYU_FILE, "r", encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            parts = re.split(r"\s+", line, maxsplit=1)
+            if len(parts) == 2:
+                phrase, codes_str = parts[0], parts[1]
+                codes = codes_str.split()
+                phrase_map[phrase] = codes
+
+    # 写出 JS
+    js = (
+        "// 解书音形 · 码表数据 — 由 manager.file_processor 自动生成，勿手动编辑\n"
+        f"// 生成时间：{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
+        f"// 汉字条目：{entry_count} | 去重后字符：{len(char_map)} | 词语：{len(phrase_map)}\n"
+        "window.jieshuDict = {\n"
+        f"  entryCount: {entry_count},\n"
+        f"  phraseCount: {len(phrase_map)},\n"
+        f"  chars: {json.dumps(char_map, ensure_ascii=False, separators=(',', ':'))},\n"
+        f"  phrases: {json.dumps(phrase_map, ensure_ascii=False, separators=(',', ':'))}\n"
+        "};\n"
+    )
+    os.makedirs(help_dir, exist_ok=True)
+    with open(output_path, "w", encoding="utf-8") as f:
+        f.write(js)
+    return entry_count, len(phrase_map)
+
+
 def main_menu():
     """整理码表主入口"""
     single_count = process_file(DATA_FILE, DATA_FILE)
     phrase_count = sort_file_by_second_part(CIYU_FILE, CIYU_FILE)
     process_filey(DATA_FILE, DATA_NO_NUMBER_FILE)
-    return single_count, phrase_count
+    web_chars, web_phrases = build_web_data()
+    return single_count, phrase_count, web_chars, web_phrases
 
 
 if __name__ == "__main__":

@@ -221,6 +221,8 @@ ABCD(E)(.F)
 
 键位图:[解书音形 · 交互式键位图](https://jmwztu.netlify.app/)
 
+查询汉字: [解书音形 · 编码查询](https://iaxp.netlify.app/)
+
 **设计理念总结**
 
 1. **三层结构**

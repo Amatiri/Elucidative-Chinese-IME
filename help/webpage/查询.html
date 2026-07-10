@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>解书音形 · 编码查询</title>
+    <style>
+        /* ── 全局重置 & 古风基调 ── */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "华文楷体", "KaiTi", "楷体", "STKaiti", "Noto Serif SC", serif;
+            background: #e8ddd0;
+            /* 宣纸底色 */
+            color: #2c1810;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 40px 16px 60px;
+            /* 纸纹效果 */
+            background-image:
+                radial-gradient(ellipse at 20% 50%, rgba(200, 180, 160, 0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, rgba(200, 180, 160, 0.10) 0%, transparent 50%),
+                repeating-linear-gradient(0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(180, 160, 140, 0.04) 2px,
+                    rgba(180, 160, 140, 0.04) 4px);
+        }
+
+        .container {
+            max-width: 720px;
+            width: 100%;
+            background: #faf6ed;
+            padding: 32px 32px 28px;
+            border-radius: 6px;
+            box-shadow:
+                0 2px 12px rgba(60, 40, 20, 0.10),
+                inset 0 0 0 1px #e8ddd0;
+            position: relative;
+        }
+
+        /* ── 古风装饰边框 ── */
+        .container::before {
+            content: "";
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            right: 6px;
+            bottom: 6px;
+            border: 1px solid #d4c8b8;
+            border-radius: 4px;
+            pointer-events: none;
+        }
+        .container::after {
+            content: "◆";
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #b8a088;
+            font-size: 14px;
+            background: #faf6ed;
+            padding: 0 12px;
+            letter-spacing: 6px;
+        }
+
+        /* ── 头部 ── */
+        header {
+            text-align: center;
+            margin-bottom: 24px;
+            position: relative;
+            padding-bottom: 16px;
+        }
+        header::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 20%;
+            right: 20%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #c4b080, transparent);
+        }
+        header h1 {
+            font-size: 30px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            color: #2c1810;
+            font-family: "华文楷体", "KaiTi", "楷体", "STKaiti", serif;
+            text-shadow: 0 1px 2px rgba(180, 140, 100, 0.10);
+            position: relative;
+            display: inline-block;
+        }
+        /* 印章装饰 */
+        header h1::before {
+            content: "❦";
+            font-size: 18px;
+            color: #b85a3a;
+            margin-right: 12px;
+            opacity: 0.7;
+        }
+        header h1::after {
+            content: "❦";
+            font-size: 18px;
+            color: #b85a3a;
+            margin-left: 12px;
+            opacity: 0.7;
+        }
+        header p {
+            font-size: 20px;
+            color: #8a7a68;
+            margin-top: 8px;
+            letter-spacing: 2px;
+        }
+
+        /* ── Tab 切换 ── */
+        .tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 16px;
+            border-radius: 6px 6px 0 0;
+            overflow: hidden;
+            border: 1px solid #d4c8b8;
+            border-bottom: none;
+            background: #f0e8dc;
+        }
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 10px 0 8px;
+            font-size: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            background: transparent;
+            color: #7a6a58;
+            border: none;
+            transition: background 0.2s, color 0.2s;
+            font-family: inherit;
+            letter-spacing: 2px;
+            position: relative;
+        }
+        .tab:first-child {
+            border-radius: 6px 0 0 0;
+        }
+        .tab:last-child {
+            border-radius: 0 6px 0 0;
+        }
+        .tab.active {
+            background: #d4c8b8;
+            color: #2c1810;
+        }
+        .tab.active::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 20%;
+            right: 20%;
+            height: 2px;
+            background: #b85a3a;
+            border-radius: 2px;
+        }
+        .tab:hover:not(.active) {
+            background: #e4d8ca;
+            color: #3a2a1a;
+        }
+
+        /* ── 输入区 ── */
+        .input-area {
+            background: #f5efe6;
+            border: 1px solid #d4c8b8;
+            border-radius: 0 0 6px 6px;
+            padding: 16px 18px 14px;
+            margin-bottom: 18px;
+            position: relative;
+        }
+        .input-area::before {
+            content: "〓";
+            position: absolute;
+            top: -10px;
+            right: 16px;
+            font-size: 12px;
+            color: #c4b080;
+            background: #f5efe6;
+            padding: 0 6px;
+        }
+        textarea {
+            width: 100%;
+            min-height: 72px;
+            resize: vertical;
+            font-size: 20px;
+            font-family: "华文楷体", "KaiTi", "楷体", "STKaiti", "Noto Serif SC", serif;
+            padding: 10px 14px;
+            border: 1px solid #d4c8b8;
+            border-radius: 4px;
+            background: #fdfaf5;
+            outline: none;
+            line-height: 1.8;
+            color: #2c1810;
+            transition: border-color 0.2s;
+        }
+        textarea:focus {
+            border-color: #b85a3a;
+            box-shadow: 0 0 0 2px rgba(184, 90, 58, 0.10);
+        }
+        textarea::placeholder {
+            color: #b8a898;
+            font-style: italic;
+        }
+        .hint {
+            font-size: 15px;
+            color: #a89888;
+            margin-top: 8px;
+            padding-left: 2px;
+            letter-spacing: 0.5px;
+        }
+
+        /* ── 结果区 ── */
+        .result-section {
+            margin-bottom: 16px;
+        }
+        .result-header {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 0 2px;
+        }
+        .result-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #5a4a3a;
+            letter-spacing: 1px;
+        }
+        .result-title::before {
+            content: "▸ ";
+            color: #b85a3a;
+        }
+        .result-count {
+            font-size: 15px;
+            color: #a89888;
+        }
+
+        /* ── 表格 ── */
+        .result-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fdfaf5;
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid #d4c8b8;
+        }
+        .result-table th,
+        .result-table td {
+            text-align: left;
+            padding: 8px 14px;
+            font-size: 18px;
+            border-bottom: 1px solid #e8ddd0;
+        }
+        .result-table th {
+            background: #e8ddd0;
+            font-weight: 600;
+            font-size: 18px;
+            color: #4a3a2a;
+            letter-spacing: 1px;
+        }
+        .result-table tr:last-child td {
+            border-bottom: none;
+        }
+        .result-table tr:hover td {
+            background: #f5efe6;
+        }
+        .char-cell {
+            font-size: 10px;
+            font-weight: 600;
+            min-width: 64px;
+            color: #2c1810;
+        }
+        .code-cell {
+            font-family: "Consolas", "Fira Code", "华文楷体", monospace;
+            color: #5a3a2a;
+            letter-spacing: 0.5px;
+        }
+        .missing {
+            color: #b85a3a;
+            font-style: italic;
+        }
+        .multi-row td {
+            border-bottom: 1px dashed #dcd0c0;
+        }
+        .multi-row:last-of-type td {
+            border-bottom: 1px solid #e8ddd0;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #b8a898;
+            padding: 36px 0 28px;
+            font-size: 15px;
+            letter-spacing: 1px;
+        }
+        .empty-state::before {
+            content: "☯ ";
+            opacity: 0.5;
+        }
+
+        /* ── 底部数据信息 ── */
+        .data-info {
+            text-align: center;
+            font-size: 15px;
+            color: #b8a898;
+            margin-top: 20px;
+            padding-top: 14px;
+            border-top: 1px solid #e8ddd0;
+            letter-spacing: 1px;
+        }
+
+        /* ── 页脚 ── */
+        footer {
+            text-align: center;
+            font-size: 15px;
+            color: #b8a898;
+            margin-top: 6px;
+            padding-top: 8px;
+            letter-spacing: 0.5px;
+        }
+        footer a {
+            color: #7a5a3a;
+            text-decoration: none;
+            border-bottom: 1px dotted #d4c8b8;
+            transition: color 0.2s;
+        }
+        footer a:hover {
+            color: #b85a3a;
+            border-bottom-color: #b85a3a;
+        }
+
+        /* ── 响应式 ── */
+        @media (max-width: 540px) {
+            body {
+                padding: 20px 10px 40px;
+            }
+            .container {
+                padding: 20px 16px 20px;
+            }
+            .container::before {
+                top: 4px;
+                left: 4px;
+                right: 4px;
+                bottom: 4px;
+            }
+            .container::after {
+                font-size: 18px;
+                top: -6px;
+                padding: 0 8px;
+                letter-spacing: 4px;
+            }
+            header h1 {
+                font-size: 30px;
+                letter-spacing: 2px;
+            }
+            header h1::before,
+            header h1::after {
+                font-size: 18px;
+                margin: 0 6px;
+            }
+            .tab {
+                font-size: 18px;
+                padding: 8px 0 6px;
+                letter-spacing: 1px;
+            }
+            textarea {
+                font-size: 18px;
+                min-height: 60px;
+                padding: 8px 12px;
+            }
+            .char-cell {
+                font-size: 18px;
+                min-width: 48px;
+            }
+            .result-table th,
+            .result-table td {
+                padding: 6px 10px;
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- 头部 -->
+        <header>
+            <h1>解书音形</h1>
+            <p>编码查询 · 逐字见源</p>
+        </header>
+
+        <!-- Tab -->
+        <div class="tabs">
+            <button class="tab active" id="tab-char" onclick="switchTab('char')">查汉字</button>
+            <button class="tab" id="tab-phrase" onclick="switchTab('phrase')">查词语</button>
+        </div>
+
+        <!-- 输入区 -->
+        <div class="input-area">
+            <textarea id="input" placeholder="粘贴要查询的汉字…"></textarea>
+            <div class="hint" id="hint">直接粘贴任意长度的连续汉字，编码逐字展示</div>
+        </div>
+
+        <!-- 结果区 -->
+        <div class="result-section">
+            <div id="result-header" hidden>
+                <div class="result-header">
+                    <span class="result-title" id="result-title">查询结果</span>
+                    <span class="result-count" id="result-count"></span>
+                </div>
+                <div id="result"></div>
+            </div>
+        </div>
+
+        <!-- 数据信息 -->
+        <div class="data-info" id="data-info"></div>
+
+        <!-- 页脚 -->
+        <footer>
+            <a href="https://github.com/Amatiri/Elucidative-Chinese-IME" target="_blank">解书音形输入法</a>
+            &nbsp;·&nbsp; 编码查询工具
+            &nbsp;·&nbsp; <a href="https://jmwztu.netlify.app">键位图</a>
+        </footer>
+    </div>
+
+    <script src="dictionary-data.js">
+    </script>
+    <script>
+        // ── 汉字判断 ──
+        function isHanzi(c) {
+            const cp = c.codePointAt(0);
+            return (cp >= 0x3400 && cp <= 0x9fff) ||
+                (cp >= 0x20000 && cp <= 0x33479) ||
+                (cp >= 0xf900 && cp <= 0xfad9);
+        }
+
+        // ── Tab 切换 ──
+        let currentTab = 'char';
+
+        function switchTab(tab) {
+            currentTab = tab;
+            document.getElementById('tab-char').classList.toggle('active', tab === 'char');
+            document.getElementById('tab-phrase').classList.toggle('active', tab === 'phrase');
+
+            const input = document.getElementById('input');
+            const hint = document.getElementById('hint');
+            if (tab === 'char') {
+                input.placeholder = '粘贴要查询的汉字…';
+                hint.textContent = '直接粘贴任意长度的连续汉字，编码逐字展示';
+            } else {
+                input.placeholder = '输入词语，多个词用空格分隔…';
+                hint.textContent = '多个词语用空格分开，如「输入法 音韵 格局」';
+            }
+            input.value = '';
+            document.getElementById('result').innerHTML = '';
+            document.getElementById('result-header').hidden = true;
+        }
+
+        // ── 查汉字 ──
+        function queryChars(text) {
+            const dict = window.jieshuDict;
+            if (!dict || !dict.chars) return null;
+
+            const chars = [...text].filter(isHanzi);
+            if (chars.length === 0) return null;
+
+            let html = '<table class="result-table"><thead><tr><th>汉字</th><th>编码</th></tr></thead><tbody>';
+            for (const ch of chars) {
+                const codes = dict.chars[ch];
+                if (!codes || codes.length === 0) {
+                    html += `<tr><td class="char-cell">${ch}</td><td class="code-cell missing">—</td></tr>`;
+                } else if (codes.length === 1) {
+                    html += `<tr><td class="char-cell">${ch}</td><td class="code-cell">${escapeHtml(codes[0])}</td></tr>`;
+                } else {
+                    codes.forEach((code, i) => {
+                        const cls = i < codes.length - 1 ? 'multi-row' : '';
+                        const charTd = i === 0 ?
+                            `<td class="char-cell" rowspan="${codes.length}">${ch}</td>` :
+                            '';
+                        html += `<tr class="${cls}">${charTd}<td class="code-cell">${escapeHtml(code)}</td></tr>`;
+                    });
+                }
+            }
+            html += '</tbody></table>';
+
+            return { html, count: chars.length };
+        }
+
+        // ── 查词语 ──
+        function queryPhrases(text) {
+            const dict = window.jieshuDict;
+            if (!dict || !dict.phrases) return null;
+
+            const words = text.trim().split(/\s+/).filter(Boolean);
+            if (words.length === 0) return null;
+
+            let html = '<table class="result-table"><thead><tr><th>词语</th><th>编码</th></tr></thead><tbody>';
+            for (const w of words) {
+                const codes = dict.phrases[w];
+                if (!codes || codes.length === 0) {
+                    html += `<tr><td class="char-cell">${w}</td><td class="code-cell missing">—</td></tr>`;
+                } else if (codes.length === 1) {
+                    html += `<tr><td class="char-cell">${w}</td><td class="code-cell">${escapeHtml(codes[0])}</td></tr>`;
+                } else {
+                    codes.forEach((code, i) => {
+                        const cls = i < codes.length - 1 ? 'multi-row' : '';
+                        const charTd = i === 0 ?
+                            `<td class="char-cell" rowspan="${codes.length}">${w}</td>` :
+                            '';
+                        html += `<tr class="${cls}">${charTd}<td class="code-cell">${escapeHtml(code)}</td></tr>`;
+                    });
+                }
+            }
+            html += '</tbody></table>';
+
+            return { html, count: words.length };
+        }
+
+        // ── 工具 ──
+        function escapeHtml(s) {
+            return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+
+        // ── 底部数据信息 ──
+        (function showDataInfo() {
+            const d = window.jieshuDict;
+            if (!d) return;
+            const ec = d.entryCount || Object.values(d.chars).reduce((s, c) => s + c.length, 0);
+            const pc = d.phraseCount || Object.keys(d.phrases).length;
+            document.getElementById('data-info').textContent =
+                `收录 ${ec} 条汉字条目 · ${pc} 条词语条目`;
+        })();
+
+        // ── 实时查询 ──
+        const inputEl = document.getElementById('input');
+        const resultEl = document.getElementById('result');
+        const resultHeader = document.getElementById('result-header');
+        const resultTitle = document.getElementById('result-title');
+        const resultCount = document.getElementById('result-count');
+
+        inputEl.addEventListener('input', function() {
+            const text = this.value;
+            if (!text.trim()) {
+                resultEl.innerHTML = '';
+                resultHeader.hidden = true;
+                return;
+            }
+
+            let result;
+            if (currentTab === 'char') {
+                result = queryChars(text);
+            } else {
+                result = queryPhrases(text);
+            }
+
+            if (!result) {
+                resultEl.innerHTML = '<div class="empty-state">未检测到有效内容</div>';
+                resultHeader.hidden = true;
+                return;
+            }
+
+            resultHeader.hidden = false;
+            resultTitle.textContent = '查询结果';
+            resultCount.textContent = `${result.count} 个${currentTab === 'char' ? '字' : '词'}`;
+            resultEl.innerHTML = result.html;
+        });
+    </script>
+</body>
+</html>

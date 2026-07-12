@@ -437,7 +437,7 @@ def main_function(*args):
             entry_box.icursor(new_cursor_pos)
         return
 
-    if input_text.strip() != ctx.last_input_text:
+    if input_text.replace(" ", "") != ctx.last_input_text:
         ctx.current_page = 0
         ctx.current_part_index = -1
         ctx.query_type = ""

@@ -84,6 +84,7 @@
 㐅 bpn
 乄 bpng
 龶 bq;
+扌 bub
 不错 buco
 部分 buff
 补充 buis
@@ -248,6 +249,7 @@
 δ gde
 Δ gdec
 广西 gdxi
+歌词 geci
 疙瘩 geda0
 格局 geju
 革命 gem;
@@ -651,7 +653,6 @@
 哪些 naxx1
 那样 nayh
 能够 nggb
-你好 nihk
 你说得对 niuodedv
 男娘 njnd
 年龄 nml;
@@ -690,6 +691,7 @@
 清晰 q;xi
 憔悴 qccv
 巧妙 qcmc
+祈祷 qidk3
 启动 qids
 奇怪 qigy4
 起来 qil
@@ -934,6 +936,7 @@
 提问 tiwf
 体系 tixi
 体现 tixm
+体验 tiyj
 体育 tiyu
 探险 tjxm
 淘宝 tkbk
@@ -1046,6 +1049,7 @@
 ≌ uqrdg
 △ usjx
 ∴ usy
+输出 uuiu
 实时监测 uujc uiuijmc
 数据 uuju
 数据库 uujuk
@@ -1143,6 +1147,7 @@
 á vpa2
 ǎ vpa3
 à vpa4
+准备 vpbz
 ē vpe1
 é vpe2
 ě vpe3
@@ -1345,6 +1350,7 @@
 协调 xxtc
 写作 xxzo
 协作 xxzo4
+应对 y;dv
 应付 y;fu
 应该 y;gl
 英吉利 y;jil
@@ -1431,6 +1437,7 @@
 自行车 zix;i
 坐标 zobc
 做到 zodk
+做了 zole
 昨天 zotm
 作为 zowz
 座位 zowz4

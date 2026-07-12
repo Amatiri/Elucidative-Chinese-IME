@@ -2,3 +2,5 @@ __pycache__/
 other/
 dictionary_no_number.txt
 ~$*
+# Local Netlify folder
+.netlify

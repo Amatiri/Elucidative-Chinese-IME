@@ -6,6 +6,7 @@ from manager.dictionary import ensure_data_file
 
 def query_phrase(code):
     """从词库文件 ciyu.txt 中查询短语"""
+    code = code.replace(" ", "")          # 去掉所有空格（头尾及中间）
     try:
         with open(CIYU_FILE, 'r', encoding='utf-8') as f:
             for line in f:

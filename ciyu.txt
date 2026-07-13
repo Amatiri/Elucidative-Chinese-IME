@@ -21,6 +21,7 @@
 艹 bck
 表情 bcq;
 表示 bcui
+表述 bcuu
 标准 bcvp
 表现 bcxm
 凵 bcy
@@ -28,6 +29,7 @@
 ⺈ bdkt
 丷 bdm
 冖 bdp
+本质 bfvi
 囗 bgo
 ⺌ bhd
 灬 bho
@@ -369,6 +371,7 @@
 何意味 heyiwz
 鹤发童颜 hfty hefatsy
 行列式 hhlxu
+涵盖 hjgl
 狐假虎威 hjhw hujwhuw
 函数 hjuu
 汉书 hjuu1
@@ -429,6 +432,7 @@
 ɪ iis
 产品 ijpn
 产生 ijug
+阐述 ijuu
 超级 ikji
 超模 ikmo
 超市 ikui
@@ -443,6 +447,7 @@
 传话 irhw
 传统 irts
 串通 irts1
+充分 isff
 重复 isfu
 ʃ ish
 充满 ismj
@@ -469,6 +474,7 @@
 精英 j;y;1
 晶莹 j;y;2
 经验 j;yj
+交互 jchu
 教科书 jckeu
 交流 jclq
 教育 jcyu
@@ -497,6 +503,9 @@
 犄角旮旯 jjgl jijcgal
 季姬击鸡记 jjjjj
 简单 jmdj
+检查 jmia
+监察 jmia2
+检察 jmia2b
 监控 jmks
 建立 jmli
 键盘 jmpj
@@ -505,6 +514,7 @@
 简体字 jmtiz
 建设 jmue
 建筑 jmvu
+键位图 jmwztu
 检验 jmyj
 简言之 jmyjv
 建言献策 jmyjxmc jyxc
@@ -548,6 +558,8 @@
 桔槔 jxgk1m
 结合 jxhe
 接触 jxiu4
+界面 jxmm
+截面 jxmm4
 接纳 jxna
 街头 jxtb
 接头 jxtb2
@@ -593,6 +605,7 @@
 例如 liru
 历史 liui
 理由 liyb
+利用 liys
 褴褛 ljly
 劳动 lkds
 老师 lkui
@@ -603,6 +616,7 @@
 论述 lpuu
 论文 lpwf
 垄断 lsdr
+路程 luig
 路人 lurf
 录入 luru
 路线 luxm
@@ -669,6 +683,8 @@
 二次元 orciy
 而且 orqx
 苹果 p;go
+评价 p;jw
+评论 p;lp
 平台 p;tl
 蓬勃 pgbo
 朋友 pgyb
@@ -924,12 +940,16 @@
 所以 soyi
 算法 srfa
 虽然 svrj
+随时 svui
 四则运算 szys sizeyps
 条件 tcjm
 调整 tcvg
 特别 tebx
 醍醐灌顶 thgd tihugrd
 提供 tigs
+提出 tiiu
+踢出 tiiu1
+剔除 tiiu2
 提交 tijc
 题目 timu
 提示 tiui
@@ -938,6 +958,7 @@
 体现 tixm
 体验 tiyj
 体育 tiyu
+探讨 tjtk
 探险 tjxm
 淘宝 tkbk
 韬光养晦 tkgdyhh tgyh
@@ -1042,6 +1063,7 @@
 ∏ uli
 色子 ulzi
 筛子 ulzi0
+说明 uom;
 ∥ up;x;
 ∂ upmdk
 顺序 upxu
@@ -1112,6 +1134,7 @@
 质量 vild
 只能 ving
 智能 ving2
+指南 vinj
 々 vis
 只是 viui
 知识 viui2
@@ -1263,6 +1286,7 @@
 五官 wugr1
 无关痛痒 wugrtsy wgty
 物理 wuli
+无论 wulp
 武器 wuqi
 雾气 wuqi4
 无穷 wuqs
@@ -1444,5 +1468,6 @@
 左右 zoyb
 遵循 zpxp
 总之 zsvi
+组合 zuhe
 最后 zvhb
 最近 zvjn

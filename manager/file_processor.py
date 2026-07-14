@@ -325,6 +325,36 @@ def process_filey(input_file, output_file):
         print(f"处理文件时发生错误: {e}")
 
 
+def _read_existing_rationale(output_path):
+    """读取已有 dictionary-data.js 中的 rationale 对象，保留已填充的理据。"""
+    try:
+        with open(output_path, "r", encoding="utf-8") as f:
+            content = f.read()
+    except FileNotFoundError:
+        return {}
+
+    match = re.search(r'rationale:\s*(\{)', content)
+    if not match:
+        return {}
+
+    start = match.start(1)
+    depth = 0
+    end = start
+    for i in range(start, len(content)):
+        if content[i] == '{':
+            depth += 1
+        elif content[i] == '}':
+            depth -= 1
+            if depth == 0:
+                end = i + 1
+                break
+
+    try:
+        return json.loads(content[start:end])
+    except json.JSONDecodeError:
+        return {}
+
+
 def build_web_data():
     """生成网页查询用的 JS 数据文件"""
     help_dir = os.path.join(BASE_DIR, "help/webpage")
@@ -357,6 +387,9 @@ def build_web_data():
                 codes = codes_str.split()
                 phrase_map[phrase] = codes
 
+    # 保留已有 rationale，不覆盖手工填充的内容
+    existing_rationale = _read_existing_rationale(output_path)
+
     # 写出 JS
     js = (
         "// 解书音形 · 码表数据 — 由 manager.file_processor 自动生成，勿手动编辑\n"
@@ -366,7 +399,8 @@ def build_web_data():
         f"  entryCount: {entry_count},\n"
         f"  phraseCount: {len(phrase_map)},\n"
         f"  chars: {json.dumps(char_map, ensure_ascii=False, separators=(',', ':'))},\n"
-        f"  phrases: {json.dumps(phrase_map, ensure_ascii=False, separators=(',', ':'))}\n"
+        f"  phrases: {json.dumps(phrase_map, ensure_ascii=False, separators=(',', ':'))},\n"
+        f"  rationale: {json.dumps(existing_rationale, ensure_ascii=False, separators=(',', ':'))}\n"
         "};\n"
     )
     os.makedirs(help_dir, exist_ok=True)

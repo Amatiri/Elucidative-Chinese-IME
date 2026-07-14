@@ -445,10 +445,186 @@
                 (cp >= 0xf900 && cp <= 0xfad9);
         }
 
+        // ── 独体构形表 ──
+        const SOLO_SHAPE = {
+            '3': '开形', '6': '大形', '0': '闭形', '5': '称形',
+            '1': '竖形', '2': '横形', '4': '错形', '7': '偏形',
+            '9': '复形', '8': '奇形'
+        };
+
+        // ── 自动拆分（移植自 dictionary_frontend.split_sequence）──
+        function splitSequence(original) {
+            let parts = original.split("'");
+            let canSplitMore = true;
+            while (canSplitMore) {
+                canSplitMore = false;
+                const newParts = [];
+                for (const part of parts) {
+                    let condition1 = false;  // 连续双拼
+                    let condition2 = false;  // 调码定位
+                    let condition3 = false;  // 独体字四码打全
+                    let condition4 = false;  // 合体字五码打全
+                    let condition5 = false;  // 补码打全
+                    const positions = [];    // C2 插入位置
+                    const positions3 = [];   // C3 插入位置
+
+                    const hasDigit = /\d/.test(part);
+                    if (!hasDigit && part.length > 2) {
+                        condition1 = true;
+                    }
+                    for (let i = 0; i < part.length; i++) {
+                        const ch = part[i];
+                        if (/\d/.test(ch) && i > 2 && !/\d/.test(part[i - 1])) {
+                            condition2 = true;
+                            positions.push(i);
+                        }
+                        if (/\d/.test(ch) && i > 0 && /\d/.test(part[i - 1])
+                                && i + 1 < part.length) {
+                            const next = part[i + 1];
+                            if (next !== '.' && !/\d/.test(next)) {
+                                condition3 = true;
+                                positions3.push(i);
+                            }
+                        }
+                    }
+                    if (part.length > 5 && part.indexOf('.') === -1) {
+                        condition4 = true;
+                    }
+                    const dotIdx = part.indexOf('.');
+                    if (dotIdx !== -1 && part.length - dotIdx - 1 > 1) {
+                        condition5 = true;
+                    }
+
+                    if (condition1) {
+                        let newPart = '';
+                        for (let i = 0; i < part.length; i += 2) {
+                            if (i > 0) newPart += "'";
+                            newPart += part.slice(i, i + 2);
+                        }
+                        newParts.push(...newPart.split("'"));
+                        canSplitMore = true;
+                    } else if (condition2) {
+                        let newPart = part;
+                        for (const pos of positions.sort((a, b) => b - a)) {
+                            newPart = newPart.slice(0, pos - 2) + "'" + newPart.slice(pos - 2);
+                        }
+                        newParts.push(...newPart.split("'"));
+                        canSplitMore = true;
+                    } else if (condition3) {
+                        let newPart = part;
+                        for (const pos of positions3.sort((a, b) => b - a)) {
+                            newPart = newPart.slice(0, pos + 1) + "'" + newPart.slice(pos + 1);
+                        }
+                        newParts.push(...newPart.split("'"));
+                        canSplitMore = true;
+                    } else if (condition4) {
+                        const newPart = part.slice(0, 5) + "'" + part.slice(5);
+                        newParts.push(...newPart.split("'"));
+                        canSplitMore = true;
+                    } else if (condition5) {
+                        const ff = part.indexOf('.') + 2;
+                        const newPart = part.slice(0, ff) + "'" + part.slice(ff);
+                        newParts.push(...newPart.split("'"));
+                        canSplitMore = true;
+                    } else {
+                        newParts.push(part);
+                    }
+                }
+                parts = newParts;
+            }
+            return parts.filter(p => p !== '').join("+");
+        }
+
+        // ── 反向查码表（编码 → 汉字）──
+        function findCharByCode(targetCode) {
+            const chars = window.jieshuDict.chars;
+            if (!chars) return null;
+            for (const [ch, codes] of Object.entries(chars)) {
+                for (const c of codes) {
+                    if (c === targetCode) return ch;
+                }
+            }
+            return null;
+        }
+
+        // ── 汉字编码理据（累积拼接）──
+        function getCharRationale(ch, code) {
+            const parts = [];
+            const dict = window.jieshuDict;
+
+            // ① 补码 → 先记正字
+            const dotIdx = code.indexOf('.');
+            if (dotIdx !== -1) {
+                const baseCode = code.substring(0, dotIdx);
+                const baseChar = findCharByCode(baseCode);
+                if (baseChar) {
+                    parts.push('正字「' + baseChar + '」');
+                }
+            }
+
+            // ② 独体字 → 查构形表
+            if (code.length >= 4) {
+                const dCode = code[3];
+                if (SOLO_SHAPE[dCode]) {
+                    parts.push(SOLO_SHAPE[dCode]);
+                }
+            }
+
+            // ③ 手工理据（不限于合体字，只要有就附加）
+            if (dict.rationale && dict.rationale[ch]) {
+                parts.push(dict.rationale[ch]);
+            }
+
+            // 三项全无 → 兜底
+            if (parts.length === 0) {
+                return '理据待补充';
+            }
+
+            return parts.join('，');
+        }
+
+        // ── 词语编码理据 ──
+        function getPhraseRationale(phrase, code) {
+            const n = [...phrase].length;  // 字符数（含汉字/符号）
+
+            // 通用符号：单字词语
+            if (n === 1) {
+                return '通用符号 ' + code[0] + '+' + code.slice(1);
+            }
+
+            const nLabel = n === 2 ? '二字' : n === 3 ? '三字' : n === 4 ? '四字' : n=== 5 ? '五字' : n === 6 ? '六字' : n === 7 ? '七字' : n === 8 ? '八字' : n === 9 ? '九字' : n === 10 ? '十字' : n + '字';
+
+            // 编码长度 <= 汉字数：每位编码各取一字（如四字词"封妻荫子"→fqyz→f+q+y+z）
+            if (code.length <= n) {
+                const segs = [...code];
+                return nLabel + '词 ' + segs.join('+');
+            }
+
+            // 多字词：用 split_sequence 拆分
+            const parts = splitSequence(code);
+            const segs = parts.split('+');
+            if (segs.length < n) {
+                // 拆分不足时，对最后一段按余数字符均分
+                const lastSeg = segs[segs.length - 1];
+                segs.pop();
+                const missing = n - segs.length;
+                const chunkLen = Math.ceil(lastSeg.length / missing);
+                for (let i = 0; i < missing; i++) {
+                    segs.push(lastSeg.slice(i * chunkLen, (i + 1) * chunkLen));
+                }
+                segs.length = n;  // 万一多切了，截断
+            }
+            return nLabel + '词 ' + segs.slice(0, n).filter(s => s).join('+');
+        }
+
         // ── Tab 切换 ──
         let currentTab = 'char';
+        let tabInputs = { char: '', phrase: '' };
 
         function switchTab(tab) {
+            // 保存当前 tab 的输入
+            tabInputs[currentTab] = document.getElementById('input').value;
+
             currentTab = tab;
             document.getElementById('tab-char').classList.toggle('active', tab === 'char');
             document.getElementById('tab-phrase').classList.toggle('active', tab === 'phrase');
@@ -462,9 +638,12 @@
                 input.placeholder = '输入词语，多个词用空格分隔…';
                 hint.textContent = '多个词语用空格分开，如「输入法 音韵 格局」';
             }
-            input.value = '';
-            document.getElementById('result').innerHTML = '';
-            document.getElementById('result-header').hidden = true;
+
+            // 恢复该 tab 上次的输入
+            input.value = tabInputs[tab] || '';
+
+            // 重新触发查询
+            input.dispatchEvent(new Event('input', { bubbles: true }));
         }
 
         // ── 查汉字 ──
@@ -475,20 +654,20 @@
             const chars = [...text].filter(isHanzi);
             if (chars.length === 0) return null;
 
-            let html = '<table class="result-table"><thead><tr><th>汉字</th><th>编码</th></tr></thead><tbody>';
+            let html = '<table class="result-table"><thead><tr><th>汉字</th><th>编码</th><th>理据</th></tr></thead><tbody>';
             for (const ch of chars) {
                 const codes = dict.chars[ch];
                 if (!codes || codes.length === 0) {
-                    html += `<tr><td class="char-cell">${ch}</td><td class="code-cell missing">—</td></tr>`;
+                    html += `<tr><td class="char-cell">${ch}</td><td class="code-cell missing">—</td><td class="code-cell">—</td></tr>`;
                 } else if (codes.length === 1) {
-                    html += `<tr><td class="char-cell">${ch}</td><td class="code-cell">${escapeHtml(codes[0])}</td></tr>`;
+                    html += `<tr><td class="char-cell">${ch}</td><td class="code-cell">${escapeHtml(codes[0])}</td><td class="code-cell">${escapeHtml(getCharRationale(ch, codes[0]))}</td></tr>`;
                 } else {
                     codes.forEach((code, i) => {
                         const cls = i < codes.length - 1 ? 'multi-row' : '';
                         const charTd = i === 0 ?
                             `<td class="char-cell" rowspan="${codes.length}">${ch}</td>` :
                             '';
-                        html += `<tr class="${cls}">${charTd}<td class="code-cell">${escapeHtml(code)}</td></tr>`;
+                        html += `<tr class="${cls}">${charTd}<td class="code-cell">${escapeHtml(code)}</td><td class="code-cell">${escapeHtml(getCharRationale(ch, code))}</td></tr>`;
                     });
                 }
             }
@@ -505,20 +684,20 @@
             const words = text.trim().split(/\s+/).filter(Boolean);
             if (words.length === 0) return null;
 
-            let html = '<table class="result-table"><thead><tr><th>词语</th><th>编码</th></tr></thead><tbody>';
+            let html = '<table class="result-table"><thead><tr><th>词语</th><th>编码</th><th>理据</th></tr></thead><tbody>';
             for (const w of words) {
                 const codes = dict.phrases[w];
                 if (!codes || codes.length === 0) {
-                    html += `<tr><td class="char-cell">${w}</td><td class="code-cell missing">—</td></tr>`;
+                    html += `<tr><td class="char-cell">${w}</td><td class="code-cell missing">—</td><td class="code-cell">—</td></tr>`;
                 } else if (codes.length === 1) {
-                    html += `<tr><td class="char-cell">${w}</td><td class="code-cell">${escapeHtml(codes[0])}</td></tr>`;
+                    html += `<tr><td class="char-cell">${w}</td><td class="code-cell">${escapeHtml(codes[0])}</td><td class="code-cell">${escapeHtml(getPhraseRationale(w, codes[0]))}</td></tr>`;
                 } else {
                     codes.forEach((code, i) => {
                         const cls = i < codes.length - 1 ? 'multi-row' : '';
                         const charTd = i === 0 ?
                             `<td class="char-cell" rowspan="${codes.length}">${w}</td>` :
                             '';
-                        html += `<tr class="${cls}">${charTd}<td class="code-cell">${escapeHtml(code)}</td></tr>`;
+                        html += `<tr class="${cls}">${charTd}<td class="code-cell">${escapeHtml(code)}</td><td class="code-cell">${escapeHtml(getPhraseRationale(w, code))}</td></tr>`;
                     });
                 }
             }

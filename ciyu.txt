@@ -48,6 +48,7 @@
 避免 bimm
 彐 bio
 𡗗 bip
+ bip1
 比如 biru
 比赛 bisl
 必须 bixu
@@ -77,6 +78,7 @@
 边界 bmjx4
 编码 bmma
 彡 bms
+𠃜 bmz
 匚 bob
 㔾 boe
 播放 bofh
@@ -933,6 +935,7 @@
 丝绸 siib
 四川 siir
 思考 sikk
+四码 sima3s
 思想 sixd
 私信 sixn
 扫描 skmc

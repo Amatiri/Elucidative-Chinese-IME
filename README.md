@@ -679,8 +679,8 @@ hng→hn,hm→hm,ng→nv,m→mv。
 | jc  | 龹     | jj  | 巿    | jk  | 叚    |
 | jq  | 介     | ju  | 丩    | ko  | コ    |
 | kv  | 亏     | ld  | 立    | lg  | 鹿    |
-| ll  | 𠂢(内) | mb  | 买    | md  | マ    |
-| mg  | 麻     | mh  | 母    | mz  | 𠃜   |
+| ll  | 𠂢(内) | md  | マ    | mg  | 麻    |
+| mh  | 母     | mt  | 买    | mz  | 𠃜   |
 | na  | ナ     | nd  | 犮    | nt  | 𰀂   |
 | nu  | 在(外)  | oj  | 卬    | ok  | 𫠤   |
 | qc  | 乔     | qw  | 齐    | sb  | 𰀉   |

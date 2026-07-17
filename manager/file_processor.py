@@ -390,6 +390,16 @@ def build_web_data():
     # 保留已有 rationale，不覆盖手工填充的内容
     existing_rationale = _read_existing_rationale(output_path)
 
+    # 按 chars 顺序重排 rationale
+    sorted_rationale = {}
+    for ch in char_map:
+        if ch in existing_rationale:
+            sorted_rationale[ch] = existing_rationale[ch]
+    for ch, val in existing_rationale.items():
+        if ch not in sorted_rationale:
+            sorted_rationale[ch] = val
+    existing_rationale = sorted_rationale
+
     # 写出 JS
     js = (
         "// 解书音形 · 码表数据 — 由 manager.file_processor 自动生成，勿手动编辑\n"

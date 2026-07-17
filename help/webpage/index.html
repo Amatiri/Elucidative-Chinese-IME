@@ -281,6 +281,17 @@
             min-width: 64px;
             color: #2c1810;
         }
+        .char-link {
+            color: #2c1810;
+            text-decoration: none;
+            cursor: pointer;
+            transition: color 0.15s, border-color 0.15s;
+            border-bottom: 1px dotted #c4b8a0;
+        }
+        .char-link:hover {
+            color: #b85a3a;
+            border-bottom-color: #b85a3a;
+        }
         .code-cell {
             font-family: "Consolas", "Fira Code", "华文楷体", monospace;
             color: #5a3a2a;
@@ -430,7 +441,7 @@
         <footer>
             <a href="https://github.com/Amatiri/Elucidative-Chinese-IME" target="_blank">解书音形输入法</a>
             &nbsp;·&nbsp; 编码查询工具
-            &nbsp;·&nbsp; <a href="https://jmwztu.netlify.app">键位图</a>
+            &nbsp;·&nbsp; <a href="https://jmwztu.netlify.app" target="_blank">键位图</a>
         </footer>
     </div>
 
@@ -547,12 +558,19 @@
             return null;
         }
 
-        // ── 汉字编码理据（累积拼接）──
-        function getCharRationale(ch, code) {
-            const parts = [];
+        // ── 汉字编码理据 ──
+        function getCharRationale(ch, code, multi) {
             const dict = window.jieshuDict;
 
-            // ① 补码 → 先记正字
+            // 多音字 && 有人工理据 → 直接返回
+            if (multi && dict.rationale && dict.rationale[ch]) {
+                return dict.rationale[ch];
+            }
+
+            // 累积拼接
+            const parts = [];
+
+            // ① 补码 → 记正字
             const dotIdx = code.indexOf('.');
             if (dotIdx !== -1) {
                 const baseCode = code.substring(0, dotIdx);
@@ -570,14 +588,14 @@
                 }
             }
 
-            // ③ 手工理据（不限于合体字，只要有就附加）
-            if (dict.rationale && dict.rationale[ch]) {
+            // ③ 手工理据（单音字放最后，多音字无人工理据时也走这里）
+            if (!multi && dict.rationale && dict.rationale[ch]) {
                 parts.push(dict.rationale[ch]);
             }
 
-            // 三项全无 → 兜底
+            // 兜底
             if (parts.length === 0) {
-                return '理据待补充';
+                return '—';
             }
 
             return parts.join('，');
@@ -654,20 +672,27 @@
             const chars = [...text].filter(isHanzi);
             if (chars.length === 0) return null;
 
+            function charLink(ch) {
+                const url = 'https://zi.tools/zi/' + encodeURIComponent(ch);
+                return `<a class="char-link" href="${url}" target="_blank" title="在字统网查看「${ch}」">${ch}</a>`;
+            }
             let html = '<table class="result-table"><thead><tr><th>汉字</th><th>编码</th><th>理据</th></tr></thead><tbody>';
             for (const ch of chars) {
                 const codes = dict.chars[ch];
                 if (!codes || codes.length === 0) {
-                    html += `<tr><td class="char-cell">${ch}</td><td class="code-cell missing">—</td><td class="code-cell">—</td></tr>`;
+                    html += `<tr><td class="char-cell">${charLink(ch)}</td><td class="code-cell missing">—</td><td class="code-cell">—</td></tr>`;
                 } else if (codes.length === 1) {
-                    html += `<tr><td class="char-cell">${ch}</td><td class="code-cell">${escapeHtml(codes[0])}</td><td class="code-cell">${escapeHtml(getCharRationale(ch, codes[0]))}</td></tr>`;
+                    html += `<tr><td class="char-cell">${charLink(ch)}</td><td class="code-cell">${escapeHtml(codes[0])}</td><td class="code-cell">${escapeHtml(getCharRationale(ch, codes[0], false))}</td></tr>`;
                 } else {
+                    // 多音字：有人工理据时直接使用（不再累积），\n 渲染为 <br>
+                    const rationale = getCharRationale(ch, codes[0], true).replace(/\n/g, '<br>');
                     codes.forEach((code, i) => {
                         const cls = i < codes.length - 1 ? 'multi-row' : '';
-                        const charTd = i === 0 ?
-                            `<td class="char-cell" rowspan="${codes.length}">${ch}</td>` :
-                            '';
-                        html += `<tr class="${cls}">${charTd}<td class="code-cell">${escapeHtml(code)}</td><td class="code-cell">${escapeHtml(getCharRationale(ch, code))}</td></tr>`;
+                        if (i === 0) {
+                            html += `<tr class="${cls}"><td class="char-cell" rowspan="${codes.length}">${charLink(ch)}</td><td class="code-cell">${escapeHtml(code)}</td><td class="code-cell" rowspan="${codes.length}">${rationale}</td></tr>`;
+                        } else {
+                            html += `<tr class="${cls}"><td class="code-cell">${escapeHtml(code)}</td></tr>`;
+                        }
                     });
                 }
             }

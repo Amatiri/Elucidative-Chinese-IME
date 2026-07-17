@@ -990,7 +990,7 @@
 凡 fj2j
 钒 fj2jj
 繁 fj2s
-矾 fj2sf
+矾 fj2sj
 璠 fj2w
 袢 fj2y
 反 fj3k
@@ -2511,10 +2511,10 @@
 觖 jt2kg
 噱 jt2kh
 矍 jt2km
-駃 jt2m
-𫘝 jt2m.
-橛 jt2mc
+橛 jt2m
 桷 jt2mk
+駃 jt2m;
+𫘝 jt2m;.
 鴃 jt2n
 鷢 jt2nc
 獗 jt2q
@@ -3431,6 +3431,7 @@
 伶 l;2r
 绫 l;2s
 祾 l;2st
+夌 l;2t
 泠 l;2u
 崚 l;2ut
 玲 l;2w
@@ -3630,8 +3631,8 @@
 腼 mm3rm
 缅 mm3s
 沔 mm3u
-渑 mm3uk
 湎 mm3um
+渑 mm3uy
 面 mm40
 眄 mm4m
 民 mn24
@@ -4077,6 +4078,7 @@
 拗 ok4ut
 岙 ok4uy
 懊 ok4x
+锿 ol1j
 哎 ol1k
 嗳 ol1kv
 唉 ol1ky
@@ -4106,8 +4108,7 @@
 隘 ol4b
 艾 ol4c
 薆 ol4c;
-锿 ol4j
-鑀 ol4j.v
+鑀 ol4j
 唉 ol4k
 嗌 ol4km
 呃 ol4ko
@@ -4152,6 +4153,7 @@
 钯 pa2j
 杷 pa2m
 耙 pa2n
+扒 pa2u
 爬 pa2v
 琶 pa2w
 筢 pa2z
@@ -4554,7 +4556,7 @@
 掮 qm2uj
 缱 qm3s
 浅 qm3u
-谴 qm3yz
+谴 qm3y
 遣 qm3z
 茜 qm4c
 芡 qm4cd
@@ -5100,6 +5102,7 @@
 荑 ti2c
 题 ti2i
 啼 ti2k
+騠 ti2m
 鹈 ti2n
 缇 ti2s
 绨 ti2sd
@@ -5793,8 +5796,8 @@
 璋 vh1w
 长 vh34
 涨 vh3u
-仉 vh3u.r
 掌 vh3uu
+仉 vh3uu.r
 丈 vh44
 账 vh4b
 障 vh4bl
@@ -5864,8 +5867,8 @@
 庤 vi4g
 庢 vi4gt
 秩 vi4h
+稺 vi4h.
 炙 vi4hr
-稺 vi4hs
 稚 vi4hw
 蛭 vi4i
 彘 vi4ib
@@ -6450,8 +6453,8 @@
 弦 xm2gd
 闲 xm2m
 嫌 xm2n
+鹇 xm2nd
 娴 xm2nm
-鹇 xm2nx
 衔 xm2t
 涎 xm2u
 㳄 xm2u.q
@@ -6466,7 +6469,8 @@
 猃 xm3q
 显 xm3r
 鲜 xm3y
-跣 xm3z
+筅 xm3z
+跣 xm3zo
 限 xm4b
 陷 xm4bd
 宪 xm4bo
@@ -7115,20 +7119,19 @@
 渫 yi4uc.m
 饐 yi4ud
 泄 yi4ue
-洩 yi4ug
+㵧 yi4ug
 𣷩 yi4uh
 浳 yi4ui
 㴔 yi4uj
 挹 yi4uk
-㵧 yi4ul
 溢 yi4um
 洫 yi4um.x
 㴁 yi4un
 掜 yi4uo
 喦 yi4up
-𡄻 yi4uq
-屹 yi4ur
-𤣮 yi4ur.w
+屹 yi4uq
+𤣮 yi4uq.w
+洩 yi4ur
 峄 yi4ut
 嶧 yi4ut.
 泆 yi4uu
@@ -7210,6 +7213,7 @@
 亄 yi8uw
 擇 yi8ux
 㵝 yi8uy
+𡄻 yi8uz
 鄢 yj1b
 烟 yj1h
 燕 yj1hn

@@ -30,11 +30,13 @@
 丷 bdm
 冖 bdp
 本质 bfvi
+𢦏 bgc
 囗 bgo
 ⺌ bhd
 灬 bho
 帮助 bhvu
 帮我 bhwo
+𦣞 bif
 彑 bih
 笔画 bihw
 比划 bihw4
@@ -121,6 +123,7 @@
 菜单 cldj
 采访 clfh
 才会 clhv
+才能 clng
 剉冰 cob;1
 错误 cowu
 存在 cpzl
@@ -1275,6 +1278,7 @@
 网络 whlo
 网盘 whpj
 王者 whve
+网页 whye
 完成 wjig
 完美 wjmz
 完全 wjqr
@@ -1474,3 +1478,4 @@
 组合 zuhe
 最后 zvhb
 最近 zvjn
+观众 grvs

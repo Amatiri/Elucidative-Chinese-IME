@@ -9,21 +9,18 @@ from manager.abc_analyzer import interactive_mode
 from manager.file_processor import main_menu, sort_file_by_second_part
 from manager.ciyu_ops import ciyumain
 from manager.guess_game import bmmamain
+from manager.rationale_add import main as rationale_main
 from config import CIYU_FILE
 
 
 def run_input_method():
-    """启动输入法"""
-    print("启动解书音形...")
+    """启动输入法前端（非阻塞）"""
+    print("启动解书音形前端...")
     try:
         ime_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ime.py")
-        subprocess.run([sys.executable, ime_path], check=True)
-    except subprocess.CalledProcessError as e:
-        print(f"启动输入法失败: {e}")
-    except FileNotFoundError:
-        print("错误：未找到 ime.py 文件")
+        subprocess.Popen([sys.executable, ime_path])
     except Exception as e:
-        print(f"启动输入法时发生未知错误: {e}")
+        print(f"启动输入法失败: {e}")
 
 
 def show_menu():
@@ -33,7 +30,7 @@ def show_menu():
     print("3.编辑修改 ")
     print("4.分析音区 ", end="")
     print("5.整理码表 ", end="")
-    print("6.启动输入 ")
+    print("6.添加理据 ")
     print("7.查询字码 ", end="")
     print("8.添加词语 ", end="")
     print("9.猜测编码")
@@ -41,6 +38,7 @@ def show_menu():
 
 def main():
     ensure_data_file()
+    run_input_method()
     while True:
         show_menu()
         try:
@@ -57,7 +55,7 @@ def main():
                 single, phrase, web_chars, web_phrases = main_menu()
                 print(f"整理完成！码表条目：{single}+{phrase}")
             elif choice == '6':
-                run_input_method()
+                rationale_main()
             elif choice == '7':
                 while True:
                     a = input("连续汉字：")

@@ -53,9 +53,11 @@ class InputContext:
         # ── 外输模式 ──
         self.external_mode = False             # 外输模式开关
         self.window_closing = False            # 窗口是否正在关闭
-        self.key_press_counter = 0             # 按键计数防抖
+        self.key_press_counter = 1             # 按键计数防抖
         self.code_char_before_cursor = 0       # 光标前的编码字符数
         self.code_char_after_cursor = 0        # 光标后的编码字符数
+        self._window_visible = False           # 外输模式：窗口当前是否可见
+        self._pasting = False                  # 外输模式：正在执行 paste 操作，跳过 key 处理
 
         # ── 主窗口引用（创建后赋值） ──
         self.window = None
@@ -317,6 +319,10 @@ def update_display(processed=None, candidates=None, first_chars=None):
             page_label.config(text=f"页 {ctx.current_page + 1}")
             ctx.last_output_text = candidates.split("/")[0][0]
 
+    # ── 外输模式：根据当前状态调整布局 ──
+    if ctx.external_mode:
+        _apply_display_mode(in_part_select=ctx.in_part_selection)
+
 def handle_special_keys(input_text):
     """
     处理输入中的 '=' 和 '-' 键，用于多字部件导航。
@@ -460,6 +466,8 @@ def main_function(*args):
                 output_text = process_input(input_text)
         replace_content(input_text, output_text, do_paste=True, reset_entry=True)
         reset_input_state()
+        if ctx.external_mode:
+            _hide_external_window()
         return
 
     processed = process_input(input_text)
@@ -484,6 +492,8 @@ def main_function(*args):
                     selected_char = non_dot_candidates[0][0]
                     replace_content(input_text, selected_char, do_paste=True, reset_entry=True)
                     reset_input_state()
+                    if ctx.external_mode:
+                        _hide_external_window()
                     return
             update_display(processed=processed, candidates=candidates)
             if candidates != '':
@@ -522,6 +532,16 @@ def main_function(*args):
     clear_display_if_no_code(input_text)
     ctx.last_input_text = input_text
 
+    # ── 外输模式窗口显隐 ──
+    if ctx.external_mode:
+        has_code = _has_code_in_text(input_text)
+        if has_code and not ctx._window_visible:
+            # 无编码 → 有编码：显示窗口
+            _show_external_window()
+        elif not has_code and ctx._window_visible:
+            # 有编码 → 无编码（上屏清零后）：隐藏窗口
+            _hide_external_window()
+
 def on_key_press(event):
     """处理输入框内的按键事件（上下翻页和候选选择符号）。"""
     if event.keysym == "Down":
@@ -535,22 +555,157 @@ def on_key_press(event):
 
 # ==================== 全局输入监听（外输模式） ====================
 
+# ── 外输显示辅助函数 ──
+
+# 紧凑模式高度（base 值，使用前乘以 scale）
+_BASE_WIN_H_COMPACT = 60            # 仅输入框
+_BASE_WIN_H_EXTERNAL_SINGLE = 60    # 单字模式（输入框 + 候选行 + 页码）
+_BASE_WIN_H_EXTERNAL_MULTI = 60     # 多字未选部件（输入框 + 多字预览行）
+_BASE_WIN_H_EXTERNAL_SELECT = 85   # 部件选择展开（输入框 + 两行 + 页码）
+
+
+def _has_code_in_text(text):
+    """判断文本中是否包含编码字符"""
+    for ch in text:
+        if ch in CODE_CHARS:
+            return True
+    return False
+
+
+def _apply_display_mode(*, in_part_select=False):
+    """仅调整组件显隐和窗口几何（不碰 overrideredirect / withdraw）。
+    
+    关键约束：
+      - 外输模式下 settings_frame / main_status_frame 强制 pack_forget（不依赖 ismapped，
+        因为 window withdraw 时 ismapped 返回 False 会误判）。
+      - 恢复内输时先 pack_forget 再按正确顺序 pack，防止顺序乱序。
+    """
+
+    if not ctx.external_mode:
+        # ── 内输完整模式：先清后建，保证 display_frame 内顺序为
+        #    first_chars → current_part → page_label
+        first_chars_label.pack_forget()
+        current_part_label.pack_forget()
+        page_label.pack_forget()
+        first_chars_label.pack(fill=tk.X, pady=(0, scale_size(BASE_PAD)))
+        current_part_label.pack(fill=tk.X, pady=(0, scale_size(BASE_PAD)))
+        page_label.pack(fill=tk.X)
+        # 恢复设置栏 & 状态栏
+        settings_frame.pack_forget()
+        main_status_frame.pack_forget()
+        settings_frame.pack(fill=tk.X, pady=(0, scale_size(BASE_PAD)))
+        main_status_frame.pack(fill=tk.BOTH, expand=False)
+        window.geometry(f"{win_w}x{win_h_norm}+{init_x}+{init_y}")
+        return
+
+    # ── 外输精简模式 ──
+    # 无条件隐藏设置栏 & 状态栏（不依赖 ismapped，窗口可能处于 withdraw 状态）
+    settings_frame.pack_forget()
+    main_status_frame.pack_forget()
+
+    if in_part_select:
+        # 部件选择：展开，三行全显示
+        # 先清后建，保证顺序
+        first_chars_label.pack_forget()
+        current_part_label.pack_forget()
+        page_label.pack_forget()
+        first_chars_label.pack(fill=tk.X, pady=(0, scale_size(BASE_PAD)))
+        current_part_label.pack(fill=tk.X, pady=(0, scale_size(BASE_PAD)))
+        page_label.pack(fill=tk.X)
+        window.geometry(f"{win_w}x{scale_size(_BASE_WIN_H_EXTERNAL_SELECT)}")
+    else:
+        # 内容驱动：标签有文字就显示，没文字就隐藏
+        # 先全部 pack_forget，再按 first_chars → current_part → page 顺序重新 pack（保证顺序）
+        first_chars_label.pack_forget()
+        current_part_label.pack_forget()
+        page_label.pack_forget()
+        if first_chars_label.cget("text"):
+            first_chars_label.pack(fill=tk.X, pady=(0, scale_size(BASE_PAD)))
+        if current_part_label.cget("text"):
+            current_part_label.pack(fill=tk.X, pady=(0, scale_size(BASE_PAD)))
+        if page_label.cget("text"):
+            page_label.pack(fill=tk.X)
+        # 动态计算窗口高度
+        visible_rows = 0
+        if first_chars_label.winfo_manager() != "":
+            visible_rows += 1
+        if current_part_label.winfo_manager() != "":
+            visible_rows += 1
+        if page_label.winfo_manager() != "":
+            visible_rows += 1
+        if visible_rows == 0:
+            window.geometry(f"{win_w}x{scale_size(_BASE_WIN_H_COMPACT)}")
+        elif visible_rows == 1:
+            window.geometry(f"{win_w}x{scale_size(_BASE_WIN_H_EXTERNAL_MULTI)}")
+        elif visible_rows == 2:
+            window.geometry(f"{win_w}x{scale_size(_BASE_WIN_H_EXTERNAL_SINGLE)}")
+        else:
+            window.geometry(f"{win_w}x{scale_size(_BASE_WIN_H_EXTERNAL_SELECT)}")
+
+
+def _switch_chrome_to_external():
+    """切换到无标题栏（外输精简模式）"""
+    if window.winfo_viewable():
+        window.withdraw()
+    window.overrideredirect(True)
+    window.title("解书音形-外输")
+    _apply_display_mode()
+    if not window.winfo_viewable() and ctx._window_visible:
+        window.deiconify()
+
+
+def _switch_chrome_to_internal():
+    """恢复到标题栏（内输完整模式）"""
+    if window.winfo_viewable():
+        window.withdraw()
+    window.overrideredirect(False)
+    window.title("解书音形-内输")
+    _apply_display_mode()
+    if not window.winfo_viewable():
+        window.deiconify()
+
+
+def _show_external_window():
+    """外输模式：显示窗口并定位到鼠标位置"""
+    if not ctx.external_mode or ctx._window_visible:
+        return
+    x, y = win32api.GetCursorPos()
+    x -= scale_size(150)
+    y += scale_size(0)
+    window.geometry(f"+{x}+{y}")
+    window.deiconify()
+    ctx._window_visible = True
+
+
+def _hide_external_window():
+    """外输模式：隐藏窗口，并把标签收回紧凑布局防止下次显示时残留"""
+    if not ctx.external_mode or not ctx._window_visible:
+        return
+    # 先全部 pack_forget（收回紧凑态），防止下次 deiconify 时残留展开布局
+    first_chars_label.pack_forget()
+    current_part_label.pack_forget()
+    page_label.pack_forget()
+    window.geometry(f"{win_w}x{scale_size(_BASE_WIN_H_COMPACT)}")
+    window.withdraw()
+    ctx._window_visible = False
+
+
 def toggle():
     if ctx.external_mode:
         ctx.external_mode = False
-        ctx.window.title("解书音形-内输")
-        ctx.window.geometry(f"{win_w}x{win_h_norm}+{init_x}+{init_y}")
+        _hide_external_window()
+        _switch_chrome_to_internal()
     else:
         ctx.external_mode = True
-        ctx.window.title("解书音形-外输")
+        _switch_chrome_to_external()
         x, y = win32api.GetCursorPos()
-        x -= int(100 * scale)
-        y -= int(10 * scale)
-        ctx.window.geometry(f"{win_w}x{win_h_norm}+{x}+{y}")
+        x -= scale_size(150)
+        y -= scale_size(80)
+        window.geometry(f"+{x}+{y}")
+        _hide_external_window()  # 切到外输时先隐藏，等编码出现再显示
     entry_box.delete(0, tk.END)
     entry_count_var.set(f"{get_entry_count()}")
     keyboard.press_and_release("shift")
-    # 重置计数器
     ctx.reset_cursor_counters()
 
 def initial(event):
@@ -560,7 +715,7 @@ def initial(event):
     """
     if keyboard.is_pressed('ctrl') or keyboard.is_pressed('alt') or keyboard.is_pressed('win'):
         return
-    if not ctx.external_mode or ctx.window_closing:
+    if not ctx.external_mode or ctx.window_closing or ctx._pasting:
         ctx.key_press_counter = 0
         ctx.reset_cursor_counters()
         return
@@ -639,22 +794,26 @@ def paste_text(text, reset_entry=True):
     """
     if not ctx.external_mode or not text:
         return
-    pyperclip.copy(text)
-    for _ in range(ctx.code_char_before_cursor):
-        keyboard.press_and_release("backspace")
-    for _ in range(ctx.code_char_after_cursor):
-        keyboard.press_and_release("delete")
+    ctx._pasting = True
+    try:
+        pyperclip.copy(text)
+        for _ in range(ctx.code_char_before_cursor):
+            keyboard.press_and_release("backspace")
+        for _ in range(ctx.code_char_after_cursor):
+            keyboard.press_and_release("delete")
 
-    # 重置计数器
-    ctx.reset_cursor_counters()
+        # 重置计数器
+        ctx.reset_cursor_counters()
 
-    keyboard.release("shift")
-    time.sleep(0.04)
-    keyboard.press_and_release('ctrl+v')
+        keyboard.release("shift")
+        time.sleep(0.04)
+        keyboard.press_and_release('ctrl+v')
 
-    if reset_entry:
-        entry_box.delete(0, tk.END)
-        real_time_var.set('')
+        if reset_entry:
+            entry_box.delete(0, tk.END)
+            real_time_var.set('')
+    finally:
+        ctx._pasting = False
     return True
 
 def start_keyboard_listener():
@@ -666,7 +825,12 @@ def start_keyboard_listener():
     ctx.key_press_counter = 0
     ctx.reset_cursor_counters()
     if ctx.window:
-        ctx.window.title("解书音形-仅内输")
+        ctx.window.after(0, lambda: (
+            setattr(ctx, 'external_mode', False),
+            _hide_external_window(),
+            _switch_chrome_to_internal(),
+            ctx.window.title("解书音形-仅内输"),
+        ))
 
 # 启动监听线程
 keyboard_thread = threading.Thread(target=start_keyboard_listener, daemon=True)
@@ -710,8 +874,9 @@ base_height = 1920
 init_x = int(screen_width * (2250 / base_width))
 init_y = int(screen_height * (1250 / base_height))
 
-window.title("解书音形-内输")
-window.geometry(f"{win_w}x{win_h_norm}+{init_x}+{init_y}")
+ctx.external_mode = True
+window.title("解书音形-外输")
+window.geometry(f"{win_w}x{scale_size(_BASE_WIN_H_COMPACT)}+{init_x}+{init_y}")
 window.configure(bg='#FFF3C7')
 window.attributes('-topmost', True)
 window.attributes('-alpha', 0.95)
@@ -744,6 +909,9 @@ entry_box = tk.Entry(main_frame, textvariable=real_time_var, font=font_medium, w
 entry_box.pack(pady=(0, scale_size(BASE_PAD)))
 entry_box.focus_set()
 entry_box.bind("<KeyPress>", on_key_press)
+# 外输模式（无标题栏）时可通过输入框拖动窗口
+entry_box.bind("<ButtonPress-1>", start_drag)
+entry_box.bind("<B1-Motion>", do_drag)
 
 display_frame = tk.Frame(main_frame, bg=bg_color)
 display_frame.pack(fill=tk.X)
@@ -932,4 +1100,12 @@ def on_main_window_close():
     keyboard.unhook_all()  # 移除所有热键和全局监听钩子
     ctx.window.destroy()
 window.protocol("WM_DELETE_WINDOW", on_main_window_close)
+
+# ── 启动初始化：默认外输模式 ──
+window.withdraw()                     # 先隐藏，避免闪烁
+window.overrideredirect(True)         # 无标题栏
+_apply_display_mode()                 # 应用外输精简布局
+keyboard.press_and_release("shift")  # 与系统输入法协调
+# 窗口保持隐藏，外输模式下等编码输入后 _show_external_window 自动显示
+
 window.mainloop()

@@ -6453,8 +6453,8 @@
 弦 xm2gd
 闲 xm2m
 嫌 xm2n
-鹇 xm2nd
 娴 xm2nm
+鹇 xm2nx
 衔 xm2t
 涎 xm2u
 㳄 xm2u.q
@@ -7382,6 +7382,7 @@
 运 yp4z
 孕 yp4zn
 冤 yr1d
+肙 yr1k
 鸳 yr1n
 鸢 yr1ni
 渊 yr1u

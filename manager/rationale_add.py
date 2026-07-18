@@ -13,9 +13,12 @@ import json
 import random
 
 # ── 路径 ──
-JIESHU_IME_HOME = os.environ.get("JIESHU_IME_HOME", r"D:\USB\Py\输入法")
-DATA_FILE = os.path.join(JIESHU_IME_HOME, "dictionary.txt")
-WEB_DATA_FILE = os.path.join(JIESHU_IME_HOME, "help", "webpage", "dictionary-data.js")
+# 将项目根目录加入 sys.path，以便导入 config
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import config
+
+DATA_FILE = config.DATA_FILE
+WEB_DATA_FILE = os.path.join(config.BASE_DIR, "help", "webpage", "dictionary-data.js")
 
 # 独体字主码 → 数字类
 SOLO_DIGITS = set("0123456789")

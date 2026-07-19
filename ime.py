@@ -286,7 +286,22 @@ def update_display(processed=None, candidates=None, first_chars=None):
             # 缓存 first_chars，供下次 navigate_parts 输入未变时复用
             ctx._cached_first_chars = first_chars
             ctx._cached_first_chars_input = input_text
-
+        if ctx.in_part_selection and ctx.resolved_chars:
+            parts = ctx.split_parts
+            custom = []
+            for i, part in enumerate(parts):
+                if i in ctx.resolved_chars:
+                    custom.append(ctx.resolved_chars[i])
+                else:
+                    cand = query_single_char(part, 0)   # 取第一个候选
+                    if cand:
+                        custom.append(cand.split("/")[0][0])
+                    else:
+                        custom.append("")                
+            first_chars = "".join(custom)
+            # 更新缓存，避免后续 navigate_parts 复用旧值
+            ctx._cached_first_chars = first_chars
+            ctx._cached_first_chars_input = input_text
         if first_chars:
             if ctx.current_phrase and not ctx.in_part_selection:
                 if first_chars == ctx.current_phrase[1:-1]:
@@ -536,10 +551,13 @@ def main_function(*args):
     if ctx.external_mode:
         has_code = _has_code_in_text(input_text)
         if has_code and not ctx._window_visible:
-            # 无编码 → 有编码：显示窗口
-            _show_external_window()
+            if not ctx.selection_updating:
+                _show_external_window()          # 正常定位
+            else:
+                # 选择过程中，不移动窗口，仅显示（若隐藏）
+                window.deiconify()
+                ctx._window_visible = True
         elif not has_code and ctx._window_visible:
-            # 有编码 → 无编码（上屏清零后）：隐藏窗口
             _hide_external_window()
 
 def on_key_press(event):
@@ -755,16 +773,12 @@ def initial(event):
                     ctx.code_char_before_cursor += 1
                 entry_box.icursor(entry_box.index(tk.INSERT) + 1)
             elif event.name == "backspace":
-                current_text = entry_box.get()
                 cursor_pos = entry_box.index(tk.INSERT)
                 if ctx.code_char_before_cursor > 0:
                     ctx.code_char_before_cursor -= 1
                 if cursor_pos > 0:
                     # 如果光标前有编码字符，则退格会删除一个编码字符
-                    new_text = current_text[:cursor_pos-1] + current_text[cursor_pos:]
-                    entry_box.delete(0, tk.END)
-                    entry_box.insert(0, new_text)
-                    entry_box.icursor(cursor_pos - 1)
+                    entry_box.delete(cursor_pos - 1, cursor_pos)
 
             elif event.name == "enter":
                 entry_box.delete(0, tk.END)

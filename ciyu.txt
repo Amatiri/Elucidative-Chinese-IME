@@ -26,6 +26,7 @@
 表现 bcxm
 凵 bcy
 亠 bdh
+刂 bdkl
 ⺈ bdkt
 丷 bdm
 冖 bdp
@@ -69,6 +70,7 @@
 保证 bkvg
 拜拜 blbl
 百度 bldu
+耂 blk
 勹 blp
 变换 bmhr
 变幻 bmhr4
@@ -109,6 +111,7 @@
 乑 bvs
 𰃮 bxd
 巛 bxp
+巜 bxp2
 尢 byh
 讠 byj
 北京 bzj;
@@ -155,6 +158,7 @@
 第一 diyi
 掸子 dj3zi0
 担子 dj4zi0
+蛋黄 djhd
 但是 djui
 」 djy
 「 djz
@@ -203,6 +207,7 @@
 对话 dvhw
 对齐 dvqi
 堆砌 dvqi4
+对象 dvxd
 】 dvy
 对应 dvy;4
 对于 dvyu
@@ -216,11 +221,13 @@
 发现 faxm
 法则 faze
 奋斗 ffdb
+分类 fflz
 分析 ffxi
 风险 fgxm3
 方法 fhfa
 方面 fhmm
 方案 fhoj
+放肆 fhsi
 方式 fhui
 反馈 fjkv
 繁体 fjti
@@ -318,6 +325,7 @@
 管理 grli
 官吏 grli4
 惯例 grli4r
+观众 grvs
 关系 grxi
 关于 gryu
 σ gsi
@@ -381,6 +389,7 @@
 函数 hjuu
 汉书 hjuu1
 寒暑 hjuu3
+含义 hjyi
 汉语 hjyu
 韩语 hjyu3
 汉字 hjzi
@@ -421,9 +430,11 @@
 创造 idzk
 ɜ iee
 ə ies
+沉默 ifmo
 城市 igui
 城镇 igvf4
 成为 igwz
+呈现 igxm
 程序 igxu
 程序员 igxuy
 常规 ihgv
@@ -483,6 +494,7 @@
 教科书 jckeu
 交流 jclq
 教育 jcyu
+讲讲 jdjd
 将计就计 jdjijqj
 讲解 jdjx
 江苏 jdsu
@@ -514,6 +526,7 @@
 监控 jmks
 建立 jmli
 键盘 jmpj
+箭头 jmtb
 简体 jmti
 健体 jmti3
 简体字 jmtiz
@@ -544,6 +557,7 @@
 进一步 jnyib
 均衡 jphg
 纠偏 jqpm
+诀别 jtbx
 决定 jtd;
 觉得 jtde
 绝对 jtdv
@@ -657,6 +671,7 @@
 模型 mox;
 明日方舟 mrfv m;rifhv
 目标 mubc
+目的 mudi
 没关系 mzgrx
 玫瑰 mzgv
 美丽 mzli
@@ -674,6 +689,7 @@
 能够 nggb
 你说得对 niuodedv
 男娘 njnd
+奈何 nlhe
 年龄 nml;
 年轻 nmq;
 内蒙古 nzmgg
@@ -900,6 +916,7 @@
 ッ rttk
 つ rtu
 ツ rtuk
+如此 ruci
 如果 rugo
 如何 ruhe
 わ rwa
@@ -949,6 +966,7 @@
 随时 svui
 四则运算 szys sizeyps
 条件 tcjm
+条目 tcmu
 调整 tcvg
 特别 tebx
 醍醐灌顶 thgd tihugrd
@@ -977,6 +995,7 @@
 天津 tmjn
 添加 tmjw
 填写 tmxx
+天涯 tmya
 团队 trdv
 同步 tsbu
 通道 tsdk
@@ -1036,6 +1055,7 @@
 × uig2
 时候 uihb
 市场 uiih
+实际 uiji
 世纪 uiji4s
 实际上 uijiu
 时间 uijm
@@ -1152,6 +1172,7 @@
 直译 viyi4y
 展开 vjkl
 ㇯ vjm.
+沾染 vjrj
 这就是 vju
 展示 vjui
 沾湿 vjui1
@@ -1322,6 +1343,7 @@
 消费者 xcfzv
 效率 xcly
 消息 xcxi
+相比而言 xdbiory xboy
 想法 xdfa
 相辅相成 xdfuxdi xfxi
 香港 xdgh
@@ -1329,6 +1351,7 @@
 响亮 xdld
 向量 xdld4
 项目 xdmu
+相似 xdsi
 相同 xdts2
 详细 xdxi
 西班牙 xibjy
@@ -1345,6 +1368,7 @@
 洗澡 xizk
 现代 xmdl
 现实 xmui
+显示 xmui4
 线性 xmx;4
 线性方程组 xmx;fhigz
 线性相关 xmx;xdg xxxg
@@ -1391,6 +1415,7 @@
 友好 ybhk
 游玩 ybwj
 游戏 ybxi
+优先 ybxm
 优秀 ybxq
 有意思 ybyisi0
 由于 ybyu
@@ -1478,4 +1503,3 @@
 组合 zuhe
 最后 zvhb
 最近 zvjn
-观众 grvs

@@ -342,7 +342,7 @@
 瓿 bu4w
 怖 bu4x
 簿 bu4z
-蔽 bx1cu
+蔽 bx1c
 憋 bx1x
 鳖 bx1y
 别 bx2d
@@ -1127,6 +1127,7 @@
 悱 fz3x
 诽 fz3y
 翡 fz3yf
+朏 fz3yi
 费 fz4b
 痱 fz4bf
 芾 fz4c
@@ -3365,6 +3366,7 @@
 埒 lx4t
 洌 lx4u
 捩 lx4uq
+㧜 lx4uz
 裂 lx4y
 趔 lx4z
 躐 lx4zx
@@ -5327,7 +5329,7 @@
 铩 ua1j
 杀 ua1p
 纱 ua1s
-砂 ua1su
+砂 ua1sx
 沙 ua1u
 鲨 ua1y
 裟 ua1yu
@@ -5876,7 +5878,7 @@
 锧 vi4jb
 铚 vi4jt
 帙 vi4ju
-觯 vi4kd
+觯 vi4k
 桎 vi4m
 骘 vi4mb
 栉 vi4mj

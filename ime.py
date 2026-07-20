@@ -299,7 +299,12 @@ def update_display(processed=None, candidates=None, first_chars=None):
                     else:
                         custom.append("")                
             first_chars = "".join(custom)
-            # 更新缓存，避免后续 navigate_parts 复用旧值
+        # 统一更新 first_chars 缓存，覆盖三种路径：
+        #   A) first_chars=None → 上方重新计算后缓存
+        #   B) in_part_selection + resolved_chars → 覆盖后缓存
+        #   C) 主循环传入 first_chars → 此前未缓存，现补齐
+        # 防止全部删除后重新进入多字选择时复用旧预览串
+        if first_chars:
             ctx._cached_first_chars = first_chars
             ctx._cached_first_chars_input = input_text
         if first_chars:
@@ -468,6 +473,9 @@ def main_function(*args):
         if not ctx.selection_updating:
             ctx.resolved_chars = {}
             ctx.original_split_count = 0
+        # 清空 first_chars 缓存，防止全部删除后重新输入时复用旧预览串
+        ctx._cached_first_chars = ""
+        ctx._cached_first_chars_input = ""
 
     # ── 空格快速路径：跳过重复扫描，直接用缓存上屏 ──
     if " " in input_text:
@@ -709,6 +717,11 @@ def _hide_external_window():
 
 
 def toggle():
+    entry_box.delete(0, tk.END)
+    reset_input_state()
+    entry_count_var.set(f"{get_entry_count()}")
+    keyboard.press_and_release("shift")
+    ctx.reset_cursor_counters()
     if ctx.external_mode:
         ctx.external_mode = False
         _hide_external_window()
@@ -721,10 +734,7 @@ def toggle():
         y -= scale_size(80)
         window.geometry(f"+{x}+{y}")
         _hide_external_window()  # 切到外输时先隐藏，等编码出现再显示
-    entry_box.delete(0, tk.END)
-    entry_count_var.set(f"{get_entry_count()}")
-    keyboard.press_and_release("shift")
-    ctx.reset_cursor_counters()
+
 
 def initial(event):
     """
@@ -922,10 +932,6 @@ entry_box = tk.Entry(main_frame, textvariable=real_time_var, font=font_medium, w
                     relief=tk.FLAT, bg='#EFE3AE', highlightthickness=1, highlightcolor='#000000')
 entry_box.pack(pady=(0, scale_size(BASE_PAD)))
 entry_box.focus_set()
-entry_box.bind("<KeyPress>", on_key_press)
-# 外输模式（无标题栏）时可通过输入框拖动窗口
-entry_box.bind("<ButtonPress-1>", start_drag)
-entry_box.bind("<B1-Motion>", do_drag)
 
 display_frame = tk.Frame(main_frame, bg=bg_color)
 display_frame.pack(fill=tk.X)

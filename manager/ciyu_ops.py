@@ -2,7 +2,7 @@ import os
 from config import CIYU_FILE
 from manager.code_parser import parse_code, generate_all_combinations, generate_default_codes_for_word, check_code_exists
 from manager.dictionary import query_chars
-
+from manager.file_processor import sort_file_by_second_part
 def get_existing_word_info(word):
     """获取词语的原编码信息，返回 (是否存在, 原编码字符串)"""
     if not os.path.exists(CIYU_FILE):
@@ -234,3 +234,5 @@ def ciyumain():
 
             print(f"{word} {' '.join(codes)}")
             add_to_ciyu(word, codes, overwrite=True)
+        count = sort_file_by_second_part(CIYU_FILE, CIYU_FILE)
+        print(f"完成！词语条目：{count}")

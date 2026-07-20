@@ -67,8 +67,6 @@ def main():
                         print(f"未录入汉字：{''.join(missing)}")
             elif choice == '8':
                 ciyumain()
-                a = sort_file_by_second_part(CIYU_FILE, CIYU_FILE)
-                print(f"完成！词语条目：{a}")
             elif choice == '9':
                 bmmamain()
             elif choice == '':

@@ -1141,6 +1141,7 @@
 个 ge41
 嘎 ga1k
 呷 ga1kj
+咖 ga1kl
 伽 ga1r
 旮 ga1rj
 胳 ga1ru
@@ -2605,7 +2606,8 @@
 夹 jw16
 家 jw1b
 痂 jw1bl
-葭 jw1c
+茄 jw1c
+葭 jw1ck
 镓 jw1j
 加 jw1l
 枷 jw1m
@@ -6809,8 +6811,8 @@
 曳 ye47
 页 ye4b
 邺 ye4by
-靥 ye4cm
 夜 ye4d
+靥 ye4g
 烨 ye4h
 叶 ye4k
 腋 ye4r

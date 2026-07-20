@@ -180,22 +180,7 @@ def query_multi_chars(split_text):
 
 def query_multi_chars_phrase(processed):
     """
-    用户手动用单引号分隔的多段输入，优先查询词语码表。
-
-    流程：
-      1. 按用户手动输入的 ' 分隔 processed（注意：processed 中的 ' 都是用户打的，
-         自动拆分的 ' 只出现在 split_sequence 输出里）
-      2. 对每段：
-         - 长度 < 3 → 自动拆分后取首选字
-         - 长度 >= 3 → 先 query_phrase，命中则用词语文字；
-           未命中则自动拆分取首选字
-      3. 任一段无候选（含 query_phrase 未命中且首选字也为空）→ 返回 ""
-
-    Args:
-        processed: process_input() 的输出，即用户输入的合法编码字符（可含 '）
-
-    Returns:
-        拼接后的预览串，或 "" (表示某段无法解析)
+    get_phrase_segments针对cli模拟进行简化的版本
     """
     segments = processed.split("'")
     result = ''

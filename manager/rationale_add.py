@@ -16,6 +16,7 @@ import random
 # 将项目根目录加入 sys.path，以便导入 config
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import config
+from manager.file_processor import build_web_data
 
 DATA_FILE = config.DATA_FILE
 WEB_DATA_FILE = os.path.join(config.BASE_DIR, "help", "webpage", "dictionary-data.js")
@@ -155,7 +156,6 @@ def get_char_codes(char_map, ch, filtered=True):
 
 
 def show_char_codes(ch, codes, existing_rationale):
-    """展示某汉字的所有条目，并提示换行语法。"""
     print(f"====={ch}*{len(codes)}=====")
     for code in codes:
         print(f"  {ch} {code}")
@@ -194,6 +194,8 @@ def mode_sequential(entries, rationale):
         if not val:
             print("退出\n")
             break
+        if val.lower() == 'a':
+            continue
         val = val.replace('\\n', '\n')
         rationale[char] = val
         save_rationale(rationale)
@@ -235,6 +237,8 @@ def mode_random(entries, rationale):
         if not val:
             print("退出\n")
             break
+        if val.lower() == 'a':
+            continue
         val = val.replace('\\n', '\n')
         rationale[ch] = val
         save_rationale(rationale)
@@ -262,27 +266,19 @@ def mode_specified(entries, rationale):
 
             show_char_codes(ch, codes, rationale)
 
-            existing = rationale.get(ch, "")
-            if existing:
-                prompt = "回车跳过/a保留/新理据替换: "
-            else:
-                prompt = "回车退出/理据: "
-
+            prompt = "理据: "
             val = input(prompt).strip()
 
-            if existing and val == "":
-                continue
-            elif not existing and val == "":
+            if not val:                # 回车退出
                 print("退出\n")
                 return
-            elif val.lower() == 'a' and existing:
-                print(f"保留: {existing}")
+            if val.lower() == 'a':    # 跳过当前汉字
                 continue
-            else:
-                val = val.replace('\\n', '\n')
-                rationale[ch] = val
-                save_rationale(rationale)
-                print(f"✓ {ch} → {val.replace(chr(10), ' / ')}")
+
+            val = val.replace('\\n', '\n')
+            rationale[ch] = val
+            save_rationale(rationale)
+            print(f"✓ {ch} → {val.replace(chr(10), ' / ')}")
 
 
 # ═══════════════════════════════════════════
@@ -300,6 +296,7 @@ def main():
     remain = sum(1 for ch, code in entries
                  if needs_rationale(ch, code) and ch not in rationale)
     print(f"*需理据{total_need}条, 待补{remain}条")
+    print("*a跳过，回车退出")
     print("*多音字换行用\\n\n")
     while True:
         print("1. 按序添加")
@@ -310,10 +307,13 @@ def main():
 
         if choice == '1':
             mode_sequential(entries, rationale)
+            build_web_data()
         elif choice == '2':
             mode_random(entries, rationale)
+            build_web_data()
         elif choice == '3':
             mode_specified(entries, rationale)
+            build_web_data()
         elif choice == '':
             print("退出")
             break

@@ -109,6 +109,7 @@
 夂 buwv
 不要 buyk
 乑 bvs
+罒 bwx
 𰃮 bxd
 巛 bxp
 巜 bxp2
@@ -121,6 +122,7 @@
 词汇 cihv
 词语 ciyu
 餐馆 cjgr3
+参加 cjjw
 参考 cjkk
 操作 ckzo
 菜单 cldj
@@ -135,13 +137,14 @@
 · d.d
 、 d.p
 定义 d;yi
-打字 da3zi4
 达到 dadk
+大家 dajw
 打开 dakl
 答案 daoj
 大众 davs
 大小 daxc
 大学 daxt
+打字 dazi4
 豆包 dbb
 ’ ddy
 ‘ ddz
@@ -151,19 +154,20 @@
 等待 dgdl
 等级 dgji
 登录 dglu
+当时 dhui
 地点 didm
 地方 difh
 地府 difu3
 地理 dili3
+地区 diqu
 第一 diyi
-掸子 dj3zi0
-担子 dj4zi0
 蛋黄 djhd
 但是 djui
 」 djy
 「 djz
 单子 djzi
 胆子 djzi0
+掸子 djzi01
 淡紫 djzi3
 单字 djzi4
 道理 dkli
@@ -175,6 +179,7 @@
 ︶ dkx
 ） dky
 （ dkz
+代表 dlbc
 代码 dlma
 〕 dly
 〔 dlz
@@ -216,6 +221,7 @@
 ” dyy
 “ dyz
 法兰西 faljx
+法律 faly
 发散 fasj
 发展 favj
 发现 faxm
@@ -245,6 +251,7 @@
 负荷 fuhe4
 附和 fuhe4h
 福建 fujm
+副码 fuma3s
 服务 fuwu
 复兴 fux;
 复习 fuxi
@@ -299,6 +306,7 @@
 改变 glbm
 改编 glbm1
 改动 glds
+改革 glge
 μ gmu
 Μ gmuc
 ν gnu
@@ -306,6 +314,11 @@
 过渡 godu
 过度 godu4
 过程 goig
+国际 goji
+过激 goji1
+国籍 goji2
+过继 goji4
+过季 goji4h
 国家 gojw
 过来 goll
 ω gome
@@ -376,6 +389,7 @@
 Ζ gzec
 后面 hbmm
 候选 hbxr
+皇帝 hddi
 黄昏 hdhp
 河北 hebz
 合理 heli
@@ -414,6 +428,8 @@
 互联网 hulmw
 湖南 hunj
 回答 hvda
+会议 hvyi
+回忆 hvyi4
 话说 hwuo
 化学 hwxt
 华夏 hwxw
@@ -439,6 +455,7 @@
 程序员 igxuy
 常规 ihgv
 场景 ihj;
+长江 ihjd
 尝试 ihui4
 常用 ihys
 常用字 ihysz
@@ -502,6 +519,10 @@
 鞠躬尽瘁 jgjc jugsjnc
 基本 jibf
 极端 jidr
+机构 jigb
+机关 jigr
+鸡冠 jigr1
+籍贯 jigr4
 集合 jihe
 几何 jihe2
 机会 jihv
@@ -512,6 +533,7 @@
 计算 jisr
 计算机 jisrj
 技术 jiuu
+记者 jive
 机制 jivi
 极限 jixm
 继续 jixu
@@ -569,6 +591,7 @@
 矩阵 juvf
 纪释析义输入法 juxf juxyurf
 纪释析义 juxy jiuixiyi
+具有 juyb
 解书音形 juyx jxuuynx
 价格 jwge
 家庭 jwt;
@@ -610,6 +633,7 @@
 了解 lcjx
 了结 lcjx2
 辽宁 lcn;
+两个 ldge
 粮食 ldui
 良莠不齐 ldybbuq lybq
 厉害 lihl
@@ -665,6 +689,7 @@
 米哈游 mihay
 耄耋 mkdx
 贸易 mkyi
+面积 mmji
 腼腆 mmtm
 泯灭 mnmx
 模式 moui
@@ -672,6 +697,7 @@
 明日方舟 mrfv m;rifhv
 目标 mubc
 目的 mudi
+目前 muqm
 没关系 mzgrx
 玫瑰 mzgv
 美丽 mzli
@@ -760,6 +786,7 @@
 龟兹 qqci2d
 全部 qrbu
 权当 qrdh1
+全国 qrgo
 全能 qrng
 全球 qrqq
 全体 qrti
@@ -1073,6 +1100,7 @@
 视频 uipn
 食品 uipn3
 事情 uiq;
+时期 uiqi
 ÷ uiu2
 实施 uiui1
 时时 uiui2
@@ -1133,6 +1161,7 @@
 装修 vdxq
 浙江 vejd
 这里 veli
+这种 vevs
 这些 vexx
 这样 veyh
 振动 vfds
@@ -1145,6 +1174,7 @@
 整理 vgli
 证明 vgm;
 整体 vgti
+政体 vgti3r
 政治 vgvi
 账号 vhhk
 中华民国 vhmg vshwmng
@@ -1172,6 +1202,7 @@
 知识 viui2
 至少 viuk
 只有 viyb
+职业 viye
 质疑 viyi2
 执意 viyi4
 之意 viyi4x
@@ -1242,7 +1273,9 @@
 逐步 vubu
 祝福 vufu
 嘱咐 vufu4
+主席 vuxi
 注意 vuyi
+主要 vuyk
 ⿿ vvr.
 ⿻ vx.
 ˙ vyd0
@@ -1341,11 +1374,14 @@
 位置 wzvi
 未知 wzvi1
 微信 wzxn
+委员会 wzyrh
 形成 x;ig
 形容词 x;rsc
+行政 x;vg
 性质 x;vi
 兴致 x;vi4
 行为 x;wz
+行走 x;zb
 消费者 xcfzv
 效率 xcly
 消息 xcxi
@@ -1395,6 +1431,8 @@
 学生 xtug
 学校 xtxc
 学习 xtxi
+学院 xtyr
+学园 xtyr2
 许多 xudo
 畜牧 xumu
 序幕 xumu4
@@ -1433,12 +1471,14 @@
 意大利 yidal
 一旦 yidj
 一点 yidm
+以后 yihb
 已经 yij yij;
 意境 yij;4
 以及 yiji
 旖旎 yini3
 意思 yisi0
 伊斯兰 yisil
+以上 yiuh
 艺术 yiuu
 依稀 yixi
 以下 yixw
@@ -1467,6 +1507,7 @@
 音韵 ynyp
 氤氲 ynyp1
 音乐 ynyt
+运动 ypds
 云南 ypnj
 运行 ypx;
 愿景 yrj;
@@ -1491,10 +1532,12 @@
 语文 yuwf
 怎么样 zfmey
 增加 zgjw
+增长 zgvh
 字典 zidm
 自动 zids
 字符 zifu
 自己 zij
+自然 zirj
 自我 ziwo
 自行车 zix;i
 坐标 zobc
@@ -1504,8 +1547,13 @@
 作为 zowz
 座位 zowz4
 左右 zoyb
+作用 zoys
 遵循 zpxp
 总之 zsvi
 组合 zuhe
+组成 zuig
+组织 zuvi
+阻止 zuvi3
+阻滞 zuvi4
 最后 zvhb
 最近 zvjn

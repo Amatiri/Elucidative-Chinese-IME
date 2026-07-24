@@ -720,8 +720,8 @@ def toggle():
     entry_box.delete(0, tk.END)
     reset_input_state()
     entry_count_var.set(f"{get_entry_count()}")
-    keyboard.press_and_release("shift")
     ctx.reset_cursor_counters()
+    keyboard.press_and_release("shift")
     if ctx.external_mode:
         ctx.external_mode = False
         _hide_external_window()
@@ -747,7 +747,6 @@ def initial(event):
         ctx.key_press_counter = 0
         ctx.reset_cursor_counters()
         return
-
     ctx.key_press_counter += 1
     if ctx.key_press_counter == 2:
         ctx.key_press_counter = 1

@@ -462,6 +462,7 @@
 漕 ck2u
 草 ck3c
 艹 ck3c.b
+艸 ck3c.c
 屮 ck3c.i
 肏 ck4r
 猜 cl1q
@@ -1930,8 +1931,8 @@
 承 ig29
 程 ig2h
 呈 ig2k
-盛 ig2m
-橙 ig2md
+橙 ig2m
+盛 ig2mg
 枨 ig2mi
 晟 ig2r
 城 ig2t
@@ -2818,7 +2819,7 @@
 侃 kj3r
 砍 kj3s
 坎 kj3t
-凵 kj3t.b
+凵 kj3t.c
 看 kj4m
 瞰 kj4mg
 阚 kj4mu
@@ -3503,6 +3504,9 @@
 懑 mf4xu
 蒙 mg1c
 蒙 mg2c
+矇 mg2c.m
+濛 mg2c.u
+懞 mg2c.x
 萌 mg2cr
 虻 mg2i
 盟 mg2m
@@ -3533,6 +3537,7 @@
 硭 mh2s
 忙 mh2x
 莽 mh3c
+茻 mh3cc
 蟒 mh3i
 漭 mh3u
 咪 mi1k

@@ -930,6 +930,7 @@ main_frame.pack(fill=tk.BOTH, expand=False)
 entry_box = tk.Entry(main_frame, textvariable=real_time_var, font=font_medium, width=44,
                     relief=tk.FLAT, bg='#EFE3AE', highlightthickness=1, highlightcolor='#000000')
 entry_box.pack(pady=(0, scale_size(BASE_PAD)))
+entry_box.bind("<Key>", on_key_press)
 entry_box.focus_set()
 
 display_frame = tk.Frame(main_frame, bg=bg_color)

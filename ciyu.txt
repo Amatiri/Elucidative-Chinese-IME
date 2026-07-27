@@ -57,12 +57,14 @@
 必须 bixu
 皀 bjd
 𠘨 bjf
+办法 bjfa
 办公室 bjgsu
 卩 bjs
 冂 bjt
 廴 bjz
 报错 bkco
 保存 bkcp
+报道 bkdk4
 报告 bkgk
 保护 bkhu
 保持 bkii
@@ -71,6 +73,7 @@
 拜拜 blbl
 百度 bldu
 耂 blk
+百科 blke
 勹 blp
 变换 bmhr
 变幻 bmhr4
@@ -94,6 +97,8 @@
 龶 bq;
 扌 bub
 不错 buco
+不对 budv
+部队 budv4
 部分 buff
 补充 buis
 不仅 bujn
@@ -120,6 +125,8 @@
 辶 bzv
 测试 ceu
 词汇 cihv
+词条 citc
+此外 ciwl
 词语 ciyu
 餐馆 cjgr3
 参加 cjjw
@@ -129,6 +136,8 @@
 采访 clfh
 才会 clhv
 才能 clng
+采取 clqu
+采用 clys
 剉冰 cob;1
 错误 cowu
 存在 cpzl
@@ -140,6 +149,7 @@
 达到 dadk
 大家 dajw
 打开 dakl
+大量 dald
 答案 daoj
 大众 davs
 大小 daxc
@@ -160,9 +170,12 @@
 地府 difu3
 地理 dili3
 地区 diqu
+敌人 dirf
+地位 diwz
 第一 diyi
 蛋黄 djhd
 但是 djui
+单位 djwz
 」 djy
 「 djz
 单子 djzi
@@ -202,6 +215,7 @@
 〉 dudy
 〈 dudz
 … dul
+独立 duli
 肚腩 dunj3
 独体字 dutiz
 》 duy
@@ -226,6 +240,8 @@
 发展 favj
 发现 faxm
 法则 faze
+分布 ffbu
+分别 ffbx
 奋斗 ffdb
 分类 fflz
 分析 ffxi
@@ -241,6 +257,7 @@
 繁体字 fjtiz
 反正 fjvg
 繁文缛节 fjwfruj fwrj
+范围 fjwz
 反应 fjy;
 反映 fjy;4
 翻译 fjyi
@@ -252,11 +269,13 @@
 附和 fuhe4h
 福建 fujm
 副码 fuma3s
+父亲 fuqn1
 服务 fuwu
 复兴 fux;
 复习 fuxi
 敷衍 fuyj
 复杂 fuza
+负责 fuze
 非常 fzih
 飞机 fzji
 α gal
@@ -325,6 +344,9 @@
 Ω gomec
 ο gomi
 Ο gomic
+国民党 gomndh
+过去 goqu
+国务院 gowuy
 φ gph
 Φ gphc
 π gpi
@@ -350,6 +372,13 @@
 供给 gsji3
 工具 gsju
 公开 gskl
+公里 gsli
+公理 gsli3
+功利 gsli4
+功力 gsli44
+公历 gsli4c
+公立 gsli4d
+公民 gsmn
 功能 gsng
 公司 gssi
 共同 gsts
@@ -387,15 +416,19 @@
 Ξ gxic
 ζ gze
 Ζ gzec
+后来 hbll
 后面 hbmm
 候选 hbxr
 皇帝 hddi
 黄昏 hdhp
+皇上 hduh
 河北 hebz
 合理 heli
 河南 henj
 核心 hexn
 何意味 heyiwz
+合作 hezo
+很多 hfdo
 鹤发童颜 hfty hefatsy
 行列式 hhlxu
 涵盖 hjgl
@@ -428,6 +461,7 @@
 互联网 hulmw
 湖南 hunj
 回答 hvda
+回来 hvll
 会议 hvyi
 回忆 hvyi4
 话说 hwuo
@@ -447,9 +481,12 @@
 ɜ iee
 ə ies
 沉默 ifmo
+城邦 igbh1
+程度 igdu4
 城市 igui
 城镇 igvf4
 成为 igwz
+称为 igwz2
 呈现 igxm
 程序 igxu
 程序员 igxuy
@@ -466,6 +503,7 @@
 产品 ijpn
 产生 ijug
 阐述 ijuu
+超过 ikgo
 超级 ikji
 超模 ikmo
 超市 ikui
@@ -502,6 +540,7 @@
 经济 j;ji
 经纪 j;ji4s
 境界 j;jx
+精神 j;uf
 竞争 j;vg
 经营 j;y;
 精英 j;y;1
@@ -510,6 +549,7 @@
 交互 jchu
 教科书 jckeu
 交流 jclq
+交通 jcts
 教育 jcyu
 讲讲 jdjd
 将计就计 jdjijqj
@@ -518,6 +558,7 @@
 江西 jdxi
 鞠躬尽瘁 jgjc jugsjnc
 基本 jibf
+基地 jidi
 极端 jidr
 机构 jigb
 机关 jigr
@@ -530,8 +571,11 @@
 基础 jiiu
 吉林 jiln
 纪录片 jilup
+机器 jiqi
+极其 jiqi2
 计算 jisr
 计算机 jisrj
+集团 jitr
 技术 jiuu
 记者 jive
 机制 jivi
@@ -545,6 +589,7 @@
 检查 jmia
 监察 jmia2
 检察 jmia2b
+坚持 jmii
 监控 jmks
 建立 jmli
 键盘 jmpj
@@ -571,13 +616,16 @@
 斤斤计较 jnjnjij jjjj
 津津有味 jnjnybw jjyw
 尽量 jnld
+今年 jnnm2
 进入 jnru
 今天 jntm
 进退 jntv
 金属 jnuu
 进行 jnx;
 进一步 jnyib
+军队 jpdv
 均衡 jphg
+军事 jpui
 纠偏 jqpm
 诀别 jtbx
 决定 jtd;
@@ -589,6 +637,7 @@
 锦上添花 juth jnuhtmh
 具体 juti
 矩阵 juvf
+举行 jux;
 纪释析义输入法 juxf juxyurf
 纪释析义 juxy jiuixiyi
 具有 juyb
@@ -598,13 +647,16 @@
 价值 jwvi
 结构 jxgb
 桔槔 jxgk1m
+结果 jxgo
 结合 jxhe
 接触 jxiu4
+解决 jxjt
 界面 jxmm
 截面 jxmm4
 接纳 jxna
 街头 jxtb
 接头 jxtb2
+接受 jxub4
 解释 jxui
 介绍 jxuk
 结束 jxuu
@@ -615,6 +667,8 @@
 科学 kext
 可以 keyi
 肯定 kfd;
+看到 kjdk4
+看见 kjjm
 看来 kjll
 看着 kjve
 考虑 kkly
@@ -628,6 +682,7 @@
 领导 l;dk
 灵魂 l;hp
 零重码 l;ism
+另外 l;wl
 拉风 lafg
 拉缝 lafg4
 了解 lcjx
@@ -642,6 +697,7 @@
 理据 liju4
 理解 lijx
 离开 likl
+力量 lild
 理论 lilp
 里面 limm
 理念 linm
@@ -668,7 +724,9 @@
 滤波器 lyboq
 旅行 lyx;
 履行 lyx;2
+旅游 lyyb
 类型 lzx;
+明白 m;bl
 名词 m;ci
 名称 m;ig
 明令禁止 m;l;jnv mljv
@@ -716,6 +774,7 @@
 你说得对 niuodedv
 男娘 njnd
 奈何 nlhe
+年代 nmdl
 年龄 nml;
 年轻 nmq;
 内蒙古 nzmgg
@@ -724,12 +783,14 @@
 俄罗斯 oelos
 安徽 ojhv
 安全 ojqr
+按照 ojvk
 按下 ojxw
 奥地利 okdil
 澳门 okmf
 二次元 orciy
 而且 orqx
 苹果 p;go
+平均 p;jp
 评价 p;jw
 评论 p;lp
 平台 p;tl
@@ -737,6 +798,7 @@
 朋友 pgyb
 批改 pigl
 批量 pild
+批准 pivp
 判断 pjdr
 排序 plxu
 拼音 pnyn
@@ -757,6 +819,8 @@
 祈祷 qidk3
 启动 qids
 奇怪 qigy4
+汽车 qiie
+期间 qijm
 起来 qil
 期末 qimo4
 期末考试 qimokku
@@ -781,17 +845,20 @@
 前面 qmmm
 潜能 qmng
 前往 qmwh
+群众 qpvs
 秋词 qqci
 秋辞 qqci2
 龟兹 qqci2d
 全部 qrbu
 权当 qrdh1
 全国 qrgo
+权力 qrli
 全能 qrng
 全球 qrqq
 全体 qrti
 确认 qtrf
 确实 qtui2
+取得 qude
 驱动 quds
 ー r;;
 ば rba
@@ -997,12 +1064,16 @@
 算法 srfa
 虽然 svrj
 随时 svui
+随着 svve
 四则运算 szys sizeyps
+它们 tamf
+投资 tbzi
 条件 tcjm
 条目 tcmu
 调整 tcvg
 特别 tebx
 醍醐灌顶 thgd tihugrd
+提高 tigk
 提供 tigs
 提出 tiiu
 踢出 tiiu1
@@ -1036,26 +1107,33 @@
 痛苦 tsku
 同时 tsui
 通知 tsvi
-同志 tsvi4
+统治 tsvi4
+同志 tsvi4x
+统一 tsyi
+土地 tudi
 ↑ tuh
 图库 tuku
 图片 tupm
+突然 turj
 ℃ tuud
 退格 tvge
 退出 tviu
 推理 tvli
+铁路 txlu
 ↓ txw
 → tyb
 ← tzo
 ∀ uaa
 沙漠 uamo
 ∪ ub;4
+受到 ubdk4
 ≠ ubdy
 手机 ubji
 ⊂ ubkhj
 收敛 ublm
 ∉ ubuy
 首先 ubxm
+双地支 uddivi
 ⟺ udgjw
 双拼 udpn1
 ° udu4
@@ -1074,17 +1152,21 @@
 什么 ufm
 神秘 ufmi
 ∓ ufuvg
+甚至 ufvi
 ¬ ufz1
 √ ugfhk tdv
 生活 ugh
 生物 ugwu
+声音 ugyn
 ≡ uhdy
 上海 uhhl
 上课 uhke
 上面 uhmm
+社会主义 uhvy
 上午 uhwu
 上限 uhxm4
 时代 uidl
+十分 uiff
 × uig2
 时候 uihb
 市场 uiih
@@ -1106,8 +1188,10 @@
 时时 uiui2
 实实在在 uiuizlz
 ⊥ uivvi
+实行 uix;
 实现 uixm
 适应 uiy;
+事业 uiye
 使用 uiys
 º ujb0
 ¹ ujb1
@@ -1150,6 +1234,7 @@
 ∝ uvgbi
 ± uvgfu
 睡觉 uvjc
+水平 uvp;
 ∞ uwq
 ≤ uxydy
 ≈ uydy
@@ -1184,6 +1269,7 @@
 旨意 vi3yi4
 直播 vibo
 只不过 vibug
+制定 vid;
 知道 vidk
 制度 vidu
 支付宝 vifub
@@ -1201,13 +1287,16 @@
 只是 viui
 知识 viui2
 至少 viuk
+执行 vix;
 只有 viyb
 职业 viye
 质疑 viyi2
 执意 viyi4
 之意 viyi4x
 直译 viyi4y
+只要 viyk
 展开 vjkl
+战略 vjlt
 ㇯ vjm.
 沾染 vjrj
 这就是 vju
@@ -1217,6 +1306,7 @@
 占时 vjui2r
 战士 vjui4
 战事 vjui4k
+战争 vjvg
 找到 vkdk
 召唤 vkhr
 照片 vkpm
@@ -1268,13 +1358,18 @@
 赚钱 vrqm
 ⿲ vrr.
 转向 vrxd
+重大 vsda
+重点 vsdm3
 中国 vsg
 重要 vsyk
+终于 vsyu
 逐步 vubu
 祝福 vufu
 嘱咐 vufu4
+主任 vurf4
 主席 vuxi
 注意 vuyi
+主义 vuyi4
 主要 vuyk
 ⿿ vvr.
 ⿻ vx.
@@ -1375,8 +1470,10 @@
 未知 wzvi1
 微信 wzxn
 委员会 wzyrh
+位于 wzyu
 形成 x;ig
 形容词 x;rsc
+形式 x;ui
 行政 x;vg
 性质 x;vi
 兴致 x;vi4
@@ -1409,6 +1506,7 @@
 西藏 xizh
 洗澡 xizk
 现代 xmdl
+先进 xmjn
 现实 xmui
 显示 xmui4
 线性 xmx;4
@@ -1419,10 +1517,12 @@
 新建 xnjm
 信笺 xnjm1
 信件 xnjm4
+新闻 xnwf
 信息 xnxi
 寻找 xpvk
 修改 xqgl
 选拔 xrba
+选举 xrju
 选项 xrxd
 选择 xrze
 匈牙利 xsyal
@@ -1440,8 +1540,10 @@
 需要 xuyk
 仙之人兮列如麻 xvrm xvrxlrm
 下课 xwke
+下来 xwll
 下列 xwlx
 下面 xwmm
+下去 xwqu
 下午 xwwu
 下限 xwxm4
 下载 xwzl
@@ -1475,6 +1577,8 @@
 已经 yij yij;
 意境 yij;4
 以及 yiji
+意见 yijm4
+以来 yill2
 旖旎 yini3
 意思 yisi0
 伊斯兰 yisil
@@ -1492,12 +1596,14 @@
 验证 yjvg
 炎症 yjvg4
 严正 yjvg44
+严重 yjvs
 要点 ykdm
 要求 ykqq
 一目了然 ymlr yimulcr
 因此 ynci
 印度 yndu
 银行 ynhh
+引起 ynqi
 印刷 ynuw
 因为 ynwz
 隐形 ynx;
@@ -1529,6 +1635,7 @@
 雨尘さま yuifsama
 预览 yulj
 舆论 yulp
+于是 yuui
 语文 yuwf
 怎么样 zfmey
 增加 zgjw
@@ -1538,12 +1645,15 @@
 字符 zifu
 自己 zij
 自然 zirj
+自治 zivi
 自我 ziwo
 自行车 zix;i
+咱们 zjmf
 坐标 zobc
 做到 zodk
 做了 zole
 昨天 zotm
+作战 zovj
 作为 zowz
 座位 zowz4
 左右 zoyb
@@ -1555,5 +1665,6 @@
 组织 zuvi
 阻止 zuvi3
 阻滞 zuvi4
+最大 zvda
 最后 zvhb
 最近 zvjn

@@ -15,7 +15,6 @@ from config import CIYU_FILE
 
 def run_input_method():
     """启动输入法前端（非阻塞）"""
-    print("启动解书音形前端...")
     try:
         ime_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ime.py")
         subprocess.Popen([sys.executable, ime_path])
@@ -34,7 +33,7 @@ def show_menu():
     print("7.查询字码 ", end="")
     print("8.添加词语 ", end="")
     print("9.猜测编码")
-
+    print("*前端自动启动中")
 
 def main():
     ensure_data_file()
@@ -42,7 +41,7 @@ def main():
     while True:
         show_menu()
         try:
-            choice = input("选项: ").strip()
+            choice = input("选项:").strip()
             if choice == '1':
                 batch_add_entries()
             elif choice == '2':

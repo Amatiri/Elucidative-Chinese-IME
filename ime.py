@@ -451,7 +451,6 @@ def main_function(*args):
     处理输入解析、自动上字、空格上屏等核心逻辑。
     """
     input_text = real_time_var.get()
-
     # 处理特殊键（= 和 -）
     processed_text, new_cursor_pos, key_processed = handle_special_keys(input_text)
     if key_processed:
@@ -726,6 +725,7 @@ def toggle():
         ctx.external_mode = False
         _hide_external_window()
         _switch_chrome_to_internal()
+        print("[前端]切换到内输")
     else:
         ctx.external_mode = True
         _switch_chrome_to_external()
@@ -734,7 +734,7 @@ def toggle():
         y -= scale_size(80)
         window.geometry(f"+{x}+{y}")
         _hide_external_window()  # 切到外输时先隐藏，等编码出现再显示
-
+        print("[前端]切换到外输")
 
 def initial(event):
     """
@@ -822,6 +822,7 @@ def paste_text(text, reset_entry=True):
         pyperclip.copy(text)
         for _ in range(ctx.code_char_before_cursor):
             keyboard.press_and_release("backspace")
+            
         for _ in range(ctx.code_char_after_cursor):
             keyboard.press_and_release("delete")
 
@@ -854,7 +855,7 @@ def start_keyboard_listener():
             _switch_chrome_to_internal(),
             ctx.window.title("解书音形-仅内输"),
         ))
-
+    print("[前端]切换到仅内输")
 # 启动监听线程
 keyboard_thread = threading.Thread(target=start_keyboard_listener, daemon=True)
 keyboard_thread.start()
@@ -1127,5 +1128,5 @@ window.overrideredirect(True)         # 无标题栏
 _apply_display_mode()                 # 应用外输精简布局
 keyboard.press_and_release("shift")  # 与系统输入法协调
 # 窗口保持隐藏，外输模式下等编码输入后 _show_external_window 自动显示
-
+print("\n[前端]启动成功")
 window.mainloop()

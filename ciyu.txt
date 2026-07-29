@@ -95,6 +95,7 @@
 㐅 bpn
 乄 bpng
 龶 bq;
+亻 brf
 扌 bub
 不错 buco
 不对 budv
@@ -124,6 +125,7 @@
 背景 bzj;3
 辶 bzv
 测试 ceu
+測試 ceu.
 词汇 cihv
 词条 citc
 此外 ciwl
@@ -147,6 +149,7 @@
 、 d.p
 定义 d;yi
 达到 dadk
+大会 dahv
 大家 dajw
 打开 dakl
 大量 dald
@@ -156,6 +159,7 @@
 大学 daxt
 打字 dazi4
 豆包 dbb
+调查 dcia
 ’ ddy
 ‘ ddz
 得到 dedk
@@ -318,6 +322,7 @@
 高速 gksu4
 高中 gkvs
 告终 gkvs1
+高兴 gkx;
 高效 gkxc
 搞笑 gkxc4
 λ gla
@@ -339,6 +344,7 @@
 过继 goji4
 过季 goji4h
 国家 gojw
+國家 gojw.
 过来 goll
 ω gome
 Ω gomec
@@ -399,6 +405,7 @@
 Τ gtac
 θ gth
 Θ gthc
+姑娘 gund
 υ gup
 Υ gupc
 故事 guui
@@ -416,6 +423,7 @@
 Ξ gxic
 ζ gze
 Ζ gzec
+哈基米 hajim
 后来 hbll
 后面 hbmm
 候选 hbxr
@@ -455,6 +463,7 @@
 火柴 hoil
 或者 hove
 活着 hove0
+婚姻 hpyn
 换行 hrhh
 环境 hrj;
 湖北 hubz
@@ -570,7 +579,10 @@
 计划 jihw
 基础 jiiu
 吉林 jiln
+记录 jilu
+纪录 jilu4
 纪录片 jilup
+技能 jing
 机器 jiqi
 极其 jiqi2
 计算 jisr
@@ -582,6 +594,7 @@
 极限 jixm
 继续 jixu
 机械 jixx
+记忆 jiyi
 给予 jiyu
 犄角旮旯 jjgl jijcgal
 季姬击鸡记 jjjjj
@@ -643,6 +656,8 @@
 具有 juyb
 解书音形 juyx jxuuynx
 价格 jwge
+假如 jwru
+加入 jwru4
 家庭 jwt;
 价值 jwvi
 结构 jxgb
@@ -716,6 +731,7 @@
 论文 lpwf
 垄断 lsdr
 路程 luig
+路径 luj;
 路人 lurf
 录入 luru
 路线 luxm
@@ -745,6 +761,7 @@
 懵懂 mgds3
 盲打 mhda3
 米哈游 mihay
+曼波 mjbo1
 耄耋 mkdx
 贸易 mkyi
 面积 mmji
@@ -801,6 +818,7 @@
 批准 pivp
 判断 pjdr
 排序 plxu
+偏好 pmhk
 拼音 pnyn
 扑克 puke
 葡萄牙 putky
@@ -840,6 +858,7 @@
 起义 qiyi4
 奇异 qiyi4c
 黔驴技穷 qljq qmlyjiq
+前端 qmdr
 前后 qmhb
 钱库 qmku
 前面 qmmm
@@ -888,6 +907,7 @@
 人类 rflz
 人民币 rfmnb
 忍耐 rfnl
+认识 rfui
 认真 rfvf
 任务 rfwu
 认为 rfwz
@@ -1062,6 +1082,8 @@
 死而后已 sohy siorhby
 所以 soyi
 算法 srfa
+松树 ssuu
+松鼠 ssuu3
 虽然 svrj
 随时 svui
 随着 svve
@@ -1226,6 +1248,7 @@
 输入法 uuruf
 叔叔 uuuu
 施氏食狮史 uuuuu
+熟悉 uuxi
 数学 uuxt
 ∈ uuy
 树叶 uuye
@@ -1361,6 +1384,7 @@
 重大 vsda
 重点 vsdm3
 中国 vsg
+中華民國 vshwmng. vhmg.
 重要 vsyk
 终于 vsyu
 逐步 vubu

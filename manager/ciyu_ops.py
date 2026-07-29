@@ -3,6 +3,29 @@ from config import CIYU_FILE
 from manager.code_parser import parse_code, generate_all_combinations, generate_default_codes_for_word, check_code_exists
 from manager.dictionary import query_chars
 from manager.file_processor import sort_file_by_second_part
+
+
+def has_dot_in_codes(*codes):
+    """判断任一编码中是否含 .（单字繁体标志）。
+    用于词语添加时，若任一组成字编码含 .，整词编码末尾加 .。
+    判定时机：单字读音已选完后。
+    """
+    return any('.' in c for c in codes if c)
+
+
+def append_dot_to_code(code_str):
+    """给词语编码字符串末尾加 .。
+    若含空格（多字词有两个默认编码），两段都加 .。
+    避免重复加 .（防御性：若末尾已有 .，跳过）。
+    """
+    if not code_str:
+        return code_str
+    if " " in code_str:
+        parts = code_str.split(" ")
+        return " ".join(p + "." if not p.endswith(".") else p for p in parts if p)
+    return code_str if code_str.endswith(".") else code_str + "."
+
+
 def get_existing_word_info(word):
     """获取词语的原编码信息，返回 (是否存在, 原编码字符串)"""
     if not os.path.exists(CIYU_FILE):
@@ -67,6 +90,13 @@ def process_two_char_word(word):
     if not all_combinations:
         print("无法生成任何编码组合")
         return None
+
+    # 若组成字编码含 .（繁体），整词编码末尾统一加 .
+    is_traditional = has_dot_in_codes(code1xr, code2xr)
+    if is_traditional:
+        all_combinations = [c + "." for c in all_combinations]
+        print("（检测到繁体字，编码末尾已加 .）")
+
     for i, combo in enumerate(all_combinations, 1):
         print(f"{i:2d}.{combo}")
     while True:
@@ -112,6 +142,13 @@ def process_multi_char_word(word):
         else:
             selected_codes.append(codes[0])
     default_code = generate_default_codes_for_word(word, selected_codes)
+
+    # 若组成字编码含 .（繁体），整词默认编码末尾统一加 .
+    is_traditional = has_dot_in_codes(*selected_codes)
+    if is_traditional:
+        default_code = append_dot_to_code(default_code)
+        print("（检测到繁体字，编码末尾已加 .）")
+
     print(f"默认：{default_code}")
     choice = input("输入1添加默认编码，或直接输入自定义编码：").strip()
     if choice == "1":

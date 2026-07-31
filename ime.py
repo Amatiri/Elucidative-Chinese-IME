@@ -1120,6 +1120,7 @@ def on_main_window_close():
     ctx.window_closing = True
     keyboard.unhook_all()  # 移除所有热键和全局监听钩子
     ctx.window.destroy()
+    print("[前端]已退出")
 window.protocol("WM_DELETE_WINDOW", on_main_window_close)
 
 # ── 启动初始化：默认外输模式 ──

@@ -294,7 +294,7 @@
 拨 bo1uf
 播 bo1ut
 饽 bo1uz
-癶 bo1v.b
+癶 bo1v
 玻 bo1w
 趵 bo1z
 薄 bo2c
@@ -1519,6 +1519,7 @@
 肓 hd1r
 慌 hd1x
 黄 hd2b
+黃 hd2b.
 隍 hd2bw
 煌 hd2h
 蝗 hd2i
@@ -1576,6 +1577,7 @@
 壑 he4t
 褐 he4y
 痕 hf2b
+拫 hf2u
 艮 hf2u.
 狠 hf3q
 很 hf3t
@@ -1844,6 +1846,7 @@
 诲 hv4y
 讳 hv4yw
 花 hw1c
+㳸 hw1u
 𩝨 hw1ug
 划 hw2d
 铧 hw2j
@@ -1854,6 +1857,7 @@
 華 hw2s.
 滑 hw2u
 划 hw4d
+稞 hw4h
 粿 hw4h.m
 桦 hw4m
 婳 hw4n
@@ -1932,7 +1936,7 @@
 车 ie14
 砗 ie1s
 扯 ie3u
-屮 ie45.b
+屮 ie45.c
 彻 ie4t
 坼 ie4ti
 撤 ie4u
@@ -2100,6 +2104,7 @@
 炒 ik3h
 吵 ik3k
 耖 ik4n
+趠 ik4z
 差 il1h
 钗 il1j
 拆 il1u
@@ -2109,13 +2114,13 @@
 虿 il4i
 戳 io1g
 踔 io1z
+趠 io1z.
 逴 io1zv
 辍 io4c
 啜 io4k
 辵 io4m
 龊 io4n
 绰 io4s
-趠 io4z.
 蝽 ip1i
 椿 ip1m
 春 ip1r
@@ -2278,6 +2283,7 @@
 稽 ji1hy
 叽 ji1k
 唧 ji1kj
+咭 ji1kk
 机 ji1m
 𣬠 ji1mj
 鸡 ji1n
@@ -2482,7 +2488,7 @@
 进 jn4zw
 菌 jp1c
 军 jp1d
-龟 jp1dt
+龟 jp1dd
 麇 jp1g
 钧 jp1j
 君 jp1k
@@ -2825,13 +2831,13 @@
 柯 ke1mk
 牁 ke1p
 磕 ke1s
-坷 ke1tk
+坷 ke1t
 珂 ke1w
 窠 ke1x
 颏 ke2i
 咳 ke2k
 壳 ke2u
-坷 ke3tk
+坷 ke3t
 渴 ke3u
 岢 ke3uk
 客 ke4b
@@ -3213,7 +3219,7 @@
 栳 lk3m
 姥 lk3n
 佬 lk3r
-潦 lk3ux
+潦 lk3u
 烙 lk4h
 唠 lk4k
 耢 lk4n
@@ -3430,6 +3436,7 @@
 埒 lx4t
 洌 lx4u
 捩 lx4uq
+擸 lx4ux
 㧜 lx4uz
 裂 lx4y
 趔 lx4z
@@ -3878,6 +3885,7 @@
 腻 ni4r
 昵 ni4rs
 溺 ni4u
+泥 ni4us
 嶷 ni4uy
 逆 ni4z
 囡 nj1g
@@ -3984,6 +3992,7 @@
 哪 nz3k
 馁 nz3u
 内 nz45
+內 nz45.
 那 nz4b
 宁 n;2b
 寧 n;2b.
@@ -4201,7 +4210,7 @@
 砹 ol4sc
 壒 ol4t
 𭏦 ol4t.
-餲 ol4u;
+餲 ol4u
 爱 ol4v
 瑷 ol4w
 噢 oo1k
@@ -4583,6 +4592,8 @@
 鳍 qi2y
 芑 qi3c
 启 qi3h
+啓 qi3h.f
+啟 qi3h.t
 杞 qi3m
 乞 qi3r
 企 qi3rv
@@ -5060,7 +5071,8 @@
 𪨊 ss2s.
 竦 ss3d
 耸 ss3o
-㧐 ss3u.
+㧐 ss3u
+㩳 ss3u.
 悚 ss3x
 怂 ss3xc
 宋 ss4b
@@ -5806,6 +5818,7 @@
 戆 vd4x
 蜇 ve1i
 遮 ve1z
+乇 ve24.t
 辙 ve2c
 辄 ve2co
 蛰 ve2i
@@ -5985,7 +5998,7 @@
 智 vi4r
 知 vi4r.
 膣 vi4rx
-紩 vi4s;
+紩 vi4s
 至 vi4t
 畤 vi4ts
 治 vi4u
@@ -6074,6 +6087,7 @@
 琢 vo2w
 酌 vo2y
 诼 vo2yi
+趠 vo2z
 屯 vp19
 肫 vp1r
 圫 vp1t
@@ -6340,6 +6354,8 @@
 倭 wz1z.
 韦 wz21
 为 wz24
+爲 wz24.f
+為 wz24.t
 围 wz2g
 帷 wz2j
 帏 wz2jw
@@ -6374,6 +6390,8 @@
 鲔 wz3yy
 卫 wz42
 为 wz44
+爲 wz44.f
+為 wz44.t
 未 wz46
 尉 wz4c
 蔚 wz4cc
@@ -7407,7 +7425,7 @@
 爻 yk2p
 肴 yk2r
 繇 yk2s
-徭 yk2tf
+徭 yk2t
 摇 yk2u
 峣 yk2ug
 瑶 yk2w
@@ -7442,6 +7460,7 @@
 愔 yn1x
 寅 yn2b
 鄞 yn2bj
+荶 yn2c
 芩 yn2c.
 霪 yn2i
 银 yn2j
@@ -7533,7 +7552,7 @@
 苑 yr4c
 媛 yr4n
 垸 yr4t
-掾 yr4ui
+掾 yr4u
 瑗 yr4w
 愿 yr4x
 怨 yr4xt
@@ -7584,6 +7603,8 @@
 纡 yu1s
 淤 yu1u
 迂 yu1z
+迃 yu1z.k
+込 yu1z.r
 于 yu21
 臾 yu26
 予 yu29
@@ -7828,6 +7849,7 @@
 造 zk4z
 躁 zk4zm
 灾 zl1b
+災 zl1b.
 哉 zl1k
 栽 zl1m
 甾 zl1x

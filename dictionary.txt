@@ -2273,6 +2273,9 @@
 膙 jd3r
 讲 jd3y
 降 jd4b
+强 jd4g
+強 jd4g.
+彊 jd4g.t
 糨 jd4m
 犟 jd4n
 匠 jd4o
@@ -2555,6 +2558,7 @@
 扃 js1h
 炯 js3h
 颎 js3hq
+冏 js3j
 炅 js3r
 窘 js3x
 迥 js3z
@@ -3582,6 +3586,7 @@
 扪 mf2u
 汶 mf2uw
 焖 mf4h
+呇 mf4k
 闷 mf4x
 懑 mf4xu
 蒙 mg1c
@@ -4326,6 +4331,7 @@
 霹 pi1i
 铍 pi1j
 噼 pi1k
+伾 pi1r
 砒 pi1s
 纰 pi1sb
 坯 pi1t
@@ -4546,10 +4552,14 @@
 跄 qd1z
 蔷 qd2c
 强 qd2g
+強 qd2g.
+彊 qd2g.t
 樯 qd2m
 嫱 qd2n
 墙 qd2t
 强 qd3g
+強 qd3g.
+彊 qd3g.t
 羟 qd3h
 镪 qd3j
 抢 qd3u
@@ -7422,6 +7432,7 @@
 艳 yj4d
 燕 yj4h
 焰 yj4hd
+觃 yj4j
 咽 yj4k
 唁 yj4kk
 验 yj4m

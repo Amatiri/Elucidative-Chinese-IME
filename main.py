@@ -2,7 +2,7 @@ import os
 import sys
 import subprocess
 import argparse
-
+import webbrowser
 from manager.dictionary import ensure_data_file, query_chars
 from manager.batch_entry import batch_add_entries
 from manager.single_entry import single_add_entry, modify_entry
@@ -70,16 +70,35 @@ def parse_args():
                         help="添加词语（配合 --char，可选 --code）")
     parser.add_argument("--guess", action="store_true",
                         help="猜测编码（暂不支持非交互）")
+    parser.add_argument('--keymap', action='store_true',
+                        help='打开键位图网页（help/webpage/键位图.html）')
+    parser.add_argument('--query-web', action='store_true',
+                        help='打开查询编码网页（help/webpage/index.html）')
     return parser.parse_args()
 
 def main():
     args = parse_args()
-
-    if not args.no_ime:
-        run_input_method()
-
+    if args.keymap or args.query_web:
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        web_dir = os.path.join(base_dir, 'help', 'webpage')
+        
+        if args.keymap:
+            path = os.path.join(web_dir, '键位图.html')
+            if os.path.exists(path):
+                webbrowser.open('file://' + os.path.abspath(path))
+                print(f"正在打开键位图：{path}")
+            else:
+                print(f"警告：文件不存在 - {path}")
+        
+        if args.query_web:
+            path = os.path.join(web_dir, 'index.html')
+            if os.path.exists(path):
+                webbrowser.open('file://' + os.path.abspath(path))
+                print(f"正在打开查询网页：{path}")
+            else:
+                print(f"警告：文件不存在 - {path}")
+        return  
     ensure_data_file()
-
     # ---------- 子命令处理 ----------
     if args.query:
         chars = "".join(args.query)
@@ -269,7 +288,8 @@ def main():
         sort_file_by_second_part(CIYU_FILE, CIYU_FILE)
         print(f"[OK] {word} {' '.join(codes)}")
         return
-
+    if not args.no_ime:
+        run_input_method()
     # 其他暂不支持的子命令
     unsupported = [args.batch, args.guess]
     if any(unsupported):

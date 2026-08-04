@@ -124,6 +124,7 @@
 妣 bi3n
 俾 bi3r
 彼 bi3t
+沘 bi3u
 笔 bi3z
 必 bi44
 陛 bi4b
@@ -159,6 +160,7 @@
 嬖 bi4nx
 狴 bi4q
 臂 bi4r
+佖 bi4rx
 毕 bi4s
 碧 bi4sw
 壁 bi4t
@@ -375,6 +377,7 @@
 倍 bz4rk
 碚 bz4s
 备 bz4u
+𬇙 bz4um
 琲 bz4w
 悖 bz4x
 惫 bz4xu
@@ -1131,6 +1134,7 @@
 复 fu4u
 復 fu4u.t
 複 fu4u.y
+㳇 fu4ub
 覆 fu4x
 讣 fu4y
 鲋 fu4yr
@@ -2066,6 +2070,7 @@
 叱 ii4k
 啻 ii4kd
 眙 ii4m
+佁 ii4r
 赤 ii4t
 敕 ii4u
 饬 ii4ur
@@ -2782,6 +2787,7 @@
 景 j;3r
 肼 j;3rj
 儆 j;3ru
+汫 j;3u
 璟 j;3w
 憬 j;3x
 警 j;3y
@@ -2877,10 +2883,12 @@
 忐 kg3x
 康 kh1g
 糠 kh1m
+闶 kh1md
 慷 kh1x
 扛 kh2u
 亢 kh4d
 炕 kh4h
+闶 kh4m
 伉 kh4r
 抗 kh4u
 刊 kj1d
@@ -3067,8 +3075,7 @@
 钌 lc4jl
 料 lc4m
 瞭 lc4mx
-撩 lc4u
-撂 lc4ut
+撂 lc4u
 尞 lc4x
 尥 lc4y
 良 ld29
@@ -3238,8 +3245,7 @@
 烙 lk4h
 唠 lk4k
 耢 lk4n
-撩 lk4u
-涝 lk4uc
+涝 lk4u
 潦 lk4ux
 酪 lk4y
 来 ll26
@@ -3896,12 +3902,14 @@
 怩 ni2x
 鲵 ni2y
 旎 ni3f
+伲 ni3r.s
 祢 ni3s
 拟 ni3u
 睨 ni4m
 倪 ni4m.
 匿 ni4o
 腻 ni4r
+伲 ni4rb
 昵 ni4rs
 溺 ni4u
 泥 ni4us
@@ -3967,6 +3975,7 @@
 牛 nq21
 钮 nq3j
 杻 nq3m
+狃 nq3q
 纽 nq3s
 扭 nq3u
 忸 nq3x
@@ -4208,7 +4217,8 @@
 霭 ol3i
 嗳 ol3k
 欸 ol3q
-昹 ol3r
+佁 ol3r
+昹 ol3ry
 矮 ol3u
 毐 ol3uw
 隘 ol4b
@@ -4497,6 +4507,7 @@
 帔 pz4j
 佩 pz4r
 沛 pz4u
+𬇙 pz4ub
 配 pz4y
 乒 p;19
 娉 p;1n
@@ -4576,6 +4587,7 @@
 嘁 qi1k
 桤 qi1m
 槭 qi1mg
+桼 qi1mr
 妻 qi1n
 欺 qi1q
 漆 qi1u
@@ -4660,7 +4672,8 @@
 圲 qm1t
 扦 qm1u
 搴 qm1ub
-岍 qm1uk
+岍 qm1ue
+汧 qm1uk
 悭 qm1x
 愆 qm1xy
 谦 qm1y
@@ -4964,6 +4977,7 @@
 蚋 rv4i
 锐 rv4j
 睿 rv4m
+汭 rv4u
 瑞 rv4w
 所 so3j
 仨 sa1r
@@ -5002,6 +5016,7 @@
 嗓 sh3k
 搡 sh3u
 丧 sh49
+厶 si18
 厮 si1c
 私 si1h
 蛳 si1i
@@ -5830,6 +5845,7 @@
 骤 vb4m
 皱 vb4p
 昼 vb4r
+㑇 vb4ri
 纣 vb4s
 绉 vb4si
 繇 vb4sy
@@ -6347,6 +6363,7 @@
 仵 wu3rw
 舞 wu3t
 捂 wu3u
+𣲘 wu3uw
 武 wu3v
 忤 wu3x
 怃 wu3xw
@@ -6401,6 +6418,7 @@
 涠 wz2ug
 沩 wz2ul
 嵬 wz2uv
+𣲗 wz2uw
 惟 wz2x
 违 wz2z
 痿 wz3b
@@ -6595,6 +6613,7 @@
 饩 xi4uq
 禊 xi4y
 先 xm19
+㔾 xm19.j
 锨 xm1j
 籼 xm1m
 妗 xm1n
@@ -6615,6 +6634,7 @@
 嫌 xm2n
 娴 xm2nm
 鹇 xm2nx
+伭 xm2r
 衔 xm2t
 涎 xm2u
 㳄 xm2u.q
@@ -6646,7 +6666,6 @@
 现 xm4w
 現 xm4w.
 见 xm4w.u
-㔾 xm59
 心 xn13
 芯 xn1c
 莘 xn1cd
@@ -6991,6 +7010,7 @@
 羊 yh25
 阳 yh2b
 疡 yh2by
+飏 yh2f
 炀 yh2h
 烊 yh2h.h
 蛘 yh2i
@@ -7056,6 +7076,7 @@
 钇 yi3j
 椅 yi3m
 倚 yi3r
+佁 yi3rt
 矣 yi3s
 一 yi42
 义 yi44
@@ -7423,6 +7444,7 @@
 衍 yj3t
 演 yj3u
 掩 yj3ud
+沇 yj3us
 魇 yj3v
 琰 yj3w
 罨 yj3wd
@@ -7535,6 +7557,7 @@
 云 yp2o
 昀 yp2r
 纭 yp2s
+沄 yp2u
 筠 yp2z
 陨 yp3b
 殒 yp3d

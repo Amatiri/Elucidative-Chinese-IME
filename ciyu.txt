@@ -96,6 +96,7 @@
 乄 bpng
 龶 bq;
 亻 brf
+厶 bsm
 扌 bub
 不错 buco
 不对 budv
@@ -753,6 +754,7 @@
 明确 m;qt
 明天 m;tm
 明知故问 m;viguw mvgw
+明显 m;xm
 命运 m;yp
 名字 m;zi
 码表 mabc3

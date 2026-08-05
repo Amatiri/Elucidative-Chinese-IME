@@ -110,6 +110,7 @@
 部署配置 bupv buuupzv
 补贴 butx
 部首 buub3
+氵 buv
 攵 buw
 不闻 buwf2
 布纹 buwf2s
@@ -128,6 +129,7 @@
 测试 ceu
 測試 ceu.
 词汇 cihv
+刺激 ciji
 词条 citc
 此外 ciwl
 词语 ciyu
@@ -150,6 +152,7 @@
 、 d.p
 定义 d;yi
 达到 dadk
+大概 dagl
 大会 dahv
 大家 dajw
 打开 dakl
@@ -472,6 +475,7 @@
 互联网 hulmw
 湖南 hunj
 回答 hvda
+回过神 hvgou
 回来 hvll
 会议 hvyi
 回忆 hvyi4
@@ -647,6 +651,7 @@
 觉得 jtde
 绝对 jtdv
 举措 juco
+拒绝 jujt
 距离 juli
 居然 jurj
 锦上添花 juth jnuhtmh
@@ -748,6 +753,8 @@
 明白 m;bl
 名词 m;ci
 名称 m;ig
+命令 m;l;
+命令行 m;l;h
 明令禁止 m;l;jnv mljv
 明明 m;m;2
 明媚 m;mz
@@ -1088,6 +1095,7 @@
 算法 srfa
 松树 ssuu
 松鼠 ssuu3
+素材 sucl
 虽然 svrj
 随时 svui
 随着 svve
@@ -1270,6 +1278,7 @@
 ∵ uyw
 ⊆ uziji
 周榜 vbb
+周年 vbnm
 状况 vdkd
 装修 vdxq
 浙江 vejd
@@ -1521,6 +1530,7 @@
 项目 xdmu
 相似 xdsi
 相同 xdts2
+享受 xdub
 详细 xdxi
 西班牙 xibjy
 西北 xibz3
@@ -1622,6 +1632,7 @@
 眼镜 yjj;4
 研究 yjjq
 眼泪 yjlz
+颜色 yjse
 验证 yjvg
 炎症 yjvg4
 严正 yjvg44
@@ -1677,6 +1688,8 @@
 自治 zivi
 自我 ziwo
 自行车 zix;i
+仔细 zixi
+自习 zixi2
 咱们 zjmf
 坐标 zobc
 做到 zodk

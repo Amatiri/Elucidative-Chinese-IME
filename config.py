@@ -1,5 +1,7 @@
 import os
-
+from importlib.metadata import version, PackageNotFoundError
+import subprocess
+import sys
 # 项目根目录（本文件所在目录）
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -48,3 +50,30 @@ def get_primary_font_name(tk_root=None):
     finally:
         if destroy_later:
             root.destroy()
+            
+def ensure_packages(package_list):
+    print("正在检查安装情况...")
+    all_success = True
+
+    for package in package_list:
+        try:
+            version(package)
+        except PackageNotFoundError:
+            print(f"{package}未安装，安装中...")
+            try:
+                subprocess.check_call(
+                    [sys.executable, "-m", "pip", "install", package],
+                    stdout=subprocess.DEVNULL,   
+                    stderr=subprocess.DEVNULL
+                )
+                print(f"{package}安装成功")
+            except subprocess.CalledProcessError:
+                print(f"{package}安装失败")
+                all_success = False
+
+    if all_success:
+        print("必需库均已安装完毕，回车退出")
+if __name__=="__main__":
+    package_list=["pypinyin","keyboard","pyperclip","pywin32"]
+    ensure_packages(package_list)
+    input()

@@ -473,7 +473,7 @@
 曹 ck2r
 漕 ck2u
 草 ck3c
-艹 ck3c.b
+艹 ck3c.
 艸 ck3c.c
 屮 ck3c.i
 肏 ck4r
@@ -6170,6 +6170,8 @@
 重 vs49
 种 vs4h
 众 vs4r
+衆 vs4r.f
+眾 vs4r.t
 仲 vs4rv
 朱 vu16
 邾 vu1b

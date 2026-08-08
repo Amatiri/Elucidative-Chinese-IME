@@ -190,15 +190,18 @@ def add_to_ciyu(word, codes, overwrite=False):
 
 
 def resolve_code_conflicts(word, codes):
-    """检测编码重码，报告冲突条目，允许用户重输或放弃。"""
+    """检测编码重码，报告冲突条目，允许用户重输或放弃。忽略当前词语自身。"""
     if not codes:
         return None, False
 
-    # 第一轮检查
+    # 第一轮检查，排除自身
     conflicts = []
     for code in codes:
         conflict_line = check_code_exists(code)
         if conflict_line:
+            conflict_word = conflict_line.split()[0] if conflict_line.strip() else ""
+            if conflict_word == word:
+                continue  # 忽略自身
             conflicts.append((code, conflict_line))
 
     # 无冲突，直接放行
@@ -211,25 +214,24 @@ def resolve_code_conflicts(word, codes):
 
     # 用户重输
     new_input = input("重新输入：").strip()
-
     if not new_input:
         print("已放弃添加")
         return None, False
 
     new_codes = new_input.split()
-
-    # 逐个检查新编码
     final_codes = []
-    all_conflicted = True
     for code in new_codes:
         conflict_line = check_code_exists(code)
         if conflict_line:
+            conflict_word = conflict_line.split()[0] if conflict_line.strip() else ""
+            if conflict_word == word:
+                final_codes.append(code)   # 自身冲突允许通过
+                continue
             print(f"{code}仍与「{conflict_line}」重码，放弃")
         else:
             final_codes.append(code)
-            all_conflicted = False
 
-    if all_conflicted:
+    if not final_codes:
         print("全重码，放弃添加该条目")
         return None, False
 

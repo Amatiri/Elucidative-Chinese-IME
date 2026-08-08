@@ -191,6 +191,7 @@
 掸子 djzi01
 淡紫 djzi3
 单字 djzi4
+「」 djzy
 道理 dkli
 道歉 dkqm
 ︵ dku
@@ -200,6 +201,7 @@
 ︶ dkx
 ） dky
 （ dkz
+（） dkzy
 代表 dlbc
 代码 dlma
 〕 dly
@@ -229,6 +231,7 @@
 》 duy
 读音 duyn
 《 duz
+《》 duzy
 对不起 dvbuq
 对的 dvd
 对话 dvhw
@@ -239,9 +242,11 @@
 对应 dvy;4
 对于 dvyu
 【 dvz
+【】 dvzy
 ？ dwh
 ” dyy
 “ dyz
+“” dyzy
 法兰西 faljx
 法律 faly
 发散 fasj
@@ -1190,7 +1195,7 @@
 ∓ ufuvg
 甚至 ufvi
 ¬ ufz1
-√ ugfhk tdv
+√ ugfhk tdv4
 生活 ugh
 生物 ugwu
 声音 ugyn
@@ -1203,7 +1208,7 @@
 上限 uhxm4
 时代 uidl
 十分 uiff
-× uig2
+× uig2 tco4
 时候 uihb
 市场 uiih
 实际 uiji
@@ -1300,7 +1305,6 @@
 政体 vgti3r
 政治 vgvi
 账号 vhhk
-中华民国 vhmg vshwmng
 中华人民共和国 vhrg vhrmghg
 震撼首发 vhuf vfhjubf
 ⿱ vi.
@@ -1372,10 +1376,12 @@
 ǐ vpi3
 ì vpi4
 屯蹶否塞 vpjtpis vjps
- vpm2
+ḿ vpm2
+ vpm6
 ń vpn2
 ň vpn3
- vpn4
+ǹ vpn4
+ vpn8
 ō vpo1
 ó vpo2
 ǒ vpo3
@@ -1399,6 +1405,7 @@
 重大 vsda
 重点 vsdm3
 中国 vsg
+中华民国 vshwmng vhmg
 中華民國 vshwmng. vhmg.
 重要 vsyk
 终于 vsyu

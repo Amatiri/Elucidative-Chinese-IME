@@ -4611,6 +4611,7 @@
 锜 qi2j
 耆 qi2l
 骑 qi2m
+騎 qi2m.
 棋 qi2mb
 骐 qi2mq
 脐 qi2r
@@ -6659,6 +6660,7 @@
 陷 xm4bd
 宪 xm4bo
 苋 xm4c
+臽 xm4d
 羡 xm4h
 霰 xm4i
 献 xm4q
@@ -6787,6 +6789,7 @@
 雪 xt3i
 鳕 xt3y
 血 xt42
+坹 xt4t
 谑 xt4y
 戌 xu1g
 㶷 xu1h

@@ -352,22 +352,35 @@ def handle_ciyu(args):
         if missing:
             raise OperationError(f"组成字未录入：{''.join(missing)}")
         codes_per_char = code_str.split()
-        selected_codes = []
-        for cs in codes_per_char:
-            cl = cs.split('/')
-            if cl[0] == '--':
-                raise OperationError("组成字编码缺失")
-            selected_codes.append(cl[0])
 
-        if args.code:
+        # query_chars 会过滤非汉字：段数与词长不一致说明词语含非汉字字符
+        if len(codes_per_char) != len(word):
+            if not args.code:
+                raise OperationError(
+                    f"词语 '{word}' 含非汉字字符，无法自动生成编码，"
+                    f"请配合 --code 指定自定义编码")
             codes = args.code.split()
         else:
-            if len(word) == 2:
-                codes = [selected_codes[0][:2] + selected_codes[1][:2]]
+            selected_codes = []
+            for cs in codes_per_char:
+                cl = cs.split('/')
+                if cl[0] == '--':
+                    raise OperationError("组成字编码缺失")
+                selected_codes.append(cl[0])
+
+            if args.code:
+                codes = args.code.split()
             else:
-                from manager.code_parser import generate_default_codes_for_word
-                default_str = generate_default_codes_for_word(word, selected_codes)
-                codes = default_str.split()
+                if len(word) == 2:
+                    codes = [selected_codes[0][:2] + selected_codes[1][:2]]
+                else:
+                    from manager.code_parser import generate_default_codes_for_word
+                    default_str = generate_default_codes_for_word(word, selected_codes)
+                    codes = default_str.split()
+                # 繁体检测：组成字编码含 . 时，词码末尾统一加 .（与交互流程一致）
+                from manager.ciyu_ops import has_dot_in_codes, append_dot_to_code
+                if has_dot_in_codes(*selected_codes):
+                    codes = [append_dot_to_code(c) for c in codes]
 
     # 重码检测
     from manager.code_parser import check_code_exists
@@ -377,6 +390,9 @@ def handle_ciyu(args):
     for code in codes:
         conflict_line = check_code_exists(code)
         if conflict_line:
+            conflict_word = conflict_line.split()[0] if conflict_line.strip() else ""
+            if conflict_word == word:
+                continue  # 忽略自身，允许覆盖更新
             raise OperationError(f"词语重码冲突：编码 '{code}' 已被 '{conflict_line}' 占用")
 
     # 写入（覆盖同名词语旧记录）

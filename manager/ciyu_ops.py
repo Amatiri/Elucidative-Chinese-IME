@@ -41,12 +41,20 @@ def get_existing_word_info(word):
     return False, ""
 
 def process_two_char_word(word):
-    """处理双字词语的编码生成"""
     code_str, missing = query_chars(word)
+    # 先处理未录入的汉字
     if missing:
         print(f"未录入：{''.join(missing)}")
+        return None
+
     codes_per_char = code_str.split()
-    for i, codes in enumerate(codes_per_char):
+    if len(codes_per_char) != len(word):
+        custom = input("自定义编码：").strip()
+        if not custom:
+            return None
+        return custom.split()
+
+    for codes in codes_per_char:
         if codes == "--":
             return None
     code1 = codes_per_char[0].split('/')
@@ -113,13 +121,18 @@ def process_two_char_word(word):
         except ValueError:
             print("请输入有效的数字")
 
-
 def process_multi_char_word(word):
-    """处理多字词语的编码生成"""
     code_str, missing = query_chars(word)
     if missing:
         print(f"未录入：{''.join(missing)}")
+        return None
+
     codes_per_char = code_str.split()
+    if len(codes_per_char) != len(word):
+        custom = input("自定义编码：").strip()
+        if not custom:
+            return None
+        return custom.split()
     for i, codes in enumerate(codes_per_char):
         if codes == "--":
             return None

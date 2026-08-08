@@ -1,8 +1,8 @@
 import os
 import sys
 import argparse
-
-from manager.cli_handlers import OperationError, safe_input, run_input_method, open_web_page
+import subprocess
+from manager.cli_handlers import OperationError, safe_input, open_web_page
 from manager.cli_handlers import (
     handle_show,
     handle_query,
@@ -35,7 +35,14 @@ def show_menu():
     print("8.添加词语 ", end="")
     print("9.猜测编码")
 
-
+def run_input_method():
+    """启动输入法前端（ime.py）。"""
+    try:
+        ime_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ime.py")
+        subprocess.Popen([sys.executable, ime_path])
+    except Exception as e:
+        print(f"启动输入法失败: {e}")
+        
 def run_interactive_menu():
     """交互模式主循环（保留在 main.py，因为它与 show_menu 紧密耦合）"""
     if not sys.stdin.isatty():

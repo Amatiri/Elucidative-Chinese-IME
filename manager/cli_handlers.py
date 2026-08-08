@@ -2,7 +2,6 @@ import os
 import sys
 import shutil
 import tempfile
-import subprocess
 import webbrowser
 from pathlib import Path
 from .dictionary import ensure_data_file, query_chars, load_dictionary
@@ -10,10 +9,10 @@ from .batch_entry import batch_add_entries
 from .single_entry import single_add_entry, modify_entry
 from .abc_analyzer import interactive_mode, analyze_abc_zone
 from .file_processor import main_menu, sort_file_by_second_part, process_file, build_web_data
-from .ciyu_ops import ciyumain, get_existing_word_info, add_to_ciyu, has_dot_in_codes, append_dot_to_code
+from .ciyu_ops import ciyumain, get_existing_word_info, add_to_ciyu, has_dot_in_codes
+from .ciyu_ops import append_dot_to_code, generate_default_codes_for_word, check_code_exists
 from .guess_game import bmmamain
 from .rationale_add import main as rationale_main, load_rationale, load_entries, save_rationale
-from .code_parser import generate_default_codes_for_word, check_code_exists
 from config import CIYU_FILE, DATA_FILE
 
 class OperationError(Exception):
@@ -55,16 +54,6 @@ def safe_input(prompt=""):
     except EOFError:
         print("\n检测到输入结束（EOF），程序退出。")
         sys.exit(0)
-
-
-def run_input_method():
-    """启动输入法前端（ime.py）。"""
-    try:
-        ime_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ime.py")
-        subprocess.Popen([sys.executable, ime_path])
-    except Exception as e:
-        print(f"启动输入法失败: {e}")
-
 
 def open_web_page(page_name: str):
     """打开帮助目录下的指定网页。"""

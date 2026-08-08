@@ -605,6 +605,14 @@
         function getPhraseRationale(phrase, code) {
             const n = [...phrase].length;  // 字符数（含汉字/符号）
 
+            // 边界情况：多字词且编码末位为 "."
+            if (n > 1 && code.endsWith('.')) {
+                const prefix = code.slice(0, -1);
+                return `繁体词 ${prefix}+.`;
+            }
+            if (code === 'djzy') {
+                return '通用符号 d+jzy 其它长通用符号暂不支持合理拆分理据';
+            }
             // 通用符号：单字词语
             if (n === 1) {
                 return '通用符号 ' + code[0] + '+' + code.slice(1);
@@ -634,7 +642,6 @@
             }
             return nLabel + '词 ' + segs.slice(0, n).filter(s => s).join('+');
         }
-
         // ── Tab 切换 ──
         let currentTab = 'char';
         let tabInputs = { char: '', phrase: '' };

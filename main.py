@@ -13,7 +13,7 @@ from manager.cli_handlers import (
     handle_modify,
     handle_ciyu,
 )
-from manager.dictionary import ensure_data_file
+from manager.dictionary import ensure_data_file, query_chars
 from manager.batch_entry import batch_add_entries
 from manager.single_entry import single_add_entry, modify_entry
 from manager.abc_analyzer import interactive_mode

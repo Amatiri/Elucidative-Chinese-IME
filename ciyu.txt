@@ -251,6 +251,7 @@
 法律 faly
 发散 fasj
 发展 favj
+發展 favj.
 发现 faxm
 法则 faze
 分布 ffbu
@@ -265,6 +266,7 @@
 放弃 fhqi
 放肆 fhsi
 方式 fhui
+返回 fjhv
 反馈 fjkv
 繁体 fjti
 反提 fjti2
@@ -656,6 +658,8 @@
 决定 jtd;
 觉得 jtde
 绝对 jtdv
+决议 jtyi
+决意 jtyi4
 举措 juco
 拒绝 jujt
 距离 juli
@@ -738,6 +742,7 @@
 劳动 lkds
 老师 lkui
 联邦 lmbh
+联合 lmhe
 连续 lmxu
 吝啬 lnse
 逻辑 loji
@@ -889,6 +894,7 @@
 权当 qrdh1
 全国 qrgo
 权力 qrli
+权利 qrli4
 全能 qrng
 全球 qrqq
 全体 qrti
@@ -1097,6 +1103,7 @@
 私信 sixn
 扫描 skmc
 死而后已 sohy siorhby
+所属国 souug
 所以 soyi
 算法 srfa
 松树 ssuu
@@ -1309,7 +1316,6 @@
 中華人民共和國 vhrmghg. vhrg.
 震撼首发 vhuf vfhjubf
 ⿱ vi.
-旨意 vi3yi4
 直播 vibo
 只不过 vibug
 制定 vid;
@@ -1327,15 +1333,18 @@
 智能 ving2
 指南 vinj
 々 vis
-只是 viui
-知识 viui2
+只是 viu
+知识 viui
+致使 viui3
+指示 viui4
+直视 viui4s
 至少 viuk
 执行 vix;
 只有 viyb
 职业 viye
 质疑 viyi2
 执意 viyi4
-之意 viyi4x
+旨意 viyi4x
 直译 viyi4y
 只要 viyk
 展开 vjkl
@@ -1673,10 +1682,12 @@
 原式 yrui4
 院士 yrui45
 远视 yrui4s
+援助 yrvu
 原因 yryn
 涌动 ysds
 用户 yshu
 拥护 yshu4
+永矢弗谖 ysuifux yufx
 欲速则不达 yszd yszbd
 阅读 ytdu
 越野 ytye
@@ -1719,3 +1730,4 @@
 最大 zvda
 最后 zvhb
 最近 zvjn
+最终 zvvs1

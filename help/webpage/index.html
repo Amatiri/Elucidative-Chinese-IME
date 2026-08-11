@@ -610,11 +610,13 @@
                 const prefix = code.slice(0, -1);
                 return `繁体词 ${prefix}+.`;
             }
-            if (code === 'djzy') {
-                return '通用符号 d+jzy 其它长通用符号暂不支持合理拆分理据';
-            }
             // 通用符号：单字词语
             if (n === 1) {
+                return '通用符号 ' + code[0] + '+' + code.slice(1);
+            }
+
+            // 通用符号：多字词语且所有位均非汉字
+            if ([...phrase].every(ch => !isHanzi(ch))) {
                 return '通用符号 ' + code[0] + '+' + code.slice(1);
             }
 

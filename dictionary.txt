@@ -1168,6 +1168,7 @@
 芾 fz4c
 茀 fz4c.
 废 fz4g
+廢 fz4g.
 吠 fz4k
 狒 fz4q
 肺 fz4r
@@ -1461,6 +1462,7 @@
 闺 gv1m
 妫 gv1n
 归 gv1r
+歸 gv1r.
 傀 gv1rv
 硅 gv1s
 圭 gv1t
@@ -5428,6 +5430,7 @@
 桶 ts3m
 侗 ts3r
 统 ts3s
+統 ts3s.
 捅 ts3u
 筒 ts3z
 痛 ts4b
@@ -6006,6 +6009,7 @@
 殖 vi2d
 植 vi2m
 职 vi2o
+職 vi2o.
 值 vi2r
 侄 vi2rt
 直 vi2s
@@ -6401,6 +6405,7 @@
 鋈 wu4j
 唔 wu4k
 务 wu4l
+務 wu4l.
 骛 wu4m
 杌 wu4mo
 物 wu4n
@@ -7986,6 +7991,7 @@
 综 zs1s
 踪 zs1z
 偬 zs3r
+總 zs3s.
 总 zs3x
 疭 zs4b
 粽 zs4m

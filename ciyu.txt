@@ -484,6 +484,8 @@
 回答 hvda
 回过神 hvgou
 回来 hvll
+会晤 hvwu
+挥舞 hvwu3
 会议 hvyi
 回忆 hvyi4
 会员 hvyr
@@ -516,7 +518,7 @@
 常规 ihgv
 场景 ihj;
 长江 ihjd
-尝试 ihui4
+尝试 ihui
 常用 ihys
 常用字 ihysz
 翅膀 iibh
@@ -673,6 +675,7 @@
 具有 juyb
 解书音形 juyx jxuuynx
 价格 jwge
+加强 jwqd
 假如 jwru
 加入 jwru4
 家庭 jwt;
@@ -1510,6 +1513,7 @@
 无穷 wuqs
 物是人非 wurf wuuirff
 无所谓 wusow
+物质 wuvi
 无职转生 wuvivru wvvu
 乌兹别克斯坦 wzbkst wzbt
 维护 wzhu
@@ -1631,6 +1635,7 @@
 一旦 yidj
 一点 yidm
 以后 yihb
+遗产 yiij
 已经 yij yij;
 意境 yij;4
 以及 yiji
@@ -1721,6 +1726,8 @@
 左右 zoyb
 作用 zoys
 遵循 zpxp
+总统 zsts
+總統 zsts.
 总之 zsvi
 组合 zuhe
 组成 zuig

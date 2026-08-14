@@ -3,4 +3,4 @@ other/
 dictionary_no_number.txt
 ~$*
 .netlify
-agent_workspace/
+#agent_workspace/

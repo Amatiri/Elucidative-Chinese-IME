@@ -6,7 +6,7 @@
 import sys
 import urllib.parse
 import webbrowser
-
+import argparse
 # ============================================================
 # 数据常量（硬编码，来源：radical_table.md / rules.md / dictionary.txt）
 # ============================================================
@@ -422,28 +422,44 @@ def open_zi_tools(ids: str) -> None:
 
 
 def main():
-    if len(sys.argv) < 2:
-        print("用法: python jieshu_to_ids.py <解书拆分序列>")
-        print('示例: python jieshu_to_ids.py "r. 亻 为"')
-        print('示例: python jieshu_to_ids.py "r. ky cp"')
-        print('示例: python jieshu_to_ids.py "i. ld ri"')
-        sys.exit(1)
+    parser = argparse.ArgumentParser(
+        description="解书拆分 → IDS 序列转换器（默认不打开网页）"
+    )
+    parser.add_argument(
+        "sequence", nargs="?",
+        help="解书拆分序列（空格分隔的 token，如有空格请用引号括起）"
+    )
+    parser.add_argument(
+        "--open", "-o", action="store_true",
+        help="转换后自动打开字统网"
+    )
+    args = parser.parse_args()
 
-    input_str = sys.argv[1]
-    ids = convert(input_str)
-    if ids:
-        open_zi_tools(ids)
-
-
-if __name__ == "__main__":
-    if len(sys.argv) > 1:
-        main()
+    if args.sequence:
+        ids = convert(args.sequence)
+        if ids:
+            if args.open:
+                open_zi_tools(ids)
+            else:
+                # 不打开，只显示信息
+                encoded = urllib.parse.quote(ids, safe="")
+                url = f"https://zi.tools/?secondary=ids&seq={encoded}"
+                print(f"IDS 序列: {ids}")
+                print(f"字统网链接: {url}")
+                print("（未自动打开，如需打开请使用 --open 选项）")
     else:
+        # 交互模式：默认不打开网页
         while True:
             input_str = input("输入解书拆分序列：")
-            if input_str:
-                ids = convert(input_str)
-                if ids:
-                    open_zi_tools(ids)
-            else:
+            if not input_str:
                 break
+            ids = convert(input_str)
+            if ids:
+                encoded = urllib.parse.quote(ids, safe="")
+                url = f"https://zi.tools/?secondary=ids&seq={encoded}"
+                print(f"IDS 序列: {ids}")
+                print(f"字统网链接: {url}")
+                # 不自动打开
+
+if __name__ == "__main__":
+    main()

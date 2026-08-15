@@ -476,8 +476,7 @@
 曹 ck2r
 漕 ck2u
 草 ck3c
-艹 ck3c.
-艸 ck3c.c
+艸 ck3c.
 屮 ck3c.i
 肏 ck4r
 猜 cl1q
@@ -774,6 +773,7 @@
 踮 dm3z
 电 dm49
 癜 dm4b
+阽 dm4bv
 奠 dm4d
 店 dm4g
 钿 dm4j
@@ -2017,6 +2017,8 @@
 伥 ih1ri
 鲳 ih1y
 长 ih24
+長 ih24.
+镸 ih24.s
 苌 ih2c
 尝 ih2h
 常 ih2j
@@ -2176,6 +2178,7 @@
 冲 is4b
 铳 is4j
 出 iu15
+䢺 iu1b
 樗 iu1m
 初 iu1y
 除 iu2b
@@ -2919,6 +2922,7 @@
 瞰 kj4mg
 阚 kj4mu
 尻 kk1s
+丂 kk37
 烤 kk3h
 考 kk3l
 栲 kk3m
@@ -5441,6 +5445,8 @@
 荼 tu2c
 菟 tu2cd
 图 tu2g
+圖 tu2g.
+図 tu2g.j
 屠 tu2s
 徒 tu2t
 涂 tu2u
@@ -5513,6 +5519,7 @@
 首 ub3d
 瘦 ub4b
 寿 ub4c
+壽 ub4c.
 兽 ub4k
 狩 ub4q
 绶 ub4s
@@ -5974,6 +5981,7 @@
 漳 vh1u
 璋 vh1w
 长 vh34
+長 vh34.
 涨 vh3u
 掌 vh3uu
 仉 vh3uu.r
@@ -6690,6 +6698,7 @@
 腺 xm4r
 线 xm4s
 县 xm4sq
+縣 xm4sq.
 馅 xm4u
 岘 xm4uj
 现 xm4w

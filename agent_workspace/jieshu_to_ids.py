@@ -1,15 +1,75 @@
 # -*- coding: utf-8 -*-
 """
 解书拆分 → IDS 序列转换器
-将解书拆分序列（支持部首双码、扩展字根、整字编码）转换为 IDS 序列，并打开字统网。
+将解书拆分序列（支持部首双码、扩展字根、整字编码、部首变体注释）转换为 IDS 序列，并打开字统网。
 """
 import sys
 import urllib.parse
 import webbrowser
 import argparse
+import re
+
 # ============================================================
 # 数据常量（硬编码，来源：radical_table.md / rules.md / dictionary.txt）
 # ============================================================
+
+# 部首变体映射（注释语法）
+# 单变体用 (b)；多变体用复合注释如 (bl)/(bt)，区分字母由人工敲定。
+# 不在映射表中的变体注释（如 dk(b)）不会匹配，自然报错。
+RADICAL_VARIANT_MAP = {
+    "ub(b)": "扌",   # 手 → 扌（提手旁）
+    "dk(bl)": "刂",  # 刀 → 刂（立刀旁，l=立）
+    "dk(bt)": "⺈",  # 刀 → ⺈（刀字头，t=头）
+    "uv(b)": "氵",   # 水 → 氵（三点水）
+    "ho(b)": "灬",   # 火 → 灬（四点底）
+    "rf(b)": "亻",   # 人 → 亻（单人旁）
+    "bs(b)": "⺊",
+    "bi(b)": "𠤎",
+    "cg(b)": "廾",
+    "hd(b)": "龸",
+    "hl(b)": "虎",
+    "if(b)": "𦣞",
+    "jr(b)": "钅",
+    "lk(b)": "耂",
+    "pj(f)": "爿",
+    "qr(b)": "犭",
+    "q;(b)": "龶",
+    "rf(bt)": "𠂉", # 人 → 𠂉（人字头，t=头）
+    "rb(b)": "⺼",  # 肉月旁
+    "ri(b)": "冃",
+    "si(b)": "纟",
+    "si(bt)": "糸", # 丝 → 糸（t=幺(部首码)）
+    "si(f)": "糹",
+    "uw(bs)": "夊", # 攵 → 夊（s取音sv1）
+    "uw(bv)": "夂", # 攵 → 夂（折文，v=折）
+    "uv(bd)": "氺", # 水 → 氺（水字底，d=底）
+    "ur(b)": "饣",
+    "vi(b)": "疋", 
+    "vi(bp)": "𤴔", # 止 → 𤴔（疋字旁，p=旁）
+    "vi(bd)": "龰", # 止 → 龰（龰字底，d=底）
+    "vw(b)": "爫",
+    "wx(b)": "罒",
+    "xn(b)": "忄",
+    "xn(bd)": "㣺", # 心 → 㣺（心字底，d=底）
+    "xi(by)": "襾", # 西 → 襾（y取音ya4）
+    "xi(b)": "覀",
+    "yj(b)": "讠",
+    "yi(b)": "衤",
+    "yi(d)": "𧘇",
+    "yl(b)": "肀",
+    "zr(b)": "𥫗",
+    "zu(b)": "𧾷",
+    "su(b)": "礻",
+    "au(b)": "亅",
+    "ob(b)": "匸",
+    "gx(b)": "𭠍",
+    "xp(b)": "巜",
+    "ih24(b)": "镸", #“长”变体
+    "gs4b(u)": "龷", #“共”上半
+    "di(b)": "𠂔",
+    "an(b)": "㇏", #捺
+    "xl(x)": "⿱丿囗", #“囟”外框
+}
 
 RADICAL_DUAL_MAP = {
     "ad": "丶",
@@ -21,6 +81,8 @@ RADICAL_DUAL_MAP = {
     "ak": "𠃌",
     "aw": "乚",
     "av": "𡿨",
+    "at": "㇀", #提
+    "an": "乀", #提捺
     "bk": "宀",
     "bu": "阝",
     "b;": "冫",
@@ -213,16 +275,17 @@ EXTENDED_ROOT_MAP = {
     "bt": "鼻",
     "cj": "册",
     "cn": "𢆉",
-    "di": "𠂔",
-    "dr": "⿷⿻𠂆一二",
+    "di": "𢎨",
+    "dr": "⿷⿻𠂆一二", #“段”左半
     "d;": "鼎",
     "fd": "负",
     "gc": "𢦏",
     "hb": "丌",
     "hh": "𰀁",
-    "ib": "⿲𠄌⺀⿲𠄌⺀㇂",
+    "ib": "⿲𠄌⺀⿲𠄌⺀㇂", #“鼠”下半
     "ir": "㐄",
     "jc": "龹",
+    "jg": "𠀎",
     "jj": "巿",
     "jk": "叚",
     "jq": "介",
@@ -294,6 +357,7 @@ TWO_CHAR_MAP = {}
 TWO_CHAR_MAP.update(RADICAL_DUAL_MAP)
 TWO_CHAR_MAP.update(EXTENDED_ROOT_MAP)
 
+
 # ============================================================
 # 结构算子映射
 # ============================================================
@@ -319,8 +383,20 @@ DIRECTION_MAP = {
 }
 
 
+def _resolve_variant(token: str) -> str | None:
+    """尝试解析变体注释 token，如 'ub(b)'、'dk(bl)' 等。
+    若 token 存在于 RADICAL_VARIANT_MAP 中则返回对应字形，否则返回 None。
+    """
+    return RADICAL_VARIANT_MAP.get(token)
+
+
 def resolve_leaf(token: str) -> str:
     """叶子 token 分类与查表，返回部件字形。失败则抛出 ValueError。"""
+    # 0. 变体注释优先：如 ub(b)、dk(bl)、dk(bt)
+    variant = _resolve_variant(token)
+    if variant is not None:
+        return variant
+
     # 1. 两码表查表（部首双码或扩展字根）
     if token in TWO_CHAR_MAP:
         return TWO_CHAR_MAP[token]

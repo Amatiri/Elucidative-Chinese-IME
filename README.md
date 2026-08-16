@@ -265,7 +265,7 @@ iu→q,ua/ia→w,uan/üan/er→r,üe→t,uai/ü→y(声母jqxy的,ü→u),uo→o
 多音字按其具体读音的声调分配调码。存在口语变调的字按变调后实际读音取码。
 
 除此之外,还有一些特殊**语气词**音节需要特定编码补充,有:
-hng→hn,hm→hm,ng→nv,m→mv。
+hng→hn,hm→hm,ng→nv,n→on,m→mv。
 
 ## 三、主码编码规则
 

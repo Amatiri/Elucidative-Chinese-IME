@@ -262,6 +262,7 @@
 匾 bm3o
 褊 bm3y
 釆 bm46
+𨚕 bm4b
 弁 bm4c
 苄 bm4cd
 卞 bm4d
@@ -703,6 +704,7 @@
 赕 dj3by
 亶 dj3d
 胆 dj3r
+𬘘 dj3s
 掸 dj3u
 萏 dj4c
 弹 dj4g
@@ -1393,15 +1395,15 @@
 惯 gr4x
 工 gs15
 弓 gs17
-宫 gs1b
+公 gs1b
+宫 gs1bl
 蚣 gs1i
 觥 gs1k
 功 gs1l
 龚 gs1lb
 供 gs1r
 肱 gs1rs
-公 gs1s
-厷 gs1sz
+厷 gs1s
 攻 gs1u
 躬 gs1ug
 恭 gs1x
@@ -1764,6 +1766,8 @@
 闳 hs2m
 鸿 hs2n
 红 hs2s
+纮 hs2ss
+厷 hs2sz
 洪 hs2u
 泓 hs2ug
 玒 hs2w
@@ -2403,6 +2407,7 @@
 技 ji4u
 济 ji4uq
 濟 ji4uq.
+漈 ji4us
 洎 ji4uz
 罽 ji4w
 忌 ji4x
@@ -4939,6 +4944,7 @@
 攘 rh3u
 让 rh4y
 日 ri40
+驲 ri4m
 然 rj2h
 燃 rj2hh
 髯 rj2p
@@ -5942,6 +5948,7 @@
 震 vf4i
 镇 vf4j
 鸩 vf4n
+纼 vf4s
 圳 vf4t
 振 vf4u
 朕 vf4y
@@ -6245,6 +6252,7 @@
 住 vu4r
 伫 vu4rb
 祝 vu4s
+纻 vu4sb
 注 vu4u
 翥 vu4y
 筑 vu4z
@@ -6282,6 +6290,7 @@
 炆 wf2h
 蚊 wf2i
 雯 wf2id
+𫘜 wf2m
 闻 wf2o
 纹 wf2s
 玟 wf2w
@@ -6341,6 +6350,7 @@
 箢 wj3z
 万 wj44
 蔓 wj4c
+妧 wj4n
 腕 wj4r
 𬇕 wj4u
 歪 wl1v
@@ -7148,7 +7158,8 @@
 埶 yi4c.t
 弈 yi4cd
 𠨾 yi4ce
-虉 yi4cn
+𬟁 yi4cn
+虉 yi4cn.
 𠩫 yi4co
 艾 yi4cp
 厌 yi4cq
@@ -7485,6 +7496,7 @@
 演 yj3u
 掩 yj3ud
 沇 yj3us
+𪩘 yj3ux
 魇 yj3v
 琰 yj3w
 罨 yj3wd
@@ -7594,6 +7606,7 @@
 鋆 yp2j
 匀 yp2l
 耘 yp2n
+妘 yp2no
 云 yp2o
 昀 yp2r
 纭 yp2s
@@ -7633,6 +7646,7 @@
 員 yr2k.
 橼 yr2m
 媛 yr2n
+妧 yr2no
 元 yr2o
 猿 yr2q
 缘 yr2s
@@ -7969,6 +7983,7 @@
 笮 zo2z
 左 zo3g
 佐 zo3r
+阼 zo4b
 凿 zo4c
 座 zo4g
 唑 zo4k

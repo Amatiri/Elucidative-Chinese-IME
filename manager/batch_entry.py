@@ -5,6 +5,9 @@ from manager.file_processor import process_file
 import re
 from pypinyin import pinyin, Style
 
+import re
+from pypinyin import pinyin, Style
+
 final_dict = {
     "q": ["iu"], "w": ["ia", "ua"], "e": ["e"], "r": ["uan", "er"],
     "t": ["ve", "ue"], "y": ["uai", "v"], "u": ["u"], "i": ["i"],
@@ -16,9 +19,11 @@ final_dict = {
 }
 
 special_cases = {
-    "噷": ["hm0"],
-    "哼": ["hn0"],
-    "嗯": ["nv0"]
+    "hng": "hn",
+    "hm": "hm",
+    "ng": "nv",
+    "m": "mv",
+    "n": "on"
 }
 
 
@@ -60,8 +65,10 @@ def get_final(pinyin_str):
             remaining = pinyin_clean[2:] if len(pinyin_clean) > 2 else ""
         else:
             remaining = pinyin_clean[1:] if len(pinyin_clean) > 1 else ""
+
     if not remaining and initial == 'o':
         remaining = 'a'
+
     matched_final = ""
     result = ""
     final_items = sorted(final_dict.items(), key=lambda x: max(len(p) for p in x[1]), reverse=True)
@@ -70,6 +77,7 @@ def get_final(pinyin_str):
             if remaining == pattern or remaining.startswith(pattern):
                 if len(pattern) > len(matched_final):
                     matched_final, result = pattern, final_code
+
     return result if matched_final else ""
 
 
@@ -82,24 +90,36 @@ def get_tone(pinyin_str):
 
 
 def hanzi_to_abc(hanzi):
-    if hanzi in special_cases:
-        return special_cases[hanzi]
     pinyin_list = pinyin(hanzi, style=Style.TONE3, heteronym=True)
     abc_codes = []
+
     for pinyin_variants in pinyin_list:
         for py in pinyin_variants:
             if not py:
                 continue
+
             py_with_tone = py
             if py.endswith('5'):
                 py_with_tone = py[:-1] + '0'
-            a_code = get_initial(py_with_tone)
-            b_code = get_final(py_with_tone)
-            c_code = get_tone(py_with_tone)
+
+            # 去掉声调数字，得到纯拼音，例如 ng4 -> ng
+            base = re.sub(r'\d', '', py_with_tone)
+
+            if base in special_cases:
+                mapped = special_cases[base]   # 例如 "nv"
+                a_code = mapped[0]
+                b_code = mapped[1]
+                c_code = get_tone(py_with_tone)
+            else:
+                a_code = get_initial(py_with_tone)
+                b_code = get_final(py_with_tone)
+                c_code = get_tone(py_with_tone)
+
             if a_code and b_code and c_code:
                 abc_code = f"{a_code}{b_code}{c_code}"
                 if abc_code not in abc_codes:
                     abc_codes.append(abc_code)
+
     return abc_codes if abc_codes else []
 
 

@@ -18,49 +18,73 @@ def query_phrase(code):
     return ""
 
 
+# ===== 码表桶索引缓存 =====
+# dict: 编码首字母 -> [(word, code), ...]，桶内保持文件原顺序（候选顺序不变）
+_index = None
+_index_key = None
+
+
+def _get_index():
+    """懒加载码表桶索引；文件 mtime/大小变化时自动重建"""
+    global _index, _index_key
+    ensure_data_file()
+    if not os.path.exists(DATA_FILE) or os.path.getsize(DATA_FILE) == 0:
+        return {}
+    stat = os.stat(DATA_FILE)
+    key = (stat.st_mtime, stat.st_size)
+    if _index is None or key != _index_key:
+        buckets = {}
+        with open(DATA_FILE, 'r', encoding='utf-8') as f:
+            for line in f:
+                parts = line.strip().split(' ', 1)
+                if len(parts) == 2:
+                    word, code = parts
+                    if code:
+                        buckets.setdefault(code[0], []).append((word, code))
+        _index, _index_key = buckets, key
+    return _index
+
+
 def get_entry_count():
     """返回词典文件中的词条总数"""
-    ensure_data_file()
-    if os.path.exists(DATA_FILE):
-        with open(DATA_FILE, 'r', encoding='utf-8') as f:
-            return len(f.readlines())
-    return 0
+    return sum(len(v) for v in _get_index().values())
 
 
 def query_by_prefix(prefix, start_idx=0, count=5):
     """根据编码前缀查询候选词。支持副码a和补码规则"""
-    ensure_data_file()
-    if not os.path.exists(DATA_FILE) or os.path.getsize(DATA_FILE) == 0:
+    if not prefix:
         return []
+    buckets = _get_index()
+    if not buckets:
+        return []
+    need = start_idx + count
     results = []
-    with open(DATA_FILE, 'r', encoding='utf-8') as f:
-        for line in f:
-            parts = line.strip().split(' ', 1)
-            if len(parts) == 2:
-                word = parts[0]
-                code = parts[1]
-                # 处理特殊规则：前缀长度>=5且副码为a
-                if len(prefix) >= 5 and prefix[4] == 'a':
-                    if len(prefix) == 5 and code == prefix[:4]:
-                        results.append(f"{word}")
-                    elif len(code) >= 5 and code.startswith(prefix[:4]):
-                        if code[4:].startswith(prefix[5:]) and code[4] == ".":
-                            rest = code[len(prefix)-1:]
-                            results.append(f"{word}{rest}")
-                elif code.startswith(prefix):
-                    # 处理补码
-                    if "." in code[:6]:
-                        if '.' in prefix:
-                            rest = code[len(prefix):]
-                            results.append(f"{word}{rest}")
-                        elif (len(code) > 5 and "." == code[5]) or (len(prefix) == 4 and prefix[3].isdigit()):
-                            code_before_dot = code.split('.')[0]
-                            if prefix == code_before_dot:
-                                rest = code[len(prefix):]
-                                results.append(f"{word}{rest}")
-                    else:
+    for word, code in buckets.get(prefix[0], ()):
+        # 处理特殊规则：前缀长度>=5且副码为a
+        if len(prefix) >= 5 and prefix[4] == 'a':
+            if len(prefix) == 5 and code == prefix[:4]:
+                results.append(f"{word}")
+            elif len(code) >= 5 and code.startswith(prefix[:4]):
+                if code[4:].startswith(prefix[5:]) and code[4] == ".":
+                    rest = code[len(prefix)-1:]
+                    results.append(f"{word}{rest}")
+        elif code.startswith(prefix):
+            # 处理补码
+            if "." in code[:6]:
+                if '.' in prefix:
+                    rest = code[len(prefix):]
+                    results.append(f"{word}{rest}")
+                elif (len(code) > 5 and "." == code[5]) or (len(prefix) == 4 and prefix[3].isdigit()):
+                    code_before_dot = code.split('.')[0]
+                    if prefix == code_before_dot:
                         rest = code[len(prefix):]
                         results.append(f"{word}{rest}")
+            else:
+                rest = code[len(prefix):]
+                results.append(f"{word}{rest}")
+        # 提前终止：收满 start_idx+count 个命中即可（桶内为文件顺序，等价于全量收集后切片）
+        if len(results) >= need:
+            break
     return results[start_idx:start_idx + count]
 
 
@@ -147,12 +171,12 @@ def split_sequence(original):
     return result
 
 
-def query_single_char(split_text, start_idx=0):
+def query_single_char(split_text, start_idx=0, count=5):
     """
     查询单字候选，返回用'/'连接的候选字符串（每个候选带后缀）。
     若没有候选返回空字符串。
     """
-    candidates = query_by_prefix(split_text, start_idx)
+    candidates = query_by_prefix(split_text, start_idx, count)
     if candidates:
         return "/".join(candidates)
     else:
@@ -169,7 +193,7 @@ def query_multi_chars(split_text):
     for code in char_codes:
         if not code:
             continue
-        candidates = query_by_prefix(code)
+        candidates = query_by_prefix(code, 0, 1)
         if candidates:
             first_char = candidates[0][0]
             first_chars += first_char

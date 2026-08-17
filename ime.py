@@ -224,12 +224,12 @@ def navigate_pages(direction):
     candidates = None
     if direction == "down":
         if ctx.query_type == "single":
-            if query_single_char(split_text, (ctx.current_page + 1) * 5):
+            if query_single_char(split_text, (ctx.current_page + 1) * 5, 1):
                 ctx.current_page += 1
                 candidates = query_single_char(split_text, ctx.current_page * 5)
         elif ctx.query_type == "multi_part" and ctx.split_parts and ctx.current_part_index >= 0:
             part = ctx.split_parts[ctx.current_part_index]
-            if query_single_char(part, (ctx.current_page + 1) * 5):
+            if query_single_char(part, (ctx.current_page + 1) * 5, 1):
                 ctx.current_page += 1
     elif direction == "up" and ctx.current_page > 0:
         ctx.current_page -= 1
@@ -293,7 +293,7 @@ def update_display(processed=None, candidates=None, first_chars=None):
                 if i in ctx.resolved_chars:
                     custom.append(ctx.resolved_chars[i])
                 else:
-                    cand = query_single_char(part, 0)   # 取第一个候选
+                    cand = query_single_char(part, 0, 1)   # 取第一个候选
                     if cand:
                         custom.append(cand.split("/")[0][0])
                     else:

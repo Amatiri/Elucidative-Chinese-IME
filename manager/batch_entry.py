@@ -5,9 +5,6 @@ from manager.file_processor import process_file
 import re
 from pypinyin import pinyin, Style
 
-import re
-from pypinyin import pinyin, Style
-
 final_dict = {
     "q": ["iu"], "w": ["ia", "ua"], "e": ["e"], "r": ["uan", "er"],
     "t": ["ve", "ue"], "y": ["uai", "v"], "u": ["u"], "i": ["i"],

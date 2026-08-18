@@ -6,7 +6,7 @@ from manager.dictionary import ensure_data_file
 
 def query_phrase(code):
     """从词库文件 ciyu.txt 中查询短语"""
-    code = code.replace(" ", "")          # 去掉所有空格（头尾及中间）
+    code = code.replace(" ", "")# 去掉所有空格（头尾及中间）
     try:
         with open(CIYU_FILE, 'r', encoding='utf-8') as f:
             for line in f:
@@ -201,41 +201,6 @@ def query_multi_chars(split_text):
             return ""
     return first_chars
 
-
-def query_multi_chars_phrase(processed):
-    """
-    get_phrase_segments针对cli模拟进行简化的版本
-    """
-    segments = processed.split("'")
-    result = ''
-    for seg in segments:
-        if not seg:
-            continue
-        if len(seg) < 3:
-            # 短段不走词语查询，直接自动拆分取首选字
-            split_seg = split_sequence(seg)
-            chars = query_multi_chars(split_seg)
-            if chars:
-                result += chars
-            else:
-                return ""
-        else:
-            # 先查词语
-            phrase = query_phrase(seg)
-            if phrase:
-                # 命中词语，去掉括号直接取词语文字
-                result += phrase[1:-1]
-            else:
-                # 未命中，降级到自动拆分取首选字
-                split_seg = split_sequence(seg)
-                chars = query_multi_chars(split_seg)
-                if chars:
-                    result += chars
-                else:
-                    return ""
-    return result
-
-
 def get_phrase_segments(processed):
     """
     将用户手动 ' 分隔的各段解析为 (display_text, split_parts_list) 的列表。
@@ -251,11 +216,10 @@ def get_phrase_segments(processed):
         if not seg:
             continue
         if len(seg) < 3:
-            split_seg = split_sequence(seg)
-            chars = query_multi_chars(split_seg)
-            if chars:
-                display_parts.append(chars)
-                parts_list.append(split_seg.split("'"))
+            char = query_by_prefix(seg, 0, 1)
+            if char:
+                display_parts.append(char[0][0])
+                parts_list.append([seg])
             else:
                 return None
         else:

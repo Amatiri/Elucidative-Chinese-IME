@@ -14,9 +14,8 @@ from config import (DATA_FILE, CODE_CHARS, SURROUND_CHARS, SELECTION_SYMBOLS,
                          FONT_SMALL_NAME, FONT_BUTTON_NAME,
                          get_primary_font_name)
 from manager.dictionary_frontend import (
-    ensure_data_file, query_phrase, get_entry_count,
-    query_by_prefix, process_input, split_sequence,
-    query_single_char, query_multi_chars,get_phrase_segments
+    ensure_data_file, query_phrase, get_entry_count, process_input,
+    split_sequence,query_single_char, query_multi_chars,get_phrase_segments
 )
 
 # ==================== 上下文对象：替代全部全局变量 ====================
@@ -223,14 +222,16 @@ def navigate_pages(direction):
 
     candidates = None
     if direction == "down":
+        char_code = None
         if ctx.query_type == "single":
-            if query_single_char(split_text, (ctx.current_page + 1) * 5, 1):
-                ctx.current_page += 1
-                candidates = query_single_char(split_text, ctx.current_page * 5)
+            char_code=split_text
         elif ctx.query_type == "multi_part" and ctx.split_parts and ctx.current_part_index >= 0:
-            part = ctx.split_parts[ctx.current_part_index]
-            if query_single_char(part, (ctx.current_page + 1) * 5, 1):
+            char_code = ctx.split_parts[ctx.current_part_index]
+        if char_code:
+            next_candidates = query_single_char(char_code, (ctx.current_page + 1) * 5, 5)
+            if next_candidates:
                 ctx.current_page += 1
+                candidates = next_candidates
     elif direction == "up" and ctx.current_page > 0:
         ctx.current_page -= 1
         if ctx.query_type == "single":
@@ -239,31 +240,16 @@ def navigate_pages(direction):
     update_display(processed=processed, candidates=candidates)
 
 def update_display(processed=None, candidates=None, first_chars=None):
-    """
-    根据当前状态更新下方的三个显示标签：
-      - first_chars_label: 多字预览串（已解部件显示汉字，未解部件显示首候选首字）或短语
-      - current_part_label: 当前部件的候选列表
-      - page_label: 页码信息（含已选/总数）
 
-    可选参数供 main_function 传入已算数据，避免重复扫描：
-      processed:  process_input() 的结果
-      candidates: 单字模式下的候选字符串
-      first_chars: 多字模式下的预览串
-    未传入时自行计算（navigate_pages/navigate_parts 路径）。
-    """
     input_text = real_time_var.get()
-
+    if ctx._cached_first_chars and first_chars is None:
+        first_chars = ctx._cached_first_chars
     # ── 补充未传入的计算结果 ──
     if processed is None:
         processed = process_input(input_text)
     if candidates is None and first_chars is None:
         split_text = split_sequence(processed)
 
-    # 整串查询短语（仅多字模式需要，单字模式下词语不显示，直接跳过）
-    if ctx.query_type == "multi_part" and "'" not in processed:
-        ctx.current_phrase = query_phrase(processed)
-    else:
-        ctx.current_phrase = ""
 
     # 清空标签，准备重新显示
     first_chars_label.config(text='')
@@ -299,11 +285,6 @@ def update_display(processed=None, candidates=None, first_chars=None):
                     else:
                         custom.append("")                
             first_chars = "".join(custom)
-        # 统一更新 first_chars 缓存，覆盖三种路径：
-        #   A) first_chars=None → 上方重新计算后缓存
-        #   B) in_part_selection + resolved_chars → 覆盖后缓存
-        #   C) 主循环传入 first_chars → 此前未缓存，现补齐
-        # 防止全部删除后重新进入多字选择时复用旧预览串
         if first_chars:
             ctx._cached_first_chars = first_chars
             ctx._cached_first_chars_input = input_text
@@ -321,7 +302,10 @@ def update_display(processed=None, candidates=None, first_chars=None):
 
         if first_chars and ctx.in_part_selection and ctx.current_part_index >= 0 and ctx.current_part_index < len(ctx.split_parts):
             part = ctx.split_parts[ctx.current_part_index]
-            part_candidates = query_single_char(part, ctx.current_page * 5)
+            if candidates:
+                part_candidates = candidates
+            else:
+                part_candidates = query_single_char(part, ctx.current_page * 5)
             if part_candidates:
                 ctx.current_phrase = ""
                 ctx.current_candidates = part_candidates.split("/")
@@ -355,8 +339,12 @@ def handle_special_keys(input_text):
             minus_pos = input_text.find('-')
             if equals_pos != -1:
                 ctx.current_phrase = ""
-                navigate_parts("next")
                 new_text = input_text[:equals_pos] + input_text[equals_pos+1:]
+                ctx.selection_updating = True
+                entry_box.delete(0, tk.END)
+                entry_box.insert(0, new_text)
+                ctx.selection_updating = False
+                navigate_parts("next")
                 if cursor_pos > equals_pos:
                     new_cursor_pos = cursor_pos - 1
                 else:
@@ -364,8 +352,12 @@ def handle_special_keys(input_text):
                 return new_text, new_cursor_pos, True
             if minus_pos != -1:
                 ctx.current_phrase = ""
-                navigate_parts("prev")
                 new_text = input_text[:minus_pos] + input_text[minus_pos+1:]
+                ctx.selection_updating = True
+                entry_box.delete(0, tk.END)
+                entry_box.insert(0, new_text)
+                ctx.selection_updating = False
+                navigate_parts("prev")
                 if cursor_pos > minus_pos:
                     new_cursor_pos = cursor_pos - 1
                 else:
@@ -454,10 +446,6 @@ def main_function(*args):
     # 处理特殊键（= 和 -）
     processed_text, new_cursor_pos, key_processed = handle_special_keys(input_text)
     if key_processed:
-        ctx.selection_updating = True
-        entry_box.delete(0, tk.END)
-        entry_box.insert(0, processed_text)
-        ctx.selection_updating = False
         if new_cursor_pos is not None:
             entry_box.icursor(new_cursor_pos)
         return
@@ -540,6 +528,7 @@ def main_function(*args):
             else:
                 ctx.split_parts = [p for p in split_text.split("'") if p]
                 first_chars = query_multi_chars(split_text)
+                ctx.current_phrase = query_phrase(processed)
             update_display(processed=processed, first_chars=first_chars)
             output_text = first_chars
 
@@ -582,11 +571,9 @@ def on_key_press(event):
 
 # ── 外输显示辅助函数 ──
 
-# 紧凑模式高度（base 值，使用前乘以 scale）
-_BASE_WIN_H_COMPACT = 60            # 仅输入框
-_BASE_WIN_H_EXTERNAL_SINGLE = 60    # 单字模式（输入框 + 候选行 + 页码）
-_BASE_WIN_H_EXTERNAL_MULTI = 60     # 多字未选部件（输入框 + 多字预览行）
-_BASE_WIN_H_EXTERNAL_SELECT = 85   # 部件选择展开（输入框 + 两行 + 页码）
+# 外输精简模式统一高度（base 值，使用前乘以 scale）
+# 输入框 + 至多两行内容（首选字/候选行 + 页码）
+_BASE_WIN_H = 60
 
 
 def _has_code_in_text(text):
@@ -628,44 +615,21 @@ def _apply_display_mode(*, in_part_select=False):
     settings_frame.pack_forget()
     main_status_frame.pack_forget()
 
-    if in_part_select:
-        # 部件选择：展开，三行全显示
-        # 先清后建，保证顺序
-        first_chars_label.pack_forget()
-        current_part_label.pack_forget()
-        page_label.pack_forget()
+    # 先全部 pack_forget，再按 first_chars → current_part → page 顺序重新 pack（保证顺序）
+    first_chars_label.pack_forget()
+    current_part_label.pack_forget()
+    page_label.pack_forget()
+
+    # 部件选择中优先显示单字候选行，隐藏首选字（选字位置由灰色小字提示）；
+    # 候选行为空（查无候选）时回退显示首选字
+    show_first_chars = not (in_part_select and current_part_label.cget("text"))
+    if show_first_chars and first_chars_label.cget("text"):
         first_chars_label.pack(fill=tk.X, pady=(0, scale_size(BASE_PAD)))
+    if current_part_label.cget("text"):
         current_part_label.pack(fill=tk.X, pady=(0, scale_size(BASE_PAD)))
+    if page_label.cget("text"):
         page_label.pack(fill=tk.X)
-        window.geometry(f"{win_w}x{scale_size(_BASE_WIN_H_EXTERNAL_SELECT)}")
-    else:
-        # 内容驱动：标签有文字就显示，没文字就隐藏
-        # 先全部 pack_forget，再按 first_chars → current_part → page 顺序重新 pack（保证顺序）
-        first_chars_label.pack_forget()
-        current_part_label.pack_forget()
-        page_label.pack_forget()
-        if first_chars_label.cget("text"):
-            first_chars_label.pack(fill=tk.X, pady=(0, scale_size(BASE_PAD)))
-        if current_part_label.cget("text"):
-            current_part_label.pack(fill=tk.X, pady=(0, scale_size(BASE_PAD)))
-        if page_label.cget("text"):
-            page_label.pack(fill=tk.X)
-        # 动态计算窗口高度
-        visible_rows = 0
-        if first_chars_label.winfo_manager() != "":
-            visible_rows += 1
-        if current_part_label.winfo_manager() != "":
-            visible_rows += 1
-        if page_label.winfo_manager() != "":
-            visible_rows += 1
-        if visible_rows == 0:
-            window.geometry(f"{win_w}x{scale_size(_BASE_WIN_H_COMPACT)}")
-        elif visible_rows == 1:
-            window.geometry(f"{win_w}x{scale_size(_BASE_WIN_H_EXTERNAL_MULTI)}")
-        elif visible_rows == 2:
-            window.geometry(f"{win_w}x{scale_size(_BASE_WIN_H_EXTERNAL_SINGLE)}")
-        else:
-            window.geometry(f"{win_w}x{scale_size(_BASE_WIN_H_EXTERNAL_SELECT)}")
+    window.geometry(f"{win_w}x{scale_size(_BASE_WIN_H)}")
 
 
 def _switch_chrome_to_external():
@@ -710,7 +674,7 @@ def _hide_external_window():
     first_chars_label.pack_forget()
     current_part_label.pack_forget()
     page_label.pack_forget()
-    window.geometry(f"{win_w}x{scale_size(_BASE_WIN_H_COMPACT)}")
+    window.geometry(f"{win_w}x{scale_size(_BASE_WIN_H)}")
     window.withdraw()
     ctx._window_visible = False
 
@@ -807,6 +771,10 @@ def initial(event):
                     ev = tk.Event()
                     ev.char = char
                     handle_selection_keys(ev)
+        elif event.name!= "shift" and ctx.has_code_chars():
+            entry_box.delete(0, tk.END)
+            ctx.reset_cursor_counters()
+            #若输入其他非法字符，则同样视作放弃输入
     if not ctx.has_code_chars():
         entry_box.delete(0, tk.END)
 
@@ -900,7 +868,7 @@ init_y = int(screen_height * (1250 / base_height))
 
 ctx.external_mode = True
 window.title("解书音形-外输")
-window.geometry(f"{win_w}x{scale_size(_BASE_WIN_H_COMPACT)}+{init_x}+{init_y}")
+window.geometry(f"{win_w}x{scale_size(_BASE_WIN_H)}+{init_x}+{init_y}")
 window.configure(bg='#FFF3C7')
 window.attributes('-topmost', True)
 window.attributes('-alpha', 0.95)

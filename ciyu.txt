@@ -271,11 +271,13 @@
 电脑 dmnk
 电视机 dmuij
 电影院 dmy;y
+点赞 dmzj
 多邻国 dolng
 多少 douk
 敦煌 dphd
 — dpv
 ￥ dqm
+短暂 drzj
 动词 dsci
 动画 dshw
 动漫 dsmj
@@ -601,6 +603,8 @@
 传播 irbo
 传递 irdi
 传话 irhw
+传送 irss
+传颂 irss4
 传统 irts
 串通 irts1
 充分 isff
@@ -1236,6 +1240,7 @@
 铁路 txlu
 ↓ txw
 → tyb
+○ tyr2
 ← tzo
 ∀ uaa
 沙漠 uamo
@@ -1265,6 +1270,7 @@
 身份证 ufffv
 什么 ufm
 神秘 ufmi
+神圣 ufug
 ∓ ufuvg
 甚至 ufvi
 ¬ ufz1
@@ -1786,6 +1792,7 @@
 自行车 zix;i
 仔细 zixi
 自习 zixi2
+自信 zixn
 咱们 zjmf
 坐标 zobc
 做到 zodk

@@ -4,7 +4,7 @@
 
 ## **一、文件架构**
 
-**依赖库安装**:`pip install pypinyin keyboard pyperclip pywin32`。所有文件需放在同一目录下。
+**依赖库安装**:`pip install pypinyin keyboard pyperclip pywin32`, `gh repo clone Amatiri/Elucidative-Chinese-IME`。所有文件需放在同一目录下。
 
 **运行**:输入法前端:ime.py。管理工具: main.py。main.py可以运行输入法前端和整理工具,建议以管理工具为主要运行项。
 

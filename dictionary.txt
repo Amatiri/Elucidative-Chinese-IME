@@ -1046,6 +1046,7 @@
 麸 fu1m
 肤 fu1r
 敷 fu1u
+玞 fu1w
 趺 fu1z
 跗 fu1zr
 夫 fu26
@@ -1459,6 +1460,7 @@
 崮 gu4ug
 鲴 gu4y
 皈 gv1b
+邽 gv1bt
 龟 gv1d
 规 gv1j
 闺 gv1m
@@ -1500,6 +1502,7 @@
 剐 gw3d
 呱 gw3k
 卦 gw4b
+坬 gw4t
 挂 gw4u
 褂 gw4y
 诖 gw4yg
@@ -1817,7 +1820,9 @@
 糊 hu4m
 祜 hu4s
 护 hu4u
-沪 hu4uh
+護 hu4u.
+沪 hu4us
+滬 hu4us.
 怙 hu4x
 笏 hu4z
 隳 hv1b
@@ -2579,6 +2584,7 @@
 隽 jr4w
 罥 jr4wk
 扃 js1h
+坰 js1t
 炯 js3h
 颎 js3hq
 冏 js3j
@@ -3550,6 +3556,7 @@
 绫 l;2s
 祾 l;2st
 夌 l;2t
+坽 l;2tr
 泠 l;2u
 崚 l;2ut
 玲 l;2w
@@ -4585,6 +4592,7 @@
 枪 qd1m
 戕 qd1p
 腔 qd1r
+玱 qd1w
 跄 qd1z
 蔷 qd2c
 强 qd2g
@@ -4833,6 +4841,7 @@
 区 qu1o
 屈 qu1s
 祛 qu1st
+坥 qu1t
 躯 qu1u
 岖 qu1uo
 诎 qu1y
@@ -5620,6 +5629,7 @@
 裳 uh0y
 失 ui16
 尸 ui17
+邿 ui1b
 蓍 ui1c
 施 ui1f
 虱 ui1i
@@ -6254,6 +6264,7 @@
 祝 vu4s
 纻 vu4sb
 注 vu4u
+壴 vu4uk
 翥 vu4y
 筑 vu4z
 箸 vu4zl
@@ -6275,6 +6286,7 @@
 蛙 wa1i
 哇 wa1k
 娲 wa1n
+坬 wa1t
 挖 wa1u
 洼 wa1ug
 娃 wa2n
@@ -6627,7 +6639,7 @@
 息 xi1xz
 翕 xi1y
 醯 xi1ym
-裼 xi1yr
+裼 xi1yy
 蹊 xi1z
 习 xi23
 習 xi23.

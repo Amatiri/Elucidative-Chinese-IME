@@ -529,8 +529,10 @@
 还会 hlhv
 还能 hlng
 海南 hlnj
+海豚 hltp
 还是 hlui
 还有 hlyb
+还要 hlyk
 孩子 hlzi
 获得 hode
 活动 hods
@@ -693,6 +695,7 @@
 建设 jmue
 建筑 jmvu
 键位图 jmwztu
+建议 jmyi4
 检验 jmyj
 简言之 jmyjv
 建言献策 jmyjxmc jyxc

@@ -41,8 +41,6 @@ def process_file(input_file, output_file):
     entries = []
     global first_level_map
     entries_by_first_char = {}
-
-    # ---------- 原有：按行去重 ----------
     with open(input_file, 'r', encoding='utf-8-sig') as f:
         for line in f:
             line = line.rstrip()
@@ -59,20 +57,13 @@ def process_file(input_file, output_file):
             if entry_key not in seen_entries:
                 seen_entries.add(entry_key)
                 entries.append((hanzi, non_han_clean))
-
-    # ---------- 原有：按完整编码去重 ----------
     seen_codes = set()
     code_unique_entries = []
     for hanzi, code in entries:
         if code not in seen_codes:
             seen_codes.add(code)
             code_unique_entries.append((hanzi, code))
-
-    # ========== 过滤：同一汉字同一音区只保留一次（异体字补码例外） ==========
-    # 无补码(不含'.')的条目：用 (前三码, 汉字) 作为唯一键
-    # 有补码(含'.')的条目：用 (汉字, 点前编码) 作为唯一键
-    #   同一汉字指向不同源字的补码（点前编码不同）可共存（如 齐 ji1z.q vs 齐 ji1wj.q）
-    #   同一汉字指向同源字的补码（点前编码相同）只保留第一个（如 齐 ji1z.q vs 齐 ji1z.w）
+            
     seen_prefix_hanzi = set()
     filtered_entries = []
     for hanzi, code in code_unique_entries:
@@ -85,11 +76,8 @@ def process_file(input_file, output_file):
         if key not in seen_prefix_hanzi:
             seen_prefix_hanzi.add(key)
             filtered_entries.append((hanzi, code))
-    # 用过滤后的列表替代原列表，后续流程不变
     code_unique_entries = filtered_entries
-    # =================================================================
 
-    # ---------- 原有：按编码首字母分组 ----------
     for hanzi, code in code_unique_entries:
         if code and code[0].isalpha():
             first_char = code[0]
@@ -97,7 +85,6 @@ def process_file(input_file, output_file):
                 entries_by_first_char[first_char] = []
             entries_by_first_char[first_char].append((hanzi, code))
 
-    # ---------- 原有：组内首字置顶与排序 ----------
     for first_char, entry_list in entries_by_first_char.items():
         first_level_hanzi = None
         for hanzi, target_code in first_level_map.items():
@@ -115,7 +102,6 @@ def process_file(input_file, output_file):
             tail_entries.sort(key=lambda x: sort_key(x[1]))
             entry_list[1:] = tail_entries
 
-    # ---------- 原有：按首字母顺序输出 ----------
     all_entries = []
     for first_char in sorted(entries_by_first_char.keys()):
         all_entries.extend(entries_by_first_char[first_char])
@@ -133,7 +119,6 @@ def sort_file_by_second_part(input_file, output_file):
         with open(input_file, 'r', encoding='utf-8-sig') as f:
             lines = f.readlines()
 
-        # ---------- 初级去重：完全相同的行只保留一次 ----------
         seen_lines = set()
         parsed_entries = []
         for line in lines:
@@ -149,9 +134,7 @@ def sort_file_by_second_part(input_file, output_file):
                 seen_lines.add(line_key)
                 parsed_entries.append((first_part, second_part))
 
-        # ---------- 中级压缩：合并同词多条目的编码 ----------
-        # 将同一词语的所有编码收集到一行，用空格分隔
-        word_codes = {}  # word -> list of unique codes (preserving first-seen order)
+        word_codes = {}  
         for word, code_str in parsed_entries:
             if word not in word_codes:
                 word_codes[word] = []
@@ -165,8 +148,6 @@ def sort_file_by_second_part(input_file, output_file):
             merged_code_str = ' '.join(codes)
             merged_entries.append((word, merged_code_str))
 
-        # ---------- 清理：剔除单字编码（len<=1视为不合理） ----------
-        # 若某条目所有编码均被剔除，则整个条目删除
         cleaned_entries = []
         for word, code_str in merged_entries:
             codes = code_str.split()
@@ -175,21 +156,17 @@ def sort_file_by_second_part(input_file, output_file):
                 cleaned_entries.append((word, ' '.join(filtered_codes)))
         merged_entries = cleaned_entries
 
-        # ---------- 排序 ----------
         merged_entries.sort(key=lambda x: x[1])
 
-        # ---------- 终级去重：删除已在前面条目中出现过的编码 ----------
-        seen_codes = set()                # 全局已出现编码
+        seen_codes = set()               
         unique_entries = []
         for word, code_str in merged_entries:
             codes = code_str.split()
-            # 仅保留之前从未出现过的编码
             new_codes = [c for c in codes if c not in seen_codes]
-            if new_codes:                 # 至少保留了一个编码
+            if new_codes:                
                 seen_codes.update(new_codes)
                 unique_entries.append((word, ' '.join(new_codes)))
 
-        # ---------- 写入 ----------
         with open(output_file, 'w', encoding='utf-8') as f:
             for word, code_str in unique_entries:
                 f.write(f"{word} {code_str}\n")
@@ -355,6 +332,41 @@ def _read_existing_rationale(output_path):
         return {}
 
 
+def _format_json_lines(obj, per_line=20):
+    """
+    将 dict/list 序列化为每行最多 per_line 个条目的 JSON 字符串。
+    适用于字典的键值对或列表的元素分行显示。
+    """
+    if isinstance(obj, dict):
+        entries = []
+        for k, v in obj.items():
+            k_json = json.dumps(k, ensure_ascii=False, separators=(',', ':'))
+            v_json = json.dumps(v, ensure_ascii=False, separators=(',', ':'))
+            entries.append(f"{k_json}:{v_json}")
+        open_ch, close_ch = "{", "}"
+    elif isinstance(obj, list):
+        entries = [
+            json.dumps(item, ensure_ascii=False, separators=(',', ':'))
+            for item in obj
+        ]
+        open_ch, close_ch = "[", "]"
+    else:
+        return json.dumps(obj, ensure_ascii=False, separators=(',', ':'))
+
+    if not entries:
+        return open_ch + close_ch
+
+    lines = []
+    for i in range(0, len(entries), per_line):
+        lines.append("    " + ",".join(entries[i:i + per_line]))
+
+    return (
+        open_ch + "\n"
+        + ",\n".join(lines)
+        + "\n  " + close_ch
+    )
+
+
 def build_web_data():
     """生成网页查询用的 JS 数据文件"""
     help_dir = os.path.join(BASE_DIR, "help/webpage")
@@ -400,7 +412,7 @@ def build_web_data():
             sorted_rationale[ch] = val
     existing_rationale = sorted_rationale
 
-    # 写出 JS
+    # 写出 JS（每行最多 20 个条目）
     js = (
         "// 解书音形 · 码表数据 — 由 manager.file_processor 自动生成，勿手动编辑\n"
         f"// 生成时间：{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
@@ -408,9 +420,9 @@ def build_web_data():
         "window.jieshuDict = {\n"
         f"  entryCount: {entry_count},\n"
         f"  phraseCount: {len(phrase_map)},\n"
-        f"  chars: {json.dumps(char_map, ensure_ascii=False, separators=(',', ':'))},\n"
-        f"  phrases: {json.dumps(phrase_map, ensure_ascii=False, separators=(',', ':'))},\n"
-        f"  rationale: {json.dumps(existing_rationale, ensure_ascii=False, separators=(',', ':'))}\n"
+        f"  chars: {_format_json_lines(char_map, 20)},\n"
+        f"  phrases: {_format_json_lines(phrase_map, 20)},\n"
+        f"  rationale: {_format_json_lines(existing_rationale, 20)}\n"
         "};\n"
     )
     os.makedirs(help_dir, exist_ok=True)

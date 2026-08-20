@@ -152,7 +152,8 @@
 铋 bi4jx
 哔 bi4k
 吡 bi4kb
-觱 bi4kx
+觱 bi4kg
+咇 bi4kx
 闭 bi4m
 閟 bi4mb
 梐 bi4mt
@@ -198,6 +199,7 @@
 钣 bj3j
 板 bj3m
 版 bj3p
+昄 bj3r
 坂 bj3t
 半 bj45
 瓣 bj4g
@@ -668,6 +670,7 @@
 迪 di2zy
 氐 di34
 邸 di3b
+茋 di3c
 底 di3g
 骶 di3gu
 柢 di3m
@@ -914,6 +917,7 @@
 钉 d;1j
 叮 d;1k
 盯 d;1m
+耵 d;1o
 仃 d;1r
 町 d;1t
 玎 d;1w
@@ -1270,9 +1274,11 @@
 缸 gh1f
 钢 gh1j
 釭 gh1j;
+㭎 gh1m
 冈 gh1p
 肛 gh1r
 纲 gh1s
+矼 gh1sg
 岗 gh1u
 罡 gh1w
 港 gh3u
@@ -1397,6 +1403,7 @@
 工 gs15
 弓 gs17
 公 gs1b
+䢼 gs1bb
 宫 gs1bl
 蚣 gs1i
 觥 gs1k
@@ -1677,6 +1684,7 @@
 浩 hk4u
 灏 hk4ui
 嗨 hl1k
+咍 hl1kt
 骸 hl2g
 还 hl2z
 孩 hl2zd
@@ -1782,6 +1790,7 @@
 呼 hu1k
 唿 hu1kx
 糊 hu1m
+昒 hu1r
 滹 hu1u
 忽 hu1x
 惚 hu1xx
@@ -1818,6 +1827,7 @@
 瓠 hu4g
 扈 hu4k
 糊 hu4m
+昈 hu4r
 祜 hu4s
 护 hu4u
 護 hu4u.
@@ -2320,6 +2330,7 @@
 咭 ji1kk
 机 ji1m
 𣬠 ji1mj
+枅 ji1mk
 鸡 ji1n
 姬 ji1ni
 犄 ji1nq
@@ -2471,6 +2482,7 @@
 鉴 jm4ji
 键 jm4jj
 见 jm4m
+見 jm4m.
 监 jm4mi
 毽 jm4mj
 槛 jm4mm
@@ -2674,6 +2686,7 @@
 局 ju2s
 莒 ju3c
 蒟 ju3cl
+弆 ju3cq
 咀 ju3k
 榉 ju3m
 枸 ju3ml
@@ -2795,6 +2808,7 @@
 荆 j;1cx
 京 j;1d
 旌 j;1f
+鼱 j;1fq
 精 j;1m
 粳 j;1mg
 睛 j;1mq
@@ -2876,6 +2890,7 @@
 棵 ke1m
 瞌 ke1mh
 柯 ke1mk
+匼 ke1o
 牁 ke1p
 磕 ke1s
 坷 ke1t
@@ -2983,12 +2998,14 @@
 倥 ks3r
 恐 ks3x
 孔 ks3z
+矼 ks4s
 控 ks4u
 空 ks4x
 刳 ku1d
 骷 ku1g
 哭 ku1k
 枯 ku1m
+矻 ku1s
 窟 ku1x
 苦 ku3c
 库 ku4g
@@ -3773,6 +3790,7 @@
 面 mm40
 眄 mm4m
 民 mn24
+苠 mn2c
 旻 mn2r
 缗 mn2s
 岷 mn2u
@@ -4057,6 +4075,7 @@
 宁 n;2b
 寧 n;2b.
 凝 n;2by
+苧 n;2c
 咛 n;2k
 柠 n;2m
 狞 n;2q
@@ -4592,6 +4611,7 @@
 枪 qd1m
 戕 qd1p
 腔 qd1r
+矼 qd1s
 玱 qd1w
 跄 qd1z
 蔷 qd2c
@@ -4634,6 +4654,7 @@
 萁 qi2cb
 蕲 qi2cd
 芪 qi2cu
+𬨂 qi2cv
 奇 qi2d
 旗 qi2f
 麒 qi2g
@@ -4761,6 +4782,7 @@
 吣 qn4k
 沁 qn4u
 揿 qn4uj
+囷 qp1g
 逡 qp1z
 麇 qp2g
 群 qp2h
@@ -4849,6 +4871,7 @@
 癯 qu2b
 蕖 qu2c
 蘧 qu2cj
+鼩 qu2f
 劬 qu2l
 渠 qu2m
 氍 qu2mw
@@ -5014,6 +5037,7 @@
 蚋 rv4i
 锐 rv4j
 睿 rv4m
+枘 rv4mn
 汭 rv4u
 瑞 rv4w
 所 so3j
@@ -5601,6 +5625,7 @@
 生 ug11
 升 ug14
 牲 ug1n
+昇 ug1r
 甥 ug1t
 声 ug1u
 笙 ug1z
@@ -6017,6 +6042,7 @@
 氏 vi14
 𨙸 vi1b
 芝 vi1c
+𦭜 vi1ck
 蜘 vi1i
 只 vi1k
 吱 vi1ks
@@ -6046,6 +6072,7 @@
 止 vi32
 祁 vi3b
 芷 vi3c
+茋 vi3cd
 咫 vi3i
 凪 vi3j
 只 vi3k
@@ -6252,6 +6279,7 @@
 贮 vu4b
 著 vu4c
 苎 vu4cb
+苧 vu4cb.
 炷 vu4h
 蛀 vu4i
 铸 vu4j
@@ -6415,7 +6443,8 @@
 妩 wu3nw
 伍 wu3r
 侮 wu3rm
-仵 wu3rw
+仵 wu3rs
+旿 wu3rw
 舞 wu3t
 捂 wu3u
 𣲘 wu3uw
@@ -6488,6 +6517,7 @@
 娓 wz3n
 猥 wz3q
 伟 wz3r
+𬀩 wz3re
 伪 wz3rl
 韪 wz3rw
 尾 wz3s
@@ -6718,6 +6748,7 @@
 霰 xm4i
 献 xm4q
 腺 xm4r
+𬀪 xm4rj
 线 xm4s
 县 xm4sq
 縣 xm4sq.
@@ -6725,6 +6756,7 @@
 岘 xm4uj
 现 xm4w
 現 xm4w.
+見 xm4w.m
 见 xm4w.u
 心 xn13
 芯 xn1c
@@ -7067,6 +7099,7 @@
 殃 yh1d
 鞅 yh1g
 秧 yh1h
+咉 yh1k
 鸯 yh1n
 泱 yh1u
 羊 yh25
@@ -7085,6 +7118,7 @@
 玚 yh2w
 痒 yh3b
 养 yh3d
+咉 yh3k
 氧 yh3q
 仰 yh3r
 鞅 yh4g

@@ -61,6 +61,7 @@
 比较 bijc
 笔记 biji
 笔迹 biji4
+比例 bili
 哔哩哔哩 bilibil
 避免 bimm
 彐 bio
@@ -320,6 +321,9 @@
 分别 ffbx
 奋斗 ffdb
 分类 fflz
+分配 ffpz
+分为 ffwz
+氛围 ffwz2
 分析 ffxi
 风险 fgxm3
 方法 fhfa
@@ -360,6 +364,7 @@
 Α galc
 β gbe
 Β gbec
+构成 gbig
 χ gch
 Χ gchc
 广东 gdds
@@ -405,6 +410,7 @@
 改编 glbm1
 改动 glds
 改革 glge
+改造 glzk
 μ gmu
 Μ gmuc
 ν gnu
@@ -482,6 +488,7 @@
 姑娘 gund
 υ gup
 Υ gupc
+估算 gusr
 故事 guui
 故乡 guxd
 规定 gvd;
@@ -546,6 +553,8 @@
 互联网 hulmw
 湖南 hunj
 回答 hvda
+回复 hvfu
+恢复 hvfu4
 回过神 hvgou
 回来 hvll
 会晤 hvwu
@@ -631,6 +640,7 @@
 经济 j;ji
 经纪 j;ji4s
 境界 j;jx
+竟然 j;rj
 精神 j;uf
 竞争 j;vg
 经营 j;y;
@@ -685,6 +695,10 @@
 监察 jmia2
 检察 jmia2b
 坚持 jmii
+间接 jmjx1
+简洁 jmjx2
+见解 jmjx3
+简介 jmjx4
 监控 jmks
 建立 jmli
 键盘 jmpj
@@ -862,6 +876,7 @@
 面积 mmji
 腼腆 mmtm
 泯灭 mnmx
+默认 morf
 模式 moui
 模型 mox;
 明日方舟 mrfv m;rifhv
@@ -892,6 +907,8 @@
 内蒙古 nzmgg
 内容 nzrs
 偶尔 obor
+额度 oedu
+恶毒 oedu2
 俄罗斯 oelos
 安徽 ojhv
 安全 ojqr
@@ -905,6 +922,7 @@
 平均 p;jp
 评价 p;jw
 评论 p;lp
+屏幕 p;mu
 平台 p;tl
 蓬勃 pgbo
 朋友 pgyb
@@ -924,6 +942,7 @@
 清楚 q;iu
 情况 q;kd
 请你 q;ni
+清爽 q;ud
 庆祝 q;vu
 罄竹难书 q;vunju qvnu
 清晰 q;xi
@@ -931,6 +950,7 @@
 巧妙 qcmc
 祈祷 qidk3
 启动 qids
+器官 qigr1
 奇怪 qigy4
 汽车 qiie
 期间 qijm
@@ -1182,10 +1202,13 @@
 松树 ssuu
 松鼠 ssuu3
 素材 sucl
+随便 svbm
 虽然 svrj
 随时 svui
 随着 svve
 四则运算 szys sizeyps
+停止 t;vi
+停滞 t;vi4
 它们 tamf
 投资 tbzi
 条件 tcjm
@@ -1209,6 +1232,7 @@
 探讨 tjtk
 探险 tjxm
 淘宝 tkbk
+套餐 tkcj
 韬光养晦 tkgdyhh tgyh
 塔克拉玛干 tklmg
 讨论 tklp
@@ -1273,6 +1297,8 @@
 身份证 ufffv
 什么 ufm
 神秘 ufmi
+身体 ufti
+审题 ufti2
 神圣 ufug
 ∓ ufuvg
 甚至 ufvi
@@ -1290,6 +1316,7 @@
 社会主义 uhvy
 上午 uhwu
 上限 uhxm4
+上下文 uhxww
 时代 uidl
 十分 uiff
 × uig2 tco4
@@ -1398,6 +1425,7 @@
 只不过 vibug
 制定 vid;
 知道 vidk
+指导 vidk3
 制度 vidu
 支付宝 vifub
 指挥 vihv1
@@ -1406,6 +1434,7 @@
 ⿳ vii.
 支持 viii
 直接 vijx
+指令 vil;
 质量 vild
 只能 ving
 智能 ving2
@@ -1498,6 +1527,7 @@
 重要 vsyk
 终于 vsyu
 逐步 vubu
+注册 vuce
 祝福 vufu
 嘱咐 vufu4
 主任 vurf4
@@ -1615,8 +1645,11 @@
 性质 x;vi
 兴致 x;vi4
 行为 x;wz
+形象 x;xd
 行走 x;zb
 消费者 xcfzv
+笑话 xchw
+消化 xchw4
 消除 xciu
 效率 xcly
 消息 xcxi
@@ -1662,6 +1695,7 @@
 修改 xqgl
 选拔 xrba
 选举 xrju
+旋转 xrvr
 选项 xrxd
 选择 xrze
 匈牙利 xsyal

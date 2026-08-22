@@ -6,9 +6,12 @@ import sys
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # 数据文件路径
-DATA_FILE = os.path.join(BASE_DIR, "dictionary.txt")
-DATA_NO_NUMBER_FILE = os.path.join(BASE_DIR, "dictionary_no_number.txt")
-CIYU_FILE = os.path.join(BASE_DIR, "ciyu.txt")
+DATA_FILE = os.path.join(BASE_DIR, "dict", "dictionary.txt")
+DATA_NO_NUMBER_FILE = os.path.join(BASE_DIR, "dict","dictionary_no_number.txt")
+CIYU_FILE = os.path.join(BASE_DIR,"dict", "ciyu.txt")
+
+# 必需依赖库清单
+PACKAGE_LIST = ["pypinyin", "keyboard", "pyperclip", "pywin32"]
 
 # 编码相关常量
 CODE_CHARS = "1234567890qwertyuiopasdfghjklzxcvbnm;'."
@@ -72,8 +75,9 @@ def ensure_packages(package_list):
                 all_success = False
 
     if all_success:
-        print("必需库均已安装完毕，回车退出")
+        print("必需库均已安装完毕。")
+    else:
+        print("部分依赖安装失败，可手动执行：pip install " + " ".join(package_list))
 if __name__=="__main__":
-    package_list=["pypinyin","keyboard","pyperclip","pywin32"]
-    ensure_packages(package_list)
+    ensure_packages(PACKAGE_LIST)
     input()

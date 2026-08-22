@@ -7,12 +7,10 @@ import time
 import win32api
 
 # ==================== 导入模块化组件 ====================
-from config import (DATA_FILE, CODE_CHARS, SURROUND_CHARS, SELECTION_SYMBOLS,
-                         SYMBOL_TO_INDEX, CIYU_FILE,
-                         FONT_SIZE_INPUT, FONT_SIZE_COUNT, FONT_SIZE_RADICAL,
-                         FONT_SIZE_SMALL, FONT_SIZE_BUTTON,
-                         FONT_SMALL_NAME, FONT_BUTTON_NAME,
-                         get_primary_font_name)
+from config import (CODE_CHARS, SURROUND_CHARS, SELECTION_SYMBOLS,SYMBOL_TO_INDEX,
+                    FONT_SIZE_INPUT, FONT_SIZE_COUNT, FONT_SIZE_RADICAL,
+                    FONT_SIZE_SMALL, FONT_SIZE_BUTTON,FONT_SMALL_NAME, FONT_BUTTON_NAME,
+                    get_primary_font_name)
 from manager.dictionary_frontend import (
     ensure_data_file, query_phrase, get_entry_count, process_input,
     split_sequence,query_single_char, query_multi_chars,get_phrase_segments

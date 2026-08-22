@@ -1,8 +1,10 @@
 import os
+import re
 import sys
 import argparse
 import subprocess
-from manager.cli_handlers import OperationError, safe_input, open_web_page
+import config
+from manager.cli_handlers import OperationError, safe_input, open_web_page, atomic_write
 from manager.cli_handlers import (
     handle_show,
     handle_query,
@@ -21,19 +23,23 @@ from manager.file_processor import main_menu
 from manager.ciyu_ops import ciyumain
 from manager.guess_game import bmmamain
 from manager.rationale_add import main as rationale_main
+from manager.agent_work import main as agent_main
 
 
 def show_menu():
     print("解书音形 - 管理程序")
-    print("1.批量录入 ", end="")
-    print("2.添加单字 ", end="")
-    print("3.编辑修改 ")
-    print("4.分析音区 ", end="")
-    print("5.整理码表 ", end="")
-    print("6.添加理据 ")
-    print("7.查询字码 ", end="")
-    print("8.添加词语 ", end="")
+    print("1.批量录入  ", end="")
+    print("2.添加单字  ", end="")
+    print("3.编辑修改")
+    print("4.分析音区  ", end="")
+    print("5.整理码表  ", end="")
+    print("6.添加理据")
+    print("7.查询字码  ", end="")
+    print("8.添加词语  ", end="")
     print("9.猜测编码")
+    print("10.码表路径 ", end="")
+    print("11.强启前端 ", end="")
+    print("12.其他工具")
 
 def run_input_method():
     """启动输入法前端（ime.py）。"""
@@ -42,7 +48,113 @@ def run_input_method():
         subprocess.Popen([sys.executable, ime_path])
     except Exception as e:
         print(f"启动输入法失败: {e}")
-        
+
+
+def run_input_method_blocking():
+    """功能11：阻滞性启动输入法前端，等待其退出后返回菜单。"""
+    ime_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ime.py")
+    try:
+        subprocess.run([sys.executable, ime_path], check=True)
+    except subprocess.CalledProcessError as e:
+        print(f"前端异常退出: {e}")
+    except FileNotFoundError:
+        print("错误：未找到 ime.py")
+
+
+# ---------- 功能10：码表路径 ----------
+
+DICT_ITEMS = [
+    ("DATA_FILE", "单字码表"),
+    ("DATA_NO_NUMBER_FILE", "单字无数字码表"),
+    ("CIYU_FILE", "词语码表"),
+]
+
+
+def normalize_dict_rel_path(raw):
+    """校验并归一化码表相对路径（支持 / 和 \\），合法返回相对路径，否则返回 None。"""
+    rel = raw.strip().replace("/", os.sep)
+    if '"' in rel or "'" in rel:
+        return None
+    if not rel.endswith(".txt"):
+        return None
+    rel = os.path.normpath(rel)
+    if os.path.isabs(rel):
+        return None
+    abs_path = os.path.normpath(os.path.join(config.BASE_DIR, rel))
+    if os.path.commonpath([abs_path, config.BASE_DIR]) != config.BASE_DIR:
+        return None
+    return rel
+
+
+def ensure_dict_file(rel):
+    """码表目录或文件不存在时创建（不覆盖、不迁移已有文件）。"""
+    abs_path = os.path.join(config.BASE_DIR, rel)
+    dir_path = os.path.dirname(abs_path)
+    if dir_path and not os.path.isdir(dir_path):
+        os.makedirs(dir_path, exist_ok=True)
+        print(f"已创建目录: {dir_path}")
+    if not os.path.isfile(abs_path):
+        with open(abs_path, "w", encoding="utf-8"):
+            pass
+        print(f"已创建空码表: {abs_path}")
+
+
+def apply_dict_paths(updates):
+    """批量改写 config.py 中的码表路径常量（原子写入），返回文件是否有变化。"""
+    config_path = os.path.join(config.BASE_DIR, "config.py")
+    with open(config_path, "r", encoding="utf-8") as f:
+        text = f.read()
+    new_text, replaced = text, 0
+    for name, rel in updates.items():
+        parts = ", ".join(f'"{seg}"' for seg in rel.split(os.sep))
+        line = f"{name} = os.path.join(BASE_DIR, {parts})"
+        new_text, n = re.subn(rf"^{name}\s*=.*$", line, new_text, flags=re.M)
+        replaced += n
+    if replaced != len(updates):
+        raise OperationError("config.py 结构异常：未找到全部路径常量，已放弃写入")
+    if new_text == text:
+        return False
+    atomic_write(config_path, new_text)
+    return True
+
+
+def set_dict_paths(inputs):
+    """处理三个码表路径输入（与 DICT_ITEMS 一一对应）。
+
+    空或 _ 保持原值；非法项仅该项保持不变；最后确认依赖库安装。
+    """
+    updates = {}
+    for (name, label), raw in zip(DICT_ITEMS, inputs):
+        raw = raw.strip()
+        current_rel = os.path.relpath(os.path.normpath(getattr(config, name)), config.BASE_DIR)
+        if not raw or raw == "_":
+            continue
+        rel = normalize_dict_rel_path(raw)
+        if rel is None:
+            print(f"{label}: 无效，保持 {current_rel}")
+            continue
+        if rel == current_rel:
+            continue
+        print(f"{label}: {current_rel} -> {rel}")
+        updates[name] = rel
+    if updates:
+        for rel in updates.values():
+            ensure_dict_file(rel)
+        if apply_dict_paths(updates):
+            print("已写入，重启生效")
+    else:
+        print("无有效修改。")
+    config.ensure_packages(config.PACKAGE_LIST)
+
+
+def handle_dict_paths():
+    """功能10交互入口：连续三次输入三个码表的相对路径。"""
+    inputs = []
+    for name, label in DICT_ITEMS:
+        current_rel = os.path.relpath(os.path.normpath(getattr(config, name)), config.BASE_DIR)
+        inputs.append(safe_input(f"{label}: "))
+    set_dict_paths(inputs)
+
 def run_interactive_menu():
     """交互模式主循环（保留在 main.py，因为它与 show_menu 紧密耦合）"""
     if not sys.stdin.isatty():
@@ -78,6 +190,12 @@ def run_interactive_menu():
                 ciyumain()
             elif choice == '9':
                 bmmamain()
+            elif choice == '10':
+                handle_dict_paths()
+            elif choice == '11':
+                run_input_method_blocking()
+            elif choice == '12':
+                agent_main()
             elif choice == '':
                 print("感谢使用，再见！")
                 break
@@ -124,6 +242,9 @@ def parse_args():
                         help='打开键位图网页（help/webpage/键位图.html）')
     parser.add_argument('--query-web', action='store_true',
                         help='打开查询编码网页（help/webpage/index.html）')
+    parser.add_argument("--dict", nargs="*", metavar="路径",
+                        help="依次设置 单字/无数字/词语 三个码表的存储路径（相对程序目录，"
+                             "'_' 保持原路径）；需单独使用，修改后重启生效")
     parser.add_argument("--show", "--display", action="store_true",
                         help="只查不写：配合 --ciyu 查词语码表、--rationale 查理据")
     parser.add_argument("target", nargs="*", metavar="词/字",
@@ -134,12 +255,31 @@ def parse_args():
 def main():
     args = parse_args()
 
+    # ---------- 功能10：码表路径（参数版，需单独使用） ----------
+    if args.dict is not None:
+        conflict_flags = [
+            (args.show, "--show"), (bool(args.query), "--query"), (args.sort, "--sort"),
+            (args.analyze is not None, "--analyze"), (args.batch, "--batch"),
+            (args.add, "--add"), (args.modify, "--modify"), (args.rationale, "--rationale"),
+            (args.ciyu, "--ciyu"), (args.guess, "--guess"),
+            (args.keymap, "--keymap"), (args.query_web, "--query-web"),
+            (bool(args.target), "位置参数"),
+        ]
+        conflicts = [name for flag, name in conflict_flags if flag]
+        if conflicts:
+            raise OperationError(
+                f"冲突：--dict 需单独使用。"
+            )
+        if len(args.dict) != 3:
+            print(f"--dict 路径数量不对，放弃。")
+            return
+        set_dict_paths(args.dict)
+        return
+
     # ---------- show 模式守卫 ----------
     if args.target and not args.show:
         raise OperationError(
-            "位置参数 'target' 是 --show 模式的查询目标，不能单独使用。\n"
-            "  正确写法：python main.py --ciyu --show <词语>\n"
-            "  正确写法：python main.py --rationale --show <字>"
+            "位置参数 'target' 是 --show 模式的查询目标，不能单独使用。"
         )
 
     if args.show:
@@ -154,7 +294,6 @@ def main():
     if args.show and args.char:
         raise OperationError(
             "show 模式下无需 --char，直接将词语/汉字作为位置参数即可。\n"
-            "  示例：python main.py --ciyu --show 测试"
         )
 
     if args.show and not (args.ciyu or args.rationale):

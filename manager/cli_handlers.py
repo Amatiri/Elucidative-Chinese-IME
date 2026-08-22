@@ -13,7 +13,7 @@ from .ciyu_ops import ciyumain, get_existing_word_info, add_to_ciyu, has_dot_in_
 from .ciyu_ops import append_dot_to_code, generate_default_codes_for_word, check_code_exists
 from .guess_game import bmmamain
 from .rationale_add import main as rationale_main, load_rationale, load_entries, save_rationale
-from config import CIYU_FILE, DATA_FILE
+from config import CIYU_FILE, DATA_FILE, BASE_DIR
 
 class OperationError(Exception):
     """业务操作失败时抛出，携带用户可读的错误信息。"""
@@ -57,8 +57,7 @@ def safe_input(prompt=""):
 
 def open_web_page(page_name: str):
     """打开帮助目录下的指定网页。"""
-    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # 从 manager/ 回到项目根
-    web_dir = os.path.join(base_dir, 'help', 'webpage')
+    web_dir = os.path.join(BASE_DIR, 'help', 'webpage')
     path = os.path.join(web_dir, page_name)
     if os.path.exists(path):
         webbrowser.open('file://' + os.path.abspath(path))

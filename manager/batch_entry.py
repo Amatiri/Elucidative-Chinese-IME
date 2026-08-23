@@ -5,6 +5,10 @@ from manager.file_processor import process_file
 import re
 from pypinyin import pinyin, Style
 
+# 待录入表：与码表同目录，供批量录入"txt"快捷导入与录毕回写
+PENDING_FILE = os.path.join(os.path.dirname(DATA_FILE), "待录入.txt")
+BATCH_SIZE = 10
+
 final_dict = {
     "q": ["iu"], "w": ["ia", "ua"], "e": ["e"], "r": ["uan", "er"],
     "t": ["ve", "ue"], "y": ["uai", "v"], "u": ["u"], "i": ["i"],
@@ -188,19 +192,62 @@ def handle_conflict(han_zi, abc_code, check_list, full_code, modified_entries):
     return new_full_code, cleaned_modified_entries
 
 
+def extract_chinese(text):
+    """过滤出 CJK 汉字（范围与批量录入一致），保持原序"""
+    return ''.join(
+        ch for ch in text
+        if '\u3400' <= ch <= '\u9fff' or 0x20000 <= ord(ch) <= 0x33479 or '\uf900' <= ch <= '\ufad9'
+    )
+
+
+def sync_pending_file():
+    """录毕回写：移除待录入表中全读音已录入的字"""
+    existing, _ = load_dictionary()
+    with open(PENDING_FILE, encoding='utf-8-sig') as f:
+        chars = extract_chinese(f.read())
+    keep, removed, seen = [], [], set()
+    for ch in chars:
+        if ch in seen:
+            continue
+        seen.add(ch)
+        abcs = hanzi_to_abc(ch)
+        if abcs and all((ch, a) in existing for a in abcs):
+            removed.append(ch)
+        else:
+            keep.append(ch)
+    if not removed:
+        print("待录入表无需回写")
+        return
+    ans = input(f"以下 {len(removed)} 字已全录：{''.join(removed)}，从待录入表移除？(y/n): ").strip().lower()
+    if ans == 'y':
+        with open(PENDING_FILE, 'w', encoding='utf-8', newline='') as f:
+            f.write(''.join(keep))
+        print(f"已移除，剩余 {len(keep)} 字")
+    else:
+        print("未移除")
+
+
 def batch_add_entries():
     """批量录入汉字编码"""
+    from_file = False
     while True:
         user_input = input("连续汉字: ").strip()
         if not user_input:
             return
-        all_non_chinese = True
-        chinese_input = ''
-        for char in user_input:
-            if '\u3400' <= char <= '\u9fff' or 0x20000 <= ord(char) <= 0x33479 or '\uf900' <= char <= '\ufad9':
-                chinese_input += char
-                all_non_chinese = False
-        if all_non_chinese:
+        if user_input == 'txt':
+            if not os.path.exists(PENDING_FILE):
+                print("待录入表不存在,请重新输入:")
+                continue
+            with open(PENDING_FILE, encoding='utf-8-sig') as f:
+                chars = extract_chinese(f.read())
+            if not chars:
+                print("待录入表为空,请重新输入:")
+                continue
+            user_input = ''.join(chars[:BATCH_SIZE])
+            from_file = True
+            print(f"待录入表前 {len(user_input)} 字：{user_input}")
+        chinese_input = extract_chinese(user_input)
+        if not chinese_input:
             print("全非中文,请重新输入:")
             continue
         break
@@ -313,6 +360,8 @@ def batch_add_entries():
         single_count = process_file(temp_file, DATA_FILE)
         print(f"完成！汉字条目：{single_count}")
         os.remove(temp_file)
+        if from_file:
+            sync_pending_file()
     except ImportError:
         import subprocess
         subprocess.run(["python", "vgli.py"])

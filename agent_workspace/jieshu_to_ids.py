@@ -8,7 +8,11 @@ import urllib.parse
 import webbrowser
 import argparse
 import re
-
+import os
+try:
+    from config import DATA_FILE
+except ImportError:
+    DATA_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..","dict","dictionary.txt")
 # ============================================================
 # 数据常量（硬编码，来源：radical_table.md / rules.md / dictionary.txt）
 # ============================================================
@@ -324,11 +328,10 @@ EXTENDED_ROOT_MAP = {
     "yw": "𠃓",
 }
 
-# 整字词典（运行时从 dictionary.txt 加载）
-import os as _os
+
 
 _code_to_char_cache = None
-_DICT_PATH = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "..", "dictionary.txt")
+
 def _load_code_to_char():
     """延迟加载 dictionary.txt，返回 {编码: 汉字} 映射。"""
     global _code_to_char_cache
@@ -336,7 +339,7 @@ def _load_code_to_char():
         return _code_to_char_cache
     mapping = {}
     try:
-        with open(_DICT_PATH, encoding="utf-8") as f:
+        with open(DATA_FILE, encoding="utf-8") as f:
             for ln in f:
                 ln = ln.rstrip("\r\n")
                 if not ln.strip():
@@ -346,7 +349,7 @@ def _load_code_to_char():
                     mapping[parts[1]] = parts[0]
     except FileNotFoundError:
         import sys as _sys
-        _sys.stderr.write(f"警告: 词典文件不存在: {_DICT_PATH}\n")
+        _sys.stderr.write(f"警告: 词典文件不存在: {DATA_FILE}\n")
     _code_to_char_cache = mapping
     return mapping
 

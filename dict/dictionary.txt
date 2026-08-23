@@ -846,6 +846,7 @@
 鸫 ds1n
 氡 ds1q
 冬 ds1u
+岽 ds1ud
 董 ds3c
 懂 ds3x
 冻 ds4b
@@ -1831,6 +1832,7 @@
 祜 hu4s
 护 hu4u
 護 hu4u.
+岵 hu4ug
 沪 hu4us
 滬 hu4us.
 怙 hu4x
@@ -2673,6 +2675,7 @@
 拘 ju1u
 佝 ju1u.
 掬 ju1ul
+岨 ju1uq
 崌 ju1us
 雎 ju1w
 琚 ju1ws
@@ -2691,6 +2694,7 @@
 榉 ju3m
 枸 ju3ml
 龃 ju3n
+岨 ju3n.u
 矩 ju3u
 沮 ju3uq
 举 ju3x
@@ -3637,6 +3641,7 @@
 麽 me0s.
 闷 mf1x
 门 mf23
+钔 mf2j
 们 mf2r
 扪 mf2u
 汶 mf2uw
@@ -4866,6 +4871,7 @@
 坥 qu1t
 躯 qu1u
 岖 qu1uo
+岨 qu1uq
 诎 qu1y
 趋 qu1z
 癯 qu2b
@@ -5091,6 +5097,7 @@
 缌 si1sx
 撕 si1u
 澌 si1uj
+㟃 si1uk
 思 si1x
 死 si3d
 巳 si49
@@ -5468,6 +5475,7 @@
 砼 ts2s
 垌 ts2t
 潼 ts2u
+峂 ts2ud
 峒 ts2uk
 酮 ts2y
 桶 ts3m
@@ -5733,6 +5741,7 @@
 删 uj1d
 扇 uj1h
 煽 uj1hh
+钐 uj1j
 杉 uj1m
 栅 uj1mc
 姗 uj1n
@@ -5753,6 +5762,7 @@
 剡 uj4d
 扇 uj4h
 蟮 uj4i
+钐 uj4j
 善 uj4k
 骟 uj4m
 嬗 uj4n
@@ -7109,6 +7119,7 @@
 炀 yh2h
 烊 yh2h.h
 蛘 yh2i
+钖 yh2j
 杨 yh2m
 佯 yh2r
 旸 yh2ry
@@ -7276,6 +7287,7 @@
 帟 yi4jd
 帠 yi4jf
 𢄅 yi4jg
+𬬩 yi4ji
 𢂗 yi4jj
 鈠 yi4jp
 𥍟 yi4jp.m
@@ -8040,6 +8052,7 @@
 胙 zo4rv
 祚 zo4s
 坐 zo4t
+岞 zo4u
 怍 zo4x
 酢 zo4y
 尊 zp1c
@@ -8072,6 +8085,7 @@
 镞 zu2j
 足 zu2k
 阻 zu3b
+岨 zu3b.u
 俎 zu3r
 组 zu3s
 祖 zu3sq

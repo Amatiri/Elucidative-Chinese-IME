@@ -1,6 +1,7 @@
 import os
 import sys
 import importlib
+from config import BASE_DIR
 
 def import_py_files(directory_path):
 
@@ -63,7 +64,7 @@ def run_selected_module(available):
 
 
 def main():
-    dir_path = "./agent_workspace"
+    dir_path = os.path.join(BASE_DIR, "agent_workspace")
 
     if not os.path.isdir(dir_path):
         print("错误：目录不存在或不是一个目录。")

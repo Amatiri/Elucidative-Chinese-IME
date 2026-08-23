@@ -457,6 +457,7 @@
 刺 ci4d
 蚝 ci4i
 伺 ci4r
+佽 ci4rb
 骖 cj1m
 参 cj1s
 參 cj1s.
@@ -760,6 +761,7 @@
 待 dl4t
 戴 dl4tg
 埭 dl4tl
+垈 dl4tr
 岱 dl4u
 玳 dl4w
 怠 dl4x
@@ -1001,6 +1003,7 @@
 芳 fh1c
 钫 fh1j
 枋 fh1m
+牥 fh1n
 坊 fh1t
 防 fh2b
 房 fh2h
@@ -1703,6 +1706,7 @@
 耠 ho1n
 攉 ho1u
 和 ho2h
+佸 ho2r
 活 ho2u
 火 ho33
 伙 ho3r
@@ -1938,6 +1942,7 @@
 差 ia4h
 杈 ia4m
 姹 ia4n
+侘 ia4r
 岔 ia4u
 汊 ia4uk
 衩 ia4y
@@ -4001,6 +4006,7 @@
 奈 nl4d
 柰 nl4m
 鼐 nl4mn
+佴 nl4r
 蔫 nm1c
 拈 nm1u
 年 nm21
@@ -4317,6 +4323,7 @@
 迩 or3z
 二 or43
 贰 or43.
+佴 or4r
 诶 oz4y
 平 p;25
 葩 pa1c
@@ -4828,6 +4835,7 @@
 权 qr2m
 鬈 qr2p
 全 qr2r
+佺 qr2rr
 拳 qr2u
 诠 qr2y
 醛 qr2yc
@@ -5418,6 +5426,7 @@
 町 tm3t
 忝 tm3x
 脱 to1r
+侂 to1rg
 圫 to1t
 托 to1u
 拖 to1ur
@@ -5536,6 +5545,7 @@
 停 t;2r
 铤 t;3j
 梃 t;3m
+侹 t;3r
 圢 t;3t
 挺 t;3u
 艇 t;3v
@@ -5606,6 +5616,7 @@
 糁 uf1m
 娠 uf1n
 伸 uf1r
+侁 uf1rx
 绅 uf1s
 参 uf1sd
 參 uf1sd.

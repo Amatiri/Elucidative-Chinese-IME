@@ -71,6 +71,7 @@
 比如 biru
 比赛 bisl
 必须 bixu
+毕业 biye
 龹 bjc
 皀 bjd
 𠘨 bjf
@@ -146,6 +147,7 @@
 补充 buis
 不仅 bujn
 布局 buju
+不利于 buliy
 不列颠 bulxd
 部门 bumf
 部署配置 bupv buuupzv
@@ -371,6 +373,7 @@
 高德地图 gddt gkdedit
 δ gde
 Δ gdec
+广告 gdgk
 广西 gdxi
 歌词 geci
 疙瘩 geda0
@@ -533,6 +536,8 @@
 好罢 hkba
 好像 hkxd
 胡克希伍 hkxw hukexiw
+海拔 hlba
+还把 hlba3
 还会 hlhv
 还能 hlng
 海南 hlnj
@@ -680,6 +685,7 @@
 计算 jisr
 计算机 jisrj
 集团 jitr
+即使 jiui3
 技术 jiuu
 记者 jive
 机制 jivi
@@ -755,6 +761,8 @@
 纪释析义 juxy jiuixiyi
 具有 juyb
 解书音形 juyx jxuuynx
+架构 jwgb
+加购 jwgb4
 价格 jwge
 加强 jwqd
 假如 jwru
@@ -824,16 +832,23 @@
 历史 liui
 理由 liyb
 利用 liys
+例子 lizi
 褴褛 ljly
 劳动 lkds
 老师 lkui
 联邦 lmbh
 联合 lmhe
+连接 lmjx
+链接 lmjx1
+廉洁 lmjx2
 连续 lmxu
 吝啬 lnse
 逻辑 loji
 论述 lpuu
 论文 lpwf
+留存 lqcp
+流行 lqx;
+流星 lqx;1
 垄断 lsdr
 路程 luig
 路径 luj;
@@ -846,6 +861,10 @@
 旅行 lyx;
 履行 lyx;2
 旅游 lyyb
+类似 lzsi
+蕾丝 lzsi1
+累死 lzsi3
+耒耜 lzsi4
 类型 lzx;
 明白 m;bl
 名词 m;ci
@@ -1319,6 +1338,8 @@
 上下文 uhxww
 时代 uidl
 十分 uiff
+示范 uifj
+师范 uifj4
 × uig2 tco4
 时候 uihb
 市场 uiih
@@ -1466,6 +1487,7 @@
 战士 vjui4
 战事 vjui4k
 战争 vjvg
+展现 vjxm
 找到 vkdk
 召唤 vkhr
 照片 vkpm
@@ -1515,6 +1537,7 @@
 ǜ vpy4
 这期神了 vqul veqiufl
 ⿰ vr.
+转换 vrhr
 转化 vrhw
 赚钱 vrqm
 ⿲ vrr.
@@ -1618,6 +1641,8 @@
 无穷 wuqs
 物是人非 wurf wuuirff
 无所谓 wusow
+无数 wuuu
+武术 wuuu4
 物质 wuvi
 无职转生 wuvivru wvvu
 乌兹别克斯坦 wzbkst wzbt
@@ -1733,6 +1758,8 @@
 英语 y;yu
 有关 ybgr1
 友好 ybhk
+有利于 ybliy
+有助于 ybvuy
 游玩 ybwj
 游戏 ybxi
 优先 ybxm
@@ -1824,6 +1851,7 @@
 字符 zifu
 自己 zij
 自然 zirj
+自身 ziuf
 自治 zivi
 自我 ziwo
 自行车 zix;i
@@ -1850,6 +1878,7 @@
 阻止 zuvi3
 阻滞 zuvi4
 最大 zvda
+最高 zvgk
 最后 zvhb
 最近 zvjn
 最终 zvvs1

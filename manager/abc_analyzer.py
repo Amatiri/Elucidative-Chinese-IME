@@ -173,7 +173,6 @@ def interactive_mode():
     """交互式音区分析"""
     if not os.path.exists(DATA_FILE):
         print("错误：找不到 dictionary.txt 文件")
-        print("请确保 dictionary.txt 文件与程序在同一目录下")
         return
     print("解书音形 - 音区分析工具")
     while True:

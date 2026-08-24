@@ -192,6 +192,7 @@
 颁 bj1i
 班 bj1r
 搬 bj1u
+攽 bj1ud
 扳 bj1uf
 般 bj1v
 斑 bj1w
@@ -726,6 +727,7 @@
 刀 dk14
 叨 dk1k
 氘 dk1q
+舠 dk1v
 忉 dk1x
 叨 dk2k
 捯 dk2u
@@ -810,6 +812,7 @@
 剁 do4d
 垛 do4t
 堕 do4tb
+饳 do4u
 舵 do4v
 柁 do4v.m
 惰 do4x
@@ -1540,6 +1543,7 @@
 篌 hb2z
 吼 hb3k
 吽 hb3k.
+郈 hb4b
 厚 hb4c
 后 hb4k
 後 hb4k.
@@ -1576,6 +1580,7 @@
 呵 he1kk
 诃 he1y
 禾 he26
+郃 he2b
 荷 he2c
 𬌗 he2ck
 菏 he2cu
@@ -3057,6 +3062,7 @@
 跨 kw4z
 蒯 ky3c
 㧟 ky3u
+郐 ky4b
 哙 ky4k
 狯 ky4q
 会 ky4r
@@ -3925,6 +3931,7 @@
 钠 na4j
 呐 na4k
 娜 na4n
+肭 na4r
 纳 na4s
 捺 na4u
 衲 na4y
@@ -4404,6 +4411,8 @@
 霹 pi1i
 铍 pi1j
 噼 pi1k
+豾 pi1q
+狉 pi1q.
 伾 pi1r
 砒 pi1s
 纰 pi1sb
@@ -4758,6 +4767,7 @@
 乾 qm2s
 潜 qm2u
 掮 qm2uj
+肷 qm3r
 缱 qm3s
 浅 qm3u
 谴 qm3y
@@ -6756,6 +6766,7 @@
 蚬 xm3i
 铣 xm3j
 猃 xm3q
+狝 xm3qo
 显 xm3r
 鲜 xm3y
 筅 xm3z

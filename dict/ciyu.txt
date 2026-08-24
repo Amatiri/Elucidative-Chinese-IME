@@ -191,6 +191,7 @@
 辶 bzv
 测试 ceu
 測試 ceu.
+仓库 chku
 词汇 cihv
 刺激 ciji
 词条 citc
@@ -267,6 +268,7 @@
 （） dkzy
 代表 dlbc
 代码 dlma
+代替 dlti
 〕 dly
 〔 dlz
 ： dmh
@@ -324,6 +326,7 @@
 奋斗 ffdb
 分类 fflz
 分配 ffpz
+分支 ffvi1
 分为 ffwz
 氛围 ffwz2
 分析 ffxi
@@ -770,6 +773,7 @@
 家庭 jwt;
 价值 jwvi
 加油 jwyb
+加载 jwzl4
 结构 jxgb
 桔槔 jxgk1m
 结果 jxgo
@@ -810,6 +814,7 @@
 灵魂 l;hp
 零重码 l;ism
 另外 l;wl
+另一个 l;yig
 拉风 lafg
 拉缝 lafg4
 了解 lcjx
@@ -1235,6 +1240,7 @@
 调整 tcvg
 特别 tebx
 醍醐灌顶 thgd tihugrd
+替代 tidl
 提高 tigk
 提供 tigs
 提出 tiiu
@@ -1679,6 +1685,7 @@
 效率 xcly
 消息 xcxi
 相比而言 xdbiory xboy
+相对 xddv
 想法 xdfa
 相辅相成 xdfuxdi xfxi
 香港 xdgh

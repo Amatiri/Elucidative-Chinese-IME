@@ -34,6 +34,7 @@ class InputContext:
         self.selection_updating = False        # 是否正在由选择操作更新输入框（保护 resolved_chars）
         self.resolved_chars = {}               # {part_index: "汉字"} 多字模式下已选中的部件
         self.original_split_count = 0          # 多字模式下原始拆分的部件总数
+        self.literal_indices = set()           # 字面部件下标（无候选、按编码原文输出）
 
         # ── 缓存：避免 navigate / update_display 重复计算 ──
         self._cached_processed = ""
@@ -41,7 +42,6 @@ class InputContext:
         self._cached_split_text = ""
         self._cached_first_chars = ""
         self._cached_first_chars_input = ""
-        self._cached_phrase_result = None       # get_phrase_segments 的完整结果
 
         # ── 设置开关 ──
         self.auto_commit_enabled = "1"         # 自动上字开关（"1"启用）
@@ -73,13 +73,13 @@ class InputContext:
         self.current_candidates = []
         self.resolved_chars = {}
         self.original_split_count = 0
+        self.literal_indices = set()
         # ── 清空缓存 ──
         self._cached_processed = ""
         self._cached_processed_input = ""
         self._cached_split_text = ""
         self._cached_first_chars = ""
         self._cached_first_chars_input = ""
-        self._cached_phrase_result = None
 
     @property
     def resolved_count(self) -> int:
@@ -237,6 +237,21 @@ def navigate_pages(direction):
 
     update_display(processed=processed, candidates=candidates)
 
+def _apply_phrase_result(phrase_result):
+    """
+    应用 get_phrase_segments 的结果：设置拆分部件，并把字面段
+    （无候选、按编码原文输出的段）预填进 resolved_chars。
+    字面段因此被 navigate_parts 自动跳过，并在最终拼接中原样参与。
+    返回预览串。
+    """
+    display_text, all_parts, literal_indices = phrase_result
+    ctx.split_parts = all_parts
+    ctx.literal_indices = set(literal_indices)
+    for i in literal_indices:
+        if i not in ctx.resolved_chars:  # 不覆盖已手选的字
+            ctx.resolved_chars[i] = all_parts[i]
+    return display_text
+
 def update_display(processed=None, candidates=None, first_chars=None):
 
     input_text = real_time_var.get()
@@ -258,30 +273,26 @@ def update_display(processed=None, candidates=None, first_chars=None):
         # 未传入 first_chars → 需要完整计算（navigate_pages / navigate_parts 路径）
         if first_chars is None:
             if "'" in processed and ctx.phrase_priority == "1":
-                phrase_result = get_phrase_segments(processed)
-                if phrase_result:
-                    first_chars = phrase_result[0]
-                    ctx.split_parts = phrase_result[1]
-                else:
-                    first_chars = ""
-                    ctx.split_parts = []
+                first_chars = _apply_phrase_result(get_phrase_segments(processed))
             else:
                 first_chars = query_multi_chars(split_sequence(processed))
             # 缓存 first_chars，供下次 navigate_parts 输入未变时复用
             ctx._cached_first_chars = first_chars
             ctx._cached_first_chars_input = input_text
         if ctx.in_part_selection and ctx.resolved_chars:
+            # 预览保持式重建：未选部件按对齐关系从预览串取字
+            # （字面部件对应 len(part) 个字符，非字面部件恰对应 1 个字符），不重新查询
             parts = ctx.split_parts
             custom = []
+            pos = 0
             for i, part in enumerate(parts):
                 if i in ctx.resolved_chars:
                     custom.append(ctx.resolved_chars[i])
+                elif i in ctx.literal_indices:
+                    custom.append(first_chars[pos:pos + len(part)])
                 else:
-                    cand = query_single_char(part, 0, 1)   # 取第一个候选
-                    if cand:
-                        custom.append(cand.split("/")[0][0])
-                    else:
-                        custom.append("")                
+                    custom.append(first_chars[pos] if pos < len(first_chars) else "")
+                pos += len(part) if i in ctx.literal_indices else 1
             first_chars = "".join(custom)
         if first_chars:
             ctx._cached_first_chars = first_chars
@@ -308,8 +319,9 @@ def update_display(processed=None, candidates=None, first_chars=None):
                 ctx.current_phrase = ""
                 ctx.current_candidates = part_candidates.split("/")
                 current_part_label.config(text=part_candidates)
-                selected_count = len(ctx.resolved_chars)
+                selected_count = len(ctx.resolved_chars) - len(ctx.literal_indices)
                 total_count = ctx.original_split_count if ctx.original_split_count > 0 else len(ctx.split_parts)
+                total_count -= len(ctx.literal_indices)
                 page_label.config(text=f"字 {selected_count + 1}/{total_count} 页 {ctx.current_page + 1}")
 
     elif ctx.query_type == "single":
@@ -514,15 +526,8 @@ def main_function(*args):
             ctx.query_type = "multi_part"
             if "'" in processed and ctx.phrase_priority == "1":
                 # 优先上词开启 + 用户手动输入单引号 → 词语增强预览
-                phrase_result = get_phrase_segments(processed)
-                if phrase_result:
-                    display_text, all_parts = phrase_result
-                    ctx.split_parts = all_parts
-                    first_chars = display_text
-                else:
-                    # 某段无候选 → 清空（打错）
-                    ctx.split_parts = []
-                    first_chars = ""
+                # 无候选的段按编码原文字面输出（见 _apply_phrase_result）
+                first_chars = _apply_phrase_result(get_phrase_segments(processed))
             else:
                 ctx.split_parts = [p for p in split_text.split("'") if p]
                 first_chars = query_multi_chars(split_text)

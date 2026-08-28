@@ -203,15 +203,16 @@ def query_multi_chars(split_text):
 
 def get_phrase_segments(processed):
     """
-    将用户手动 ' 分隔的各段解析为 (display_text, split_parts_list) 的列表。
-    display_text 为预览显示用的文字（词语或首选字组合），split_parts_list
-    为每段经自动拆分后的部件列表（供逐字选择）。
-
-    某段无候选则返回 None。
+    将用户手动 ' 分隔的各段解析为 (display_text, split_parts_list, literal_indices)。
+    display_text 为预览显示用的文字（词语、首选字组合或编码原文），
+    split_parts_list 为展平后的部件列表（供逐字选择），
+    literal_indices 为无候选、按编码原文字面输出的部件下标集合。
     """
     segments = processed.split("'")
     parts_list = []
     display_parts = []
+    literal_indices = set()
+    flat_idx = 0  # 当前段在展平部件列表中的起始下标
     for seg in segments:
         if not seg:
             continue
@@ -221,7 +222,10 @@ def get_phrase_segments(processed):
                 display_parts.append(char[0][0])
                 parts_list.append([seg])
             else:
-                return None
+                # 无候选 → 字面输出编码本身
+                display_parts.append(seg)
+                parts_list.append([seg])
+                literal_indices.add(flat_idx)
         else:
             phrase = query_phrase(seg)
             if phrase:
@@ -236,9 +240,13 @@ def get_phrase_segments(processed):
                     display_parts.append(chars)
                     parts_list.append(split_seg.split("'"))
                 else:
-                    return None
+                    # 无候选 → 字面输出编码本身
+                    display_parts.append(seg)
+                    parts_list.append([seg])
+                    literal_indices.add(flat_idx)
+        flat_idx += len(parts_list[-1])
     # 展平所有部件的 split_parts
     all_parts = []
     for part_group in parts_list:
         all_parts.extend(part_group)
-    return (''.join(display_parts), all_parts)
+    return (''.join(display_parts), all_parts, literal_indices)

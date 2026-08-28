@@ -1,5 +1,6 @@
 病毒 b;du
 并非 b;fz
+冰淇淋 b;qil
 并且 b;qx
 冰箱 b;xd
 丶 bad
@@ -91,6 +92,7 @@
 保护 bkhu
 保持 bkii
 包括 bkko
+报名 bkm;
 保证 bkvg
 拜拜 blbl
 百度 bldu
@@ -314,6 +316,7 @@
 ” dyy
 “ dyz
 “” dyzy
+👀 eyj3m
 法兰西 faljx
 法律 faly
 发散 fasj
@@ -327,6 +330,7 @@
 分类 fflz
 分配 ffpz
 分支 ffvi1
+分钟 ffvs
 分为 ffwz
 氛围 ffwz2
 分析 ffxi
@@ -394,6 +398,7 @@
 更多 ggdo
 改革开放 ggkf glgeklf
 更新 ggxn
+刚才 ghcl
 觥筹交错 gijc gsibjcc
 ι gio
 Ι gioc
@@ -557,6 +562,8 @@
 婚姻 hpyn
 换行 hrhh
 环境 hrj;
+红包 hsbk
+红领巾 hsl;j
 湖北 hubz
 互联网 hulmw
 湖南 hunj
@@ -589,6 +596,7 @@
 沉默 ifmo
 城邦 igbh1
 程度 igdu4
+承诺 igno
 城市 igui
 城镇 igvf4
 成为 igwz
@@ -645,6 +653,8 @@
 警纪 j;3ji4
 经典 j;dm3
 经过 j;go
+精华 j;hw
+净化 j;hw4
 经济 j;ji
 经纪 j;ji4s
 境界 j;jx
@@ -662,6 +672,8 @@
 教育 jcyu
 讲讲 jdjd
 将计就计 jdjijqj
+将近 jdjn
+奖金 jdjn1
 讲解 jdjx
 江苏 jdsu
 江西 jdxi
@@ -745,6 +757,7 @@
 军队 jpdv
 均衡 jphg
 军事 jpui
+军训 jpxp
 纠偏 jqpm
 诀别 jtbx
 决定 jtd;
@@ -793,10 +806,12 @@
 借助 jxvu
 矿泉水 kdqru
 科技 keji
+客气 keqi4
 课堂 keth
 科学 kext
 可以 keyi
 肯定 kfd;
+肯德基 kfdej
 看到 kjdk4
 看见 kjjm
 看来 kjll
@@ -810,6 +825,7 @@
 恐惧 ksju
 控制 ksvi
 酷狗 kugb
+块钱 kyqm
 领导 l;dk
 灵魂 l;hp
 零重码 l;ism
@@ -839,6 +855,7 @@
 利用 liys
 例子 lizi
 褴褛 ljly
+篮球 ljqq
 劳动 lkds
 老师 lkui
 联邦 lmbh
@@ -896,9 +913,11 @@
 曼波 mjbo1
 耄耋 mkdx
 贸易 mkyi
+麦当劳 mldhl
 面对 mmdv
 面积 mmji
 腼腆 mmtm
+面试 mmui
 泯灭 mnmx
 默认 morf
 模式 moui
@@ -916,8 +935,11 @@
 美少女 mzukn
 美术 mzuu
 没有 mzy
+柠檬 n;mg
 宁夏 n;xw
 哪个 nage
+那里 nali
+哪里 nali3
 那些 naxx
 哪些 naxx1
 那样 nayh
@@ -956,6 +978,8 @@
 判断 pjdr
 排序 plxu
 偏好 pmhk
+便宜 pmyi
+偏移 pmyi2
 拼音 pnyn
 扑克 puke
 葡萄牙 putky
@@ -1019,6 +1043,8 @@
 确实 qtui2
 取得 qude
 驱动 quds
+・ r.d
+･ r.dh
 ー r;;
 ば rba
 バ rbak
@@ -1218,9 +1244,11 @@
 四码 sima3s
 思想 sixd
 私信 sixn
+散步 sjbu4
 扫描 skmc
 死而后已 sohy siorhby
 所属国 souug
+缩写 soxx
 所以 soyi
 算法 srfa
 松树 ssuu
@@ -1347,6 +1375,7 @@
 示范 uifj
 师范 uifj4
 × uig2 tco4
+时光 uigd
 时候 uihb
 市场 uiih
 实际 uiji
@@ -1358,6 +1387,7 @@
 世界 uijx
 时刻 uike
 实力 uili
+室内 uinz4
 视频 uipn
 食品 uipn3
 事情 uiq;
@@ -1403,6 +1433,7 @@
 枢纽 uunq
 输入 uuru
 输入法 uuruf
+薯条 uutc
 叔叔 uuuu
 施氏食狮史 uuuuu
 熟悉 uuxi
@@ -1553,13 +1584,16 @@
 中国 vsg
 中华民国 vshwmng vhmg
 中華民國 vshwmng. vhmg.
+忠诚 vsig
 重要 vsyk
 终于 vsyu
 逐步 vubu
 注册 vuce
 祝福 vufu
 嘱咐 vufu4
-主任 vurf4
+主任 vurf
+主人 vurf2
+助人为乐 vurfwzl vrwl
 主席 vuxi
 注意 vuyi
 主义 vuyi4
@@ -1609,6 +1643,7 @@
 ㄩ vyyy
 ㄟ vyyz
 ⿾ vzy.
+՞ warmwh
 文本 wfbf
 文档 wfdh
 稳当 wfdh0
@@ -1669,6 +1704,7 @@
 微信 wzxn
 委员会 wzyrh
 位于 wzyu
+星巴克 x;bak
 形成 x;ig
 形容词 x;rsc
 形式 x;ui
@@ -1711,6 +1747,8 @@
 洗澡 xizk
 现代 xmdl
 先进 xmjn
+羡慕 xmmu
+嫌弃 xmqi
 现实 xmui
 显示 xmui4
 线性 xmx;4
@@ -1723,6 +1761,7 @@
 信件 xnjm4
 新闻 xnwf
 信息 xnxi
+训练 xplm
 寻找 xpvk
 修改 xqgl
 选拔 xrba
@@ -1810,9 +1849,13 @@
 要点 ykdm
 要求 ykqq
 一目了然 ymlr yimulcr
+有没有 ymy
 因此 ynci
 印度 yndu
 银行 ynhh
+隐晦 ynhv
+银灰 ynhv1
+淫秽 ynhv4
 引起 ynqi
 印刷 ynuw
 因为 ynwz

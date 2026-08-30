@@ -1,0 +1,12 @@
+{
+  "name": "解书音形 · Demo",
+  "short_name": "解书音形",
+  "description": "解书音形输入法的手机键盘可交互 Demo",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#1a1a1c",
+  "theme_color": "#2c2c2e",
+  "lang": "zh-CN"
+}

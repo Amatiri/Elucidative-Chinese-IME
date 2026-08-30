@@ -1,0 +1,21 @@
+{
+  "name": "jieshu-mobile-engine",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "解书音形 · 移动端引擎（TypeScript）。零运行时依赖、纯函数、零 DOM/IO，为后续 Kotlin / ArkTS 移植提供可执行规格。",
+  "scripts": {
+    "test": "node --experimental-strip-types --test src/engine/*.test.ts",
+    "build:data": "python tools/build_dataset.py",
+    "build:golden": "python tools/gen_golden.py",
+    "build": "tsc -p tsconfig.web.json",
+    "watch": "tsc -p tsconfig.web.json --watch",
+    "serve": "python -m http.server 8080 -d web"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0"
+  },
+  "engines": {
+    "node": ">=22.6.0"
+  }
+}

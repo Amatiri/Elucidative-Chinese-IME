@@ -1,0 +1,46 @@
+{
+  "0": {
+    "prefixCount": 1,
+    "simple": "bcdfghijklmnopqrstuvwxyz",
+    "multiOnly": "ae",
+    "dead": ""
+  },
+  "1": {
+    "prefixCount": 24,
+    "simple": ";abcdefghijklmnopqrstuvwxyz",
+    "multiOnly": "abcdefghijklmnopqrstuvwxyz",
+    "dead": ""
+  },
+  "2": {
+    "prefixCount": 413,
+    "simple": "0123458",
+    "multiOnly": "abcdefghijklmnopqrstuvwxyz",
+    "dead": ""
+  },
+  "3": {
+    "prefixCount": 1296,
+    "simple": "0123456789bcdfghijklmnopqrstuvwxyz",
+    "multiOnly": "abcdefghijklmnopqrstuvwxyz",
+    "dead": ""
+  },
+  "4": {
+    "prefixCount": 1366,
+    "simple": ".;bcdefghijklmnopqrstuvwxyz",
+    "multiOnly": "abcdefghijklmnopqrstuvwxyz",
+    "dead": ""
+  },
+  "_structure": {
+    "shape": {
+      "ABCD": 5935,
+      "ABCD.": 131,
+      "ABCDE": 1908,
+      "ABCD.F": 103,
+      "ABCDE.": 31,
+      "ABCDE.F": 44
+    },
+    "fuma": 1983,
+    "daoyin": 309,
+    "buma": 147,
+    "dotAtPos5": 234
+  }
+}

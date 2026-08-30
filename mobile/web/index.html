@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+    <title>解书音形 · Demo</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="theme-color" content="#2c2c2e">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+</head>
+<body>
+<div class="app">
+    <main class="app-content">
+        <h1 class="app-title">解书音形 · Demo</h1>
+        <div class="output" id="output" data-placeholder="点按输入编码，上滑取副字符"></div>
+        <p class="app-hint">
+            点按 ∨ 翻页 · 上滑 1–5 选候选 · 上滑 C 开设置<br>
+            多字态按 − 进入逐字选择（上滑出 = 下一部件）· G/H 左右滑移光标
+        </p>
+    </main>
+
+    <div class="keyboard" id="keyboard"></div>
+</div>
+
+<div class="sheet" id="sheet"></div>
+<div class="toast" id="toast"></div>
+
+<script type="module" src="assets/ui/main.js"></script>
+<script>
+    if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+            void navigator.serviceWorker.register("sw.js").catch(() => undefined);
+        });
+    }
+</script>
+</body>
+</html>

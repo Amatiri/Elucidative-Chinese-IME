@@ -136,7 +136,8 @@ def replace_content(original, processed, do_paste=True, reset_entry=True):
     if do_paste and ctx.external_mode:
         paste_text(output, reset_entry)
     else:
-        pyperclip.copy(output)
+        if do_paste:
+            pyperclip.copy(output)
         entry_box.delete(0, tk.END)
         entry_box.insert(0, output)
         real_time_var.set(output)

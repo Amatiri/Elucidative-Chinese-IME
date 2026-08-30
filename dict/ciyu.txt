@@ -275,6 +275,7 @@
 〔 dlz
 ： dmh
 电话 dmhw
+点击 dmji
 电脑 dmnk
 电视机 dmuij
 电影院 dmy;y
@@ -1370,6 +1371,7 @@
 上午 uhwu
 上限 uhxm4
 上下文 uhxww
+失败 uibl
 时代 uidl
 十分 uiff
 示范 uifj
@@ -1456,6 +1458,7 @@
 周榜 vbb
 周年 vbnm
 状况 vdkd
+状态 vdtl
 装修 vdxq
 浙江 vejd
 这里 veli
@@ -1851,6 +1854,7 @@
 要求 ykqq
 一目了然 ymlr yimulcr
 有没有 ymy
+隐藏 ynch
 因此 ynci
 印度 yndu
 银行 ynhh

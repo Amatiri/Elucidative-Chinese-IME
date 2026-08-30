@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "es2022",
+    "module": "es2022",
+    "moduleResolution": "bundler",
+    "lib": ["es2022", "dom", "dom.iterable"],
+    "types": [],
+    "strict": true,
+    "allowImportingTsExtensions": true,
+    "rewriteRelativeImportExtensions": true,
+    "noEmitOnError": true,
+    "outDir": "web/assets",
+    "rootDir": "src"
+  },
+  "include": ["src/engine/**/*.ts", "src/ui/**/*.ts"],
+  "exclude": ["src/**/*.test.ts", "src/engine/golden.util.ts"]
+}

@@ -2,7 +2,7 @@
    数据集有 100KB 级，缓存后离线可用。 */
 
 // 改版本号即令旧缓存失效：activate 会清掉非当前版本的 cache
-const CACHE = "jieshu-demo-v5";
+const CACHE = "jieshu-demo-v6";
 
 const SHELL = [
   "./",

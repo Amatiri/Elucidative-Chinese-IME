@@ -407,25 +407,29 @@ def handle_selection_keys(event):
         index = SYMBOL_TO_INDEX.get(event.char, -1)
         if 0 <= index < len(candidates):
             candidate_str = candidates[index]
-            selected_char = candidate_str[0]  # 候选的第一个汉字
-            remaining = candidate_str[1:]       # 剩余编码
+            selected_char = candidate_str[0]
+            remaining = candidate_str[1:]
             input_text = real_time_var.get()
+
             if ctx.query_type == "single":
                 replace_content(input_text, selected_char, do_paste=True, reset_entry=True)
                 reset_input_state()
+
             elif ctx.query_type == "multi_part" and ctx.split_parts and ctx.current_part_index >= 0:
                 i = ctx.current_part_index
-                parts = list(ctx.split_parts)  # 当前所有编码部件
+                parts = list(ctx.split_parts)
                 if i >= len(parts):
                     return "break"
                 ctx.resolved_chars[i] = selected_char
                 if ctx.original_split_count == 0:
                     ctx.original_split_count = len(parts)
+
                 prefix = parts[i]
                 parts[i] = prefix + remaining
                 new_code_sequence = "'".join(parts)
+
                 if ctx.is_all_resolved():
-                    # 末字：拼接最终汉字串上屏
+                    # 末字：拼接最终汉字上屏
                     final_text = "".join(
                         ctx.resolved_chars[j] for j in sorted(ctx.resolved_chars.keys())
                     )
@@ -434,12 +438,27 @@ def handle_selection_keys(event):
                     ctx.selection_updating = False
                     reset_input_state()
                 else:
-                    # 非末字：更新输入框编码，跳到下一个未解部件
-                    ctx.selection_updating = True
-                    replace_content(input_text, new_code_sequence, do_paste=False, reset_entry=False)
-                    ctx.selection_updating = False
-                    navigate_parts("next")
-        return "break"
+                    if ctx.external_mode:
+                        ctx.selection_updating = True
+                        keyboard.press_and_release('end')
+                        ctx.code_char_before_cursor = len(input_text)
+                        ctx.code_char_after_cursor = 0
+                        paste_text(new_code_sequence, reset_entry=False)
+                        entry_box.delete(0, tk.END)
+                        entry_box.insert(0, new_code_sequence)
+                        real_time_var.set(new_code_sequence)
+                        ctx.code_char_before_cursor = len(new_code_sequence)
+                        ctx.code_char_after_cursor = 0
+                        ctx.last_input_text = new_code_sequence
+                        ctx.selection_updating = False
+                        navigate_parts("next")
+                    else:
+                        # ---- 内输模式：仅更新 Tkinter 输入框 ----
+                        ctx.selection_updating = True
+                        replace_content(input_text, new_code_sequence, do_paste=False, reset_entry=False)
+                        ctx.selection_updating = False
+                        navigate_parts("next")
+            return "break"
 
 def reset_input_state():
     """重置所有输入相关的状态，并清空显示标签。"""
@@ -982,7 +1001,7 @@ radical_table_frame.pack(fill=tk.BOTH, expand=False, pady=(0, 2))
 radical_table_frame.pack_forget()  # 默认隐藏
 
 radical_table_data = {
-    "a(副)": "丶一丨丿乙乛𠃌乚𡿨",
+    "笔画": "丶一丨丿乙乛𠃌乚𡿨",
     "b": "宀阝冫贝疒白卜八匕癶",
     "c": "车艹厂凵寸卄屮",
     "d": "刀歹大亠冖丷斗豆",
@@ -1015,9 +1034,9 @@ def create_radical_table():
         widget.destroy()
     title_frame = tk.Frame(radical_table_frame, bg='#FFF3C7')
     title_frame.pack(fill=tk.X, pady=(scale_size(BASE_PAD), scale_size(BASE_PAD)))
-    tk.Label(title_frame, text="部首码", font=(primary_font, FONT_SIZE_RADICAL),
+    tk.Label(title_frame, text="笔/码", font=(primary_font, FONT_SIZE_RADICAL),
             bg='#FFF3C7', fg='#000000', width=8, anchor='w').pack(side=tk.LEFT, padx=(scale_size(BASE_PAD), 0))
-    tk.Label(title_frame, text="对应部首", font=(primary_font, FONT_SIZE_RADICAL),
+    tk.Label(title_frame, text="笔画/部首/构形", font=(primary_font, FONT_SIZE_RADICAL),
             bg='#FFF3C7', fg='#000000', anchor='w').pack(side=tk.LEFT, padx=(scale_size(10), 0))
     separator = tk.Frame(radical_table_frame, height=scale_size(1), bg='#000000')
     separator.pack(fill=tk.X, pady=scale_size(BASE_PAD))
@@ -1061,15 +1080,15 @@ create_radical_table()
 def toggle_radical_table():
     if radical_table_var.get():
         radical_table_frame.pack(fill=tk.BOTH, expand=True, pady=(0, scale_size(10)))
-        radical_table_label.config(text="部首表", fg='#006600')
+        radical_table_label.config(text="形部表", fg='#006600')
         window.geometry(f"{win_w}x{win_h_exp}")
         create_radical_table()
     else:
         radical_table_frame.pack_forget()
-        radical_table_label.config(text="部首表", fg='#990000')
+        radical_table_label.config(text="形部表", fg='#990000')
         window.geometry(f"{win_w}x{win_h_norm}")
 
-radical_table_label = tk.Label(settings_frame, text="部首表",
+radical_table_label = tk.Label(settings_frame, text="形部表",
                               font=(FONT_BUTTON_NAME, FONT_SIZE_BUTTON), bg='#FFF3C7',
                               fg='#006600' if radical_table_var.get() else '#990000',
                               cursor="hand2")

@@ -19,12 +19,14 @@ export function initialState(settings: Settings): KeyboardState {
     cursor: 0,
     codeCursor: 0,
     lastTap: "",
+    lastPicked: "",
     page: 0,
     caps: "lower",
     settings,
     settingsOpen: false,
     partIndex: null,
     resolved: {},
+    radicalOpen: false,
   };
 }
 
@@ -35,7 +37,14 @@ function chars(s: string): string[] {
 
 /** 编码变化后逐字选择必须重置：部件下标与已选字都依赖旧的分段结果 */
 function resetParts(st: KeyboardState): Partial<KeyboardState> {
-  return { partIndex: null, resolved: {}, page: 0, codeCursor: 0, lastTap: "" };
+  return {
+    partIndex: null,
+    resolved: {},
+    page: 0,
+    codeCursor: 0,
+    lastTap: "",
+    lastPicked: "",
+  };
 }
 
 /**
@@ -69,12 +78,18 @@ function clamp(v: number, lo: number, hi: number): number {
 
 /**
  * 退格：先删编码；编码为空才删光标前的已上屏字符。
- * 逐字选择态下优先退出选择，而不是删编码 —— 与 ime.py 的部件导航一致。
+ *
+ * 逐字选择态下的行为由设置项 backspaceDeletesChar 决定（默认开）：
+ *   - 开：删一位编码字符，**同时**退出逐字选择 —— 与 ime.py:752-758 一致。
+ *     桌面端退格无条件删字符，退出选择只是输入变化后 main_function
+ *     （ime.py:464-476）重置状态的连带效果，两者一起发生。
+ *   - 关：只退出逐字选择，编码原样保留。
  */
 export function backspace(st: KeyboardState): KeyboardState {
-  if (st.partIndex !== null) {
-    return { ...st, partIndex: null, resolved: {} };
+  if (st.partIndex !== null && !st.settings.backspaceDeletesChar) {
+    return { ...st, partIndex: null, resolved: {}, page: 0, lastPicked: "" };
   }
+  // 逐字选择态也会落到这里：下面的 resetParts 顺带清掉选择态
   // 删的是光标前那一个字符，不是末字符 —— 光标可以停在编码中间
   if (st.buffer.length > 0 && st.codeCursor > 0) {
     const at = st.codeCursor;
@@ -121,6 +136,17 @@ export function clearBuffer(st: KeyboardState): KeyboardState {
   return { ...st, ...resetParts(st), buffer: "" };
 }
 
+/**
+ * 清空已上屏文本（上滑 ⌫ 二次确认后的落点）。
+ *
+ * 只动 committed 与 cursor，编码 buffer 原样保留 —— 清空的是「已提交的内容」，
+ * 正在输入的编码属于另一个状态域；一起清掉会让用户打了一半的编码无声消失。
+ */
+export function clearCommitted(st: KeyboardState): KeyboardState {
+  if (st.committed.length === 0) return st;
+  return { ...st, committed: "", cursor: 0 };
+}
+
 export function setPage(st: KeyboardState, page: number): KeyboardState {
   return { ...st, page: Math.max(0, page) };
 }
@@ -132,6 +158,16 @@ export function cycleCaps(st: KeyboardState): KeyboardState {
 
 export function setSettingsOpen(st: KeyboardState, open: boolean): KeyboardState {
   return { ...st, settingsOpen: open };
+}
+
+/**
+ * 部件表浮层开 / 关。
+ *
+ * 只切一个布尔位，不进 resetParts、不改 buffer / resolved / 候选——
+ * 浮层是覆盖在键盘上的参考视图，关闭后键盘状态原样保留。
+ */
+export function setRadicalOpen(st: KeyboardState, open: boolean): KeyboardState {
+  return { ...st, radicalOpen: open };
 }
 
 export function updateSettings(st: KeyboardState, patch: Partial<Settings>): KeyboardState {
@@ -154,4 +190,30 @@ export function setPartIndex(st: KeyboardState, index: number | null): KeyboardS
 /** 逐字选择：手选某个部件的字 */
 export function resolvePart(st: KeyboardState, index: number, text: string): KeyboardState {
   return { ...st, resolved: { ...st.resolved, [index]: text }, page: 0 };
+}
+
+/**
+ * 逐字选择中手选一个部件后，把「前缀 + 剩余编码」回写进编码串。
+ *
+ * 对齐 ime.py:424-441 handle_selection_keys 的非末字分支：
+ *   parts[i] = prefix + remaining，再 "'".join(parts) 写回输入框。
+ * 于是上方下划线的编码串实时补全（ceu → 选「测」→ ce4u'u），
+ * 后续翻页 / 再选字都基于补全后的完整编码。
+ *
+ * 不能用 pushCode：它调 resetParts 会把 resolved 冲掉，而逐字选择必须跨这次回写保留。
+ */
+export function commitPartCode(
+  st: KeyboardState,
+  buffer: string,
+  nextPart: number | null,
+  picked: string,
+): KeyboardState {
+  return {
+    ...st,
+    buffer,
+    codeCursor: buffer.length,
+    partIndex: nextPart,
+    page: 0,
+    lastPicked: picked,
+  };
 }

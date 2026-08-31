@@ -133,13 +133,17 @@ const ROW4: Cell[] = ROW4_DEFS.map((def) => ({ kind: "key" as const, span: 1, de
 // 显式标注 KeyDef[]：否则字面量里的 swipe.kind 会被推断成 string 而非联合成员
 const ROW5_DEFS: KeyDef[] = [
   { main: "'", code: "'", idleSub: "⇪", swipe: { kind: "caps" }, name: "大写锁定" },
-  funcKey("Z", "部", "部首查询"),
-  funcKey("X", "🌐", "语言切换"),
+  // Z 上滑打开部件表浮层（对齐 ime.py:983 的 radical_table_data）；点按仍是编码键 z
+  { main: "Z", code: "z", idleSub: "部", swipe: { kind: "radical" }, name: "部件表查询" },
+  // X/V/B/N/M 五键的功能在 6 行布局下提升为 Row6 主键，副字符仅 6 行下隐藏；
+  // 5 行布局完整保留副字符与上滑行为（计划 §1.2「Row5 其余上滑保留不删」）
+  { ...funcKey("X", "🌐", "语言切换"), hideSubIn6Row: true },
   { main: "C", code: "c", idleSub: "设", dimWhenCoding: true, swipe: { kind: "settings" }, name: "设置" },
-  ch("V", ",", { dim: true, gated: true }),
-  { main: "B", code: "b", idleSub: "空", swipe: { kind: "commitOrSpace" }, name: "上屏首选/空格" },
-  { main: "N", code: "n", idleSub: ".", swipe: { kind: "dotOrBuma" }, name: "句点/补码引导" },
-  { main: "M", code: "m", idleSub: "↵", swipe: { kind: "abandonOrEnter" }, name: "放弃输入/回车" },
+  // swipe.char 与 idleSub 同源但创建时已定值，隐藏副字符不影响 5 行下上滑出「,」
+  { ...ch("V", ",", { dim: true, gated: true }), hideSubIn6Row: true },
+  { main: "B", code: "b", idleSub: "空", hideSubIn6Row: true, swipe: { kind: "commitOrSpace" }, name: "上屏首选/空格" },
+  { main: "N", code: "n", idleSub: ".", hideSubIn6Row: true, swipe: { kind: "dotOrBuma" }, name: "句点/补码引导" },
+  { main: "M", code: "m", idleSub: "↵", hideSubIn6Row: true, swipe: { kind: "abandonOrEnter" }, name: "放弃输入/回车" },
   /**
    * '=' / '-' **不是编码字符**（不在 CODE_CHARS 里）。
    * 有编码时作逐字选择导航（ime.py L727-734），空闲态直出原字符。
@@ -148,7 +152,11 @@ const ROW5_DEFS: KeyDef[] = [
    * 上滑 = 上一个字。原先反过来，最常用的操作反而要上滑。
    */
   { main: "=", idleSub: "-", swipe: { kind: "partNav", delta: -1 }, name: "逐字选择" },
-  { main: "⌫", swipe: { kind: "none" }, name: "退格" },
+  /**
+   * ⌫：单点退格、长按加速连删、**上滑清空已上屏文本**（副字符「清」）。
+   * 有了副字符，上滑就走 clearAll 而不会退化成单点退格（见 subTextOf 门控）。
+   */
+  { main: "⌫", idleSub: "清", swipe: { kind: "clearAll" }, name: "退格 / 上滑清空" },
 ];
 
 const ROW5: Cell[] = ROW5_DEFS.map((def) => ({ kind: "key" as const, span: 1, def }));
@@ -169,8 +177,40 @@ const ROW1: Cell[] = [
   },
 ];
 
-/** 5 行方案 H。6 行变体（v0.2）在 Row1 与 Row2 之间插入 QWERTY 行 */
+/**
+ * Row6（6 行变体）：在 Row5 下方追加一行，把几个高频功能键提升为主键。
+ * 列宽比对齐计划 §1.2：语 1U / ， 1U / 空格 5U≈170dp / 句点 1U / 回车 2U（共 10U）。
+ *
+ * - 🌐：语言切换（与 X 上滑同源，P2 待实现），单点即提示
+ * - ,：键面与输出都是英文逗号（用户定稿）；编码态走 swipeSymbol 的放弃语义
+ *   （6 行下这是英文逗号的唯一入口；中文逗号走 d.b 或 5 行 V 上滑）
+ * - 空格 5U：编码态上屏首选、空闲态输出空格（与 B 上滑同源）
+ * - 句点 . 1U：键面显示英文句点，永远输出英文句点；中文句号仍走 d.. / N 上滑空闲态
+ * - 回车 2U：编码态放弃输入、空闲态回车（与 M 上滑同源）
+ *
+ * Row5 其余上滑保留不删（上滑 B 仍出空格）。见计划 §1.2。
+ */
+const ROW6_DEFS: KeyDef[] = [
+  { main: "🌐", swipe: { kind: "stub", name: "语言切换" }, name: "语言切换" },
+  { main: ",", swipe: { kind: "symbol", char: ",", gated: false }, name: "英文逗号" },
+  { main: "空格", swipe: { kind: "commitOrSpace" }, name: "空格" },
+  { main: ".", swipe: { kind: "symbol", char: ".", gated: false }, name: "英文句点" },
+  { main: "↵", swipe: { kind: "abandonOrEnter" }, name: "回车" },
+];
+
+const ROW6: Cell[] = [
+  { kind: "key", span: 1, def: ROW6_DEFS[0]! },
+  { kind: "key", span: 1, def: ROW6_DEFS[1]! },
+  { kind: "key", span: 5, def: ROW6_DEFS[2]! },
+  { kind: "key", span: 1, def: ROW6_DEFS[3]! },
+  { kind: "key", span: 2, def: ROW6_DEFS[4]! },
+];
+
+/** 5 行方案 H */
 export const KEYMAP_5ROW: readonly Cell[][] = [ROW1, ROW2, ROW3, ROW4, ROW5];
+
+/** 全量布局（5 行 + Row6）。DOM 始终按全量构建，Row6 在 5 行模式下隐藏 */
+export const KEYMAP_ALL: readonly Cell[][] = [...KEYMAP_5ROW, ROW6];
 
 /** 总列数 —— 每行 span 之和必须等于它 */
 export const COLS = 10;
@@ -180,9 +220,25 @@ export function keysOf(row: readonly Cell[]): KeyDef[] {
   return row.flatMap((c) => (c.kind === "key" ? [c.def] : []));
 }
 
-/** 主字符 → 键定义。主字符在整个键位表中唯一，可安全用作反查键 */
+/** 主字符 → 键定义。主字符在整个键位表中唯一，可安全用作反查键。
+ *  基于 KEYMAP_ALL 构建，使 Row6 的键也能被手势层反查到 */
 export const KEY_BY_MAIN: ReadonlyMap<string, KeyDef> = new Map(
-  KEYMAP_5ROW.flatMap((row) =>
+  KEYMAP_ALL.flatMap((row) =>
     row.flatMap((cell) => (cell.kind === "key" ? [[cell.def.main, cell.def] as const] : [])),
   ),
 );
+
+/**
+ * 当前状态下键面副字符的**实际显示内容**（2026-08-31 定稿规则）。
+ *
+ * 渲染（render.ts 的 .kb-sub）与手势门控（main.ts 的上滑转单点）必须共用
+ * 这一个函数 —— 两处各写一份迟早漂移（Row6 单点失配就是前车之鉴）。
+ *
+ * 返回空串意味着键面上没有可提示的上滑动作 → 上滑视作单点
+ * （「若某按键没有副字符，则不允许上滑」），不让手势吞键。
+ */
+export function subTextOf(def: KeyDef, coding: boolean, rows: 5 | 6): string {
+  // 6 行下，功能已提升为 Row6 主键的键位（X/V/B/N/M）副字符隐藏
+  if (rows === 6 && def.hideSubIn6Row === true) return "";
+  return coding && def.codingSub !== undefined ? def.codingSub : (def.idleSub ?? "");
+}

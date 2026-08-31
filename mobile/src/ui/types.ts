@@ -30,6 +30,13 @@ export type SwipeAction =
   | { kind: "partNav"; delta: number }
   /** 开关：上滑 A / S 切换对应设置项，键帽按状态高亮 */
   | { kind: "toggle"; key: ToggleKey; name: string }
+  /** 上滑 Z：打开 / 关闭部件表浮层（不改动编码与候选状态） */
+  | { kind: "radical" }
+  /**
+   * 上滑 ⌫：清空已上屏文本。破坏性操作，需二次确认
+   * （⌫ 因此带副字符「清」，上滑不会退化成单点退格）
+   */
+  | { kind: "clearAll" }
   /** P2 待实现的功能键 */
   | { kind: "stub"; name: string };
 
@@ -49,10 +56,13 @@ export const CAPS_LABEL: Record<CapsMode, string> = {
   upper: "连",
 };
 
-/** 键帽视觉档位 —— 对应设计稿组件库五态 + 运行时二档 */
+/**
+ * 键帽视觉档位。
+ * 原「recommended」档已并入 normal（2026-08-31 拍板）：引擎只有
+ * content / empty 两档数据，content 键保持常态即"可按键"，不再设第三档。
+ */
 export type KeyClass =
   | "normal"
-  | "recommended"
   /** 下一键无候选 —— 仍可点，只做灰显，不做抖动拒绝 */
   | "dim"
   | "func"
@@ -76,6 +86,12 @@ export interface KeyDef {
   swipeLeft?: { kind: "cursor"; delta: number };
   /** 右滑行为（H 键：光标右移） */
   swipeRight?: { kind: "cursor"; delta: number };
+  /**
+   * 6 行布局下隐藏副字符。这些键的功能已提升为 Row6 主键
+   * （X 🌐 / V ，/ B 空 / N . / M ↵），副字符提示在 6 行下冗余；
+   * 5 行布局下完整保留（功能仍在本键上滑）。
+   */
+  hideSubIn6Row?: boolean;
   /** 无障碍 / 调试用名 */
   name?: string;
 }
@@ -101,6 +117,12 @@ export interface Settings {
   autoCommit: boolean;
   /** 优先上词：多字时词语优先于首选字组合（键帽简作「词」） */
   phrasePriority: boolean;
+  /**
+   * 逐字选择中按退格是否顺带删掉一位编码字符。默认开，与 ime.py:752-758 一致 ——
+   * 桌面端退格无条件删字符，「退出逐字选择」只是输入变化后 main_function
+   * （ime.py:464-476）重置状态的连带效果，两者同时发生。
+   */
+  backspaceDeletesChar: boolean;
 }
 
 /** 键盘运行时状态。committed 为已上屏文本，buffer 为正在输入的编码串 */
@@ -127,8 +149,19 @@ export interface KeyboardState {
    * 与 code.slice(-1) 的区别只在编码中间插入/移动光标时显现。
    */
   lastTap: string;
+  /**
+   * 逐字选择中刚手选的那个字。供左上角小显示区反馈「选了什么」——
+   * 手机上手指挡住候选条，选完需要确认。优先级高于 lastTap。
+   */
+  lastPicked: string;
   /** 逐字选择：当前部件下标。null = 未进入逐字选择 */
   partIndex: number | null;
   /** 逐字选择：已手选的字，键为部件下标 */
   resolved: Readonly<Record<number, string>>;
+  /**
+   * 部件表浮层是否打开。
+   * 浮层只是覆盖在键盘之上的参考视图，打开 / 关闭**不触碰**编码、候选、逐字选择等任何状态——
+   * 关闭后原键盘的候选与编码原样保留（对齐用户决策：覆盖原键盘但保留其状态）。
+   */
+  radicalOpen: boolean;
 }

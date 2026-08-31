@@ -4429,6 +4429,7 @@
 霹 pi1i
 铍 pi1j
 噼 pi1k
+𬳵 pi1m
 狉 pi1q
 豾 pi1q.
 伾 pi1r
@@ -5032,6 +5033,7 @@
 扰 rk3u
 绕 rk4s
 若 ro4c
+叒 ro4c.k
 芮 ro4cn
 弱 ro4g
 偌 ro4r
@@ -6252,6 +6254,7 @@
 灼 vo2h
 镯 vo2j
 啄 vo2k
+叕 vo2kk
 着 vo2m
 箸 vo2m.z
 杓 vo2mu
@@ -8008,6 +8011,7 @@
 臧 zh1i
 牂 zh1p
 脏 zh1r
+驵 zh3m
 藏 zh4c
 葬 zh4cc
 奘 zh4d

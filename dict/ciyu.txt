@@ -229,6 +229,7 @@
 大学 daxt
 打字 dazi4
 豆包 dbb
+逗号 dbhk4
 调查 dcia
 ’ ddy
 ‘ ddz
@@ -691,6 +692,8 @@
 机会 jihv
 计划 jihw
 基础 jiiu
+即可 jike3
+即刻 jike4
 吉林 jiln
 记录 jilu
 纪录 jilu4
@@ -822,6 +825,7 @@
 开始 klui
 扩展 kovj
 困难 kpnj
+空格 ksge
 空间 ksjm
 恐惧 ksju
 控制 ksvi
@@ -975,6 +979,7 @@
 朋友 pgyb
 批改 pigl
 批量 pild
+匹配 pipz
 批准 pivp
 判断 pjdr
 排序 plxu
@@ -990,6 +995,7 @@
 青海 q;hl
 清楚 q;iu
 情况 q;kd
+清空 q;ks
 请你 q;ni
 清爽 q;ud
 庆祝 q;vu
@@ -1283,6 +1289,8 @@
 体现 tixm
 体验 tiyj
 体育 tiyu
+探索 tjso
+坍缩 tjso1
 探讨 tjtk
 探险 tjxm
 淘宝 tkbk
@@ -1367,11 +1375,14 @@
 上海 uhhl
 上课 uhke
 上面 uhmm
+上屏 uhp;
 社会主义 uhvy
 上午 uhwu
 上限 uhxm4
 上下文 uhxww
 失败 uibl
+实测 uice
+失策 uice4
 时代 uidl
 十分 uiff
 示范 uifj
@@ -1665,6 +1676,8 @@
 网盘 whpj
 王者 whve
 网页 whye
+完毕 wjbi
+完璧归赵 wjbigvv wbgv
 完成 wjig
 完美 wjmz
 完全 wjqr
@@ -1764,8 +1777,10 @@
 信件 xnjm4
 新闻 xnwf
 信息 xnxi
+新增 xnzg
 训练 xplm
 寻找 xpvk
+修复 xqfu
 修改 xqgl
 选拔 xrba
 选举 xrju
@@ -1809,6 +1824,7 @@
 有关 ybgr1
 友好 ybhk
 有利于 ybliy
+又双叒叕 ybudrov
 有助于 ybvuy
 游玩 ybwj
 游戏 ybxi
@@ -1874,6 +1890,7 @@
 运动 ypds
 云南 ypnj
 运行 ypx;
+允许 ypxu
 愿景 yrj;
 原理 yrli
 原来 yrll
@@ -1914,6 +1931,7 @@
 自习 zixi2
 自信 zixn
 咱们 zjmf
+再次 zlci4
 坐标 zobc
 做到 zodk
 做了 zole
@@ -1937,3 +1955,4 @@
 最后 zvhb
 最近 zvjn
 最终 zvvs1
+最新 zvxn1

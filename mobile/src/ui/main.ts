@@ -7,7 +7,7 @@
 
 import { createEngine, type Candidate } from "../engine/index.ts";
 import { attachGestures } from "./events.ts";
-import { KEY_BY_MAIN } from "./keymap.ts";
+import { KEY_BY_MAIN, subTextOf } from "./keymap.ts";
 import { mount, type Handlers } from "./render.ts";
 import { loadSettings, saveSettings } from "./settings.ts";
 import * as S from "./state.ts";
@@ -66,13 +66,51 @@ function applyCaps(text: string): string {
   return text.toUpperCase();
 }
 
+/** 长按连删间隔（ms）。⌫ 按住不放时的连续删除速度 ≈ 20 字/秒 */
+const REPEAT_DELETE_MS = 50;
+
+/** 上滑 ⌫ 的二次确认窗口（ms）。清空整段文本是破坏性操作，必须二次确认 */
+const CLEAR_CONFIRM_MS = 3000;
+
+let repeatDeleteTimer = 0;
+let clearPendingUntil = 0;
+
+/**
+ * 长按 ⌫：加速连删（业界惯例的 repeat delete）。
+ *
+ * 立即删一次再起 interval，避免第一个字符要等 REPEAT_DELETE_MS 才动 ——
+ * 那会让长按看起来"迟钝"。删到文本与编码都空时自动停表，不做无意义轮询。
+ * 返回 true 表示消费了长按，松手不再派发单点（events.ts 据此抑制 onTap）。
+ */
+function startRepeatDelete(): boolean {
+  stopRepeatDelete();
+  st = S.backspace(st);
+  redraw();
+  repeatDeleteTimer = window.setInterval(() => {
+    st = S.backspace(st);
+    redraw();
+    if (st.committed.length === 0 && st.buffer.length === 0) stopRepeatDelete();
+  }, REPEAT_DELETE_MS);
+  return true;
+}
+
+function stopRepeatDelete(): void {
+  if (repeatDeleteTimer !== 0) {
+    window.clearInterval(repeatDeleteTimer);
+    repeatDeleteTimer = 0;
+  }
+}
+
 /**
  * 受设置项约束的符号。
  *
  * 设计稿模块 6：两种模式下键帽都只灰显，不做抖动拒绝 —— 抖动是「禁用」的
  * 视觉暗示，与「无候选 → 直出原编码」的运行时语义冲突（ime.py:329）。
  */
-function swipeSymbol(char: string): void {
+function swipeSymbol(char: string, gated: boolean): void {
+  // 6 行布局下，中文逗号已提升为 Row6 主键，V 上滑（门控键）的逗号功能摘除；
+  // Row6 逗号键自身（gated=false）不受影响（计划 §1.2）
+  if (st.settings.rows === 6 && char === "，" && gated) return;
   if (!view.coding) {
     emit(char);
     return;
@@ -83,14 +121,42 @@ function swipeSymbol(char: string): void {
   redraw();
 }
 
-/** 自动上字：编码打满（rest 为空）且唯一命中时自动上屏 */
+/**
+ * 自动上字。对齐 ime.py:505-518，四条缺一不可：
+ *
+ *   1. 必须单字态 —— 多字分支（ime.py:525 起）根本没有自动上字。
+ *      含人工单引号的输入必定是多字态，因此自动上字对其永不生效。
+ *   2. len(split_text) > 3 —— 至少 4 码才上字。单字态下 split === code，
+ *      故用 view.code.length 判定（da4 只有 3 码，即使唯一命中也不上字）。
+ *   3. 当前页候选里 rest 不含 '.' 的**恰好 1 条**。rest 含 '.' 表示还在补码
+ *      引导中，不算命中 —— 这一条把「总候选多条但只有一条已打全」的情况放行。
+ *   4. 上屏该候选的首个**码点**，不是首个 UTF-16 码元：152 条非 BMP 字是代理对。
+ *
+ * 注意条件 3 不要求 rest 为空：ime.py:513 直接取该候选的首字上屏，
+ * 所以补码已唯一确定、但仍带 rest 的输入（如 bo2c. → 簿，rest="z"）也会自动上字。
+ */
 function maybeAutoCommit(): void {
   if (!st.settings.autoCommit || view.mode !== "single") return;
-  const only = view.candidates[0];
-  if (only !== undefined && view.candidates.length === 1 && only.rest === "") {
-    st = S.commitText(st, only.text);
-    redraw();
-  }
+  if (view.candidates.length === 0 || view.code.length <= 3) return;
+
+  const nonDot = view.candidates.filter((c) => !c.rest.includes("."));
+  if (nonDot.length !== 1) return;
+
+  const picked = [...nonDot[0]!.text][0];
+  if (picked === undefined) return;
+  st = S.commitText(st, picked);
+  redraw();
+}
+
+/**
+ * 翻页。对齐 ime.py:229-237：下一页只有**下一页真有候选**才前进，
+ * 上一页要求 page > 0。否则页码会一路涨下去，而候选区始终是空的。
+ */
+function changePage(delta: number): void {
+  if (delta > 0 && !view.hasNextPage) return;
+  if (delta < 0 && st.page <= 0) return;
+  st = S.setPage(st, st.page + delta);
+  redraw();
 }
 
 function commitDisplay(): void {
@@ -106,7 +172,8 @@ function pickCandidate(index: number): void {
   if (c === undefined) return;
 
   if (view.selecting && view.currentPart !== null) {
-    st = S.resolvePart(st, view.currentPart, c.text);
+    const i = view.currentPart;
+    st = S.resolvePart(st, i, c.text);
     redraw();
 
     if (Object.keys(st.resolved).length >= view.partCount) {
@@ -115,14 +182,25 @@ function pickCandidate(index: number): void {
       redraw();
       return;
     }
-    // 推进到下一个尚未选择的部件（ime.py 的逐字推进），字面段同样跳过
+
+    // 推进到下一个尚未选择的部件（ime.py 的逐字推进），字面段同样跳过。
+    // 必须在回写前算：回写会改 buffer，parts 的内容随之改变。
     const literal = new Set(view.literalIndices);
     const total = view.parts.length;
-    let next = (view.currentPart + 1) % total;
-    for (let i = 0; i < total && (st.resolved[next] !== undefined || literal.has(next)); i++) {
+    let next = (i + 1) % total;
+    for (let k = 0; k < total && (st.resolved[next] !== undefined || literal.has(next)); k++) {
       next = (next + 1) % total;
     }
-    st = S.setPartIndex(st, next);
+
+    /**
+     * ime.py:424-441 非末字分支：把「前缀 + 剩余编码」回写进编码串，
+     * 于是上方下划线的编码实时补全 —— ceu 选「测」后从 ceu 变成 ce4u'u，
+     * 左上角小显示区同时显示刚选的「测」。
+     * 回写必须走 commitPartCode 而不是 pushCode：后者会清掉 resolved。
+     */
+    const parts = [...view.parts];
+    parts[i] = parts[i]! + c.rest;
+    st = S.commitPartCode(st, parts.join("'"), next, c.text);
     redraw();
     return;
   }
@@ -163,9 +241,10 @@ function moveCaret(delta: number): void {
 
 const handlers: Handlers = {
   onKeyTap(def) {
+    // 清空确认窗口只覆盖「紧接着的第二次上滑 ⌫」：期间做了别的按键操作即作废
+    clearPendingUntil = 0;
     if (def.main === "∨") {
-      st = S.setPage(st, st.page + 1);
-      redraw();
+      changePage(1);
       return;
     }
     if (def.main === "⌫") {
@@ -180,6 +259,44 @@ const handlers: Handlers = {
       // 编码态但非多字：没有部件可导航，吞掉。
       // ime.py 只在 has_code_chars 时导航，单字态下 navigate_parts 无部件可用；
       // 此时若直出 '=' 会污染编码。
+      return;
+    }
+    // Row6 直接输出键（6 行布局）。这些键无 code，点按即直出，不进编码缓冲。
+    // 逗号键键面为半角「,」（用户定稿），输出**英文**逗号；
+    // 编码态下走 swipeSymbol（放弃输入再出符号，对齐桌面端「符号等编码上屏后才输」）
+    if (def.main === ",") {
+      swipeSymbol(",", false);
+      return;
+    }
+    // 句点键双身份（对齐 N 上滑的 dotOrBuma）：编码态作补码引导符进编码流，
+    // 空闲态直出英文句点 —— 6 行下这是补码引导符的唯一入口
+    if (def.main === ".") {
+      if (view.coding) {
+        st = S.pushCode(st, ".");
+        redraw();
+      } else {
+        emit(".");
+      }
+      return;
+    }
+    if (def.main === "🌐") {
+      toast("语言切换 · P2 待实现");
+      return;
+    }
+    if (def.main === "空格") {
+      // 与 B 上滑同源：编码态上屏首选，空闲态输出空格
+      if (view.coding) commitDisplay();
+      else emit(" ");
+      return;
+    }
+    if (def.main === "↵") {
+      // 与 M 上滑同源：编码态放弃输入，空闲态回车
+      if (view.coding) {
+        st = S.abandonInput(st, st.buffer);
+        redraw();
+      } else {
+        emit("\n");
+      }
       return;
     }
     if (def.code !== undefined) {
@@ -214,13 +331,28 @@ const handlers: Handlers = {
   },
 
   onKeySwipe(def) {
+    /**
+     * 上滑门控（2026-08-31 定稿）：当前状态下键面无可见副字符 → 上滑视作单点。
+     * 判定与渲染共用 subTextOf，保证「看不见的提示不生效、看得见的提示必生效」。
+     *
+     * 覆盖两类键：
+     *   - 本无副字符的键（⌫、Row6 五键）—— 上滑不再吞键，等同单点；
+     *   - hideSubIn6Row 的键（X/V/B/N/M）—— 6 行下副字符隐藏，上滑回落到
+     *     主字符（如 6 行下上滑 B 输出 b 进编码流，不再出空格）；
+     *     5 行下副字符可见，原有上滑行为完整保留。
+     */
+    if (subTextOf(def, view.coding, st.settings.rows).length === 0) {
+      handlers.onKeyTap(def);
+      return;
+    }
+
     const a = def.swipe;
     switch (a.kind) {
       case "none":
         return;
 
       case "symbol":
-        swipeSymbol(a.char);
+        swipeSymbol(a.char, a.gated);
         return;
 
       case "select": {
@@ -244,7 +376,8 @@ const handlers: Handlers = {
         if (view.coding) {
           st = S.pushCode(st, ".");
           redraw();
-        } else {
+        } else if (st.settings.rows !== 6) {
+          // 6 行布局下句点功能下沉到 Row6 主键，此处不再直出（计划 §1.2）
           emit(".");
         }
         return;
@@ -282,8 +415,7 @@ const handlers: Handlers = {
         return;
 
       case "page":
-        st = S.setPage(st, st.page + a.delta);
-        redraw();
+        changePage(a.delta);
         return;
 
       // '=' 上滑出 '-' = 上一个字；非多字态在空闲时才直出原字符
@@ -302,6 +434,28 @@ const handlers: Handlers = {
         return;
       }
 
+      case "radical":
+        // 上滑 Z：切换部件表浮层。不触碰编码 / 候选状态，关闭后原样保留
+        st = S.setRadicalOpen(st, !st.radicalOpen);
+        redraw();
+        return;
+
+      // 上滑 ⌫：清空已上屏文本。二次确认 —— 窗口内再滑一次才真执行，
+      // 超时或期间做了别的操作（onKeyTap 会重置）则作废
+      case "clearAll": {
+        const now = Date.now();
+        if (clearPendingUntil > now) {
+          clearPendingUntil = 0;
+          st = S.clearCommitted(st);
+          redraw();
+          toast("已清空文本（编码保留）");
+          return;
+        }
+        clearPendingUntil = now + CLEAR_CONFIRM_MS;
+        toast("再滑一次 ⌫ 清空全部");
+        return;
+      }
+
       case "stub":
         toast(`${a.name} · P2 待实现`);
         return;
@@ -313,8 +467,7 @@ const handlers: Handlers = {
   },
 
   onPage(delta) {
-    st = S.setPage(st, st.page + delta);
-    redraw();
+    changePage(delta);
   },
 
   onPreviewTap() {
@@ -339,20 +492,38 @@ const handlers: Handlers = {
     st = S.setSettingsOpen(st, false);
     redraw();
   },
+
+  onRadicalClose() {
+    st = S.setRadicalOpen(st, false);
+    redraw();
+  },
 };
 
 renderer = mount(root, handlers);
 
-// 手势层只产出「方向 + 键」，语义全交给 handlers 分派
+// 手势层只产出「方向 + 键」，语义全交给 handlers 分派。
+// 左右滑门控（2026-08-31 定稿）：仅 G/H 的光标滑动保留，
+// 其余键的左右滑一律视作单点，不让手势吞键。
 attachGestures(root.keyboard, KEY_BY_MAIN, {
   onTap: handlers.onKeyTap,
   onSwipeUp: handlers.onKeySwipe,
   onSwipeLeft: (def: KeyDef) => {
-    if (def.swipeLeft?.kind === "cursor") moveCaret(def.swipeLeft.delta);
+    if (def.swipeLeft?.kind === "cursor") {
+      moveCaret(def.swipeLeft.delta);
+      return;
+    }
+    handlers.onKeyTap(def);
   },
   onSwipeRight: (def: KeyDef) => {
-    if (def.swipeRight?.kind === "cursor") moveCaret(def.swipeRight.delta);
+    if (def.swipeRight?.kind === "cursor") {
+      moveCaret(def.swipeRight.delta);
+      return;
+    }
+    handlers.onKeyTap(def);
   },
+  // 长按：只有 ⌫ 消费（加速连删）。其余键返回 false，长按不吞键
+  onLongPressStart: (def: KeyDef) => (def.main === "⌫" ? startRepeatDelete() : false),
+  onLongPressEnd: stopRepeatDelete,
 });
 
 redraw();

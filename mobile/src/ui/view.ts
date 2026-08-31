@@ -55,9 +55,14 @@ const PAGE_SIZE = 5;
 /**
  * 按部件重建预览串。
  *
- * 字面部件（无候选，按编码原样回显）在预览串里占 len(part) 个字符，
- * 其余部件恰好占 1 个字符 —— 这是 ime.py update_display L288-295 的对齐关系，
+ * 字面部件（无候选，按编码原样回显）在预览串里占 len(part) 个**码点**，
+ * 其余部件恰好占 1 个**码点** —— 这是 ime.py update_display L288-296 的对齐关系，
  * 直接按 parts.length 下标取字会在存在字面部件时错位。
+ *
+ * ⚠ 必须按码点切，不能按 UTF-16 码元切。152 条非 BMP 字（如 𬇕 U+2C7D5）是代理对，
+ * `base.slice(pos, pos + 1)` 只会切到半个字，且每出现一个非 BMP 字，后面所有部件
+ * 就整体错位一格 —— 多字预览会丢字，或拼出孤立代理项。
+ * Python 的 `first_chars[pos]` 天然按码点，这是 TS 移植特有的偏差。
  */
 function rebuildPreview(
   base: string,
@@ -66,16 +71,18 @@ function rebuildPreview(
   resolved: Readonly<Record<number, string>>,
 ): string {
   const literal = new Set(literalIndices);
+  const cps = [...base];
   let out = "";
   let pos = 0;
   for (let i = 0; i < allParts.length; i++) {
     const part = allParts[i]!;
+    // 字面部件按编码原文占 len(part) 个码点（编码是 ASCII，码元数 = 码点数）
     const width = literal.has(i) ? part.length : 1;
     const picked = resolved[i];
     if (picked !== undefined) {
       out += picked;
     } else {
-      out += base.slice(pos, pos + width);
+      out += cps.slice(pos, pos + width).join("");
     }
     pos += width;
   }
@@ -101,7 +108,18 @@ export function buildView(engine: Engine, st: KeyboardState): ViewModel {
    */
   const enhanced = code.includes("'") && st.settings.phrasePriority;
   const firstCharsRaw = parts.length > 1 && !enhanced ? engine.queryMultiChars(split) : "";
-  const basePreview = enhanced ? seg.display : firstCharsRaw;
+  /**
+   * 预览基准串：enhanced 或 queryMultiChars 为空时走分段增强预览。
+   *
+   * queryMultiChars 是「任一段无候选就整体返回空」——这正是「编码不对应
+   * 任何候选」的判定（如英文词 deepseek → de'ep'se'ek，ep/ek 无候选）。
+   * 此处必须回退 seg.display：getPhraseSegments 会把整串按**字面**回显，
+   * 预览串 = 原始编码，空格上屏的正是它。
+   *
+   * 原实现（2026-08-31 修复前）直接拿空串当 basePreview，preview/display
+   * 双双为空，commitDisplay 静默 return —— deepseek 按空格毫无反应。
+   */
+  const basePreview = enhanced || firstCharsRaw === "" ? seg.display : firstCharsRaw;
 
   const preview =
     parts.length > 1
@@ -115,7 +133,15 @@ export function buildView(engine: Engine, st: KeyboardState): ViewModel {
 
   const keyClass = engine.nextCharClass(code);
   const coding = code.length > 0;
-  const mode: QueryMode = !coding ? "idle" : parts.length > 1 ? "multi" : "single";
+  /**
+   * 单字 / 多字判据对齐 ime.py:501 —— 看**分词结果里有没有单引号**，
+   * 不是看过滤空段后的段数。
+   *
+   * 差别出在尾随的人工单引号：splitSequence("wj4u'") === "wj4u'"，按 "'" 切再滤掉
+   * 空段只剩 1 段，按段数判就误判成单字 → maybeAutoCommit 把 𬇕 直接顶上屏。
+   * 而人工单引号意味着用户在做多字输入，ime.py 走多字分支，不会自动上字。
+   */
+  const mode: QueryMode = !coding ? "idle" : split.includes("'") ? "multi" : "single";
 
   const literalCount = seg.literalIndices.length;
   const partCount = Math.max(0, seg.allParts.length - literalCount);
@@ -148,8 +174,9 @@ export function buildView(engine: Engine, st: KeyboardState): ViewModel {
     code,
     parts,
     mode,
-    // 取最后按下的键，不是编码末字符 —— 中间插入时两者不同（见 types.ts lastTap）
-    lastChar: st.lastTap,
+    // 取最后按下的键，不是编码末字符 —— 中间插入时两者不同（见 types.ts lastTap）。
+    // 逐字选择中手选了一个字后让位给该字（lastPicked），确认「刚选了什么」。
+    lastChar: st.lastPicked !== "" ? st.lastPicked : st.lastTap,
     candidates,
     preview,
     phrase,

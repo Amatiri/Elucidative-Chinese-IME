@@ -5,18 +5,21 @@
 
 import type { Settings, SymbolSwipeMode } from "./types.ts";
 
-// 键名带版本：默认值变更时（如本轮把自动上字改为默认开启）
-// 必须让旧的 localStorage 记录失效，否则老用户仍拿到旧默认
-const KEY = "jieshu-demo-settings-v2";
+// 键名带版本：默认值变更时必须升版本，否则老用户读到的仍是 localStorage 里的旧值。
+// v3：上滑输入符号默认从「禁用」改为「放弃输入」（对齐 ime.py:777-780）
+const KEY = "jieshu-demo-settings-v3";
 
 export const DEFAULT_SETTINGS: Settings = {
   rows: 5,
-  // 默认禁用：避免误触打断输入流（设计稿模块 6 · 选项 B）
-  symbolSwipe: "disabled",
+  // 默认「放弃输入」：对齐 ime.py:777-780 —— 编码态输入非法字符一律放弃输入，
+  // 原编码留在编辑区。桌面端没有「禁用」这一档。
+  symbolSwipe: "abandon",
   // 默认开启，与 ime.py 的默认状态一致
   autoCommit: true,
   // 开启后，手动输入单引号的多字串走「词语增强预览」（ime.py L527-530）
   phrasePriority: true,
+  // 默认开启，与 ime.py:752-758 一致
+  backspaceDeletesChar: true,
 };
 
 function isMode(v: unknown): v is SymbolSwipeMode {
@@ -39,6 +42,10 @@ export function loadSettings(): Settings {
       symbolSwipe: isMode(o["symbolSwipe"]) ? o["symbolSwipe"] : DEFAULT_SETTINGS.symbolSwipe,
       autoCommit: bool(o["autoCommit"], DEFAULT_SETTINGS.autoCommit),
       phrasePriority: bool(o["phrasePriority"], DEFAULT_SETTINGS.phrasePriority),
+      backspaceDeletesChar: bool(
+        o["backspaceDeletesChar"],
+        DEFAULT_SETTINGS.backspaceDeletesChar,
+      ),
     };
   } catch {
     return { ...DEFAULT_SETTINGS };

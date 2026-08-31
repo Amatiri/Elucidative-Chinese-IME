@@ -10,7 +10,8 @@
     "build:golden": "python tools/gen_golden.py",
     "build": "tsc -p tsconfig.web.json",
     "watch": "tsc -p tsconfig.web.json --watch",
-    "serve": "python -m http.server 8080 -d web"
+    "serve": "python -m http.server 8080 -d web",
+    "serve:bind": "python -m http.server 8080 -d web --bind 0.0.0.0"
   },
   "devDependencies": {
     "typescript": "^5.7.0"

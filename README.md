@@ -14,7 +14,7 @@
 
 前端默认是**外输**模式,可在任意全局输入框输入,未输入编码时仅显示命令行窗口。同时按←+→方向键切换到**内输**模式,仅在输入法程序预设的框内输入。外输时根据光标位置移动输入界面。为了避免快捷键冲突,可按esc+1取消内输外输切换功能,此时仅支持内输,即"仅内输"。
 
-<img title="" src="https://cdn.jsdelivr.net/gh/Amatiri/Elucidative-Chinese-IME@78ab99a/help/%E5%86%85%E8%BE%93%E5%89%8D%E7%AB%AF.png" alt="内输前端" width="614" height="281" data-align="inline">
+<img title="" src="https://cdn.jsdelivr.net/gh/Amatiri/Elucidative-Chinese-IME@81360c6/help/内输前端.png" alt="内输前端" width="614" height="281" data-align="inline">
 
 **界面布局**
 

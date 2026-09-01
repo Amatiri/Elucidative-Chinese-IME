@@ -116,8 +116,8 @@ function swipeSymbol(char: string, gated: boolean): void {
     return;
   }
   if (st.settings.symbolSwipe === "disabled") return; // 维持候选状态，不吞键
-  st = S.abandonInput(st, st.buffer); // 原编码留在编辑区
-  st = S.insertAtCursor(st, char);
+  // 编码态：放弃输入，符号插在**编码光标处**（对齐 ime.py 外输模式 initial()）
+  st = S.abandonInputWithSymbol(st, char);
   redraw();
 }
 
@@ -186,7 +186,7 @@ function pickCandidate(index: number): void {
     // 推进到下一个尚未选择的部件（ime.py 的逐字推进），字面段同样跳过。
     // 必须在回写前算：回写会改 buffer，parts 的内容随之改变。
     const literal = new Set(view.literalIndices);
-    const total = view.parts.length;
+    const total = view.partSpace.length;
     let next = (i + 1) % total;
     for (let k = 0; k < total && (st.resolved[next] !== undefined || literal.has(next)); k++) {
       next = (next + 1) % total;
@@ -197,8 +197,12 @@ function pickCandidate(index: number): void {
      * 于是上方下划线的编码实时补全 —— ceu 选「测」后从 ceu 变成 ce4u'u，
      * 左上角小显示区同时显示刚选的「测」。
      * 回写必须走 commitPartCode 而不是 pushCode：后者会清掉 resolved。
+     *
+     * ⚠ 必须以 view.partSpace（逐字选择的部件空间）为底本，不能用 view.parts
+     * （整串自动分词）—— 两者在手动分段 + 词语 / 字面段时下标不同源，
+     * 用错会把 deepseek'mox; 回写成 de'ep…'mo'x; 这种乱序编码。
      */
-    const parts = [...view.parts];
+    const parts = [...view.partSpace];
     parts[i] = parts[i]! + c.rest;
     st = S.commitPartCode(st, parts.join("'"), next, c.text);
     redraw();
@@ -211,7 +215,9 @@ function pickCandidate(index: number): void {
 
 /** 逐字选择导航（ime.py navigate_parts） */
 function movePart(delta: number): void {
-  const total = view.parts.length;
+  // 无逐字首选串（编码里有段不对应任何候选，如 deepseek）→ 桌面端不会进逐字选择
+  if (!view.canSelect) return;
+  const total = view.partSpace.length;
   if (total === 0) return;
 
   // 字面段（无候选、按编码原样输出）没有候选可选 ——
@@ -274,6 +280,10 @@ const handlers: Handlers = {
       if (view.coding) {
         st = S.pushCode(st, ".");
         redraw();
+        // 补码打满同样可能触发自动上字 —— ime.py 靠 entry_box trace 对任何输入
+        // 变化都跑一遍 main_function，这里必须显式补调，否则 bo2c. 这类
+        // 「补码唯一确定但带 rest」的输入永远差最后一击
+        maybeAutoCommit();
       } else {
         emit(".");
       }
@@ -376,6 +386,10 @@ const handlers: Handlers = {
         if (view.coding) {
           st = S.pushCode(st, ".");
           redraw();
+          // 补码打满同样可能触发自动上字 —— ime.py 对任何输入变化都会跑一遍
+          // main_function（内输走 trace，外输在 initial() 里 insert 后由 trace 触发），
+          // 所以补码路径漏调这一步是与桌面端唯一的行为差。
+          maybeAutoCommit();
         } else if (st.settings.rows !== 6) {
           // 6 行布局下句点功能下沉到 Row6 主键，此处不再直出（计划 §1.2）
           emit(".");

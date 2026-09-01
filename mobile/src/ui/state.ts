@@ -125,10 +125,36 @@ export function commitText(st: KeyboardState, text: string): KeyboardState {
   return { ...next, ...resetParts(next), buffer: "" };
 }
 
-/** 放弃输入：当前编码原样留在编辑区，结束编码态（对齐 ime.py:777-780） */
+/** 放弃输入：当前编码原样留在编辑区，结束编码态（对齐 ime.py:797-802） */
 export function abandonInput(st: KeyboardState, code: string): KeyboardState {
   const next = insertAtCursor(st, code);
   return { ...next, ...resetParts(next), buffer: "" };
+}
+
+/**
+ * 编码态输入符号（放弃输入）：编码按**编码光标**切开，符号插在切口处。
+ *
+ * 对齐 ime.py 外输模式 initial() L797-802：非法字符一律视作放弃输入
+ * （entry_box 清空、计数归零）。桌面端编码字符是随按键流逐字进入目标文本的，
+ * 光标可以停在编码中间（left / right 只动 entry_box 光标，目标光标随之移动），
+ * 随后的符号按键落在**目标光标处** —— 编码因此被切成两段，而不是追加到末尾。
+ *
+ * 例：已上屏「模|型」，编码 ce，编码光标在 c 后 → 上滑 ` 得「模c`e型」。
+ *
+ * 光标停在符号之后，即用户抬手前眼睛看的那个位置。
+ */
+export function abandonInputWithSymbol(st: KeyboardState, char: string): KeyboardState {
+  const at = clamp(st.codeCursor, 0, st.buffer.length);
+  const head = st.buffer.slice(0, at);
+  const tail = st.buffer.slice(at);
+  const next = insertAtCursor(st, head + char + tail);
+  return {
+    ...next,
+    ...resetParts(next),
+    buffer: "",
+    // head 是 ASCII 编码字符，码元数 = 码点数；char 可能是全角符号，要按码点算
+    cursor: st.cursor + head.length + [...char].length,
+  };
 }
 
 /** 清空编码，保留已上屏内容 */

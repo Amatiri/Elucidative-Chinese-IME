@@ -205,7 +205,7 @@ def get_phrase_segments(processed):
     """
     将用户手动 ' 分隔的各段解析为 (display_text, split_parts_list, literal_indices)。
     display_text 为预览显示用的文字（词语、首选字组合或编码原文），
-    split_parts_list 为展平后的部件列表（供逐字选择），
+    split_parts_list 为展平后的逐字列表（供逐字选择），
     literal_indices 为无候选、按编码原文字面输出的部件下标集合。
     """
     segments = processed.split("'")

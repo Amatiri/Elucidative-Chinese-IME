@@ -199,10 +199,14 @@ function renderCandidates(
   view: ViewModel,
   h: Handlers,
 ): void {
+  // 多字态：未进入逐字选择时显示预览条（首选字组合 + 词语），隐藏候选列表；
+  // 进入选择后反过来——只显示候选列表，预览条整体隐藏（对齐 ime.py
+  // _apply_display_mode：逐字选择中优先显示单字候选行、隐藏首选字区）。
   const multiNoSelect = view.mode === "multi" && !view.selecting;
+  const multiSelecting = view.mode === "multi" && view.selecting;
 
   if (list !== null) list.hidden = multiNoSelect;
-  if (strip !== null) strip.hidden = !multiNoSelect;
+  if (strip !== null) strip.hidden = multiSelecting;
 
   // 多字态下始终刷新预览条：逐字选择期间它虽被隐藏，重新显示时不能留旧值。
   // 预览串与词语都是按钮 —— 点哪个上屏哪个（ime.py 里「!」上屏词语，这里补上直接点选）

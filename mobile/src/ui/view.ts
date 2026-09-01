@@ -20,6 +20,14 @@ export interface ViewModel {
   code: string;
   /** 自动分词后的部件列表 */
   parts: string[];
+  /**
+   * 逐字选择的**部件空间**。下标与 literalIndices / partCount / st.resolved 同源。
+   *
+   * ⚠ 不等于 parts：手动分段且优先上词时，部件来自 getPhraseSegments 的展平结果
+   * （词语段会被再拆分、无候选段整段作字面段），与「对整串做自动分词」的 parts
+   * 是两套下标空间。混用会让序号与候选整体错位（deepseek'mox; 曾显示「字 3/2」）。
+   */
+  partSpace: string[];
   mode: QueryMode;
   /** 最后输入的字符，供左上角小显示区 */
   lastChar: string;
@@ -42,6 +50,15 @@ export interface ViewModel {
   coding: boolean;
   /** 是否处于逐字选择态 */
   selecting: boolean;
+  /**
+   * 是否允许进入逐字选择。
+   *
+   * 对齐 ime.py:313 的 `if first_chars and ...` 守卫：逐字首选串为空（= 编码里有
+   * 至少一段不对应任何候选，如 deepseek → de'ep'se'ek，ep/ek 无候选）时，
+   * 桌面端根本不会进逐字选择，也不会显示「字 N/M」。手机上若放行，就会出现
+   * 「字 2/0」—— 分母算自字面段、分子算自另一套下标。
+   */
+  canSelect: boolean;
   /** 逐字选择的当前部件下标 */
   currentPart: number | null;
   /** 部件总数（排除字面部件） */
@@ -96,42 +113,63 @@ export function buildView(engine: Engine, st: KeyboardState): ViewModel {
 
   const seg = engine.getPhraseSegments(code);
   /**
-   * ime.py L527-534 有两条分支，不能合并：
+   * ime.py L544-556 的两条分支决定**两套不同的部件空间**，不能合并：
    *
-   *   手动单引号 + 优先上词 → **词语增强预览**：预览串直接取 getPhraseSegments().display
-   *     （词语优先，无候选的字面段按编码原文参与），此时**不再单列词语**。
-   *   其余情况 → 预览串 = 各段首选字拼串（queryMultiChars），词语单独成项，
-   *     并排显示为「厕是   (测试)」。
+   *   手动单引号 + 优先上词 → _apply_phrase_result(get_phrase_segments(processed))：
+   *     split_parts = seg.allParts（词语段再拆分、无候选段整段作字面段），
+   *     literal_indices 记载字面段，首选项 = seg.display（词语增强预览）。
+   *   其余 → split_parts = 自动分词结果，first_chars = query_multi_chars(split)，
+   *     literal_indices 为空（这一支里每一段都必定有候选，否则 first_chars 为空）。
    *
-   * 混用会丢信息：只用 display 会让非手动分段的输入丢掉逐字预览「厕是」；
-   * 只用 queryMultiChars 则手动分段时拿不到词语增强。
+   * 2026-09-01 修复：原先逐字选择在 `parts`（整串自动分词）上导航，而 partCount /
+   * literalIndices 取自 seg —— deepseek'mox; 因此出现「字 2/2 / 字 3/2 / 字 4/2」，
+   * 且候选查的是 ep / se 而不是 mo / x;。
    */
   const enhanced = code.includes("'") && st.settings.phrasePriority;
-  const firstCharsRaw = parts.length > 1 && !enhanced ? engine.queryMultiChars(split) : "";
+  const partSpace: string[] = enhanced ? [...seg.allParts] : parts;
+  const literalIndices: readonly number[] = enhanced ? seg.literalIndices : [];
+  const literalSet = new Set(literalIndices);
+
   /**
-   * 预览基准串：enhanced 或 queryMultiChars 为空时走分段增强预览。
+   * 所有**非字面**部件是否都有候选。
    *
-   * queryMultiChars 是「任一段无候选就整体返回空」——这正是「编码不对应
-   * 任何候选」的判定（如英文词 deepseek → de'ep'se'ek，ep/ek 无候选）。
-   * 此处必须回退 seg.display：getPhraseSegments 会把整串按**字面**回显，
-   * 预览串 = 原始编码，空格上屏的正是它。
+   * 这是能否进入逐字选择的判据：任一可选的部件无候选，逐字选择就无从选起，
+   * 桌面端禁止进入（用户拍板，2026-09-01）。字面段（无候选、按编码原文输出）
+   * 本就不参与选择，不计入此判断。
    *
-   * 原实现（2026-08-31 修复前）直接拿空串当 basePreview，preview/display
-   * 双双为空，commitDisplay 静默 return —— deepseek 按空格毫无反应。
+   * 例：
+   *   deepseek（部件 de/ep/se/ek，ep/ek 无候选）→ false，禁止进入；
+   *   deepseek'mox;（部件 deepseek(字面)/mo/x;，mo/x; 都有候选）→ true，允许进入；
+   *   ceu'jihw（ce/u/ji/hw 都有候选）→ true。
    */
-  const basePreview = enhanced || firstCharsRaw === "" ? seg.display : firstCharsRaw;
+  const allPartsSelectable: boolean = (() => {
+    for (let i = 0; i < partSpace.length; i++) {
+      if (literalSet.has(i)) continue;
+      if (engine.queryByPrefix(partSpace[i]!, 0, 1).length === 0) return false;
+    }
+    return true;
+  })();
 
-  const preview =
-    parts.length > 1
-      ? rebuildPreview(basePreview, seg.allParts, seg.literalIndices, st.resolved)
-      : seg.display;
+  /**
+   * 逐字首选串：对部件空间逐段取「首候选的首个码点」，无候选段保留编码原文。
+   *
+   * 对齐 ime.py navigate_parts entered_selection 分支（L211-217）的逐段重建口径，
+   * 进入逐字选择后把每个可选的部件换成它自己的首候选字。
+   * 能进入选择（allPartsSelectable）时，非字面段必有候选，回退只发生在字面段
+   * （本就按编码原文输出）。
+   *
+   * 例：ceu'jihw → 「厕是几花」（而非词语「测试计划」）；
+   *     deepseek'mox; → [deepseek(字面),mo,x;] → 「deepseek摸兴」（而非「deepseek模型」）。
+   */
+  const perPartFirst: string = (() => {
+    let out = "";
+    for (const part of partSpace) {
+      const c = engine.queryByPrefix(part, 0, 1)[0];
+      out += c !== undefined ? ([...c.text][0] ?? "") : part;
+    }
+    return out;
+  })();
 
-  const rawPhrase = enhanced ? "" : engine.queryPhrase(code);
-  const phraseContent = rawPhrase.slice(1, -1);
-  // ime.py L301-306：词语与预览内容相同时只显示一个，避免重复
-  const phrase = phraseContent === preview ? "" : rawPhrase;
-
-  const keyClass = engine.nextCharClass(code);
   const coding = code.length > 0;
   /**
    * 单字 / 多字判据对齐 ime.py:501 —— 看**分词结果里有没有单引号**，
@@ -143,16 +181,74 @@ export function buildView(engine: Engine, st: KeyboardState): ViewModel {
    */
   const mode: QueryMode = !coding ? "idle" : split.includes("'") ? "multi" : "single";
 
-  const literalCount = seg.literalIndices.length;
-  const partCount = Math.max(0, seg.allParts.length - literalCount);
+  /** 可选字总数 = 部件总数 - 字面段数（字面段不可选） */
+  const partCount = Math.max(0, partSpace.length - literalIndices.length);
 
-  // ── 逐字选择：仅在多字态下有意义 ──
-  const selecting = mode === "multi" && st.partIndex !== null;
+  /**
+   * 逐字选择：多字态 + 所有可选部件都有候选 + 至少一个可选字。
+   *
+   * allPartsSelectable 排除 deepseek（ep/ek 无候选）这类不该进选择的多字；
+   * partCount > 0 排除「全部是字面段」（如 deepseek'）的空转。
+   *
+   * selecting 的状态语义对齐 ime.py navigate_parts 的 entered_selection：
+   * st.partIndex !== null 等价于「已进入选择且输入未变」—— resetParts 在 buffer
+   * 变化时会把 partIndex 清回 null。所以进入选择后只要不再改动编码，
+   * selecting 就一直为真（ime.py 的 current_phrase="" 在 navigation 时同样一直保持）。
+   */
+  const canSelect = mode === "multi" && allPartsSelectable && partCount > 0;
+  const selecting = canSelect && st.partIndex !== null;
   const currentPart =
-    selecting && st.partIndex !== null && st.partIndex < parts.length ? st.partIndex : null;
+    selecting && st.partIndex !== null && st.partIndex < partSpace.length ? st.partIndex : null;
+
+  /**
+   * 预览基准串。
+   *
+   * 未进入逐字选择（selecting=false）时，对齐 ime.py main_function L544-556 两条分支：
+   *   - 手动单引号 + 优先上词（enhanced）→ 词语增强预览（seg.display，词语优先、
+   *     字面段按原文）—— 如 ceu'jihw → 「测试计划」。
+   *   - 其余 → queryMultiChars(split)（各段首选拼串）—— 如 ceu → 「厕是」；
+   *     各段无候选时整体为空（deepseek），兜底回 seg.display（字面整段回显原始编码）。
+   *   这里的差别正是「非优先上词时直接空格上首选字组合」的关键。
+   *
+   * 进入逐字选择后（selecting=true）：
+   *   切回 perPartFirst（逐段首候选组合）—— 对齐 ime.py navigate_parts
+   *   entered_selection 把 last_output_text 换成首选字组合、空格上屏该串。
+   */
+  const multiCharsFirst = parts.length > 1 ? engine.queryMultiChars(split) : "";
+  const previewBase = selecting
+    ? perPartFirst
+    : enhanced
+      ? seg.display
+      : multiCharsFirst !== ""
+        ? multiCharsFirst
+        : seg.display;
+
+  /**
+   * 逐字选择中按 resolved 覆盖（ime.py:283-297）。
+   *
+   * 只在**已有手选结果**时重建，空手选直接用 previewBase —— 这是 2026-09-01
+   * 修的截断 bug：juyx 只对应词语「解书音形」，逐字首选为空、基准串是 4 字词语，
+   * 而部件只有 ju / yx 两段，按「每段取 1 字」重建就把预览切成「解书」。
+   */
+  const preview =
+    Object.keys(st.resolved).length > 0
+      ? rebuildPreview(previewBase, partSpace, literalIndices, st.resolved)
+      : previewBase;
+
+  const rawPhrase = enhanced ? "" : engine.queryPhrase(code);
+  const phraseContent = rawPhrase.slice(1, -1);
+  // ime.py L301-306：词语与预览内容相同时只显示一个，避免重复
+  const phrase = phraseContent === preview ? "" : rawPhrase;
+
+  const keyClass = engine.nextCharClass(code);
 
   // 单字态查首段；多字态进入逐字选择后查当前部件；否则不显示单字候选
-  const queryTarget = mode === "single" ? parts[0] ?? "" : currentPart !== null ? parts[currentPart]! : "";
+  const queryTarget =
+    mode === "single"
+      ? (parts[0] ?? "")
+      : currentPart !== null
+        ? (partSpace[currentPart] ?? "")
+        : "";
   const showCandidates = mode === "single" || currentPart !== null;
 
   const start = st.page * PAGE_SIZE;
@@ -160,19 +256,38 @@ export function buildView(engine: Engine, st: KeyboardState): ViewModel {
   const hasNextPage =
     showCandidates && queryTarget.length > 0 && engine.queryByPrefix(queryTarget, start + PAGE_SIZE, PAGE_SIZE).length > 0;
 
-  // 上屏目标：优先上词开启且有词语时用词语内容，否则用逐字预览串
+  /**
+   * 上屏目标。
+   *
+   * 多字态：进入逐字选择后（selecting）用逐字预览串（回归首选字组合）——
+   * 对齐 ime.py navigate_parts entered_selection 把 last_output_text 换成
+   * 首选字组合、以及空格路径 L530 仅在 current_phrase 非空时用词语（进入选择时
+   * 已被清空）。未进入选择时优先用词语（phrasePriority 开着且有词语）。
+   */
   const display =
     mode === "multi"
-      ? st.settings.phrasePriority && phraseContent.length > 0
-        ? phraseContent
-        : preview
+      ? selecting
+        ? preview
+        : st.settings.phrasePriority && phraseContent.length > 0
+          ? phraseContent
+          : preview
       : (candidates[0]?.text ?? "");
 
-  const pageLabel = buildPageLabel(st, mode, selecting, currentPart, partCount, hasNextPage, start);
+  const pageLabel = buildPageLabel(
+    mode,
+    selecting,
+    currentPart,
+    partSpace,
+    literalIndices,
+    partCount,
+    hasNextPage,
+    start,
+  );
 
   return {
     code,
     parts,
+    partSpace,
     mode,
     // 取最后按下的键，不是编码末字符 —— 中间插入时两者不同（见 types.ts lastTap）。
     // 逐字选择中手选了一个字后让位给该字（lastPicked），确认「刚选了什么」。
@@ -181,23 +296,44 @@ export function buildView(engine: Engine, st: KeyboardState): ViewModel {
     preview,
     phrase,
     phraseContent,
-    literalIndices: seg.literalIndices,
+    literalIndices,
     display,
     keyClass,
     hasNextPage,
     coding,
     selecting,
+    canSelect,
     currentPart,
     partCount,
     pageLabel,
   };
 }
 
+/**
+ * 逐字选择的当前部件在「非字面部件」中的序数（1 起）。
+ *
+ * 字面部件（无候选、按编码原样输出）不可选，既不计入分母也不该占用分子的序号 ——
+ * 否则 deepseek'mox;（deepseek 是字面段）会显示「字 2/2」而不是「字 1/2」。
+ */
+function partOrdinal(
+  partSpace: readonly string[],
+  literalIndices: readonly number[],
+  index: number,
+): number {
+  const literal = new Set(literalIndices);
+  let n = 1;
+  for (let i = 0; i < index && i < partSpace.length; i++) {
+    if (!literal.has(i)) n++;
+  }
+  return n;
+}
+
 function buildPageLabel(
-  st: KeyboardState,
   mode: QueryMode,
   selecting: boolean,
   currentPart: number | null,
+  partSpace: readonly string[],
+  literalIndices: readonly number[],
   partCount: number,
   hasNextPage: boolean,
   start: number,
@@ -207,8 +343,10 @@ function buildPageLabel(
   // 首页且无下一页时不显示页码，避免常态下的视觉噪音
   const showPage = page > 1 || hasNextPage;
   if (selecting && currentPart !== null) {
-    const done = Object.keys(st.resolved).length;
-    return `字 ${currentPart + 1}/${partCount}${showPage ? ` 页 ${page}` : ""}`;
+    // 序号语义（2026-09-01 定稿）：分子 = 当前正在选第几个**可选**字，
+    // 分母 = 可选字总数。桌面端 ime.py:323-326 已同步改为同一口径。
+    const ordinal = partOrdinal(partSpace, literalIndices, currentPart);
+    return `字 ${ordinal}/${partCount}${showPage ? ` 页 ${page}` : ""}`;
   }
   if (mode === "multi") return "";
   return showPage ? `页 ${page}` : "";

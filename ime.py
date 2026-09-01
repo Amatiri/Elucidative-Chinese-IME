@@ -12,8 +12,9 @@ from config import (CODE_CHARS, SURROUND_CHARS, SELECTION_SYMBOLS,SYMBOL_TO_INDE
                     FONT_SIZE_SMALL, FONT_SIZE_BUTTON,FONT_SMALL_NAME, FONT_BUTTON_NAME,
                     get_primary_font_name)
 from manager.dictionary_frontend import (
-    ensure_data_file, query_phrase, get_entry_count, process_input,
-    split_sequence,query_single_char, query_multi_chars,get_phrase_segments
+    ensure_data_file, query_phrase, get_entry_count,
+    process_input,split_sequence,query_single_char,
+    query_multi_chars,get_phrase_segments,query_by_prefix
 )
 
 # ==================== 上下文对象：替代全部全局变量 ====================
@@ -25,15 +26,15 @@ class InputContext:
         self.current_page = 0                  # 当前候选页码（0起始）
         self.query_type = ""                   # "single" | "multi_part"
         self.current_phrase = ""               # 当前匹配到的短语
-        self.current_part_index = -1           # 多字选择时当前部件索引
-        self.split_parts = []                  # 多字输入时拆分后的部件列表
-        self.in_part_selection = False         # 是否处于多字部件选择模式
+        self.current_part_index = -1           # 多字选择时当前字索引
+        self.split_parts = []                  # 多字输入时拆分后的逐字列表
+        self.in_part_selection = False         # 是否处于多字逐字选择模式
         self.last_input_text = ""              # 上一次输入文本，用于检测变化
         self.last_output_text = ""             # 上次计算的首候选首字/预览串，供空格快速上屏
         self.current_candidates = []           # 缓存的候选列表（已分割），供 get_current_candidates 直达
         self.selection_updating = False        # 是否正在由选择操作更新输入框（保护 resolved_chars）
-        self.resolved_chars = {}               # {part_index: "汉字"} 多字模式下已选中的部件
-        self.original_split_count = 0          # 多字模式下原始拆分的部件总数
+        self.resolved_chars = {}               # {part_index: "汉字"} 多字模式下已选中的字
+        self.original_split_count = 0          # 多字模式下原始拆分的字数
         self.literal_indices = set()           # 字面部件下标（无候选、按编码原文输出）
 
         # ── 缓存：避免 navigate / update_display 重复计算 ──
@@ -86,7 +87,7 @@ class InputContext:
         return len(self.resolved_chars)
 
     def is_all_resolved(self) -> bool:
-        """是否所有多字部件都已解析完毕。"""
+        """多字中是否所有字都已解析完毕。"""
         return len(self.resolved_chars) == self.original_split_count
 
     # ── 外输模式便捷方法 ──
@@ -166,15 +167,22 @@ def clear_display_if_no_code(input_text):
 
 def navigate_parts(direction):
     """
-    在多字选择模式中切换当前部件。
-    跳过已解析（resolved_chars 中已有）的部件，只在未解析部件之间跳转。
+    在多字选择模式中切换当前字。
+    跳过已解析（resolved_chars 中已有）的字，只在未解析字之间跳转。
     """
     if ctx.query_type != "multi_part" or not ctx.split_parts:
         return
+    entered_selection = False
     if not ctx.in_part_selection:
         if direction == "next":
+            if any(
+                i not in ctx.literal_indices and not query_by_prefix(part, 0, 1)
+                for i, part in enumerate(ctx.split_parts)
+            ):
+                return
             ctx.in_part_selection = True
             ctx.current_phrase = ""
+            entered_selection = True
             for idx in range(len(ctx.split_parts)):
                 if idx not in ctx.resolved_chars:
                     ctx.current_part_index = idx
@@ -197,6 +205,30 @@ def navigate_parts(direction):
     ctx.current_page = 0
 
     input_text = real_time_var.get()
+    if entered_selection:
+        # 获取当前处理的编码串（优先使用缓存，避免重复处理）
+        if input_text == ctx._cached_processed_input:
+            processed = ctx._cached_processed
+        else:
+            processed = process_input(input_text)
+
+        # 使用已有的 ctx.split_parts 重新构建预览
+        new_first_chars = ""
+        for part in ctx.split_parts:
+            cand = query_by_prefix(part, 0, 1)   # 取第一个候选
+            if cand:
+                new_first_chars += cand[0][0]    # 取首字
+            else:
+                new_first_chars += part          # 无候选则保留原文
+
+        # 更新缓存和全局输出文本（供空格上屏）
+        ctx._cached_first_chars = new_first_chars
+        ctx._cached_first_chars_input = input_text
+        ctx.last_output_text = new_first_chars
+
+        # 直接调用 update_display，传入新预览，避免走缓存路径
+        update_display(processed=processed, first_chars=new_first_chars)
+        return   # 提前返回，不执行后续的普通刷新
     # 输入未变 → 复用 main_function 缓存的 processed 和 first_chars
     if input_text == ctx._cached_processed_input:
         processed = ctx._cached_processed
@@ -281,8 +313,6 @@ def update_display(processed=None, candidates=None, first_chars=None):
             ctx._cached_first_chars = first_chars
             ctx._cached_first_chars_input = input_text
         if ctx.in_part_selection and ctx.resolved_chars:
-            # 预览保持式重建：未选部件按对齐关系从预览串取字
-            # （字面部件对应 len(part) 个字符，非字面部件恰对应 1 个字符），不重新查询
             parts = ctx.split_parts
             custom = []
             pos = 0
@@ -320,10 +350,12 @@ def update_display(processed=None, candidates=None, first_chars=None):
                 ctx.current_phrase = ""
                 ctx.current_candidates = part_candidates.split("/")
                 current_part_label.config(text=part_candidates)
-                selected_count = len(ctx.resolved_chars) - len(ctx.literal_indices)
+                ordinal = sum(
+                    1 for i in range(ctx.current_part_index) if i not in ctx.literal_indices
+                ) + 1
                 total_count = ctx.original_split_count if ctx.original_split_count > 0 else len(ctx.split_parts)
                 total_count -= len(ctx.literal_indices)
-                page_label.config(text=f"字 {selected_count + 1}/{total_count} 页 {ctx.current_page + 1}")
+                page_label.config(text=f"字 {ordinal}/{total_count} 页 {ctx.current_page + 1}")
 
     elif ctx.query_type == "single":
         if candidates is None:
@@ -340,7 +372,7 @@ def update_display(processed=None, candidates=None, first_chars=None):
 
 def handle_special_keys(input_text):
     """
-    处理输入中的 '=' 和 '-' 键，用于多字部件导航。
+    处理输入中的 '=' 和 '-' 键，用于多字逐字导航。
     返回 (新文本, 新光标位置, 是否已处理) 三元组。
     """
     if '=' in input_text or '-' in input_text:
@@ -390,7 +422,7 @@ def handle_selection_keys(event):
     返回 "break" 阻止事件继续传播，否则返回 None。
     
     多字模式新机制：选择字符时补全剩余编码，而非替换为汉字。
-    直到所有部件都解析完毕（unresolved == 0），才拼接最终汉字串上屏。
+    直到所有字都解析完毕（unresolved == 0），才拼接最终汉字串上屏。
     """
     # 短语直接上屏：当前有短语且按下 !
     if event.char == "!" and ctx.current_phrase:
@@ -643,7 +675,7 @@ def _apply_display_mode(*, in_part_select=False):
     current_part_label.pack_forget()
     page_label.pack_forget()
 
-    # 部件选择中优先显示单字候选行，隐藏首选字（选字位置由灰色小字提示）；
+    # 逐字选择中优先显示单字候选行，隐藏首选字（选字位置由灰色小字提示）；
     # 候选行为空（查无候选）时回退显示首选字
     show_first_chars = not (in_part_select and current_part_label.cget("text"))
     if show_first_chars and first_chars_label.cget("text"):

@@ -74,6 +74,7 @@
 本 bf36
 苯 bf3c
 畚 bf3t
+奔 bf4c
 坌 bf4t
 笨 bf4z
 嘣 bg1k
@@ -215,12 +216,16 @@
 扮 bj4uf
 苞 bk1c
 苴 bk1cq
+剥 bk1d
 煲 bk1h
+炮 bk1hl
 包 bk1l
+枹 bk1m
 龅 bk1n
 胞 bk1r
 褒 bk1y
 孢 bk1z
+薄 bk2c
 雹 bk2i
 宝 bk3b
 寶 bk3b.
@@ -238,6 +243,7 @@
 曝 bk4rr
 抱 bk4u
 报 bk4uk
+瀑 bk4ur
 鲍 bk4y
 趵 bk4z
 掰 bl1u
@@ -394,8 +400,8 @@
 孛 bz4z
 呗 bz0k
 兵 b;1b
+并 b;1d
 槟 b;1m
-栟 b;1md
 冰 b;1u
 冫 b;1u.b
 氷 b;1u.j
@@ -762,6 +768,7 @@
 黛 dl4h
 带 dl4j
 代 dl4r
+绐 dl4s
 待 dl4t
 戴 dl4tg
 埭 dl4tl
@@ -1438,6 +1445,7 @@
 菇 gu1c
 轱 gu1cs
 菰 gu1cz
+軱 gu1c;
 蛄 gu1i
 咕 gu1k
 觚 gu1ke
@@ -1713,6 +1721,7 @@
 哼 hn0k
 豁 ho1g
 嚄 ho1k
+𬴃 ho1m
 耠 ho1n
 攉 ho1u
 和 ho2h
@@ -1734,6 +1743,7 @@
 嚄 ho4kc
 祸 ho4s
 惑 ho4x
+謋 ho4y
 和 ho0h
 伙 ho0r
 荤 hp1c
@@ -1897,6 +1907,7 @@
 诲 hv4y
 讳 hv4yw
 花 hw1c
+砉 hw1s
 㳸 hw1u
 𩝨 hw1ug
 划 hw2d
@@ -2398,6 +2409,7 @@
 汲 ji2u
 岌 ji2uj
 嵴 ji2ur
+㴔 ji2ux
 集 ji2w
 急 ji2x
 籍 ji2z
@@ -2617,11 +2629,13 @@
 隽 jr4w
 罥 jr4wk
 扃 js1h
+𬳶 js1m
 坰 js1t
 炯 js3h
 颎 js3hq
 冏 js3j
 炅 js3r
+䌹 js3s
 泂 js3u
 窘 js3x
 迥 js3z
@@ -6903,6 +6917,7 @@
 谖 xr1y
 玄 xr2d
 旋 xr2f
+𫠊 xr2m
 漩 xr2u
 璇 xr2w
 悬 xr2x
@@ -6952,6 +6967,7 @@
 媭 xu1n
 胥 xu1r
 旴 xu1ry
+砉 xu1s
 墟 xu1t
 圩 xu1t.y
 魆 xu1v
@@ -7239,6 +7255,7 @@
 倚 yi3r
 佁 yi3rt
 矣 yi3s
+踦 yi3z
 一 yi42
 义 yi44
 義 yi44.
@@ -7475,7 +7492,6 @@
 㵧 yi4ug
 𣷩 yi4uh
 浳 yi4ui
-㴔 yi4uj
 挹 yi4uk
 溢 yi4um
 洫 yi4um.x
@@ -7977,6 +7993,7 @@
 咋 za3k
 邹 zb1b
 陬 zb1bq
+驺 zb1m
 诹 zb1y
 走 zb3t
 搊 zb3u

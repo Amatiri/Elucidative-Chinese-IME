@@ -27,6 +27,8 @@ npm run serve        # python -m http.server 8080 -d web
 
 > `npm run serve` 依赖 PATH 上的 `python`。没有的话换任意静态服务器，
 > web 根目录指向 `web/` 即可。
+> 
+> Windows 用户可使用 `quick_build.ps1` 一键执行构建 + 启动服务（需 PowerShell）。
 
 逻辑级校验（不依赖浏览器，吃构建产物，改键位后必跑）：
 

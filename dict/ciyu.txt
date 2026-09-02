@@ -242,6 +242,7 @@
 当时 dhui
 地点 didm
 地方 difh
+提防 difh2
 地府 difu3
 地理 dili3
 地区 diqu
@@ -360,6 +361,7 @@
 复合 fuhe2
 负荷 fuhe4
 附和 fuhe4h
+符号 fuhk
 福建 fujm
 副码 fuma3s
 父亲 fuqn1
@@ -406,6 +408,7 @@
 Ι gioc
 干部 gjbu
 感觉 gjjt
+感冒 gjmk
 甘肃 gjsu
 κ gka
 Κ gkac
@@ -462,6 +465,7 @@
 观众 grvs
 关系 grxi
 关于 gryu
+共和 gshe
 σ gsi
 Σ gsic
 工程 gsig
@@ -498,11 +502,14 @@
 Τ gtac
 θ gth
 Θ gthc
+顾客 guke
 姑娘 gund
 υ gup
 Υ gupc
 估算 gusr
 故事 guui
+故障 guvh
+鼓掌 guvh3
 故乡 guxd
 规定 gvd;
 规范 gvfj
@@ -671,6 +678,7 @@
 教科书 jckeu
 交流 jclq
 交通 jcts
+交往 jcwh
 教育 jcyu
 讲讲 jdjd
 将计就计 jdjijqj
@@ -762,6 +770,7 @@
 均衡 jphg
 军事 jpui
 军训 jpxp
+酒店 jqdm
 纠偏 jqpm
 诀别 jtbx
 决定 jtd;
@@ -908,6 +917,7 @@
 命运 m;yp
 名字 m;zi
 码表 mabc3
+麻烦 mafj
 麻将 majd
 麻酱 majd4
 马上 mauh
@@ -982,6 +992,8 @@
 匹配 pipz
 批准 pivp
 判断 pjdr
+排队 pldv
+派对 pldv4
 排序 plxu
 偏好 pmhk
 便宜 pmyi
@@ -1004,6 +1016,7 @@
 憔悴 qccv
 巧妙 qcmc
 祈祷 qidk3
+期待 qidl
 启动 qids
 器官 qigr1
 奇怪 qigy4
@@ -1431,6 +1444,7 @@
 筛子 ulzi0
 说明 uom;
 ∥ up;x;
+顺利 upli
 ∂ upmdk
 顺序 upxu
 ∑ uqh
@@ -1457,6 +1471,7 @@
 数字 uuzi4
 ∝ uvgbi
 ± uvgfu
+水果 uvgo
 睡觉 uvjc
 水平 uvp;
 ∞ uwq
@@ -1483,6 +1498,7 @@
 政策 vgce
 政府 vgfu
 整个 vgge
+整洁 vgjx2
 整理 vgli
 证明 vgm;
 整体 vgti
@@ -1668,6 +1684,7 @@
 稳健 wfjm4
 文件夹 wfjmj
 文明 wfm;
+温泉 wfqr
 温柔 wfrb
 问题 wfti
 文献 wfxm
@@ -1821,6 +1838,7 @@
 英吉利 y;jil
 影响 y;xd
 英语 y;yu
+优点 ybdm3
 有关 ybgr1
 友好 ybhk
 有利于 ybliy

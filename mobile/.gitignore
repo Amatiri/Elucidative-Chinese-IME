@@ -2,3 +2,4 @@ node_modules/
 web/assets/
 .screenshots/
 tests/golden_v1.json
+src/data/dataset.ts

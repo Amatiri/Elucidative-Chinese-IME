@@ -93,12 +93,37 @@ body {
     letter-spacing: 0.3px;
 }
 
+.app-hint-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+}
+
 .app-hint {
     font-size: 12px;
     color: var(--page-muted);
     line-height: 1.6;
 }
 
+/* 仓库链接：与提示文字同一行、靠右下角 */
+.app-repo-link {
+    flex: none;
+    font-size: 12px;
+    line-height: 1.6;
+    color: var(--page-muted);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    /* 键盘区禁用 user-select，链接要能长按 / 复制地址 */
+    -webkit-user-select: text;
+    user-select: text;
+}
+
+.app-repo-link:hover,
+.app-repo-link:focus-visible {
+    color: var(--page-fg);
+    border-bottom-color: var(--page-muted);
+}
 /* ---------- 目标输入框 ---------- */
 
 .output {

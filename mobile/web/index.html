@@ -16,10 +16,16 @@
     <main class="app-content">
         <h1 class="app-title">解书音形 · Demo</h1>
         <div class="output" id="output" data-placeholder="点按输入编码，上滑取副字符"></div>
-        <p class="app-hint">
-            点按 ∨ 翻页 · 上滑 1–5 选候选 · 上滑 C 开设置<br>
-            多字态按 = 进入逐字选择（上滑出 - 上一部件）· G/H 左右滑移光标
-        </p>
+        <div class="app-hint-row">
+            <p class="app-hint">
+                点按 ∨ 翻页 · 上滑 1–5 选候选 · 上滑 C 开设置<br>
+                多字态按 = 进入逐字选择（上滑出 - 上一部件）· G/H 左右滑移光标
+            </p>
+            <a class="app-repo-link"
+               href="https://github.com/Amatiri/Elucidative-Chinese-IME"
+               target="_blank"
+               rel="noopener noreferrer">github 仓库</a>
+        </div>
     </main>
 
     <div class="keyboard" id="keyboard"></div>
@@ -27,7 +33,6 @@
 
 <div class="sheet" id="sheet"></div>
 <div class="toast" id="toast"></div>
-
 <script type="module" src="assets/ui/main.js"></script>
 <script>
     if ("serviceWorker" in navigator) {

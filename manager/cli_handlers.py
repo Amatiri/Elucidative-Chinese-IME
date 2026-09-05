@@ -20,8 +20,12 @@ class OperationError(Exception):
     pass
 
 
-def atomic_write(filepath, content, backup=False):
-    """原子写入文件，支持备份和临时文件安全替换。"""
+def atomic_write(filepath, content, backup=False, newline=None):
+    """原子写入文件，支持备份和临时文件安全替换。
+
+    newline: 传给文本模式的换行处理；RIME 词典等要求 UNIX 换行(LF)的
+    产物传 ''（内容按字面写入，不随平台转换）。默认 None 保持原有行为。
+    """
     target = Path(filepath)
     dir_ = target.parent
     if backup and target.exists():
@@ -34,7 +38,7 @@ def atomic_write(filepath, content, backup=False):
         suffix=".tmp",
     )
     try:
-        with os.fdopen(fd, 'w', encoding='utf-8') as f:
+        with os.fdopen(fd, 'w', encoding='utf-8', newline=newline) as f:
             f.write(content)
             f.flush()
             os.fsync(f.fileno())

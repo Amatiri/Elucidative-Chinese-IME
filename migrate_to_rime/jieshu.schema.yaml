@@ -1,0 +1,125 @@
+# Rime schema
+# encoding: utf-8
+# 解书音形 —— RIME 移植 Phase 1（单字最小可用）
+# 真源：仓库 dict/dictionary.txt，经 migrate_to_rime/rime_export.py 导出为 jieshu.dict.yaml
+# 注意：punctuator 不写 import_preset: default —— 本资料夹 default.yaml（万象定制）无 punctuator 段，
+#       照抄会报 failed to include section default:punctuator（Phase 0 踩坑①）。
+
+schema:
+  schema_id: jieshu
+  name: 解书音形
+  version: "0.1"
+  author:
+    - Amatiri
+  description: |
+    解书音形：音形结合、零重码输入方案的 RIME 移植。Phase 1 单字严格模式。
+
+switches:
+  - name: ascii_mode
+    states: [ 中文, 西文 ]
+
+engine:
+  processors:
+    # 第十一轮：gate 提到链首——ascii_composer 在西文模式下会于 composing 中
+    # 直接 PushInput 并终止链，绕过检入；gate 领先后任何进输入流的字符必经检入，
+    # 西文模式由 gate 内 get_option(ascii_mode) 判定后整体放行。
+    - lua_processor@*jieshu_gate
+    - ascii_composer
+    - recognizer
+    - key_binder
+    - speller
+    - punctuator
+    - selector
+    - navigator
+    - express_editor
+  segmentors:
+    - ascii_segmentor
+    - matcher
+    - abc_segmentor
+    - punct_segmentor
+    - fallback_segmentor
+  translators:
+    - punct_translator
+    - lua_translator@*jieshu_query   # 第八轮定案：必须排 table 之前——RIME 同段候选由首个非空 translator 独占
+    - table_translator               # 音节图宿主（供 matcher/abc 判定合法编码段）；候选由 filter 丢弃
+  filters:
+    - lua_filter@*jieshu_drop_native # 丢弃原生 table 候选（无余码、DP 乱链），兜底防泄漏
+    - uniquifier
+
+speller:
+  # CODE_CHARS = 1234567890qwertyuiopasdfghjklzxcvbnm;'.
+  # ' 不进 alphabet、只作 delimiter（真源 0 条码含 '，实证）；. 必须进（327 条补码）。
+  # 不设 algebra：前缀匹配全部做成词典真实条目（jieshu.dict.yaml 前缀区），
+  # derive 派生拼写会把短输入映射到多音节、按音节字典序合并（戈 ge17 抢个 ge41），已废弃。
+  alphabet: "1234567890qwertyuiopasdfghjklzxcvbnm;."
+  # 检入机制（对齐 ime.py:772）：输入流为空（光标处于段首）时，只有 26 个小写字母
+  # 能唤起 composing；数字、; . ' 与大写字母一律不进 input，交给 punctuator /
+  # express_editor 直接上屏（express_editor 的 DirectCommit 会 return kRejected，
+  # 按键穿透到应用程序）。段中间（前一字符在 alphabet 内）不作限制，
+  # 故码内数字/;/./' 与人工 ' 照常输入。
+  # librime speller.cc：initials_ 为空时默认等于 alphabet_，故必须显式收窄。
+  # 实证：真源 8336 条码全部以小写字母开头，无一条被误伤。
+  initials: "abcdefghijklmnopqrstuvwxyz"
+  delimiter: "'"
+  auto_select: false
+
+translator:
+  dictionary: jieshu
+  # 第九轮：本表仅作音节图宿主（prism 供 matcher/abc 判定合法段），
+  # 候选队列里 lua_translator 排前且恒非空，table 正常不产出；
+  # 补全与句构双关：前者字典序污染 b→兵，后者 DP 乱链 bua→不痧。
+  enable_completion: false
+  enable_sentence: false
+  enable_user_dict: false      # 纪律红线：零重码禁调频
+  contextual_suggestions: false
+
+menu:
+  page_size: 5                 # 对齐原前端 5 选
+
+punctuator:
+  half_shape:
+    ",": "，"
+    ".": "。" 
+    ";": "；"
+    ":": "："
+    "`": "·"
+    "[": "【"
+    "]": "】"
+    "/": "、"
+    "<": "《"
+    ">": "》"
+    "?": "？"
+    "(": "（"
+    ")": "）"
+    "!": "！"
+    "$": "￥"
+    "^": "……"
+    "_": "——"
+    "'": "‘’"
+    '"': "“”"
+
+# Shift 单击切换西文（官方默认 switch_key）——检入 gate 位于链首且在西文模式下
+# 整体放行（get_option("ascii_mode")），ascii_composer 的切换与 push 不再破坏检入：
+#   Shift 单击 → 西文模式 → gate 全放行 → 英文直通；切回中文 → gate 恢复检入。
+# inline_ascii：composing 中触发时临时西文，上屏后自动退回中文（官方行为）。
+ascii_composer:
+  switch_key:
+    Shift_L: inline_ascii
+    Shift_R: commit_text
+    Control_L: noop
+    Control_R: noop
+    Caps_Lock: clear
+    Eisu_toggle: clear
+
+key_binder:
+  import_preset: default       # 本资料夹 default.yaml 有 key_binder 段，可安全导入（P3 专项再调键位）
+  bindings:
+    # 对齐原前端：↑↓ 翻页（selector 默认 ↑↓ 是逐条移高亮；保留 Prior/Next 翻页不受影响）
+    - { when: has_menu, accept: Up, send: Page_Up }
+    - { when: has_menu, accept: Down, send: Page_Down }
+
+recognizer:
+  import_preset: default       # 本资料夹 default.yaml 的 recognizer 段存在（patterns 空表）
+  patterns:
+    # 码域整段（含手动 ' 分段）打 jieshu tag，供 lua_translator 接管时判定
+    jieshu: "^[1234567890qwertyuiopasdfghjklzxcvbnm;'.]+$"

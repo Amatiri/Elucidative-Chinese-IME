@@ -6,7 +6,7 @@
 
 **运行**:管理工具: main.py。输入法前端:ime.py。main.py可以运行输入法前端和整理工具,建议以管理工具为主要运行项。
 
-**其他**:帮助文档:help/。码表:dict/。功能模块包:manager/。文件路径与常量配置:config.py(单击安装依赖库)。agent工作区:agent_workspace/(一些辅助工具)。移动端web演示:mobile/。
+**其他**:帮助文档:help/。码表:dict/。功能模块包:manager/。文件路径与常量配置:config.py(单击安装依赖库)。agent工作区:agent_workspace/(一些辅助工具)。移动端web演示:mobile/。迁移rime:migrate_to_rime/, 使用rime_export.py。
 
 ## 二、外观与设置
 

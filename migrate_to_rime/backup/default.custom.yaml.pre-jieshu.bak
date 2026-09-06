@@ -1,0 +1,14 @@
+customization:
+  distribution_code_name: Weasel
+  distribution_version: 0.17.4
+  generator: "Rime::SwitcherSettings"
+  modified_time: "Sun Mar  8 13:47:53 2026"
+  rime_version: 1.13.1
+patch:
+  schema_list:
+    - {schema: wanxiang_pro}
+    - {schema: wanxiang_chaifen}
+    - {schema: wanxiang_english}
+    - {schema: wanxiang_mixedcode}
+    - {schema: wanxiang_reverse}
+    - {schema: hello}

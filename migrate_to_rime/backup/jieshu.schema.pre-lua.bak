@@ -1,0 +1,89 @@
+# Rime schema
+# encoding: utf-8
+# 解书音形 —— RIME 移植 Phase 1（单字最小可用）
+# 真源：仓库 dict/dictionary.txt，经 migrate_to_rime/rime_export.py 导出为 jieshu.dict.yaml
+# 注意：punctuator 不写 import_preset: default —— 本资料夹 default.yaml（万象定制）无 punctuator 段，
+#       照抄会报 failed to include section default:punctuator（Phase 0 踩坑①）。
+
+schema:
+  schema_id: jieshu
+  name: 解书音形
+  version: "0.1"
+  author:
+    - Amatiri
+  description: |
+    解书音形：音形结合、零重码输入方案的 RIME 移植。Phase 1 单字严格模式。
+
+switches:
+  - name: ascii_mode
+    states: [ 中文, 西文 ]
+
+engine:
+  processors:
+    - ascii_composer
+    - recognizer
+    - key_binder
+    - speller
+    - punctuator
+    - selector
+    - navigator
+    - express_editor
+  segmentors:
+    - ascii_segmentor
+    - matcher
+    - abc_segmentor
+    - punct_segmentor
+    - fallback_segmentor
+  translators:
+    - punct_translator
+    - table_translator@jieshu_ciyu   # 词：仅全码精确命中，排在字实例前 = 同码词优先
+    - table_translator               # 字：开补全 = 前缀匹配
+  filters:
+    - uniquifier
+
+speller:
+  # CODE_CHARS = 1234567890qwertyuiopasdfghjklzxcvbnm;'.
+  # ' 不进 alphabet、只作 delimiter（真源 0 条码含 '，实证）；. 必须进（327 条补码）。
+  # 不设 algebra：2 字节音码别名已做成词典真实条目（jieshu.dict.yaml 尾部）；
+  # derive 派生拼写会把短输入映射到多音节、按音节字典序合并（戈 ge17 抢个 ge41），已废弃。
+  alphabet: "1234567890qwertyuiopasdfghjklzxcvbnm;."
+  delimiter: "'"
+  auto_select: false
+
+translator:
+  dictionary: jieshu
+  enable_completion: true      # 前缀匹配：任意前缀出全部后继候选（原 query_by_prefix 主路径）
+                               # 注意：P4 容错（副码 a 占位/补码简打）仍走严格模式，与此开关无关
+  spelling_hints: 3            # 补全候选注释显示剩余编码（原前端"候选带余码"的 50% 形态）
+  enable_user_dict: false      # 纪律红线：零重码禁调频
+  strict_length: false
+  contextual_suggestions: false
+
+jieshu_ciyu:                   # 独立词实例：stabledb 直读 jieshu_ciyu.txt（官方 custom_phrase 同款模式）
+  dictionary: ""
+  user_dict: jieshu_ciyu
+  db_class: stabledb
+  enable_completion: false     # 优先上词 = 完全匹配时词排前，不是前缀捕获（2026-09-04 用户纠正）
+  enable_sentence: false
+  enable_user_dict: false
+  initial_quality: 10          # 同码全匹配时压过单字链（默认约1.5）；P3 若有排序分歧再调
+
+menu:
+  page_size: 5                 # 对齐原前端 5 选
+
+punctuator:
+  # 最小内联符号表：; . 是解书码字符，绝不能被标点抢走；, 保留中文逗号
+  half_shape:
+    ",": [ "，", "," ]
+    ".": "."
+    ";": ";"
+
+key_binder:
+  import_preset: default       # 本资料夹 default.yaml 有 key_binder 段，可安全导入（P3 专项再调键位）
+  bindings:
+    # 对齐原前端：↑↓ 翻页（selector 默认 ↑↓ 是逐条移高亮；保留 Prior/Next 翻页不受影响）
+    - { when: has_menu, accept: Up, send: Page_Up }
+    - { when: has_menu, accept: Down, send: Page_Down }
+
+recognizer:
+  import_preset: default       # recognizer 段存在（空表），导入无碍

@@ -2,16 +2,14 @@ import os
 from importlib.metadata import version, PackageNotFoundError
 import subprocess
 import sys
-# 项目根目录（本文件所在目录）
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
-# 数据文件路径
 DATA_FILE = os.path.join(BASE_DIR, "dict", "dictionary.txt")
 DATA_NO_NUMBER_FILE = os.path.join(BASE_DIR, "dict","dictionary_no_number.txt")
 CIYU_FILE = os.path.join(BASE_DIR,"dict", "ciyu.txt")
-
-# 必需依赖库清单
 PACKAGE_LIST = ["pypinyin", "keyboard", "pyperclip", "pywin32"]
+
+# ===== RIME 迁移（migrate_to_rime/rime_export.py）=====
+RIME_USER_DIR = ""
 
 # 编码相关常量
 CODE_CHARS = "1234567890qwertyuiopasdfghjklzxcvbnm;'."

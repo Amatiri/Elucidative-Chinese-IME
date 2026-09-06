@@ -345,6 +345,7 @@
 放肆 fhsi
 方式 fhui
 返回 fjhv
+范畴 fjib
 反馈 fjkv
 繁体 fjti
 反提 fjti2
@@ -817,6 +818,7 @@
 介绍 jxuk
 结束 jxuu
 借助 jxvu
+接下来 jxxwl
 矿泉水 kdqru
 科技 keji
 客气 keqi4
@@ -946,6 +948,7 @@
 美丽 mzli
 魅力 mzli4
 美利坚 mzlij
+美妙 mzmc
 媒体 mzti
 美少女 mzukn
 美术 mzuu
@@ -987,6 +990,7 @@
 平台 p;tl
 蓬勃 pgbo
 朋友 pgyb
+皮肤 pifu
 批改 pigl
 批量 pild
 匹配 pipz
@@ -1047,6 +1051,7 @@
 前面 qmmm
 潜能 qmng
 前往 qmwh
+迁移 qmyi
 群众 qpvs
 秋词 qqci
 秋辞 qqci2
@@ -1715,6 +1720,7 @@
 无穷 wuqs
 物是人非 wurf wuuirff
 无所谓 wusow
+雾凇 wuss
 无数 wuuu
 武术 wuuu4
 物质 wuvi

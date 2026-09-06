@@ -28,7 +28,7 @@ from pathlib import Path
 CODE_CHARS = "1234567890qwertyuiopasdfghjklzxcvbnm;'."
 CODE_CHAR_SET = set(CODE_CHARS)
 
-BASE = Path(__file__).resolve().parents[2]  # 项目根 D:\USB\Py\输入法
+BASE = Path(__file__).resolve().parents[2]
 DICT_FILE = BASE / "dict" / "dictionary.txt"
 CIYU_FILE = BASE / "dict" / "ciyu.txt"
 OUT_FILE = Path(__file__).resolve().parents[1] / "src" / "data" / "dataset.ts"

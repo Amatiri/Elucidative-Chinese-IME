@@ -1,0 +1,107 @@
+# weasel.custom.yaml —— 解书音形「宣纸」双皮肤
+# encoding: utf-8
+#
+# 【真源纪律】本文件真源在 migrate_to_rime\weasel.custom.yaml，由 migrate_to_rime\rime_export.py
+#   同步到 RIME 用户资料夹根。改这里 → 重跑导出 → 小狼毫托盘「重新部署」。
+#   注意：小狼毫「输入法设定」会回写已部署的 weasel.custom.yaml（加 customization 头、
+#   重排缩进），回写后与真源不同，下次导出一律以真源为准覆盖。
+#
+# 【配色来源】取自桌面前端 ime.py 外输模式的界面色，不是拍脑袋调的：
+#   窗底色      #FFF3C7   ime.py:927  window.configure(bg=...)
+#   区条/输入框  #EFE3AE   ime.py:946  label_bg（:955 entry bg、:965/:971 两区条）
+#   正文        #000000   ime.py:1070 fg
+#   页码小字     #666666   ime.py:978  page_label fg
+#   形部表字母   #3232BE   ime.py:1100 letter_label fg
+#   状态开/关    #006600 / #990000   ime.py:994 / :997
+#
+# 【颜色书写格式】小狼毫默认按 0xAABBGGRR 解析（通道顺序是「蓝绿红」，官方《定制指南》
+#   原话："顺序是蓝绿红 0xBBGGRR"；内置方案可自证：google 的 hilited_candidate_back_color
+#   0xCE7539 解出来是 #3975CE 谷歌蓝）。本文件一律写 8 位 0xFF + BBGGRR，注释里给
+#   出对应的 #RRGGBB 方便取色器核对。
+#   刻意不写 color_format: —— 0.17.4 自带 weasel.yaml 未使用该键，赌它支持的风险
+#   大于收益；按默认格式写，无论如何解析都一致。
+#
+# 【两套皮肤】只差字体与高亮色，底色同为宣纸系，保证品牌一致：
+#   行楷解书  方正硬笔行书简繁 —— 手写体笔划细、字面小 → 字号 16，高亮取「开」的墨绿
+#   中宋解书  华文中宋         —— 印刷体字字面饱满    → 字号 15，高亮取形部表的靛蓝
+#   字体写在各自 preset_color_schemes 条目里（小狼毫支持方案级 font_face/font_point），
+#   同时也在 style 层写一份做兜底：万一方案级字体不生效，至少还有行楷。
+
+patch:
+  # ── 全局样式（默认皮肤 = 行楷解书）────────────────────────────────
+  "style/inline_preedit": true
+  "style/horizontal": true
+  "style/candidate_list_layout": linear
+  "style/label_format": ""            # 零重码方案不需要序号，对齐 ime.py「字/字/字」样式
+  "style/font_face": "方正硬笔行书简繁"
+  "style/font_point": 16
+  "style/label_font_face": "方正硬笔行书简繁"
+  "style/label_font_point": 12
+  "style/comment_font_face": "黑体"    # 余码是 ASCII，用黑体（config.py FONT_SMALL_NAME）
+  "style/comment_font_point": 12
+  "style/layout/min_width": 10
+  "style/layout/max_width": 350
+  "style/layout/border": 2
+  "style/layout/margin_x": 5
+  "style/layout/margin_y": 0
+  "style/color_scheme": jieshu_xingkai
+
+  # ── 皮肤一：行楷解书（方正硬笔行书简繁）───────────────────────────
+  "preset_color_schemes/jieshu_xingkai":
+    name: "行楷解书／Xingkai"
+    author: Amatiri
+    font_face: "方正硬笔行书简繁"
+    font_point: 16                     # 行书字面偏小，比中宋大一档
+    label_font_face: "方正硬笔行书简繁"
+    label_font_point: 12
+    comment_font_face: "黑体"
+    comment_font_point: 12
+    # 窗底 / 候选底：宣纸 #FFF3C7
+    back_color: 0xFFC7F3FF             # #FFF3C7
+    candidate_back_color: 0xFFC7F3FF   # #FFF3C7
+    border_color: 0xFF8EC4D6           # #D6C48E 纸边
+    shadow_color: 0x40000000           # 25% 黑
+    text_color: 0xFF1A1A1A             # #1A1A1A（纯黑在米黄底上过硬，压一档）
+    candidate_text_color: 0xFF1A1A1A   # #1A1A1A
+    label_color: 0xFF26738A            # #8A7326
+    comment_text_color: 0xFF6B6B6B     # #6B6B6B（页码灰 #666666 提亮一档，对比度 4.7:1）
+    # 编码区（inline_preedit）：复刻 ime.py 输入框 #EFE3AE
+    hilited_text_color: 0xFF1A1A1A     # #1A1A1A
+    hilited_back_color: 0xFFAEE3EF     # #EFE3AE
+    # 选中候选：墨绿光条 #1F6B3A（取 ime.py「开」#006600 深化），白纸色字，对比度 5.8:1
+    hilited_candidate_text_color: 0xFFC7F3FF      # #FFF3C7
+    hilited_candidate_back_color: 0xFF3A6B1F      # #1F6B3A
+    hilited_candidate_border_color: 0xFF2B4F17    # #174F2B
+    hilited_label_color: 0xFFC7F3FF               # #FFF3C7
+    hilited_comment_text_color: 0xFFCCE7D9        # #D9E7CC
+    hilited_mark_color: 0xFFC7F3FF                # #FFF3C7
+
+  # ── 皮肤二：中宋解书（华文中宋）───────────────────────────────────
+  "preset_color_schemes/jieshu_zhongsong":
+    name: "中宋解书／Zhongsong"
+    author: Amatiri
+    font_face: "华文中宋"
+    font_point: 15                     # 中宋字面饱满，比行楷小一档
+    label_font_face: "华文中宋"
+    label_font_point: 12
+    comment_font_face: "黑体"
+    comment_font_point: 12
+    # 窗底 / 候选底：宣纸压深一档 #F5E9BE，衬印刷体的沉稳
+    back_color: 0xFFBEE9F5             # #F5E9BE
+    candidate_back_color: 0xFFBEE9F5   # #F5E9BE
+    border_color: 0xFF83B5C9           # #C9B583
+    shadow_color: 0x40000000           # 25% 黑
+    text_color: 0xFF141414             # #141414
+    candidate_text_color: 0xFF141414   # #141414
+    label_color: 0xFF3A6A7A            # #7A6A3A
+    comment_text_color: 0xFF5F5F5F     # #5F5F5F（对比度 5.3:1）
+    # 编码区：与底同调的输入框色 #E7DAAC
+    hilited_text_color: 0xFF141414     # #141414
+    hilited_back_color: 0xFFACDAE7     # #E7DAAC
+    # 选中候选：靛蓝光条 #2B4C8C（取 ime.py 形部表 #3232BE 深化），对比度 7.8:1
+    hilited_candidate_text_color: 0xFFE0F6FF      # #FFF6E0
+    hilited_candidate_back_color: 0xFF8C4C2B      # #2B4C8C
+    hilited_candidate_border_color: 0xFF66371E    # #1E3766
+    hilited_label_color: 0xFFE0F6FF               # #FFF6E0
+    hilited_comment_text_color: 0xFFEED8CB        # #CBD8EE
+    hilited_mark_color: 0xFFE0F6FF                # #FFF6E0

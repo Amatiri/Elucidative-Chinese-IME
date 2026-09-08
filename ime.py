@@ -424,8 +424,7 @@ def get_current_candidates():
     return ctx.current_candidates
 
 def _is_phrase(s):
-    """词候选形如 "(病毒)"（query_phrase 加括号）；字链/预览串为纯文本。"""
-    return len(s) >= 2 and s.startswith("(") and s.endswith(")")
+    return s != "•" and s.endswith("•")
 
 def _build_multi_candidates(chain, phrase):
     """多段模式（未进入逐字选择）的选字候选，顺序跟随「优先上词」，与显示一致。

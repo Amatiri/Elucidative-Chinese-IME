@@ -299,10 +299,6 @@ local function build_candidates(seg_input)
       cands[#cands + 1] = { w, c:sub(#w + 1) }
     end
   else
-    -- 多段模式：词全码命中居首（前端空格上词），首选字链随后（预览）
-    -- comment 标记「词 / 字」：对齐 ime.py 用括号 "(病毒)" 标词的显示语义。
-    -- RIME 侧不能把括号写进 text —— text 即上屏内容，会污染输出；comment 不参与上屏。
-    -- 单行横向拼接候选下，仅靠位置无法分辨两者性质，故此标记是必要的。
     local ph = query_phrase(proc)
     if ph ~= "" then cands[#cands + 1] = { ph, "•" } end
     local chain = query_multi_chars(st)

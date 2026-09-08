@@ -5128,6 +5128,7 @@
 漆 qx4um
 窃 qx4x
 惬 qx4xo
+慊 qx4xo.j
 怯 qx4xt
 箧 qx4z
 趄 qx4zq
@@ -5166,6 +5167,7 @@
 热 re4h
 壬 rf24
 仁 rf2r
+任 rf2ru
 荏 rf3c
 稔 rf3h
 忍 rf3x
@@ -5283,6 +5285,7 @@
 嗾 sb3kz
 擞 sb3u
 嗽 sb4k
+擞 sb4u
 色 se4d
 穑 se4h
 铯 se4j
@@ -5355,6 +5358,7 @@
 瘙 sk4b
 臊 sk4r
 埽 sk4t
+扫 sk4u
 噻 sl1k
 腮 sl1r
 塞 sl1t
@@ -5420,6 +5424,7 @@
 觫 su4ku
 素 su4q
 僳 su4r
+缩 su4s
 塑 su4t
 溯 su4u
 涑 su4uu
@@ -5433,10 +5438,12 @@
 虽 sv1i
 睢 sv1m
 眭 sv1mg
+尿 sv1s
 濉 sv1u
 随 sv2b
 隋 sv2bz
 绥 sv2s
+遂 sv2z
 髓 sv3g
 隧 sv4b
 穗 sv4h

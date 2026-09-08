@@ -12,7 +12,7 @@ def query_phrase(code):
             for line in f:
                 parts = line.strip().split(" ")
                 if len(parts) >= 2 and code in parts[1:]:
-                    return "(" + parts[0] + ")"
+                    return parts[0] + "•"
     except FileNotFoundError:
         pass
     return ""
@@ -229,7 +229,7 @@ def get_phrase_segments(processed):
         else:
             phrase = query_phrase(seg)
             if phrase:
-                display_parts.append(phrase[1:-1])
+                display_parts.append(phrase[:-1])
                 # 词语命中时仍需自动拆分供逐字选择
                 split_seg = split_sequence(seg)
                 parts_list.append(split_seg.split("'"))

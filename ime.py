@@ -330,9 +330,12 @@ def update_display(processed=None, candidates=None, first_chars=None):
             ctx._cached_first_chars_input = input_text
         if first_chars:
             if ctx.current_phrase and not ctx.in_part_selection:
-                if first_chars == ctx.current_phrase[1:-1]:
+                if first_chars == ctx.current_phrase[:-1]:
                     first_chars_label.config(text=first_chars)
                     ctx.current_phrase = ""
+                elif ctx.phrase_priority == "1":
+                    # 显示顺序跟随「优先上词」，与 _build_multi_candidates 的候选顺序一致
+                    first_chars_label.config(text=ctx.current_phrase + "   " + first_chars)
                 else:
                     first_chars_label.config(text=first_chars + "   " + ctx.current_phrase)
             else:
@@ -356,6 +359,10 @@ def update_display(processed=None, candidates=None, first_chars=None):
                 total_count = ctx.original_split_count if ctx.original_split_count > 0 else len(ctx.split_parts)
                 total_count -= len(ctx.literal_indices)
                 page_label.config(text=f"字 {ordinal}/{total_count} 页 {ctx.current_page + 1}")
+            else:
+                # 该段无候选：必须清空，否则会残留多段整体候选（词/字链），
+                # 在逐字选择模式下被 shift+N 取走并当作「带余码候选」处理。
+                ctx.current_candidates = []
 
     elif ctx.query_type == "single":
         if candidates is None:
@@ -416,22 +423,37 @@ def get_current_candidates():
     """
     return ctx.current_candidates
 
+def _is_phrase(s):
+    """词候选形如 "(病毒)"（query_phrase 加括号）；字链/预览串为纯文本。"""
+    return len(s) >= 2 and s.startswith("(") and s.endswith(")")
+
+def _build_multi_candidates(chain, phrase):
+    """多段模式（未进入逐字选择）的选字候选，顺序跟随「优先上词」，与显示一致。
+
+    开：[词, 首选字链]  关：[首选字链, 词]
+    空格上屏仍由 main_function 的 phrase_priority 分支决定；shift+1/shift+2 是显式选择。
+    """
+    cands = []
+    if ctx.phrase_priority == "1":
+        if phrase: cands.append(phrase)
+        if chain:  cands.append(chain)
+    else:
+        if chain:  cands.append(chain)
+        if phrase: cands.append(phrase)
+    return cands
+
 def handle_selection_keys(event):
     """
-    处理候选选择符号 ! @ # $ % 以及短语直接上屏 !（当有短语时）
-    返回 "break" 阻止事件继续传播，否则返回 None。
-    
-    多字模式新机制：选择字符时补全剩余编码，而非替换为汉字。
-    直到所有字都解析完毕（unresolved == 0），才拼接最终汉字串上屏。
-    """
-    # 短语直接上屏：当前有短语且按下 !
-    if event.char == "!" and ctx.current_phrase:
-        phrase_content = ctx.current_phrase[1:-1]
-        input_text = real_time_var.get()
-        replace_content(input_text, phrase_content, do_paste=True, reset_entry=True)
-        reset_input_state()
-        return "break"
+    处理候选选择符号 ! @ # $ % 的上屏。
 
+    - 单字模式：上屏第 index 个候选的首字。
+    - 多段整体模式（未进入逐字选择）：候选为「词」或「首选字链」，直接上屏整串。
+    - 逐字选择模式：选择字符时补全剩余编码，而非替换为汉字；
+      直到所有字都解析完毕（unresolved == 0），才拼接最终汉字串上屏。
+    """
+    # 注：原「! + 有短语 → 短语直接上屏」专有分支已移除，统一走下面的候选索引路径。
+    # 多段模式下 current_candidates 现由 _build_multi_candidates 填充（见 main_function），
+    # 词作为候选之一参与排序，! 的语义 = 当前显示顺序的第一个候选。
     if event.char in SELECTION_SYMBOLS:
         candidates = get_current_candidates()
         if not candidates:
@@ -445,6 +467,14 @@ def handle_selection_keys(event):
 
             if ctx.query_type == "single":
                 replace_content(input_text, selected_char, do_paste=True, reset_entry=True)
+                reset_input_state()
+
+            elif ctx.query_type == "multi_part" and not ctx.in_part_selection:
+                # 多段整体模式：候选是「词」或「首选字链」，不含余码，直接上屏整串。
+                # 必须先于逐字选择分支判断 —— 那里的候选带余码（query_single_char），
+                # 若走错分支会把余码当汉字补进编码段，拼出 "b;都" 这类串。
+                text = candidate_str[:-1] if _is_phrase(candidate_str) else candidate_str
+                replace_content(input_text, text, do_paste=True, reset_entry=True)
                 reset_input_state()
 
             elif ctx.query_type == "multi_part" and ctx.split_parts and ctx.current_part_index >= 0:
@@ -530,10 +560,10 @@ def main_function(*args):
     if " " in input_text:
         output_text = ctx.last_output_text
         if ctx.phrase_priority == "1" and ctx.query_type == "multi_part" and ctx.current_phrase:
-            output_text = ctx.current_phrase[1:-1]
+            output_text = ctx.current_phrase[:-1]
         elif output_text == "":
             if ctx.current_phrase:
-                output_text = ctx.current_phrase[1:-1]
+                output_text = ctx.current_phrase[:-1]
             else:
                 output_text = process_input(input_text)
         replace_content(input_text, output_text, do_paste=True, reset_entry=True)
@@ -580,11 +610,16 @@ def main_function(*args):
                 # 优先上词开启 + 用户手动输入单引号 → 词语增强预览
                 # 无候选的段按编码原文字面输出（见 _apply_phrase_result）
                 first_chars = _apply_phrase_result(get_phrase_segments(processed))
+                ctx.current_phrase = ""   # 本路径的预览串已含逐段词结果，无独立词候选
             else:
                 ctx.split_parts = [p for p in split_text.split("'") if p]
                 first_chars = query_multi_chars(split_text)
                 ctx.current_phrase = query_phrase(processed)
             update_display(processed=processed, first_chars=first_chars)
+            # 选字候选必须在 update_display 之后填充：显示层在「字链 == 词内容」时
+            # 会清空 current_phrase（见 update_display），此前取值会漏掉词候选。
+            if not ctx.in_part_selection:
+                ctx.current_candidates = _build_multi_candidates(first_chars, ctx.current_phrase)
             output_text = first_chars
 
     if key_processed:

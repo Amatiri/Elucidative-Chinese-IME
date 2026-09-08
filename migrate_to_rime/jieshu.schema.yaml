@@ -75,8 +75,16 @@ translator:
 
 menu:
   page_size: 5                 # 对齐原前端 5 选
+  # 选字键：解书编码含 0-9，数字进入 speller/alphabet 后被收编为码字符，
+  # selector 收不到数字键（speller 先 PushInput 并 kAccepted 终止链），
+  # 故沿用原前端的 Shift+1~5（!@#$%）选字。
+  # 源码依据：selector.cc —— schema()->select_keys() 非空时只按该串取 index，
+  # 不再走数字分支；该值由 Schema::FetchUsefulConfigItems() 读 menu/alternative_select_keys。
+  # 小狼毫下 Shift+数字 传入的是符号本身 keycode（exclam/at/numbersign/dollar/percent），
+  # 与雾凇 default.yaml「小狼毫 Control+Shift+dollar 生效」的注释一致。
+  alternative_select_keys: "!@#$%"
 
-punctuator:
+punctuator:    #暂未实装
   half_shape:
     ",": "，"
     ".": "。" 
@@ -91,8 +99,9 @@ punctuator:
     "?": "？"
     "(": "（"
     ")": "）"
-    "!": "！"
-    "$": "￥"
+    # 注意：! 与 $ 已从本表移除 —— punctuator 排在 selector 之前，
+    # 若保留映射，composing 时 Shift+1/4 会被标点抢先上屏「！」「￥」，
+    # 选字键永远轮不到 selector。空流下的符号由 gate 拦截后原样半角穿透，不受影响。
     "^": "……"
     "_": "——"
     "'": "‘’"
@@ -119,7 +128,12 @@ key_binder:
     - { when: has_menu, accept: Down, send: Page_Down }
 
 recognizer:
-  import_preset: default       # 本资料夹 default.yaml 的 recognizer 段存在（patterns 空表）
+  # ⚠️ 不写 import_preset: default —— 本资料夹 default.yaml（万象定制）的 recognizer 段
+  # 带 email / url / underscore 三个 pattern，会劫持 @ : / _ . 等符号：
+  #   recognizer.cc: input += ch; if (match) { ctx->PushInput(ch); return kAccepted; }
+  # Recognizer 排在 selector 之前，命中即吞键终止链，selector 永远收不到按键 ——
+  # 实测表现为「Shift+2 打出 @ 而不选字」（@ 命中 email pattern；! # $ % 无 pattern 故正常）。
+  # 解书编码字符集不含这些符号，该段对本方案完全无用，只保留自有的 jieshu pattern。
   patterns:
     # 码域整段（含手动 ' 分段）打 jieshu tag，供 lua_translator 接管时判定
     jieshu: "^[1234567890qwertyuiopasdfghjklzxcvbnm;'.]+$"

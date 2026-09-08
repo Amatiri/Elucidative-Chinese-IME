@@ -151,6 +151,7 @@
 | `speller/algebra`                                                       | 不设                                                       | 派生拼写引入跨音节合并并按字典序排，已废弃                                                     |
 | `translator/enable_completion` / `enable_sentence` / `enable_user_dict` | 全 `false`                                                | 2.1 纪律红线                                                                  |
 | `menu/page_size`                                                        | `5`                                                      | 对齐原前端 5 选                                                                 |
+| `menu/alternative_select_keys`  | `!@#$%`  | 选字键 = Shift+1~5，见 2.7  |
 | `punctuator`                                                            | 内联最小符号表                                                  | 不写 `import_preset: default`——定制环境下 default.yaml 可能没有 punctuator 段，照抄会编译失败 |
 | `key_binder`                                                            | `import_preset: default` + `Up/Down → Page_Up/Page_Down` | 原生 ↑↓ 是移高亮，翻页需重绑                                                          |
 | `recognizer/patterns.jieshu`                                            | 含 `'` 的码集正则                                              | 人工分段后整段仍带 jieshu tag                                                      |
@@ -169,6 +170,44 @@
 
 ---
 
+### 2.7 选字键 `!@#$%`（Shift+1~5）
+
+原前端用 `!@#$%` 选第 1~5 个候选（`ime.py:419`）。RIME 侧数字 1-9 已被 `speller/alphabet`
+收编为编码字符：speller 先 `PushInput` 再以 kAccepted 终止链，**selector 收不到数字键**
+（`speller.cc`：`!is_initial && !expecting_an_initial` 时直接 PushInput），数字选字在本方案里
+物理不可用。改用官方为「编码占用数字键」准备的开关：
+
+```yaml
+menu:
+  alternative_select_keys: "!@#$%"
+```
+
+- **源码依据**：`selector.cc` 中 `schema()->select_keys()` 非空时只按该串取 index，不再走数字
+  分支；该值由 `Schema::FetchUsefulConfigItems()` 从 **`menu/alternative_select_keys`** 读取
+  （不是顶层 `select_keys`）。官方 bopomofo 方案即为此写法。
+- **keycode**：小狼毫下 Shift+数字传入的是符号本身的 keycode（exclam/at/numbersign/dollar/
+  percent），依据万象 `default.yaml` 注释「小狼毫 Control+Shift+dollar 生效」。这些符号不属于
+  `speller/alphabet`，speller 放行，最终落到 selector。若实测发现传的是数字+shift，
+  则改走 Lua 兜底（在 gate 内换算成 `ctx:select()`）。
+- **punctuator 让位**：`punctuator` 排在 selector 之前，故已把 `!` `$` 两条映射从标点表移除，
+  否则 composing 时按键会被标点抢先上屏「！」「￥」。空流下符号由 gate 拦截后原样半角穿透，不受影响。
+- **Recognizer 会抢键（实测踩坑）**：`recognizer.cc` 在按键时试探 `input + ch`，命中 pattern 就
+  `ctx->PushInput(ch)` 并 `return kAccepted` —— 而 Recognizer 排在 selector **之前**，命中即吞键终止链。
+  万象 `default.yaml` 的 `email: "^[A-Za-z][-_.0-9A-Za-z]*@.*$"` 因此吞掉 `@`，
+  实测表现为「Shift+1/3/4/5 正常选字，唯独 Shift+2 打出 @ 不选字」（`!` `#` `$` `%` 无 pattern 故不受影响）。
+  同段的 `url` / `underscore` 还会威胁 `.` `_` `:` `/`。
+  → 本方案 **不写** `recognizer: import_preset: default`，只保留自有的 `jieshu` pattern。
+- **附带结论**：由于 `jieshu` pattern 覆盖了全部编码字符，Recognizer 会先于 speller 接管所有编码字符
+  输入并终止链，speller 实际上不参与本方案的按键处理（源码推断，未单独实测；与「数字必然进 input」的
+  现象一致，此前归因于 speller.cc 的 PushInput，两条路径结果相同）。
+- **候选标记「词 / 字」**：多段模式下，词候选 comment 标「词」、首选字链标「字」，
+  对齐 ime.py 用括号 `(病毒)` 标词的显示语义。RIME 侧**不能**把括号写进 `text`
+  （`text` 即上屏内容，会污染输出），只能放 comment（不参与上屏）。
+  本方案为单行横向拼接候选，仅靠位置无法分辨两者性质，故此标记是必要的。
+  注：回归快照格式是 `text|comment`（`lua_regress.js:101`），改 comment 会触发差异，需 `--update` 刷新。
+- **未实现**：多字模式下的「取候选首字 + 余码补回输入串 + 跳下一段」（`ime.py:450-492`）。
+  它与 `=`/`-` 逐字导航是同一套机制，随 P4 一起做。
+
 ## 三、已实现功能（键盘实测验收）
 
 | 能力                 | 表现                                                                   |
@@ -182,6 +221,7 @@
 | 无候选段字面回显           | `bua`→按编码原文回显                                                        |
 | 空输入流检入             | 只有小写字母唤起输入，数字/大写/符号直出（gate，已复测）                                      |
 | 空格上屏 / ↑↓ 翻页       | 空格=首选上屏；↑↓ 经 key_binder 重绑为翻页                                        |
+| `!@#$%`（Shift+1~5）选字  | `menu/alternative_select_keys` 走原生 selector（已部署，待键盘复测） |
 | 码内 `0-9 . ;` 输入    | speller 收编，正常参与查字                                                    |
 | 多音字多码并存            | 真源天然一条码一字                                                            |
 | 皮肤                 | 「宣纸」双配色 + 字体布局（`weasel.custom.yaml`）                                 |
@@ -198,6 +238,8 @@ node migrate_to_rime\lua_regress.js --update   # 确认行为变更后刷新快�
 
 脚本用仓库内真源（本目录 `jieshu_query.lua` + `dict/` 码表）跑用例，不依赖部署结果。
 fengari 的 `io.open` 未实现，脚本以内存桩喂数据并复刻 Windows 文本模式对 `\r` 的剥离。
+快照中 `|` 之后是 comment 字段：**多段模式的「词/字」标记属 RIME 侧显示层，不来自 Python 真源**，
+单字模式的余码同理；`|` 之前的候选文本仍严格对拍 Python 真源。
 
 ---
 
@@ -205,7 +247,7 @@ fengari 的 `io.open` 未实现，脚本以内存桩喂数据并复刻 Windows �
 
 | 项                       | 归属阶段  | 说明                                      |
 | ----------------------- | ----- | --------------------------------------- |
-| `!@#$%`（Shift+12345）选字  | P3    | 因 ↑↓ 改为翻页，需补充逐字选择键位                     |
+| 多字模式「取候选首字 + 余码补回输入串 + 跳下一段」 | P4 决策 | 单字模式的 `!@#$%` 选字已落地（见 2.7）；它与 `=`/`-` 逐字导航共用一套机制，一并实现 |
 | 逐段子回显                   | P3    | 目前无候选段为**整段**字面回显；前端可按子段回显              |
 | 外输窗口外观细节                | P3    | 页大小/字号/横竖排微调（皮肤共用，注意别影响其他方案）            |
 | `=`/`-` 逐字切换            | P4 决策 | 对应前端 `navigate_parts`；RIME 侧可用移动光标做近似实现 |

@@ -9,7 +9,7 @@ CIYU_FILE = os.path.join(BASE_DIR,"dict", "ciyu.txt")
 PACKAGE_LIST = ["pypinyin", "keyboard", "pyperclip", "pywin32"]
 
 # ===== RIME 迁移（migrate_to_rime/rime_export.py）=====
-RIME_USER_DIR = ""
+RIME_USER_DIR = ''
 
 # 编码相关常量
 CODE_CHARS = "1234567890qwertyuiopasdfghjklzxcvbnm;'."

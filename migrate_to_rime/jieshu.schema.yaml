@@ -66,7 +66,9 @@ speller:
 translator:
   dictionary: jieshu
   # 第九轮：本表仅作音节图宿主（prism 供 matcher/abc 判定合法段），
-  # 候选队列里 lua_translator 排前且恒非空，table 正常不产出；
+  # 候选队列里 lua_translator 排前；lua 无候选时 table 理论上可接盘，
+  # 但词典前缀区与查询可见性规则同源（无候选⇒无条目），正常仍不产出，
+  # 万一产出由 filter 丢弃。
   # 补全与句构双关：前者字典序污染 b→兵，后者 DP 乱链 bua→不痧。
   enable_completion: false
   enable_sentence: false

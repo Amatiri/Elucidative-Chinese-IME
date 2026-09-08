@@ -3,7 +3,7 @@
 -- query_by_prefix / query_multi_chars / query_phrase / get_phrase_segments），
 -- 逻辑字节级（码域全 ASCII）。
 -- 候选 type = "jieshu"；原生 table_translator 降级为音节图宿主，其候选由
--- jieshu_filter.lua 丢弃（依据：librime entry_collector 编译期丢弃词典 comment 列、
+-- jieshu_drop_native.lua 丢弃（依据：librime entry_collector 编译期丢弃词典 comment 列、
 -- completion 跨音节合并按字典序——原生通道无法同时满足 页序=行序 / 余码注释 / 严格链）。
 -- 真源与影子对拍：python 全管道 fuzz 3 万样本 0 差异（_tmp_lua_port_test）。
 -- 数据文件由 migrate_to_rime/rime_export.py 从项目真源同步到 <user_data>/lua/data/。
@@ -275,7 +275,8 @@ end
 
 -- ========== 候选组装（前端 update_display 两模式语义） ==========
 
--- 返回 { {text, comment}, ... }；空表 = 无候选（RIME fallback 字面输出）
+-- 返回 { {text, comment}, ... }；空表 = 无候选：不产出任何候选，候选栏隐藏，
+-- 编码留在行内 preedit（虚线），此时按空格由 RIME 原生 raw 段机制上屏原编码。
 local function build_candidates(seg_input)
   local proc = process_input(seg_input)
   if proc == "" then return {} end
@@ -308,7 +309,9 @@ local function build_candidates(seg_input)
 end
 
 -- ========== RIME 挂点 ==========
--- 无候选时输出字面（前端"编码原文"语义），保证本翻译器恒非空。
+-- 无候选时不产出任何候选（对齐前端 ime.py「候选栏清空、编码留在输入位」的语义）：
+-- 编码字符串由 weasel 的行内 preedit（inline_preedit，style/inline_preedit: true）
+-- 在目标应用内以虚线呈现，不再伪造成一条候选占住候选栏。
 -- 第九轮：tag 门放宽——matcher 命中段带 jieshu，回退段只有 abc；两种都接。
 -- env.tags_probe 前 10 次调用把段 tag 集写日志，暴露真实分段行为。
 local function seg_tags_str(seg)
@@ -335,10 +338,6 @@ local function jieshu_translator(input, seg, env)
     return
   end
   local cands = build_candidates(input)
-  if #cands == 0 then
-    yield(Candidate("jieshu", seg.start, seg._end, input, ""))
-    return
-  end
   for _, c in ipairs(cands) do
     yield(Candidate("jieshu", seg.start, seg._end, c[1], c[2]))
   end

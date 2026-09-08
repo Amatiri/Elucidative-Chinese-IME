@@ -142,7 +142,7 @@
 
 | 配置                                                                      | 值                                                        | 原因                                                                        |
 | ----------------------------------------------------------------------- | -------------------------------------------------------- | ------------------------------------------------------------------------- |
-| `engine/translators`                                                    | lua 排在 `table_translator` 前                              | 同段候选由首个产出非空者独占；lua 恒非空（无候选时字面兜底）                                          |
+| `engine/translators`                                                    | lua 排在 `table_translator` 前                              | 同段候选由首个产出非空的 translator 独占；lua 有候选时独占，无候选时不产出（真源无该前缀码，table 也空，整段落 raw）                                          |
 | `engine/filters`                                                        | 丢弃垫片 + `uniquifier`                                      | 丢弃泄漏的原生 table 候选                                                          |
 | `speller/alphabet`                                                      | = `CODE_CHARS` 去掉 `'`                                    | 数字/`;`/`.` 收编为码字符；`.` 必须收（数百条补码）                                          |
 | `speller/delimiter`                                                     | `'`                                                      | 真源 0 条码含 `'`，只作人工分段                                                       |
@@ -200,7 +200,7 @@ menu:
 - **附带结论**：由于 `jieshu` pattern 覆盖了全部编码字符，Recognizer 会先于 speller 接管所有编码字符
   输入并终止链，speller 实际上不参与本方案的按键处理（源码推断，未单独实测；与「数字必然进 input」的
   现象一致，此前归因于 speller.cc 的 PushInput，两条路径结果相同）。
-- **候选标记「词 / 字」**：多段模式下，词候选 comment 标「词」、首选字链标「字」，
+- **候选标记「词」**：多段模式下，词候选 comment 标点号 `•`（字链 comment 为空），
   对齐 ime.py 用括号 `(病毒)` 标词的显示语义。RIME 侧**不能**把括号写进 `text`
   （`text` 即上屏内容，会污染输出），只能放 comment（不参与上屏）。
   本方案为单行横向拼接候选，仅靠位置无法分辨两者性质，故此标记是必要的。
@@ -218,7 +218,7 @@ menu:
 | 优先上词               | 全码精确命中时词排在字链之前（Lua 多段模式下恒开）                                          |
 | 人工 `'` 分段 + 词语增强预览 | `b;du'ceu`→「病毒测试」、`b;d'u`→「兵的是」                                      |
 | 候选余码提示             | comment 列显示剩余编码                                                      |
-| 无候选段字面回显           | `bua`→按编码原文回显                                                        |
+| 无候选段             | `bua`→候选栏清空不产出候选，编码留在行内 preedit（应用内虚线），对齐前端「候选清空、编码原位」语义；空格/Esc 的处置待键盘复测        |
 | 空输入流检入             | 只有小写字母唤起输入，数字/大写/符号直出（gate，已复测）                                      |
 | 空格上屏 / ↑↓ 翻页       | 空格=首选上屏；↑↓ 经 key_binder 重绑为翻页                                        |
 | `!@#$%`（Shift+1~5）选字  | `menu/alternative_select_keys` 走原生 selector（已部署，待键盘复测） |
@@ -226,14 +226,19 @@ menu:
 | 多音字多码并存            | 真源天然一条码一字                                                            |
 | 皮肤                 | 「宣纸」双配色 + 字体布局（`weasel.custom.yaml`）                                 |
 | 导出闭环               | 校验→渲染→逐字节同步→diff 摘要→原子写+备份                                           |
-| 离线回归               | `lua_regress.js`：fengari 真加载 `jieshu_query.lua`，41 条用例对拍 Python 真值快照 |
+| 离线回归               | 同一份用例与快照双通道：`lua_regress.js`（fengari，Lua 5.3 语义）/ `lua_regress_lupa.py`（lupa，本机可直接跑） |
 
 ### 离线回归用法（改动 Lua 查询层后必跑）
 
 ```
+# 通道 A（lupa，本机已装，推荐）：
+python migrate_to_rime\lua_regress_lupa.py            # 比对快照，有差异 exit 1
+python migrate_to_rime\lua_regress_lupa.py --update   # 确认行为变更后刷新快照
+
+# 通道 B（fengari，Lua 5.3 语义，与 A 同一份用例与快照）：
 npm install fengari                  # 任意 node 工作区
-node migrate_to_rime\lua_regress.js            # 比对快照，有差异 exit 1
-node migrate_to_rime\lua_regress.js --update   # 确认行为变更后刷新快照
+node migrate_to_rime\lua_regress.js
+node migrate_to_rime\lua_regress.js --update
 ```
 
 脚本用仓库内真源（本目录 `jieshu_query.lua` + `dict/` 码表）跑用例，不依赖部署结果。
@@ -248,7 +253,7 @@ fengari 的 `io.open` 未实现，脚本以内存桩喂数据并复刻 Windows �
 | 项                       | 归属阶段  | 说明                                      |
 | ----------------------- | ----- | --------------------------------------- |
 | 多字模式「取候选首字 + 余码补回输入串 + 跳下一段」 | P4 决策 | 单字模式的 `!@#$%` 选字已落地（见 2.7）；它与 `=`/`-` 逐字导航共用一套机制，一并实现 |
-| 逐段子回显                   | P3    | 目前无候选段为**整段**字面回显；前端可按子段回显              |
+| 逐段子回显                   | P3    | 无候选时整段不产出（preedit 保留全部编码）；前端可对子段回显        |
 | 外输窗口外观细节                | P3    | 页大小/字号/横竖排微调（皮肤共用，注意别影响其他方案）            |
 | `=`/`-` 逐字切换            | P4 决策 | 对应前端 `navigate_parts`；RIME 侧可用移动光标做近似实现 |
 | 自动上字（>3 码且唯一候选自动上屏）     | P4 决策 | RIME 无原生等价物；若做则走 Lua processor          |

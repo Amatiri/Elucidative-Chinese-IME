@@ -701,6 +701,7 @@
 几何 jihe2
 机会 jihv
 计划 jihw
+继承 jiig
 基础 jiiu
 即可 jike3
 即刻 jike4
@@ -1378,6 +1379,7 @@
 蛇尾 uewz3
 身份 ufff
 身份证 ufffv
+神经 ufj;
 什么 ufm
 神秘 ufmi
 身体 ufti
@@ -1804,12 +1806,14 @@
 新闻 xnwf
 信息 xnxi
 新增 xnzg
+循环 xphr
 训练 xplm
 寻找 xpvk
 修复 xqfu
 修改 xqgl
 选拔 xrba
 选举 xrju
+暄软 xrrr
 旋转 xrvr
 选项 xrxd
 选择 xrze
@@ -1850,6 +1854,7 @@
 优点 ybdm3
 有关 ybgr1
 友好 ybhk
+游乐园 ybley
 有利于 ybliy
 又双叒叕 ybudrov
 有助于 ybvuy

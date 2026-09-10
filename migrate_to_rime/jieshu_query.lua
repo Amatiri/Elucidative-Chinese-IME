@@ -273,6 +273,36 @@ local function phrase_segments_preview(processed)
   return table.concat(out)
 end
 
+-- ========== 页码提示（见 README 2.9） ==========
+
+-- 小狼毫不显示页码，唯一「随高亮候选自动刷新」的位置是候选 preedit 的 prompt 位：
+-- Composition::GetPreedit() 取当前高亮候选的 preedit()，遇 "\t" 时把后半段作为
+-- prompt 追加（仅当光标在段尾）。preedit 每次现算，故翻页无需重跑 translator。
+--
+-- 形式只给「当前页号」，不给总页数 —— 对齐 ime.py:373 的「页 N」：
+--   1. 使用体验统一（ime.py 是探测式取候选，只查当前页，本来就算不出总页数）；
+--   2. 短前缀（如 `o`）可达 200+ 条，暴露总页数会给用户无谓的压力。
+-- 仅当有下一页（total > page_size）时才追加，单页不挂「页1」这种噪音。
+-- index 从 0 起；返回 nil = 不设置 preedit（回退显示原始输入串）。
+local function preedit_with_page(input, index, total, page_size)
+  if not page_size or page_size <= 0 then return nil end
+  if total <= page_size then return nil end
+  local page = math.floor(index / page_size) + 1
+  return input .. "\t 页 " .. page
+end
+
+-- 页大小：Schema 暴露 page_size（= menu/page_size）。取值失败回退 5（本方案配置值）。
+local function page_size_of(env)
+  if env.page_size then return env.page_size end
+  local n = nil
+  if env.engine then
+    local ok, v = pcall(function() return env.engine.schema.page_size end)
+    if ok and type(v) == "number" and v > 0 then n = v end
+  end
+  env.page_size = n or 5
+  return env.page_size
+end
+
 -- ========== 候选组装（前端 update_display 两模式语义） ==========
 
 -- 返回 { {text, comment}, ... }；空表 = 无候选：不产出任何候选，候选栏隐藏，
@@ -338,8 +368,15 @@ local function jieshu_translator(input, seg, env)
     return
   end
   local cands = build_candidates(input)
-  for _, c in ipairs(cands) do
-    yield(Candidate("jieshu", seg.start, seg._end, c[1], c[2]))
+  local total = #cands
+  local ps = page_size_of(env)
+  for i, c in ipairs(cands) do
+    local cand = Candidate("jieshu", seg.start, seg._end, c[1], c[2])
+    -- 页码挂在 preedit 的 prompt 位（"\t" 之后），不进候选 comment，故不影响余码显示，
+    -- 也不进上屏文本。前半段用段原文 input，保证应用内显示的编码仍是用户敲的那串。
+    local pe = preedit_with_page(input, i - 1, total, ps)
+    if pe then cand.preedit = pe end
+    yield(cand)
   end
 end
 
@@ -353,6 +390,7 @@ if __jieshu_test_mode then
     query_phrase = query_phrase,
     phrase_segments_preview = phrase_segments_preview,
     build_candidates = build_candidates,
+    preedit_with_page = preedit_with_page,
     load = load_data,
   }
 end

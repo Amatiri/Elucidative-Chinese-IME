@@ -44,7 +44,13 @@ engine:
     - table_translator               # 音节图宿主（供 matcher/abc 判定合法编码段）；候选由 filter 丢弃
   filters:
     - lua_filter@*jieshu_drop_native # 丢弃原生 table 候选（无余码、DP 乱链），兜底防泄漏
-    - uniquifier
+    # ⚠️ 不写 uniquifier：它按候选 text 去重，会把「同字不同码」的多音字条目吞掉。
+    #    实测 `oo`：真源 7 条（哦4k/噢1k/哦2k/哦3k/嚄3kc/喔4ks/喔0k），去重后只剩 4 条，
+    #    哦2k、哦3k、喔0k 消失 —— 与 ime.py 把多音字视作不同条目显示的做法相反。
+    #    解书的「零重码」是码→字唯一，同字多读音是不同条目，必须逐条列出。
+    #    前提：真源 8344 条中（字,码）完全重复为 0（2026-09-10 统计），
+    #    故去掉去重不会产生真重复项；若日后码表整理出现完全重复行，
+    #    需补一个按 text+comment 去重的 lua filter。
 
 speller:
   # CODE_CHARS = 1234567890qwertyuiopasdfghjklzxcvbnm;'.

@@ -5463,6 +5463,7 @@
 褟 ta1y
 遢 ta1z
 趿 ta1zj
+踏 ta1zu
 獭 ta3q
 塔 ta3t
 鳎 ta3y
@@ -5533,6 +5534,8 @@
 剔 ti1d
 锑 ti1j
 梯 ti1m
+体 ti1m.r
+擿 ti1u
 踢 ti1z
 荑 ti2c
 题 ti2i
@@ -5557,6 +5560,7 @@
 涕 ti4u
 惕 ti4x
 悌 ti4xd
+裼 ti4y
 逖 ti4z
 贪 tj1b
 瘫 tj1bn
@@ -5677,6 +5681,7 @@
 饨 tp2u
 忳 tp2x
 鲀 tp2y
+褪 tp4y
 湍 tr1u
 团 tr2g
 抟 tr2u
@@ -5701,6 +5706,7 @@
 垌 ts2t
 潼 ts2u
 峂 ts2ud
+洞 ts2uj
 峒 ts2uk
 酮 ts2y
 𫍣 ts2yk
@@ -5711,7 +5717,9 @@
 捅 ts3u
 筒 ts3z
 痛 ts4b
+同 ts4k
 恸 ts4x
+通 ts4z
 凸 tu10
 秃 tu1h
 突 tu1x
@@ -5773,6 +5781,7 @@
 刹 ua1d
 煞 ua1h
 铩 ua1j
+杉 ua1m
 杀 ua1p
 纱 ua1s
 砂 ua1sx
@@ -5785,7 +5794,9 @@
 煞 ua4h
 霎 ua4i
 唼 ua4k
+嗄 ua4kx
 歃 ua4q
+沙 ua4u
 收 ub1u
 熟 ub2h
 手 ub31
@@ -5813,15 +5824,18 @@
 畲 ue1t
 蛇 ue2i
 舌 ue2k
+阇 ue2m
 佘 ue2r
 折 ue2u
 舍 ue3r
 射 ue4c
 厍 ue4cc
 麝 ue4g
+歙 ue4q
 舍 ue4r
 社 ue4s
 涉 ue4u
+拾 ue4uh
 赦 ue4ui
 摄 ue4un
 慑 ue4x
@@ -5961,9 +5975,11 @@
 誓 ui4yv
 谥 ui4yy
 适 ui4z
+適 ui4z.
 逝 ui4zv
 筮 ui4zw
 匙 ui0b
+殖 ui0d
 山 uj12
 苫 uj1c
 芟 uj1cp
@@ -5984,6 +6000,7 @@
 跚 uj1z
 陕 uj3b
 闪 uj3m
+单 uj45
 赡 uj4b
 鄯 uj4bk
 疝 uj4bu
@@ -6015,15 +6032,20 @@
 芍 uk2c
 苕 uk2cv
 韶 uk2y
+捎 uk31
 少 uk33
 少 uk43
 邵 uk4b
+召 uk4b.k
+稍 uk4h
 哨 uk4k
 劭 uk4l
 睄 uk4m
 绍 uk4s
-潲 uk4u
+捎 uk4u
+潲 uk4uh
 筛 ul1z
+色 ul3d
 晒 ul4r
 说 uo1y
 蒴 uo4c
@@ -6036,6 +6058,7 @@
 搠 uo4u
 朔 uo4y
 吮 up3k
+楯 up3m
 顺 up4i
 瞬 up4m
 舜 up4v
@@ -6097,9 +6120,11 @@
 水 uv36
 税 uv4h
 睡 uv4m
+说 uv4y
 刷 uw1d
 唰 uw1k
 耍 uw3n
+刷 uw4d
 摔 uy1u
 衰 uy1y
 甩 uy39
@@ -6111,6 +6136,7 @@
 喳 va1k
 吒 va1ke
 哳 va1ku
+咋 va1kv
 楂 va1m
 查 va1md
 扎 va1u
@@ -6120,8 +6146,10 @@
 轧 va2c
 炸 va2h
 铡 va2j
+喋 va2k
 闸 va2m
 札 va2mw
+扎 va2u
 苴 va3c
 眨 va3m
 砟 va3s
@@ -6137,9 +6165,11 @@
 笮 va4mx.z
 拃 va4u
 诈 va4y
+馇 va0u
 州 vb13
 舟 vb14
 周 vb1k
+啁 vb1kk
 粥 vb1m
 洲 vb1u
 诌 vb1y
@@ -6167,12 +6197,14 @@
 桩 vd1m
 妆 vd1p
 装 vd1y
+奘 vd3d.h
 幢 vd4j
 状 vd4p
 壮 vd4pu
 撞 vd4u
 戆 vd4x
 蜇 ve1i
+折 ve1u
 遮 ve1z
 乇 ve24.t
 辙 ve2c
@@ -6239,6 +6271,7 @@
 征 vg1t
 徵 vg1t.
 峥 vg1u
+挣 vg1ud
 怔 vg1x
 筝 vg1z
 整 vg3u
@@ -6277,6 +6310,7 @@
 仗 vh4r
 胀 vh4ri
 嶂 vh4u
+涨 vh4ug
 之 vi12
 隻 vi12.
 氏 vi14
@@ -6322,6 +6356,7 @@
 纸 vi3s
 祉 vi3sv
 址 vi3t
+徵 vi3tu
 指 vi3u
 扺 vi3uu
 沚 vi3uv
@@ -6375,6 +6410,7 @@
 志 vi4x
 忮 vi4xs
 窒 vi4xt
+识 vi4y
 踬 vi4z
 占 vj1b
 旃 vj1f
@@ -6401,6 +6437,7 @@
 钊 vk1j
 啁 vk1k
 嘲 vk1ky
+着 vk1m
 昭 vk1r
 招 vk1u
 朝 vk1y
@@ -6420,11 +6457,14 @@
 摘 vl1u
 斋 vl1w
 宅 vl2b
+择 vl2u
 翟 vl2y
 窄 vl3x
+豸 vl47.u
 瘵 vl4b
 寨 vl4m
 债 vl4r
+祭 vl4s
 䦃 vo1j
 桌 vo1m
 棁 vo1md
@@ -6439,6 +6479,7 @@
 啄 vo2k
 叕 vo2kk
 着 vo2m
+著 vo2m.c
 箸 vo2m.z
 杓 vo2mu
 斫 vo2s
@@ -6467,6 +6508,7 @@
 传 vr4r
 撰 vr4u
 馔 vr4ug
+沌 vr4ut
 篆 vr4z
 中 vs15
 螽 vs1i
@@ -6504,6 +6546,7 @@
 諸 vu1y.
 诛 vu1yv
 竹 vu25
+术 vu26
 瘃 vu2b
 烛 vu2h
 逐 vu2z
@@ -6562,6 +6605,7 @@
 娃 wa2n
 瓦 wa34
 佤 wa3r
+瓦 wa44
 袜 wa4y
 靺 wa4y.g
 哇 wa0k
@@ -6783,6 +6827,7 @@
 猬 wz4q
 位 wz4r
 胃 wz4rt
+硙 wz4s
 畏 wz4t
 渭 wz4u
 魏 wz4v

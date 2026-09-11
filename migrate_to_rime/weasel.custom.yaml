@@ -40,7 +40,7 @@ patch:
   "style/comment_font_face": "黑体"    # 余码是 ASCII，用黑体（config.py FONT_SMALL_NAME）
   "style/comment_font_point": 12
   "style/layout/min_width": 10
-  "style/layout/max_width": 350
+  "style/layout/max_width": 400
   "style/layout/border": 2
   "style/layout/margin_x": 5
   "style/layout/margin_y": 0

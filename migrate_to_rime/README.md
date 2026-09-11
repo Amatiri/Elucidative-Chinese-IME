@@ -284,7 +284,7 @@ lua filter，而不是把 `uniquifier` 加回来。
 
 **处置**：查询层新增逐字模式 —— 段的 `start > 0`（前面已有已确认段）且剩余串还能拆出
 ≥2 个 part 时，只产出**第一个 part** 的候选，并把候选 `end` 收到该 part 末尾
-（`jieshu_query.lua` 的 `build_candidates(seg_input, seg_start)`）。
+（`jieshu_query.lua` 的 `build_candidates(seg_input, seg_start)`；入参语义见 2.13 末的更正）。
 
 **为什么这样就够**：候选 `end < 段 end` 时，librime 的 `Segment::Close()`
 （`segmentation.cc:17-25`）会把段切到候选 `end` 并打 `partial` 标签；随后 `OnSelect`
@@ -329,7 +329,8 @@ lua filter，而不是把 `uniquifier` 加回来。
 | `=` | 光标 ← 「第一个未确认段的末尾」= 最小的拆分点 > 已确认位置                  | `Compose` 按光标截断输入（`engine.cc:158`），该段被单独翻出来出候选；再往下由 2.11 的 partial 拆分接手，故每次按都是「回到当前待选段」，天然幂等 |
 | `-` | 等同 Backspace（`ReopenPreviousSelection`）：回退上一个已确认段并重新出候选 | RIME 段模型里未确认段永远是「光标前那一段」，没有 ime.py 那种可回跳的「上一个未解析段」；顺带消掉 `-` 落到 `DirectCommit`（`editor.cc:216`）把原码直接上屏的坑          |
 
-**拆分点从哪来**：`jieshu_query.lua` 的 `part_boundaries(full_input)`，与查询层共用
+**拆分点从哪来**：`jieshu_query.lua` 的 `nav_scan(full_input, confirmed)`（内部走 `char_walk`；
+初版 `part_boundaries` 已在 P4-C 升级掉），与查询层共用
 `process_input` / `split_sequence`，不存在第二份「拆分」真源。传参走具名全局表
 `jieshu_query_api`（Lua 的函数值不能挂字段，故不用 `translator.api` 那种写法）。
 
@@ -352,6 +353,124 @@ nav 排在 key_binder 之前，故 composing 时优先按逐字定位解释 —�
 **2026-09-11 键盘复测**：`=` 一次进入逐字（不再手数 Left）、逐字途中 `=` 收窄当前段、`-` 回退重选、
 ↑↓ 翻页不受影响、西文模式下 `=`/`-` 原样上屏，全部通过。P4-B 闭环。
 
+### 2.13 `=` / `-` 进入闸与人工引号逐字化（P4-C，2026-09-11 落地，待键盘复测）
+
+**用户实测四问题**（对照前端 `navigate_parts:178-182` 真值）：
+① `deepseek` 整段未匹配按 `=` 不应有任何变化；② `deepseek'harness` 全段未匹配同上；
+③ `deepseek'mox;` 仅对可查段（mo/x;）出候选；④ `ceu'jmia` 选「厕」后余段 `u'jmia`
+候选错出「是检查」多字词、光标甩到末尾（应为前缀 `u` 的单字候选）。
+
+**根因与处置**（三处，全在查询层/导航层）：
+
+| 根因 | 处置 |
+| --- | --- |
+| nav 无「进入闸」：`=` 无脑挪光标、`-` 无脑 reopen，未匹配段照跳 | `jieshu_query.lua` 新增 `nav_scan`：任一非字面段无前缀候选 → gate 不过 → `=` 不跳、`-` 不回退，只吞键（放行会落到 DirectCommit 上屏原码，更糟）。字面段（人工引号下 `get_phrase_segments` 归类的无候选段）不参与闸判定、天然跳过 —— ①②③ 同时解决 |
+| 旧 `part_boundaries` 漏算人工 `'` 占的 1 字节，`"ceu'jmia"` 的 `'u'` 段真实末尾 3、旧算 4 | `char_walk` 统一真源：人工引号计入 `end`，自动拆分的虚拟 `'` 不计 |
+| `build_candidates` 见人工引号永远走整串预览，逐字模式（2.11）被旁路 → ④ 候选是覆盖全段的「是检查」 | 人工引号分支加截断形态的逐字：段首已有已确认前缀（`seg_start>0`，如 `"u'jmia"`、`"'ceu"`）只出**首个分段**的候选、end 收到该分段末尾；整段形态保留整串预览「病毒测试」。字面段的逐字化（"deepseek'ce" 的 `deepseek`）由 2.13 末的「冻结字面段头」落地。④ 的光标问题由 partial 候选 `end` 修正（`Close()` 把段切到 `u` 末尾，剩余自动成下一段） |
+
+**离线回归**：nav 用例改为四元组输出（gate / has_cand / target / head_end），与 Python 前端真值
+镜像逐行对拍 22 例 0 差异，且全部旧 nav 用例的 target 与旧值一致（只新增闸列与 head 列）；新增
+真实形态用例 `#2 u'jmia`（343 条 `u` 前缀候选，修复前是 1 条「是检查」）、`#3 'jmia`、
+`#4 'jmia`、`#3 jmia`、`#3 'jm` 等（`deepseek'mo` 一类的截断构造用例已在 2.13 末的修复里
+换成真实段形态）。旧 50 例 build 快照中仅 1 行变化：`#4 b;du'ceu`（构造的「已确认前缀 4 落在词段
+`ceu` 中间」形态 —— 真实链路 translator 只收「该段自己的字面」，该形态不可达），
+新行为按「首个可查 part 逐字」出 16 条 `b;` 前缀候选，判定可接受。
+中途曾补入的 `#3 ceu'jmia`/`#9 b;du'jmia` 等「全串+seg_start」混搭形态因不自洽已剔除。
+lupa 通道 79 例 0 差异（当轮走 lupa，JS 驱动同步改）。**2026-09-11 实测本机两个 python 均无
+`lupa`**，回归统一走 fengari 通道（`NODE_PATH=<托管 node>/workspace/node_modules`）。
+
+**待键盘复测**：①② 按 `=`/`-` 候选与输入框均不变；③ `deepseek'mox;` 按 `=` 出 `mo` 系
+**裸**单字候选（不带 `deepseek` 前缀）且上屏保留 `deepseek`；④ `ceu'jmia` 选「厕」后候选为
+`u` 系单字、光标不甩尾。（③ 的实现方式在下方 2026-09-11 修复里改成「冻结字面段头」，
+不再是「原码并入每条候选」。）
+
+#### 2026-09-11 P4-C 修复：字面段在段模型里的落位（`=` 逐字对齐三处）
+
+**先纠正一处入参语义**（前一轮的推断错了，以 `engine.cc` 为准）：translator 收到的第一个参数
+**是「段自己的字面」**，不是整条 composition 输入 —— `ConcreteEngine::TranslateSegments`：
+
+```cpp
+string input = segments->input().substr(segment.start, len);
+auto translation = translator->Query(input, segment);
+```
+
+`segment.start/_end` 是段在 composition 输入里的**绝对**下标（composition 输入 = `ctx.input[0:caret]`；
+`ctx.input` / `ctx.caret_pos` 在 lua 侧可读）。所以 `lead_code_offset(seg_input)`（段首残余码）
+与 `seg.start + …`（绝对偏移）这套写法是对的；旧快照里 `#4 ba13bu44` 一类「全串 + seg_start」
+用例是**不自洽的构造**（真实链路不会这样传参），只能当函数级回归网用，别拿它反推语义。
+
+**用户报的三个现象与根因**：
+
+| 现象 | 根因 |
+| --- | --- |
+| ① `deepseek'ce` 按 `=` 无反应，进不去 `ce` 的逐字选择 | `=` 原来只挪光标，而 target = 11 == 输入长 → 光标不截断输入 → 段仍是 [0,11)，字面段与可查段同处一段 |
+| ② `ce'deepseek` 按 `=` 后「多出 d 的逐字选择」 | 选完「厕」后新段文本是 `"'deepseek"`；`process_input` 把段首 `'` 吃掉 → `char_walk` 走「自动拆分」路径，把字面段的拆分母 `de` 当成当前 part → 出「的/嘚/锝」 |
+| ③ `deepseek'mox;` 按 `=` 时 `mo` 的候选全带 `deepseek` 前缀 | 段 [0,11) 同时含字面段与可查段，而候选文本会**替换整段**（`GetCommitText` 按 `cand->end()` 推进），字面段原码只能挤进每条候选 |
+
+**处置一：nav 冻结「段首字面段」（修 ①③）** —— `nav_scan` 新增第 4 个返回值 `head_end`
+（段首字面段的绝对末尾），`jieshu_nav.lua` 的 `freeze_literal_head` 四步：
+
+1. 光标收到 `head_end` → Compose 只翻字面段这一截（它无候选，菜单空，不会留下陈旧候选）；
+2. 重取 `comp:back()`（Compose 会重建段）；
+3. 标 `seg.status = "kConfirmed"`（`Segment.status` 在 lua 侧可写；`GetCommitText` 对无候选段
+   取 `input_.substr(seg.start, seg.end - seg.start)` 原码分支）；
+4. `comp:push_back(Segment(head_end, head_end))` 把 `GetCurrentStartPosition()`（= `back().start`）
+   推到字面段末尾 —— **不做这步下一次 Compose 会从段首重切、把冻结段吞回去**。
+
+随后光标落到目标 part 末尾，新段文本正好是 `"'mo"` / `"'ce"` → 出的是该 part 的**裸候选**
+（不再带 `deepseek`）；`'` 落在候选区间内，随候选一起被覆盖，不会随原码上屏。
+守卫：只在「当前段 `start == 0` 且铺到 `head_end`」时冻结 —— 中途按 `=` / 手动 Left 收到的段
+若冻出空隙，段原码拼接会丢掉中间那截。
+
+**处置二：段首人工 `'` 参与归类（修 ②）** —— `build_candidates` 先判 `manual_lead`
+（段文本以 `'` 开头），归类时用 `char_walk(proc .. "'")`（**尾接**虚拟引号触发人工分段分支；
+不能前接 —— 那会把段首那个 `'` 当成内部引号，使所有 `end` 多算 1 字节）。于是：
+
+- 该人工分段自己是字面段（`"'deepseek"`）→ 归为字面 → 只给**一条原码候选**覆盖整段：
+  空格可确认原文，且把分隔用的 `'` 一并覆盖（否则它会随原码上屏，前端从不输出 `'`）；
+- 该人工分段可查（`"'ceu"`）→ 只出首个分段的候选（`ce` 系），与 P4-A 同机制。
+
+**处置三：整段形态仍走「预览串」** —— 段从输入头起且含人工 `'`（`deepseek'ce`、`b;du'ceu`、
+`deepseek'mox;`）走 `phrase_segments_preview`：字面段原码 / 词 / 首选字链拼成一条候选，
+空格直接上词上串（对齐前端 `get_phrase_segments`）。原先给 (b) 形态写的「字面段原码并入每条
+候选」分支与 `end_==#proc` 守卫**一并删除** —— 那个守卫恒真（`char_walk` 逐 part 累加，
+末个 part 的末尾必然等于 `#proc`）。
+
+**离线回归**（88 例，fengari 通道 0 差异）：
+
+- 新增真实段形态用例：`#8 'ce`（6 条裸候选）、`#8 'mo`（35 条）、`#8 'ceu`（6 条）、
+  `#2 'deepseek`（1 条原码 `deepseek`）、`#2 'deepseek'ceu`（1 条预览 `deepseek测试`）、
+  `#11 x;`（25 条）、`deepseek`（0 条 = 冻结第一步翻的那个段）、`nav 0 deepseek'ce`；
+- nav 快照改为**四元组**（gate / has_cand / target / head_end）；
+- 旧用例除 nav 加列外**逐字节未变**（含 `#4 bua`、`#2 deepseek'mox;`）；两处旧的
+  `@<完整长>` 构造用例（曾被用来表达「截断形态」）随 (b) 分支一起删掉；
+- `dictionary_frontend.get_phrase_segments` 独立对拍：`deepseek'ce`→`deepseek厕`、
+  `deepseek'mo`→`deepseek摸`、`deepseek'mox;`→`deepseek模型` ✓。
+
+**已知边界**：
+
+1. 冻结流程已通过**实机复测**（见下）；`comp:push_back` 一旦失败会走 pcall 兜底 →
+   退回「整段预览」，不会崩（本机未触发）。
+2. `ce'deepseek'ceu` 这种「字面段后面还有多个可查段」的段，二次 `=` 走整串预览
+   （`deepseek测试`）而非逐段选择。前端靠 `resolved_chars` 逐段走；RIME 侧要做到需把字面段
+   也做成独立段，先按预览串处理（上屏文本一致）。
+3. 手动 Left 把光标停在人工 `'` 之后（如停在 3）会让段以 `"deepseek"` 开头而非 `"'deepseek"`，
+   归类退化为自动拆分（可能再出 `de` 系候选）。nav 不会产生这个位置（target 落在 part 末尾），
+   只有手动 Left 能到。
+4. `-`（reopen）对冻结段无效（`ReopenPreviousSelection` 只回退 `kSelected` 段；冻结段是
+   `kConfirmed`）。要改字面段直接用 Backspace 删输入字符（走 `Reset` 重切段）。
+
+**2026-09-11 实机复测通过**（用户回报「全部成功」）：
+
+| 用例 | 实测结果 |
+| --- | --- |
+| ① `deepseek'ce` 按 `=` | 进入 `ce` 的逐字选择，候选为 6 条裸候选（`厕4c/册4j/…`），无 `deepseek` 前缀 |
+| ② `ce'deepseek` 按 `=` | 进入 `ce` 的逐字选择，**不再**多出 `de` 系「的/嘚/锝」 |
+| ③ `deepseek'mox;` 按 `=` | 出 `mo` 的 35 条裸候选，上屏保留 `deepseek` |
+
+即：`nav_scan` 的 `head_end` → `freeze_literal_head`（含 `comp:push_back` 推进当前起点）在本机
+librime 1.13.1 上按预期生效，段首人工 `'` 的归类分支也如期。§2.12 / §2.13 里「待键盘复测」
+的 ①②③④ 至此全部闭环。
 ## 三、已实现功能
 
 | 能力                   | 表现                                                                                   |
@@ -414,7 +533,7 @@ fengari 的 `io.open` 未实现，脚本以内存桩喂数据并复刻 Windows �
 
 | 项                            | 归属阶段  | 说明                                                    |
 | ---------------------------- | ----- | ----------------------------------------------------- |
-| 逐字模式下「字面段」对齐（P4-A2）       | P4 可选 | 首个 part 无候选时现退回整体语义（不产出候选）；要完全对齐 ime.py 的字面段，需把原码前置进候选 text |
+| 逐字模式下「字面段」对齐（P4-A2）       | P4 可选 | 2.13 已处理导航侧（字面段跳过、原码并入候选文本）；首个 part 无候选时仍退回整体语义（不产出候选） |
 | 自动上字（>3 码且唯一候选自动上屏）          | P4 决策 | RIME 无原生等价物；若做则走 Lua processor                        |
 | 简繁切换                         | P4 可选 | 补码繁体/异体已正常入表，可挂 `simplifier`                          |
 | 全拼→双拼桥、笔画/部件反查、无数字简码版        | P4 可选 | 增强项，每项独立可弃                                            |

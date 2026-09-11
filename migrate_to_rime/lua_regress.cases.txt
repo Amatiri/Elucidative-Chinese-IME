@@ -1,4 +1,4 @@
-b;du'ceu
+﻿b;du'ceu
 ceu'b;du
 b;du'
 bu44'ba13
@@ -48,6 +48,11 @@ bu44'ba13'
 #4 zzzzbu44
 #4 qzbu44
 #4 b;du'ceu
+#3 'jmia
+#3 jmia
+#4 'jmia
+#2 deepseek'mox;
+#3 'jm
 nav 0 bu44ba13bu44
 nav 0 bu44ba13
 nav 4 ba13bu44
@@ -58,3 +63,26 @@ nav 0 b
 nav 0 b;du'ceu
 nav 0 bu44'ba13
 nav 4 qzbu44
+nav 0 deepseek
+nav 0 deepseek'harness
+nav 0 deepseek'mox;
+nav 0 ceu'jmia
+nav 3 ceu'jmia
+nav 11 deepseek'mox;
+nav 10 deepseek'mox;
+nav 0 yig
+nav 0 zz'zz
+nav 2 b;du'ceu
+nav 0 'jmia
+nav 9 b;du'jmia
+#2 u'jmia
+#8 'ce
+#8 'mo
+#8 'ceu
+#2 'deepseek
+#2 'deepseek'ceu
+#11 x;
+deepseek
+deepseek'ce
+deepseek'mo
+nav 0 deepseek'ce

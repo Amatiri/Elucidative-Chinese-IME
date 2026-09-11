@@ -47,14 +47,42 @@ bu44'ba13'	1	不八|
 #2 44ba13bu44	2	八|	捌|.
 #4 zzzzbu44	1	贼|2b
 #4 qzbu44	0	
-#4 b;du'ceu	1	病毒测试|
-nav 0 bu44ba13bu44	4	
-nav 0 bu44ba13	4	
-nav 4 ba13bu44	8	
-nav 8 ba13bu44	-1	
-nav 0 bua	2	
-nav 4 buba13	6	
-nav 0 b	1	
-nav 0 b;du'ceu	2	
-nav 0 bu44'ba13	4	
-nav 4 qzbu44	6	
+#4 b;du'ceu	16	兵|1b	并|1d	槟|1m	冰|1u	丙|35	秉|36	邴|3b	炳|3h	柄|3m	屏|3s	禀|3sd	饼|3u	病|4b	并|4d	靐|4i	摒|4u
+#3 'jmia	66	戋|17	兼|19	菅|1c	蒹|1cd	歼|1d	艰|1g	鞯|1gc	鞬|1gj	煎|1h	间|1m	监|1mi	奸|1n	犍|1nj	肩|1r	缄|1s	缣|1sd	坚|1t	搛|1u	湔|1uq	尖|1x	鲣|1y	笺|1z	柬|36	减|3b	茧|3c	剪|3d	戬|3g	锏|3j	检|3m	枧|3mm	睑|3mr	俭|3r	碱|3s	捡|3u	拣|3uj	謇|3y	裥|3ym	简|3z	蹇|3zb	笕|3zm	贱|4b	荐|4c	剑|4d	建|4j	鉴|4ji	键|4jj	见|4m	监|4mi	毽|4mj	槛|4mm	间|4mr	牮|4n	件|4r	健|4rj	僭|4rr	腱|4ry	渐|4u	溅|4ub	饯|4ug	涧|4um	舰|4v	谏|4y	𬣡|4yg	箭|4z	践|4zg	踺|4zj
+#3 jmia	66	戋|17	兼|19	菅|1c	蒹|1cd	歼|1d	艰|1g	鞯|1gc	鞬|1gj	煎|1h	间|1m	监|1mi	奸|1n	犍|1nj	肩|1r	缄|1s	缣|1sd	坚|1t	搛|1u	湔|1uq	尖|1x	鲣|1y	笺|1z	柬|36	减|3b	茧|3c	剪|3d	戬|3g	锏|3j	检|3m	枧|3mm	睑|3mr	俭|3r	碱|3s	捡|3u	拣|3uj	謇|3y	裥|3ym	简|3z	蹇|3zb	笕|3zm	贱|4b	荐|4c	剑|4d	建|4j	鉴|4ji	键|4jj	见|4m	监|4mi	毽|4mj	槛|4mm	间|4mr	牮|4n	件|4r	健|4rj	僭|4rr	腱|4ry	渐|4u	溅|4ub	饯|4ug	涧|4um	舰|4v	谏|4y	𬣡|4yg	箭|4z	践|4zg	踺|4zj
+#4 'jmia	66	戋|17	兼|19	菅|1c	蒹|1cd	歼|1d	艰|1g	鞯|1gc	鞬|1gj	煎|1h	间|1m	监|1mi	奸|1n	犍|1nj	肩|1r	缄|1s	缣|1sd	坚|1t	搛|1u	湔|1uq	尖|1x	鲣|1y	笺|1z	柬|36	减|3b	茧|3c	剪|3d	戬|3g	锏|3j	检|3m	枧|3mm	睑|3mr	俭|3r	碱|3s	捡|3u	拣|3uj	謇|3y	裥|3ym	简|3z	蹇|3zb	笕|3zm	贱|4b	荐|4c	剑|4d	建|4j	鉴|4ji	键|4jj	见|4m	监|4mi	毽|4mj	槛|4mm	间|4mr	牮|4n	件|4r	健|4rj	僭|4rr	腱|4ry	渐|4u	溅|4ub	饯|4ug	涧|4um	舰|4v	谏|4y	𬣡|4yg	箭|4z	践|4zg	踺|4zj
+#2 deepseek'mox;	1	deepseek模型|
+#3 'jm	66	戋|17	兼|19	菅|1c	蒹|1cd	歼|1d	艰|1g	鞯|1gc	鞬|1gj	煎|1h	间|1m	监|1mi	奸|1n	犍|1nj	肩|1r	缄|1s	缣|1sd	坚|1t	搛|1u	湔|1uq	尖|1x	鲣|1y	笺|1z	柬|36	减|3b	茧|3c	剪|3d	戬|3g	锏|3j	检|3m	枧|3mm	睑|3mr	俭|3r	碱|3s	捡|3u	拣|3uj	謇|3y	裥|3ym	简|3z	蹇|3zb	笕|3zm	贱|4b	荐|4c	剑|4d	建|4j	鉴|4ji	键|4jj	见|4m	监|4mi	毽|4mj	槛|4mm	间|4mr	牮|4n	件|4r	健|4rj	僭|4rr	腱|4ry	渐|4u	溅|4ub	饯|4ug	涧|4um	舰|4v	谏|4y	𬣡|4yg	箭|4z	践|4zg	踺|4zj
+nav 0 bu44ba13bu44	1	1	4	-1
+nav 0 bu44ba13	1	1	4	-1
+nav 4 ba13bu44	1	1	8	-1
+nav 8 ba13bu44	1	1	-1	-1
+nav 0 bua	0	1	2	-1
+nav 4 buba13	1	1	6	-1
+nav 0 b	1	1	1	-1
+nav 0 b;du'ceu	1	1	2	-1
+nav 0 bu44'ba13	1	1	4	-1
+nav 4 qzbu44	0	1	6	-1
+nav 0 deepseek	0	1	2	-1
+nav 0 deepseek'harness	1	0	-1	-1
+nav 0 deepseek'mox;	1	1	11	8
+nav 0 ceu'jmia	1	1	2	-1
+nav 3 ceu'jmia	1	1	6	-1
+nav 11 deepseek'mox;	1	1	13	8
+nav 10 deepseek'mox;	1	1	11	8
+nav 0 yig	1	1	2	-1
+nav 0 zz'zz	1	1	2	-1
+nav 2 b;du'ceu	1	1	4	-1
+nav 0 'jmia	1	1	2	-1
+nav 9 b;du'jmia	1	1	-1	-1
+#2 u'jmia	343	是|i4r	痧|a1b	莎|a1c	刹|a1d	煞|a1h	铩|a1j	杉|a1m	杀|a1p	纱|a1s	砂|a1sx	沙|a1u	鲨|a1y	裟|a1yu	啥|a2k	傻|a3r	厦|a4c	煞|a4h	霎|a4i	唼|a4k	嗄|a4kx	歃|a4q	沙|a4u	收|b1u	熟|b2h	手|b31	守|b3b	首|b3d	瘦|b4b	寿|b4c	兽|b4k	狩|b4q	绶|b4s	授|b4u	受|b4v	售|b4w	霜|d1i	双|d1k	孀|d1n	泷|d1u	爽|d36	灀|d4u	赊|e1b	奢|e1d	猞|e1q	畲|e1t	蛇|e2i	舌|e2k	阇|e2m	佘|e2r	折|e2u	舍|e3r	射|e4c	厍|e4cc	麝|e4g	歙|e4q	舍|e4r	社|e4s	涉|e4u	拾|e4uh	赦|e4ui	摄|e4un	慑|e4x	设|e4y	申|f15	身|f17	莘|f1c	呻|f1k	糁|f1m	娠|f1n	伸|f1r	侁|f1rx	绅|f1s	参|f1sd	砷|f1su	深|f1u	屾|f1uu	诜|f1y	什|f2r	神|f2s	审|f3b	哂|f3k	婶|f3n	沈|f3u	矧|f3uy	谂|f3y	甚|f4b	瘆|f4bs	葚|f4c	蜃|f4i	肾|f4r	胂|f4ru	渗|f4u	慎|f4x	生|g11	升|g14	牲|g1n	昇|g1r	甥|g1t	声|g1u	笙|g1z	绳|g2s	省|g3m	乘|g46	剩|g4d	圣|g4k	盛|g4m	晟|g4r	嵊|g4u	胜|g4y	商|h1d	殇|h1dr	熵|h1h	觞|h1k	伤|h1r	墒|h1t	上|h32	赏|h3b	晌|h3r	垧|h3t	上|h42	尚|h4h	绱|h4s	裳|h0y	失|i16	尸|i17	邿|i1b	蓍|i1c	施|i1f	虱|i1i	嘘|i1k	鸤|i1n	狮|i1q	师|i1r	湿|i1u	诗|i1y	十|i25	实|i2b	莳|i2c	炻|i2h	蚀|i2i	石|i2k	时|i2r	食|i2rl	什|i2rs	埘|i2t	拾|i2u	湜|i2ur	识|i2y	鲥|i2yr	豕|i34	矢|i36	史|i3k	驶|i3m	始|i3n	使|i3r	屎|i3s	氏|i44	士|i45	奭|i46	世|i49	室|i4b	贳|i4bu	轼|i4c	莳|i4cr	市|i4d	式|i4g	戺|i4h	螫|i4i	铈|i4j	事|i4k	嗜|i4kq	舐|i4ku	噬|i4kz	势|i4l	释|i4m	柿|i4md	示|i4o	弑|i4p	侍|i4rs	仕|i4ru	似|i4ry	视|i4s	饰|i4u	拭|i4ug	峙|i4us	恃|i4x	试|i4y	襫|i4yb	𬤊|i4yr	誓|i4yv	谥|i4yy	适|i4z	逝|i4zv	筮|i4zw	匙|i0b	殖|i0d	山|j12	苫|j1c	芟|j1cp	删|j1d	扇|j1h	煽|j1hh	钐|j1j	杉|j1m	栅|j1mc	姗|j1n	膻|j1r	潸|j1u	舢|j1v	珊|j1w	衫|j1y	跚|j1z	陕|j3b	闪|j3m	单|j45	赡|j4b	鄯|j4bk	疝|j4bu	苫|j4c	剡|j4d	扇|j4h	蟮|j4i	钐|j4j	善|j4k	骟|j4m	嬗|j4n	膳|j4r	禅|j4s	缮|j4sk	擅|j4u	汕|j4uu	讪|j4y	鳝|j4yk	鞘|k1g	烧|k1h	稍|k1hx	蛸|k1i	梢|k1m	捎|k1u	艄|k1v	筲|k1z	勺|k27	芍|k2c	苕|k2cv	韶|k2y	捎|k31	少|k33	少|k43	邵|k4b	稍|k4h	哨|k4k	劭|k4l	睄|k4m	绍|k4s	捎|k4u	潲|k4uh	筛|l1z	色|l3d	晒|l4r	说|o1y	蒴|o4c	烁|o4h	铄|o4j	数|o4l	槊|o4m	妁|o4n	硕|o4s	搠|o4u	朔|o4y	吮|p3k	楯|p3m	顺|p4i	瞬|p4m	舜|p4v	栓|r1m	闩|r1mh	拴|r1u	涮|r4u	书|u11	尗|u14	陎|u1b	输|u1c	菽|u1ck	蔬|u1cv	殊|u1d	叔|u1k	殳|u1kj	梳|u1m	枢|u1mq	毹|u1my	姝|u1n	娶|u1nq	倏|u1q	舒|u1r	纾|u1s	抒|u1u	淑|u1uk	摅|u1ul	疏|u1v	赎|u2b	孰|u2d	熟|u2h	秫|u2hu	塾|u2t	薯|u3c	鼠|u3f	黍|u3h	数|u3l	暑|u3r	曙|u3rw	属|u3s	署|u3w	蜀|u3wl	术|u46	竖|u4d	戍|u4g	庶|u4gh	束|u4k	数|u4l	树|u4m	腧|u4r	墅|u4t	漱|u4u	澍|u4uc	沭|u4uu	恕|u4x	述|u4z	谁|v2y	水|v36	税|v4h	睡|v4m	说|v4y	刷|w1d	唰|w1k	耍|w3n	刷|w4d	摔|y1u	衰|y1y	甩|y39	率|y4d	蟀|y4i	帅|y4r	谁|z2y
+#8 'ce	6	厕|4c	册|4j	侧|4r	测|4u	恻|4x	策|4z
+#8 'mo	35	摸|1u	蘑|2c	模|2m	嬷|2n	嫫|2nc	膜|2r	磨|2s	麽|2t	摩|2u	馍|2uc	摹|2ur	魔|2v	谟|2y	抹|3u	末|46	陌|4b	寞|4bc	瘼|4br	莫|4c	茉|4cm	殁|4d	靺|4g	秣|4h	蓦|4m	耱|4n	默|4q	貊|4qb	貘|4qc	脉|4r	磨|4s	墨|4t	沫|4u	漠|4uc	抹|4um	没|4up
+#8 'ceu	6	厕|4c	册|4j	侧|4r	测|4u	恻|4x	策|4z
+#2 'deepseek	1	deepseek|
+#2 'deepseek'ceu	1	deepseek测试|
+#11 x;	25	兴|1b	猩|1q	星|1r	腥|1rr	惺|1x	邢|2b	陉|2bg	刑|2d	形|2m	𫰛|2n	硎|2s	行|2t	型|2td	荥|2u	饧|2ur	省|3m	擤|3u	醒|3y	兴|4b	荇|4c	杏|4m	姓|4n	幸|4t	性|4x	悻|4xt
+deepseek	0	
+deepseek'ce	1	deepseek厕|
+deepseek'mo	1	deepseek摸|
+nav 0 deepseek'ce	1	1	11	8

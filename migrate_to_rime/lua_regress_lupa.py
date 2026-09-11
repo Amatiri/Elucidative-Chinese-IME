@@ -71,15 +71,17 @@ end
 assert(load(__nav_src, "@jieshu_nav.lua"))()
 
 local cases = {}
+__cases_raw = __cases_raw:gsub("^" .. string.char(239, 187, 191), ""):gsub("\r", "")
 for c in __cases_raw:gmatch("[^\n]+") do cases[#cases + 1] = c end
 
 local out = {}
 for _, c in ipairs(cases) do
   local nav_conf, nav_input = c:match("^nav%s+(%d+)%s+(.*)$")
   if nav_conf then
-    local t = __jieshu_nav_test.next_target(
-      __jieshu_test.part_boundaries(nav_input), tonumber(nav_conf))
-    out[#out + 1] = c .. "\t" .. tostring(t ~= nil and t or -1) .. "\t"
+    local gate, target, has, head = __jieshu_nav_test.nav_scan(nav_input, tonumber(nav_conf))
+    out[#out + 1] = c .. "\t" .. (gate and 1 or 0) .. "\t" .. (has and 1 or 0) .. "\t"
+      .. tostring(target ~= nil and target or -1) .. "\t"
+      .. tostring(head ~= nil and head or -1)
   else
     local start, input = c:match("^#(%d+)%s+(.*)$")
     if start then start = tonumber(start) else start = 0 input = c end
@@ -102,7 +104,8 @@ def run_lua():
     g = lua.globals()
 
     def read(path):
-        with io.open(path, "r", encoding="utf-8") as f:
+        # utf-8-sig 去 BOM；文本模式默认已把 CRLF 归一成 \n（对齐 JS 侧的 readNormalized）
+        with io.open(path, "r", encoding="utf-8-sig") as f:
             return f.read()
 
     g.__dir = STUB_USER_DATA
@@ -139,10 +142,10 @@ def main():
     if not os.path.isfile(EXPECTED):
         print("[lua_regress] 缺少快照，先跑一次 --update", file=sys.stderr)
         return 2
-    exp = parse(io.open(EXPECTED, encoding="utf-8").read())
+    exp = parse(io.open(EXPECTED, encoding="utf-8-sig").read())
     act = parse(actual)
     cases = [s.strip() for s in
-             io.open(CASES, encoding="utf-8").read().split("\n") if s.strip()]
+             io.open(CASES, encoding="utf-8-sig").read().split("\n") if s.strip()]
     diff = 0
     for c in cases:
         e, a = exp.get(c), act.get(c)

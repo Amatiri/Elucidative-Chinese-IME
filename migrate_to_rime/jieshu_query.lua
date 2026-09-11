@@ -195,19 +195,8 @@ local function split_sequence(original)
   return result
 end
 
--- 各 part 末尾的绝对位置表（P4-B 逐字定位用）。
--- 与查询层共用 process_input / split_sequence，避免出现第二份「拆分」真源；
--- 经 translator.api 供 jieshu_nav.lua 取用。
-local function part_boundaries(full_input)
-  local out, acc = {}, 0
-  for _, p in ipairs(split_str(split_sequence(process_input(full_input)), "'")) do
-    if p ~= "" then
-      acc = acc + #p
-      out[#out + 1] = acc
-    end
-  end
-  return out
-end
+-- （旧 part_boundaries 已升级为 char_walk / nav_scan，见 query_phrase 之后：
+--   旧版漏算人工 `'` 占的 1 字节，且无「段是否有候选」闸。）
 
 local function query_by_prefix(prefix)
   local out = {}
@@ -265,6 +254,84 @@ end
 local function query_phrase(code)
   code = code:gsub(" ", "")
   return phrases[code] or ""
+end
+
+-- 逐字导航（P4-B）用的部件扫描。入参是已 process_input 的编码串，走成逐部件表，
+-- 每项 { code, end, literal, cand }，end = 该 part 在此串中的末尾字节偏移：
+--   无人工引号 → 自动拆分的各 part 全按「可查询段」处理（= 前端 main_function 的
+--     split_parts，不做字面归类）；
+--   有人工引号 → 按 get_phrase_segments 语义逐段归类：
+--       段长 <3 且有前缀候选       → 单 part；无候选 → 字面段
+--       段长 ≥3 命中词             → 词的自动拆分 parts（前端同样逐字可选）
+--       段长 ≥3 未命中但首选链完整 → 自动拆分 parts
+--       以上皆不满足               → 字面段（原码，不参与逐字导航）
+-- 人工 `'` 实际占据输入串 1 字节，必须计入 end —— 旧 part_boundaries 漏算它，
+-- "ceu'jmia" 里 'u' 段真实末尾是 3、旧算 4，选字后光标与候选覆盖范围整体偏移。
+-- 自动拆分产生的 `'` 是虚拟边界、不占输入，不计数（与旧版无人工引号语义一致）。
+local function char_walk(proc)
+  local out, acc = {}, 0
+  local function push(p, literal)
+    if p == "" then return end
+    acc = acc + #p
+    out[#out + 1] = { code = p, end_ = acc, literal = literal,
+                      cand = (not literal) and #query_by_prefix(p) > 0 or false }
+  end
+  if not proc:find("'", 1, true) then
+    for _, p in ipairs(split_str(split_sequence(proc), "'")) do push(p, false) end
+    return out
+  end
+  local first = true
+  for _, seg in ipairs(split_str(proc, "'")) do
+    if not first then acc = acc + 1 end   -- 人工引号占 1 字节
+    first = false
+    if seg ~= "" then
+      local parts
+      if #seg < 3 then
+        if #query_by_prefix(seg) > 0 then parts = { seg } end
+      elseif query_phrase(seg) ~= "" then
+        parts = split_str(split_sequence(seg), "'")
+      else
+        local st = split_sequence(seg)
+        if query_multi_chars(st) ~= "" then parts = split_str(st, "'") end
+      end
+      if parts then
+        for _, p in ipairs(parts) do push(p, false) end
+      else
+        push(seg, true)
+      end
+    end
+  end
+  return out
+end
+
+-- P4-B 进入闸与定位目标（对齐 ime.py navigate_parts:178-182 + handle_special_keys:387）。
+-- 返回 gate_ok, target, has_cand, head_end：
+--   gate_ok  = 每个非字面段都有前缀候选。任一缺 → `=`/`-` 禁止动作、候选与输入不变化
+--              （用户报的 deepseek 一类场景；前端真值即如此）；
+--   has_cand = 存在可查询的非字面段（全字面段如 "deepseek'harness" 为 false）；
+--   target   = 第一个「非字面、有候选、末尾 > confirmed」段的绝对末尾；nil = 无处可跳；
+--   head_end = 段首字面段的绝对末尾（"deepseek'ce" 的 "deepseek"），且其后还有可查段时给出。
+--              它是给 nav 用来「冻结字面头」的：把段收窄到 head_end 并标成已确认，字面段
+--              就成了独立的原码段，不再挤进每条候选的文本（见 jieshu_nav.lua）。
+local function nav_scan(full_input, confirmed)
+  local gate_ok, has_cand, target, head_end = true, false, nil, nil
+  local offset = lead_code_offset(full_input)
+  for i, p in ipairs(char_walk(process_input(full_input))) do
+    if not p.literal then
+      if not p.cand then
+        gate_ok = false
+      else
+        has_cand = true
+        if not target and p.end_ > confirmed then target = p.end_ end
+      end
+    elseif i == 1 and offset == 0 then
+      -- 只在输入**从字面段本身开始**时给冻结点：段首若还有残余码/人工 `'`，那段原码
+      -- 上屏时会把这些不该输出的字符一起带上（`'` 与上一位已吃掉的余码）
+      head_end = p.end_
+    end
+  end
+  if not has_cand then head_end = nil end   -- 全字面（deepseek'harness 一类）没有可冻结的对象
+  return gate_ok, target, has_cand, head_end
 end
 
 -- get_phrase_segments 的显示层（ime.py L273-286 / L578-586）：
@@ -361,18 +428,62 @@ end
 -- 编码留在行内 preedit（虚线），此时按空格由 RIME 原生 raw 段机制上屏原编码。
 -- 第三项 end_pos 只在逐字模式（P4-A）出现：候选只覆盖段的一部分，需要让
 -- Segment::Close() 把段切到该位置（不出现时按段尾处理，即覆盖整段）。
--- seg_start = 段在输入串中的起始偏移；0 = 段从输入头开始（无已确认前缀）。
+-- seg_start = 段在 composition 输入里的绝对起始偏移。⚠ translator 收到的 seg_input 是**段自己
+--   的字面**（engine.cc::TranslateSegments：input = segments->input().substr(segment.start, len)），
+--   不是整条 composition 输入；seg.start/_end 是它在 composition 输入里的绝对下标。
+--   段首因此可能是这两种「残头」，必须分别处理：
+--     · 段首人工 `'`：上一位选字后剩余的人工分段（"'mo"、"'ceu"）。process_input 会把段首的
+--       `'` 吃掉，归类时必须补回来 —— 否则 char_walk 走「自动拆分」路径，会把字面段的自动
+--       拆分（"deepseek"→de/ep/se/ek）当成当前 part，给出 "de" 的候选（用户报的「多出 d 的
+--       逐字选择」）。
+--     · 未冻结的字面段头："deepseek'ce" 这种整段形态 → 走前端 get_phrase_segments 预览串。
 local function build_candidates(seg_input, seg_start)
   seg_start = seg_start or 0
+  local manual_lead = seg_input:sub(1, 1) == "'"
   local proc = process_input(seg_input)
   if proc == "" then return {} end
-  -- 人工单引号（proc 里的 ' 必然是用户敲的，split_sequence 产出的不算）→ 词语增强预览。
-  -- 分隔符会原样进入 input 且不打断分段（librime speller.cc / abc_segmentor.cc），
-  -- 故本分支能收到完整的 "b;du'ceu"。
-  if proc:find("'", 1, true) then
-    local disp = phrase_segments_preview(proc)
-    if disp == "" then return {} end
-    return { { disp, "" } }
+  -- 人工引号参与归类：段首的 `'` 已被 process_input 吃掉，靠**尾接**一个虚拟 `'` 让 char_walk
+  -- 走人工分段分支（每个非首分段的 acc 才 +1，尾接的空分段不产出条目，故偏移不受影响；
+  -- 不能前置引号——那会把段首那个 `'` 当成内部引号，把所有 end 多算 1 字节）。
+  local manual = manual_lead or proc:find("'", 1, true) ~= nil
+  local walk = char_walk(manual and (proc .. "'") or proc)
+  local first = walk[1]
+  local base = seg_start + lead_code_offset(seg_input)
+  -- 单个分段的候选：end 收到该分段末尾（< 段尾时由 Segment::Close() 切段，剩余自动成下一段）
+  local function part_cands(p)
+    local out = {}
+    for _, c in ipairs(query_by_prefix(p.code)) do
+      local w = first_char(c)
+      out[#out + 1] = { w, c:sub(#w + 1), base + p.end_ }
+    end
+    return out
+  end
+  -- ① 首个分段被归类为**字面段**（无候选）。只有人工分段归类会产出这种段，两种形态：
+  --    · 字面段头 + 后面还有可查段（"deepseek'ce"、"deepseek'mox;" 整段）→ 前端整串预览串
+  --      （预览串本身含字面段原码，信息不丢）；
+  --    · 整段就是一个字面人工分段（"ce'deepseek" 选完「厕」后的 "'deepseek"）→ 只给一条
+  --      「原码」候选覆盖整段。两个作用：可确认（空格）把原文原样留下；把人工 `'` 一并覆盖
+  --      —— 段尾没被候选覆盖时 `'` 会随原码上屏，而前端从不输出 `'`。
+  if first and first.literal then
+    if #walk > 1 then
+      local disp = phrase_segments_preview(proc)
+      if disp ~= "" then return { { disp, "" } } end
+    end
+    local text = {}
+    for _, p in ipairs(walk) do text[#text + 1] = p.code end
+    return { { table.concat(text), "", base + walk[#walk].end_ } }
+  end
+  -- ② 含人工引号的段：整段形态（段从输入头起，如 "b;du'ceu"）走前端 get_phrase_segments
+  --    预览串；截断形态（段首已有已确认前缀，如 "'ceu"、"'mo"）只出**首个分段**的候选，
+  --    与 P4-A 同一机制（选字后 partial 拆分接手）。
+  if manual then
+    if seg_start == 0 then
+      local disp = phrase_segments_preview(proc)
+      if disp == "" then return {} end
+      return { { disp, "" } }
+    end
+    if first and first.cand then return part_cands(first) end
+    return {}
   end
   local st = split_sequence(proc)
   if st == "" then return {} end
@@ -485,7 +596,8 @@ if __jieshu_test_mode then
     phrase_segments_preview = phrase_segments_preview,
     build_candidates = build_candidates,
     preedit_with_page = preedit_with_page,
-    part_boundaries = part_boundaries,
+    char_walk = char_walk,
+    nav_scan = nav_scan,
     load = load_data,
   }
 end
@@ -495,7 +607,7 @@ end
 jieshu_query_api = {
   process_input = process_input,
   split_sequence = split_sequence,
-  part_boundaries = part_boundaries,
+  nav_scan = nav_scan,
 }
 
 return jieshu_translator

@@ -100,15 +100,17 @@ end
 assert(load(__nav_src, "@jieshu_nav.lua"))()
 
 local cases = {}
+__cases_raw = __cases_raw:gsub("^" .. string.char(239, 187, 191), ""):gsub("\\r", "")
 for c in __cases_raw:gmatch("[^\\n]+") do cases[#cases + 1] = c end
 
 local out = {}
 for _, c in ipairs(cases) do
   local nav_conf, nav_input = c:match("^nav%s+(%d+)%s+(.*)$")
   if nav_conf then
-    local t = __jieshu_nav_test.next_target(
-      __jieshu_test.part_boundaries(nav_input), tonumber(nav_conf))
-    out[#out + 1] = c .. "\\t" .. tostring(t ~= nil and t or -1) .. "\\t"
+    local gate, target, has, head = __jieshu_nav_test.nav_scan(nav_input, tonumber(nav_conf))
+    out[#out + 1] = c .. "\\t" .. (gate and 1 or 0) .. "\\t" .. (has and 1 or 0) .. "\\t"
+      .. tostring(target ~= nil and target or -1) .. "\\t"
+      .. tostring(head ~= nil and head or -1)
   else
     local start, input = c:match("^#(%d+)%s+(.*)$")
     if start then start = tonumber(start) else start = 0 input = c end
@@ -153,6 +155,12 @@ function runLua() {
   return to_jsstring(lua.lua_tostring(L, -1));
 }
 
+// 读快照/用例时统一去 BOM、CRLF→LF：core.autocrlf=true 的检出会把它们写成 CRLF+BOM，
+// 而 Lua 侧按 "\n" 切行、逐字节比对，混进来就会整片对不上（表现为「缺少产出」）。
+function readNormalized(p) {
+  return fs.readFileSync(p, "utf8").replace(/^\uFEFF/, "").replace(/\r\n/g, "\n");
+}
+
 function parse(text) {
   const map = {};
   for (const line of text.split("\n")) {
@@ -177,10 +185,11 @@ if (!fs.existsSync(EXPECTED)) {
   process.exit(2);
 }
 
-const exp = parse(fs.readFileSync(EXPECTED, "utf8"));
+const exp = parse(readNormalized(EXPECTED));
 const act = parse(actualText);
 const cases = fs
   .readFileSync(CASES, "utf8")
+  .replace(/^\uFEFF/, "")
   .split("\n")
   .map((s) => s.trim())
   .filter((s) => s !== "");

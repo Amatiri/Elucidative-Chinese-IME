@@ -95,6 +95,7 @@
 包括 bkko
 报名 bkm;
 保证 bkvg
+宝藏 bkzh
 拜拜 blbl
 百度 bldu
 耂 blk
@@ -217,6 +218,7 @@
 ， d.b
 · d.d
 、 d.p
+定制 d;vi
 定义 d;yi
 达到 dadk
 大概 dagl
@@ -231,6 +233,7 @@
 打字 dazi4
 豆包 dbb
 逗号 dbhk4
+调度 dcdu
 调查 dcia
 ’ ddy
 ‘ ddz
@@ -317,6 +320,7 @@
 【 dvz
 【】 dvzy
 ？ dwh
+迭代 dxdl
 ” dyy
 “ dyz
 “” dyzy
@@ -367,6 +371,7 @@
 福建 fujm
 副码 fuma3s
 父亲 fuqn1
+辅助 fuvu
 服务 fuwu
 复兴 fux;
 复习 fuxi
@@ -467,6 +472,7 @@
 观众 grvs
 关系 grxi
 关于 gryu
+公告 gsgk
 共和 gshe
 σ gsi
 Σ gsic
@@ -676,6 +682,7 @@
 精英 j;y;1
 晶莹 j;y;2
 经验 j;yj
+静音 j;yn
 交互 jchu
 教科书 jckeu
 交流 jclq
@@ -737,6 +744,10 @@
 简介 jmjx4
 监控 jmks
 建立 jmli
+见面 jmmm
+减免 jmmm3
+建模 jmmo
+缄默 jmmo4
 键盘 jmpj
 箭头 jmtb
 简体 jmti
@@ -803,6 +814,7 @@
 价值 jwvi
 加油 jwyb
 加载 jwzl4
+解读 jxdu
 结构 jxgb
 桔槔 jxgk1m
 结果 jxgo
@@ -820,17 +832,21 @@
 介绍 jxuk
 结束 jxuu
 借助 jxvu
+解析 jxxi
 接下来 jxxwl
 矿泉水 kdqru
+科创 keid
 科技 keji
 客气 keqi4
 课堂 keth
+可视化 keuihw
 科学 kext
 可以 keyi
 肯定 kfd;
 肯德基 kfdej
 看到 kjdk4
 看见 kjjm
+看看 kjkj4
 看来 kjll
 看着 kjve
 考虑 kkly
@@ -938,6 +954,7 @@
 腼腆 mmtm
 面试 mmui
 泯灭 mnmx
+模拟 moni
 默认 morf
 模式 moui
 模型 mox;
@@ -1012,6 +1029,8 @@
 培养 pzyh
 青海 q;hl
 清楚 q;iu
+请教 q;jc
+青椒 q;jc1
 情况 q;kd
 清空 q;ks
 请你 q;ni
@@ -1066,6 +1085,7 @@
 全能 qrng
 全球 qrqq
 全体 qrti
+确定 qtd;
 确认 qtrf
 确实 qtui2
 取得 qude
@@ -1309,6 +1329,7 @@
 体现 tixm
 体验 tiyj
 体育 tiyu
+探究 tjjq
 探索 tjso
 坍缩 tjso1
 探讨 tjtk
@@ -1534,6 +1555,7 @@
 直接 vijx
 指令 vil;
 质量 vild
+稚嫩 vinf
 只能 ving
 智能 ving2
 指南 vinj
@@ -1702,6 +1724,7 @@
 网络 whlo
 网盘 whpj
 王者 whve
+望文生义 whwfugy wwuy
 网页 whye
 完毕 wjbi
 完璧归赵 wjbigvv wbgv
@@ -1816,9 +1839,11 @@
 暄软 xrrr
 旋转 xrvr
 选项 xrxd
+轩辕 xryr
 选择 xrze
 匈牙利 xsyal
 学期 xtqi
+削弱 xtro
 噱头 xttb
 学生 xtug
 学校 xtxc
@@ -1854,6 +1879,8 @@
 优点 ybdm3
 有关 ybgr1
 友好 ybhk
+优化 ybhw
+油画 ybhw4
 游乐园 ybley
 有利于 ybliy
 又双叒叕 ybudrov
@@ -1943,6 +1970,8 @@
 遇到 yudk
 雨尘 yuif
 雨尘さま yuifsama
+预计 yuji
+淤积 yuji1
 预览 yulj
 舆论 yulp
 于是 yuui

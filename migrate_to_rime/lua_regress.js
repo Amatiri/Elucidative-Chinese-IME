@@ -28,6 +28,7 @@ const CASES = path.join(BASE, "lua_regress.cases.txt");
 const EXPECTED = path.join(BASE, "lua_regress.expected.tsv");
 // 模块与数据都用仓库内真源：本目录 jieshu_query.lua + dict/ 码表
 const MODULE = path.join(BASE, "jieshu_query.lua").replace(/\\/g, "/");
+const NAV_MODULE = path.join(BASE, "jieshu_nav.lua").replace(/\\/g, "/");
 const DATA_SINGLE = path.join(REPO_ROOT, "dict", "dictionary.txt").replace(/\\/g, "/");
 const DATA_CIYU = path.join(REPO_ROOT, "dict", "ciyu.txt").replace(/\\/g, "/");
 // 部署形态的虚拟资料夹：lua 内部拼 <user_data>/lua/data/jieshu_*.txt，桩按同一路径拦截
@@ -56,6 +57,7 @@ const { lua, lauxlib, lualib, to_luastring, to_jsstring } = requireFengari();
 
 const DRIVER = `
 __jieshu_test_mode = true
+__jieshu_nav_test_mode = true
 rime_api = { get_user_data_dir = function() return __dir end }
 log = { info = function() end, error = function() end, warning = function() end }
 
@@ -86,21 +88,37 @@ io = {
   end,
 }
 
-local f = assert(load(__src, "@jieshu_query.lua"))
-f()
+local query_chunk = assert(load(__src, "@jieshu_query.lua"))
+query_chunk()
 __jieshu_test.load()
+
+local real_require = require
+require = function(name)
+  if name == "jieshu_query" then return query_chunk end
+  return real_require(name)
+end
+assert(load(__nav_src, "@jieshu_nav.lua"))()
 
 local cases = {}
 for c in __cases_raw:gmatch("[^\\n]+") do cases[#cases + 1] = c end
 
 local out = {}
 for _, c in ipairs(cases) do
-  local cands = __jieshu_test.build_candidates(c)
-  local t = {}
-  for _, x in ipairs(cands) do
-    t[#t + 1] = x[1] .. "|" .. (x[2] or "")
+  local nav_conf, nav_input = c:match("^nav%s+(%d+)%s+(.*)$")
+  if nav_conf then
+    local t = __jieshu_nav_test.next_target(
+      __jieshu_test.part_boundaries(nav_input), tonumber(nav_conf))
+    out[#out + 1] = c .. "\\t" .. tostring(t ~= nil and t or -1) .. "\\t"
+  else
+    local start, input = c:match("^#(%d+)%s+(.*)$")
+    if start then start = tonumber(start) else start = 0 input = c end
+    local cands = __jieshu_test.build_candidates(input, start)
+    local t = {}
+    for _, x in ipairs(cands) do
+      t[#t + 1] = x[1] .. "|" .. (x[2] or "")
+    end
+    out[#out + 1] = c .. "\\t" .. #cands .. "\\t" .. table.concat(t, "\\t")
   end
-  out[#out + 1] = c .. "\\t" .. #cands .. "\\t" .. table.concat(t, "\\t")
 end
 __result = table.concat(out, "\\n")
 `;
@@ -118,6 +136,7 @@ function runLua() {
   };
   setStr("__dir", STUB_USER_DATA);
   setStr("__src", fs.readFileSync(MODULE, "utf8"));
+  setStr("__nav_src", fs.readFileSync(NAV_MODULE, "utf8"));
   setStr("__cases_raw", fs.readFileSync(CASES, "utf8"));
   setStr("__p1", STUB_SINGLE);
   setStr("__d1", fs.readFileSync(DATA_SINGLE, "utf8"));

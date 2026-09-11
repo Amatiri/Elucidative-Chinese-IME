@@ -5373,7 +5373,6 @@
 嗍 so1ku
 梭 so1m
 睃 so1ms
-桫 so1mu
 娑 so1n
 缩 so1s
 挲 so1u
@@ -6840,6 +6839,7 @@
 削 xc1d
 肖 xc1h
 霄 xc1i
+蛸 xc1ih
 销 xc1j
 嚣 xc1k
 哓 xc1ky
@@ -7026,6 +7026,7 @@
 猃 xm3q
 狝 xm3qo
 显 xm3r
+洗 xm3u
 鲜 xm3y
 筅 xm3z
 跣 xm3zo
@@ -7066,6 +7067,7 @@
 䜣 xn1y
 镡 xn2j
 伈 xn3r
+芯 xn4c
 囟 xn4p
 信 xn4r
 衅 xn4x
@@ -7098,6 +7100,7 @@
 巽 xp4s
 徇 xp4t
 汛 xp4u
+浚 xp4uu
 训 xp4y
 讯 xp4ys
 迅 xp4z
@@ -7122,6 +7125,7 @@
 溴 xq4uz
 琇 xq4w
 袖 xq4y
+臭 xq4z
 宣 xr1b
 轩 xr1c
 萱 xr1cb
@@ -7139,6 +7143,7 @@
 癣 xr3b
 烜 xr3h
 选 xr3z
+券 xr4d
 旋 xr4f
 炫 xr4h
 铉 xr4j
@@ -7190,6 +7195,7 @@
 𬣙 xu1yy.
 徐 xu2t
 栩 xu3m
+浒 xu3u
 许 xu3y
 诩 xu3yy
 蓄 xu4c
@@ -7244,6 +7250,7 @@
 胁 xx2r
 偕 xx2rj
 协 xx2s
+叶 xx2s.k
 缬 xx2si
 携 xx2u
 撷 xx2ui

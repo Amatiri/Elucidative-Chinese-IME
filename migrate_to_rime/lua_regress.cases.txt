@@ -39,3 +39,22 @@ zzzz
 ce4u.a
 b;'du
 bu44'ba13'
+#4 ba13bu44
+#4 ba13bu44ni3r
+#4 ba13
+#4 bua
+#4 buba13
+#2 44ba13bu44
+#4 zzzzbu44
+#4 qzbu44
+#4 b;du'ceu
+nav 0 bu44ba13bu44
+nav 0 bu44ba13
+nav 4 ba13bu44
+nav 8 ba13bu44
+nav 0 bua
+nav 4 buba13
+nav 0 b
+nav 0 b;du'ceu
+nav 0 bu44'ba13
+nav 4 qzbu44

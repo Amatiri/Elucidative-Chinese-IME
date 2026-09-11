@@ -18,6 +18,7 @@ REPO_ROOT = os.path.dirname(SCRIPT_DIR)
 CASES = os.path.join(SCRIPT_DIR, "lua_regress.cases.txt")
 EXPECTED = os.path.join(SCRIPT_DIR, "lua_regress.expected.tsv")
 MODULE = os.path.join(SCRIPT_DIR, "jieshu_query.lua")
+NAV_MODULE = os.path.join(SCRIPT_DIR, "jieshu_nav.lua")
 DATA_SINGLE = os.path.join(REPO_ROOT, "dict", "dictionary.txt")
 DATA_CIYU = os.path.join(REPO_ROOT, "dict", "ciyu.txt")
 STUB_USER_DATA = "RIME_USER_DATA_STUB"
@@ -27,6 +28,7 @@ STUB_CIYU = STUB_USER_DATA + "/lua/data/jieshu_ciyu.txt"
 # 与 lua_regress.js 的 DRIVER 保持逐字一致（改一处必须同步另一处）
 DRIVER = r"""
 __jieshu_test_mode = true
+__jieshu_nav_test_mode = true
 rime_api = { get_user_data_dir = function() return __dir end }
 log = { info = function() end, error = function() end, warning = function() end }
 
@@ -57,21 +59,37 @@ io = {
   end,
 }
 
-local f = assert(load(__src, "@jieshu_query.lua"))
-f()
+local query_chunk = assert(load(__src, "@jieshu_query.lua"))
+query_chunk()
 __jieshu_test.load()
+
+local real_require = require
+require = function(name)
+  if name == "jieshu_query" then return query_chunk end
+  return real_require(name)
+end
+assert(load(__nav_src, "@jieshu_nav.lua"))()
 
 local cases = {}
 for c in __cases_raw:gmatch("[^\n]+") do cases[#cases + 1] = c end
 
 local out = {}
 for _, c in ipairs(cases) do
-  local cands = __jieshu_test.build_candidates(c)
-  local t = {}
-  for _, x in ipairs(cands) do
-    t[#t + 1] = x[1] .. "|" .. (x[2] or "")
+  local nav_conf, nav_input = c:match("^nav%s+(%d+)%s+(.*)$")
+  if nav_conf then
+    local t = __jieshu_nav_test.next_target(
+      __jieshu_test.part_boundaries(nav_input), tonumber(nav_conf))
+    out[#out + 1] = c .. "\t" .. tostring(t ~= nil and t or -1) .. "\t"
+  else
+    local start, input = c:match("^#(%d+)%s+(.*)$")
+    if start then start = tonumber(start) else start = 0 input = c end
+    local cands = __jieshu_test.build_candidates(input, start)
+    local t = {}
+    for _, x in ipairs(cands) do
+      t[#t + 1] = x[1] .. "|" .. (x[2] or "")
+    end
+    out[#out + 1] = c .. "\t" .. #cands .. "\t" .. table.concat(t, "\t")
   end
-  out[#out + 1] = c .. "\t" .. #cands .. "\t" .. table.concat(t, "\t")
 end
 __result = table.concat(out, "\n")
 """
@@ -89,6 +107,7 @@ def run_lua():
 
     g.__dir = STUB_USER_DATA
     g.__src = read(MODULE)
+    g.__nav_src = read(NAV_MODULE)
     g.__cases_raw = read(CASES)
     g.__p1 = STUB_SINGLE
     g.__d1 = read(DATA_SINGLE)

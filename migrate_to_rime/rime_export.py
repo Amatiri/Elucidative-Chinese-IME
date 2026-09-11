@@ -48,9 +48,11 @@ CODE_CHARS = config.CODE_CHARS
 LUA_MODULE_SRC = os.path.join(SCRIPT_DIR, "jieshu_query.lua")
 LUA_FILTER_SRC = os.path.join(SCRIPT_DIR, "jieshu_drop_native.lua")
 LUA_GATE_SRC = os.path.join(SCRIPT_DIR, "jieshu_gate.lua")
+LUA_NAV_SRC = os.path.join(SCRIPT_DIR, "jieshu_nav.lua")
 LUA_TARGET_MODULE = os.path.join("lua", "jieshu_query.lua")
 LUA_TARGET_FILTER = os.path.join("lua", "jieshu_drop_native.lua")
 LUA_TARGET_GATE = os.path.join("lua", "jieshu_gate.lua")
+LUA_TARGET_NAV = os.path.join("lua", "jieshu_nav.lua")
 LUA_TARGET_SINGLE = os.path.join("lua", "data", "jieshu_single.txt")
 LUA_TARGET_CIYU = os.path.join("lua", "data", "jieshu_ciyu.txt")
 
@@ -376,6 +378,7 @@ def _sync_lua_runtime(target_dir):
         (LUA_MODULE_SRC, os.path.join(target_dir, LUA_TARGET_MODULE)),
         (LUA_FILTER_SRC, os.path.join(target_dir, LUA_TARGET_FILTER)),
         (LUA_GATE_SRC, os.path.join(target_dir, LUA_TARGET_GATE)),
+        (LUA_NAV_SRC, os.path.join(target_dir, LUA_TARGET_NAV)),
         (SOURCE_SINGLE, os.path.join(target_dir, LUA_TARGET_SINGLE)),
         (SOURCE_CIYU, os.path.join(target_dir, LUA_TARGET_CIYU)),
     ]

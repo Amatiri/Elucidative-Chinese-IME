@@ -24,6 +24,11 @@ engine:
     # 直接 PushInput 并终止链，绕过检入；gate 领先后任何进输入流的字符必经检入，
     # 西文模式由 gate 内 get_option(ascii_mode) 判定后整体放行。
     - lua_processor@*jieshu_gate
+    # P4-B 逐字定位：`=` 把光标跳到「第一个未确认段」末尾（逐字入口），
+    # `-` 等同 Backspace（回退上一个已确认段重新出候选）。
+    # 必须排在 key_binder 之前 —— 本机 default.yaml（万象）把 `-`/`=` 绑成了 Page_Up/Page_Down，
+    # 排在后面就抢不到键；翻页仍可用 ↑↓（见 key_binder 段）。
+    - lua_processor@*jieshu_nav
     - ascii_composer
     - recognizer
     - key_binder

@@ -7,6 +7,8 @@
 -- completion 跨音节合并按字典序——原生通道无法同时满足 页序=行序 / 余码注释 / 严格链）。
 -- 真源与影子对拍：python 全管道 fuzz 3 万样本 0 差异（_tmp_lua_port_test）。
 -- 数据文件由 migrate_to_rime/rime_export.py 从项目真源同步到 <user_data>/lua/data/。
+-- P4-A（逐字粒度）：段首已有已确认前缀时只产出首个 part 的候选，候选 end 收到该 part
+-- 末尾，借 librime Segment::Close() 的 partial 拆分让逐字选择能一字一字往下走。
 
 -- ========== 数据 ==========
 
@@ -103,6 +105,16 @@ local function process_input(s)
   return table.concat(out)
 end
 
+-- 段首残余码的字节数。上一位选字后，它的余码可能留在段首（例：按 "bu" 选「不44」后，
+-- 段变成 "44ba13…"）。这些前导字符与 process_input 一样不参与查询，但逐字模式算候选
+-- end 时必须把它们算进偏移，否则段会被切错位置。
+local function lead_code_offset(s)
+  for i = 1, #s do
+    if is_alpha(s:byte(i)) then return i - 1 end
+  end
+  return #s
+end
+
 local function split_sequence(original)
   local parts = split_str(original, "'")
   local can = true
@@ -181,6 +193,20 @@ local function split_sequence(original)
     result = result .. "'"
   end
   return result
+end
+
+-- 各 part 末尾的绝对位置表（P4-B 逐字定位用）。
+-- 与查询层共用 process_input / split_sequence，避免出现第二份「拆分」真源；
+-- 经 translator.api 供 jieshu_nav.lua 取用。
+local function part_boundaries(full_input)
+  local out, acc = {}, 0
+  for _, p in ipairs(split_str(split_sequence(process_input(full_input)), "'")) do
+    if p ~= "" then
+      acc = acc + #p
+      out[#out + 1] = acc
+    end
+  end
+  return out
 end
 
 local function query_by_prefix(prefix)
@@ -291,6 +317,17 @@ local function preedit_with_page(input, index, total, page_size)
   return input .. "\t 页 " .. page
 end
 
+-- 逐字（partial）模式专用的页码标记：候选只覆盖段的一部分时，prompt 位的显示条件
+-- 不再成立 —— Composition::GetPreedit 要求 caret_pos == cand->end() == full_input.length()
+-- （composition.cc:52-60），而 partial 候选的 end 早于输入末尾，页码会静默消失。
+-- 故该模式把页码挂到 comment 尾部（余码在前，保持可读），且只挂每页首个候选，
+-- 避免整页重复同一个页号。空串 = 不显示。
+local function page_marker(index, total, page_size)
+  if not page_size or page_size <= 0 or total <= page_size then return "" end
+  if index % page_size ~= 0 then return "" end
+  return " 页 " .. (math.floor(index / page_size) + 1)
+end
+
 -- 页大小：Schema 暴露 page_size（= menu/page_size）。取值失败回退 5（本方案配置值）。
 local function page_size_of(env)
   if env.page_size then return env.page_size end
@@ -303,11 +340,30 @@ local function page_size_of(env)
   return env.page_size
 end
 
+-- preedit prompt 位是否可用：光标必须停在段尾，且段尾就是整串输入的末尾
+-- （这正是 Composition::GetPreedit 追加 prompt 的条件，composition.cc:52-60）。
+-- 逐字 partial 的候选 end 早于段尾，天然不可用。取不到上下文时保守返回 false
+-- —— 宁可把页码挂到 comment，也不要静默丢掉。
+local function is_prompt_ok(env, seg, cands)
+  if cands[1] ~= nil and cands[1][3] ~= nil then return false end
+  local ctx = env.engine and env.engine.context
+  if not ctx then return false end
+  local ok_in, input_len = pcall(function() return #ctx.input end)
+  if not ok_in or type(input_len) ~= "number" then return false end
+  local ok_c, caret = pcall(function() return ctx.caret_pos end)
+  if not ok_c or type(caret) ~= "number" then return false end
+  return caret == seg._end and seg._end == input_len
+end
+
 -- ========== 候选组装（前端 update_display 两模式语义） ==========
 
--- 返回 { {text, comment}, ... }；空表 = 无候选：不产出任何候选，候选栏隐藏，
+-- 返回 { {text, comment, end_pos?}, ... }；空表 = 无候选：不产出任何候选，候选栏隐藏，
 -- 编码留在行内 preedit（虚线），此时按空格由 RIME 原生 raw 段机制上屏原编码。
-local function build_candidates(seg_input)
+-- 第三项 end_pos 只在逐字模式（P4-A）出现：候选只覆盖段的一部分，需要让
+-- Segment::Close() 把段切到该位置（不出现时按段尾处理，即覆盖整段）。
+-- seg_start = 段在输入串中的起始偏移；0 = 段从输入头开始（无已确认前缀）。
+local function build_candidates(seg_input, seg_start)
+  seg_start = seg_start or 0
   local proc = process_input(seg_input)
   if proc == "" then return {} end
   -- 人工单引号（proc 里的 ' 必然是用户敲的，split_sequence 产出的不算）→ 词语增强预览。
@@ -320,6 +376,31 @@ local function build_candidates(seg_input)
   end
   local st = split_sequence(proc)
   if st == "" then return {} end
+  -- ── 逐字模式（P4-A）───────────────────────────────────────────────────
+  -- 触发条件：段首已有已确认前缀（seg_start > 0）且剩余串还能拆出多个 part。
+  -- RIME 的分段只看字符类（abc_segmentor 读 speller/alphabet），不知道解书的自动
+  -- 拆分，故「选完第一个字后的剩余整串」会被当成一个段交进来；若照旧走多段分支，
+  -- 候选就退化成「首选字链」，逐字粒度丢失（实测 bu44ba13bu44：剩余段 ba13bu44
+  -- 只出 1 条「八不」）。
+  -- 处置：只产出**首个 part** 的候选，并把候选 end 收到该 part 末尾 —— 依据 librime
+  -- Segment::Close()（segmentation.cc:17-25）：候选 end < 段 end 时把段切到候选 end
+  -- 并打 "partial" 标签；随后 engine.cc:259-282 的 OnSelect 会 Forward + 重新 Compose，
+  -- 剩余部分自动成为下一段，于是 Shift+1~5 可以连续逐字。
+  -- 首个 part 无候选时退回下面的整体语义（与改动前一致：不产出候选）。
+  local parts = split_str(st, "'")
+  if seg_start > 0 and #parts > 1 then
+    local res = query_by_prefix(parts[1])
+    if #res > 0 then
+      local end_pos = seg_start + lead_code_offset(seg_input) + #parts[1]
+      local out = {}
+      for i = 1, #res do
+        local c = res[i]
+        local w = first_char(c)
+        out[#out + 1] = { w, c:sub(#w + 1), end_pos }
+      end
+      return out
+    end
+  end
   local cands = {}
   if not st:find("'", 1, true) then
     -- 单字模式：前缀候选（字+余码注释），桶序=真源行序
@@ -367,15 +448,28 @@ local function jieshu_translator(input, seg, env)
     end
     return
   end
-  local cands = build_candidates(input)
+  local cands = build_candidates(input, seg.start)
   local total = #cands
   local ps = page_size_of(env)
+  -- 页码落点判定。preedit 的 prompt 位有三个前置条件（Composition::GetPreedit，
+  -- composition.cc:52-60）：`caret_pos == cand->end() && cand->end() == full_input.length()`
+  -- —— 也就是「光标在段尾，且这个段一直铺到输入末尾」。三种状态都不满足：
+  --   ① 逐字 partial：cand->end() 被收到 part 末尾，天然早于段尾；
+  --   ② 光标停在中间（`=` 定位、手动 Left）：段被 Compose 截断，段尾 < 输入尾
+  --      ——用户在 `bu44ba13bu44` 上按 `=` 后就是这一种（段 bu44，输入尾 12）；
+  --   ③ 已确认前缀之后按 `=`：段 [8,12) 到输入尾了，但光标在 8 而非 12。
+  -- 不满足时页码改挂 comment（`page_marker` 只在每页首个候选上挂），否则页码会静默消失。
+  local prompt_ok = is_prompt_ok(env, seg, cands)
   for i, c in ipairs(cands) do
-    local cand = Candidate("jieshu", seg.start, seg._end, c[1], c[2])
-    -- 页码挂在 preedit 的 prompt 位（"\t" 之后），不进候选 comment，故不影响余码显示，
-    -- 也不进上屏文本。前半段用段原文 input，保证应用内显示的编码仍是用户敲的那串。
-    local pe = preedit_with_page(input, i - 1, total, ps)
-    if pe then cand.preedit = pe end
+    local comment = c[2]
+    if not prompt_ok then comment = comment .. page_marker(i - 1, total, ps) end
+    local cand = Candidate("jieshu", seg.start, c[3] or seg._end, c[1], comment)
+    if prompt_ok then
+      -- 页码挂在 preedit 的 prompt 位（"\t" 之后），不进候选 comment，故不影响余码显示，
+      -- 也不进上屏文本。前半段用段原文 input，保证应用内显示的编码仍是用户敲的那串。
+      local pe = preedit_with_page(input, i - 1, total, ps)
+      if pe then cand.preedit = pe end
+    end
     yield(cand)
   end
 end
@@ -391,8 +485,17 @@ if __jieshu_test_mode then
     phrase_segments_preview = phrase_segments_preview,
     build_candidates = build_candidates,
     preedit_with_page = preedit_with_page,
+    part_boundaries = part_boundaries,
     load = load_data,
   }
 end
+
+-- 供同目录的 jieshu_nav.lua（P4-B 逐字定位）复用。Lua 的函数值不能挂字段，
+-- 故走一个具名全局表；nav 侧若先加载会 require 本模块兜底触发赋值。
+jieshu_query_api = {
+  process_input = process_input,
+  split_sequence = split_sequence,
+  part_boundaries = part_boundaries,
+}
 
 return jieshu_translator

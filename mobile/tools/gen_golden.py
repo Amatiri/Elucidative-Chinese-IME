@@ -68,7 +68,10 @@ def fast_query_phrase(code):
     code = code.replace(" ", "")
     m = _build_phrase_map()
     if code in m:
-        return "(" + m[code] + ")"
+        # 与真实 df.query_phrase（dictionary_frontend.py:15 的 parts[0] + "•"）同形：
+        # 尾部带「•」标记。get_phrase_segments 用 phrase[:-1] 剥掉它，故此处必须一致，
+        # 否则 gps:ciyu 用例的 display 会残留标记字符、与 mobile 端对拍不上。
+        return m[code] + "•"
     return ""
 
 

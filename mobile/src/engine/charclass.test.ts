@@ -192,24 +192,24 @@ test("L8-j 【口径】副码 / 引导符 / 补码的位序与计数", () => {
     if (dot !== -1 && c.length > dot + 1) buma++;
   }
 
-  assert.equal(shape.get("ABCD"), 5935, "ABCD 条数不符");
-  assert.equal(shape.get("ABCDE"), 1908, "ABCDE 条数不符");
-  assert.equal(shape.get("ABCD."), 131, "ABCD. 条数不符");
-  assert.equal(shape.get("ABCD.F"), 103, "ABCD.F 条数不符");
+  assert.equal(shape.get("ABCD"), 6093, "ABCD 条数不符");
+  assert.equal(shape.get("ABCDE"), 1969, "ABCDE 条数不符");
+  assert.equal(shape.get("ABCD."), 134, "ABCD. 条数不符");
+  assert.equal(shape.get("ABCD.F"), 121, "ABCD.F 条数不符");
   assert.equal(shape.get("ABCDE."), 31, "ABCDE. 条数不符");
-  assert.equal(shape.get("ABCDE.F"), 44, "ABCDE.F 条数不符");
+  assert.equal(shape.get("ABCDE.F"), 49, "ABCDE.F 条数不符");
 
-  // 副码 = 1908 + 31 + 44；而非「第 5 位字符数 2039」（那把 131 条引导符算进去了）
-  assert.equal(fuma, 1983, "副码应只统计逻辑第 5 位为字母者");
-  assert.equal(daoyin, 309, "引导符总数应为 234 + 75");
-  assert.equal(buma, 147, "补码 F 应为 103 + 44");
+  // 副码 = 1969 + 31 + 49；而非「第 5 位字符数」（那把 ABCD. 引导符算进去了）
+  assert.equal(fuma, 2049, "副码应只统计逻辑第 5 位为字母者");
+  assert.equal(daoyin, 335, "引导符总数应为 255 + 80");
+  assert.equal(buma, 170, "补码 F 应为 121 + 49");
 
-  // 反例固化：把第 5 位的 '.' 计进副码 = 234 条，是错误口径
+  // 反例固化：把第 5 位的 '.' 计进副码 = 255 条，是错误口径
   let dotAt5 = 0;
   for (const entry of ds.entries) {
     if (entry.code[4] === ".") dotAt5++;
   }
-  assert.equal(dotAt5, 234, "物理第 5 位为 '.' 的条数（该数不得计入副码）");
+  assert.equal(dotAt5, 255, "物理第 5 位为 '.' 的条数（该数不得计入副码）");
   assert.notEqual(fuma, 2039, "2039 是把 131 条引导符误并入副码的旧口径");
 
   // 规则层面：副码位不接受数字，但 '.' 是合法的（它是引导符，不是副码）

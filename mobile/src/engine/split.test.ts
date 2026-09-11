@@ -89,7 +89,7 @@ test("L3-c 无连续引号（空串已在 L167 被过滤）", () => {
 test("L0-g 夹具与当前数据集同源", () => {
   const g = loadGolden();
   assert.equal(g.schema, "jieshu-golden/1");
-  assert.equal(g.source.dictionary, 8152);
-  assert.equal(g.source.ciyuLines, 1939);
-  assert.equal(g.source.ciyuCodes, 2003);
+  assert.equal(g.source.dictionary, 8397);
+  assert.equal(g.source.ciyuLines, 2020);
+  assert.equal(g.source.ciyuCodes, 2087);
 });

@@ -87,7 +87,7 @@ test("L4-b get_phrase_segments 三类路径全部命中", () => {
 
 test("L6-b 非 BMP 字在多字预览中不被拆成半个代理项", () => {
   const nonBmp = ds.entries.filter((e) => e.word.codePointAt(0)! > 0xffff);
-  assert.equal(nonBmp.length, 152);
+  assert.equal(nonBmp.length, 157);
   for (const e of nonBmp.slice(0, 50)) {
     // 用完整编码查，取首字应得到完整汉字
     const out = queryMultiChars(ds, e.code);

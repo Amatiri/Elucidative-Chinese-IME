@@ -366,9 +366,14 @@ const handlers: Handlers = {
         return;
 
       case "select": {
-        // ime.py handle_selection_keys：有词语时「!」直接上屏词语，优先于选 1 号候选
-        if (a.index === 1 && view.phraseContent.length > 0) {
-          st = S.commitText(st, view.phraseContent);
+        // 多段未逐字态：候选 = 有序 [词 / 链]（跟随优先上词，对齐 ime.py
+        // _build_multi_candidates）。上滑 1 取首项（= 空格上屏目标），上滑 2 取后一项。
+        if (view.mode === "multi" && !view.selecting) {
+          const item = view.multiItems[a.index - 1];
+          if (item === undefined) return;
+          const text = item.isPhrase ? view.phraseContent : view.preview;
+          if (text.length === 0) return;
+          st = S.commitText(st, text);
           redraw();
           return;
         }

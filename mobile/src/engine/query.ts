@@ -102,7 +102,9 @@ export function queryByPrefix(
  * 替代 Python L7-18 的「每次调用重新打开 ciyu.txt 全扫 1939 行」。
  * 2003 个编码全唯一（已验证），故正向索引与「顺序扫描取首个匹配」等价。
  *
- * 返回值保留括号 —— 这是与上层 getPhraseSegments 的协议的一部分。
+ * 返回值以「•」结尾 —— 与 Python dictionary_frontend.py:15 的 `parts[0] + "•"` 一致，
+ * 是词候选的显示标记（区别于多字首选字链），也是与上层剥标记的协议约定。
+ * 上层剥掉尾部 • 即得词语原文（view.ts / compose.ts 的 slice(0, -1)）。
  *
  * 已知偏差：Python 原版对 code="" 会因 split 产生空字段而命中首行；
  * 本实现返回 ""。夹具不含该用例（见 golden meta.deviations）。
@@ -110,5 +112,5 @@ export function queryByPrefix(
 export function queryPhrase(ds: Dataset, code: string): string {
   const c = code.split(" ").join(""); // 对应 Python L9 去掉所有空格
   const p = ds.phraseIndex.get(c);
-  return p === undefined ? "" : "(" + p + ")";
+  return p === undefined ? "" : p + "•";
 }

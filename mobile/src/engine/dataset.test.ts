@@ -14,22 +14,22 @@ import { isCodeChar } from "./constants.ts";
 const ds = loadDataset();
 
 test("L0-1 条目数与声明一致", () => {
-  assert.equal(ds.entries.length, 8152);
+  assert.equal(ds.entries.length, 8397);
   assert.equal(ds.entries.length, ds.entryCount);
 });
 
 test("L0-2 词语数与 ciyu 编码数", () => {
-  assert.equal(ds.phraseCount, 1939);
-  assert.equal(ds.codeCount, 2003);
-  assert.equal(ds.phraseIndex.size, 2003);
+  assert.equal(ds.phraseCount, 2020);
+  assert.equal(ds.codeCount, 2087);
+  assert.equal(ds.phraseIndex.size, 2087);
 });
 
-test("L0-3 非 BMP 条目数（152 条，UTF-16 代理对）", () => {
-  assert.equal(ds.nonBmpCount, 152);
+test("L0-3 非 BMP 条目数（157 条，UTF-16 代理对）", () => {
+  assert.equal(ds.nonBmpCount, 157);
   const actual = ds.entries.filter(
     (e) => [...e.word].length !== 1 || e.word.codePointAt(0)! > 0xffff,
   );
-  assert.equal(actual.length, 152);
+  assert.equal(actual.length, 157);
 });
 
 test("L0-4 每个 word 都是单码点且不含编码字符", () => {
@@ -48,7 +48,7 @@ test("L0-5 每个 code 只含编码字符，且全表唯一", () => {
     assert.ok(!seen.has(e.code), `编码重复: ${e.code}`);
     seen.add(e.code);
   }
-  assert.equal(seen.size, 8152);
+  assert.equal(seen.size, 8397);
 });
 
 test("L0-6 桶内保持行序（候选顺序的唯一依据）", () => {

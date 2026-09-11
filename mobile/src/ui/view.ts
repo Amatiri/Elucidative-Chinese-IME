@@ -15,6 +15,12 @@ import type { KeyboardState } from "./types.ts";
 
 export type QueryMode = "idle" | "single" | "multi";
 
+/** 预览条一项：text=显示（词项尾部带 •），isPhrase=词候选（上屏剥 • 用 phraseContent） */
+export interface MultiItem {
+  text: string;
+  isPhrase: boolean;
+}
+
 export interface ViewModel {
   /** processInput 之后的合法编码串 */
   code: string;
@@ -33,12 +39,14 @@ export interface ViewModel {
   lastChar: string;
   /** 当前应显示的候选。多字态且未进入逐字选择时为空 */
   candidates: Candidate[];
-  /** 多字预览串（已含逐字选择的结果） */
+  /** 多字预览串（首选字组合，已含逐字选择的结果） */
   preview: string;
-  /** 词语原文（含括号）。与预览重复时或走增强预览时为空串 */
+  /** 词语显示串（尾部带「•」标记）。与预览重复时或走增强预览时为空串 */
   phrase: string;
-  /** 词语内容（不含括号），供「!」直接上屏词语 */
+  /** 词语内容（剥掉尾部 •），供上屏 */
   phraseContent: string;
+  /** 预览条有序项，跟随「优先上词」：开=[词,链] 关=[链,词]（跳过空项） */
+  multiItems: MultiItem[];
   /** 字面部件（无候选、按编码原样输出）的下标，逐字选择时应跳过 */
   literalIndices: readonly number[];
   /** 上屏目标文本 */
@@ -236,9 +244,28 @@ export function buildView(engine: Engine, st: KeyboardState): ViewModel {
       : previewBase;
 
   const rawPhrase = enhanced ? "" : engine.queryPhrase(code);
-  const phraseContent = rawPhrase.slice(1, -1);
+  const phraseContent = rawPhrase.slice(0, -1); // 剥掉尾部 •（rawPhrase = queryPhrase 的「词•」）
   // ime.py L301-306：词语与预览内容相同时只显示一个，避免重复
   const phrase = phraseContent === preview ? "" : rawPhrase;
+
+  /**
+   * 预览条的有序项，跟随「优先上词」—— 与 ime.py _build_multi_candidates 一致：
+   *   开：[词, 链]  关：[链, 词]（跳过空项）。
+   * 首项恒等于空格上屏目标（下方 display），上滑数字 1 / 2 即取第一 / 第二项。
+   */
+  const multiItems: MultiItem[] = [];
+  if (mode === "multi") {
+    const phraseItem: MultiItem | null = phrase !== "" ? { text: phrase, isPhrase: true } : null;
+    const previewItem: MultiItem | null =
+      preview !== "" ? { text: preview, isPhrase: false } : null;
+    if (st.settings.phrasePriority) {
+      if (phraseItem !== null) multiItems.push(phraseItem);
+      if (previewItem !== null) multiItems.push(previewItem);
+    } else {
+      if (previewItem !== null) multiItems.push(previewItem);
+      if (phraseItem !== null) multiItems.push(phraseItem);
+    }
+  }
 
   const keyClass = engine.nextCharClass(code);
 
@@ -296,6 +323,7 @@ export function buildView(engine: Engine, st: KeyboardState): ViewModel {
     preview,
     phrase,
     phraseContent,
+    multiItems,
     literalIndices,
     display,
     keyClass,

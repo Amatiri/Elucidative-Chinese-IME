@@ -93,9 +93,9 @@ test("L5-b 分页一致性：切片与整段取法结果相同", () => {
   }
 });
 
-test("L6 非 BMP 专项：152 条代理对字不被拆坏", () => {
+test("L6 非 BMP 专项：157 条代理对字不被拆坏", () => {
   const nonBmp = ds.entries.filter((e) => e.word.codePointAt(0)! > 0xffff);
-  assert.equal(nonBmp.length, 152);
+  assert.equal(nonBmp.length, 157);
   for (const e of nonBmp) {
     const hit = queryByPrefix(ds, e.code, 0, 10).find(
       (r) => r.lineNo === e.lineNo,
@@ -120,23 +120,23 @@ test("边界：空前缀 / 不存在的首字母 / count=0", () => {
   assert.deepEqual(queryByPrefix(ds, "ba1", 9999, 5), []);
 });
 
-test("queryPhrase：O(1) 查词，括号是协议的一部分", () => {
+test("queryPhrase：O(1) 查词，尾部「•」标记是协议的一部分", () => {
   // 取一个真实词条验证形态
   const [code, phrase] = [...ds.phraseIndex.entries()][0]!;
-  assert.equal(queryPhrase(ds, code), "(" + phrase + ")");
+  assert.equal(queryPhrase(ds, code), phrase + "•");
   // 带空格输入应先去空格再查
-  assert.equal(queryPhrase(ds, " " + code + " "), "(" + phrase + ")");
+  assert.equal(queryPhrase(ds, " " + code + " "), phrase + "•");
   // 不存在返回空串
   assert.equal(queryPhrase(ds, "zzzzzz"), "");
 });
 
-test("queryPhrase 覆盖全部 2003 个编码（与夹具一致）", () => {
-  assert.equal(ds.phraseIndex.size, 2003);
+test("queryPhrase 覆盖全部 2087 个编码（与夹具一致）", () => {
+  assert.equal(ds.phraseIndex.size, 2087);
   let n = 0;
   for (const code of ds.phraseIndex.keys()) {
     const out = queryPhrase(ds, code);
-    assert.ok(out.startsWith("(") && out.endsWith(")"), `形态异常: ${out}`);
+    assert.ok(out.endsWith("•"), `形态异常: ${out}`);
     n++;
   }
-  assert.equal(n, 2003);
+  assert.equal(n, 2087);
 });

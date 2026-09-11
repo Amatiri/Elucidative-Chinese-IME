@@ -38,7 +38,8 @@ ALL_CHARS = DIGITS + LETTERS + ";'."
 def fast_query_phrase(code):
     code = code.replace(" ", "")
     m = _pmap()
-    return "(" + m[code] + ")" if code in m else ""
+    # 与真实 df.query_phrase（parts[0] + "•"）同形，尾部带「•」标记
+    return m[code] + "•" if code in m else ""
 
 
 _p = None

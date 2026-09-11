@@ -19,7 +19,7 @@ export interface Handlers {
   onPage(delta: number): void;
   /** 点击多字预览串（首选字组合）→ 上屏该串 */
   onPreviewTap(): void;
-  /** 点击括号内的词语 → 上屏词语 */
+  /** 点击预览条里的词候选（尾部带 •）→ 上屏词语 */
   onPhraseTap(): void;
   onSettingsChange(patch: Partial<Settings>): void;
   onCloseSettings(): void;
@@ -209,19 +209,14 @@ function renderCandidates(
   if (strip !== null) strip.hidden = multiSelecting;
 
   // 多字态下始终刷新预览条：逐字选择期间它虽被隐藏，重新显示时不能留旧值。
-  // 预览串与词语都是按钮 —— 点哪个上屏哪个（ime.py 里「!」上屏词语，这里补上直接点选）
+  // 预览串与词语都是按钮 —— 点哪个上屏哪个。顺序跟随「优先上词」（view.multiItems），
+  // 首项即空格上屏目标，上滑数字 1 / 2 也就取第一 / 第二项。
   if (strip !== null && view.mode === "multi") {
     strip.replaceChildren();
-    if (view.preview.length > 0) {
-      const btn = el("button", "pv-text", view.preview);
+    for (const item of view.multiItems) {
+      const btn = el("button", item.isPhrase ? "pv-phrase" : "pv-text", item.text);
       btn.type = "button";
-      btn.addEventListener("click", h.onPreviewTap);
-      strip.append(btn);
-    }
-    if (view.phrase.length > 0) {
-      const btn = el("button", "pv-phrase", view.phrase);
-      btn.type = "button";
-      btn.addEventListener("click", h.onPhraseTap);
+      btn.addEventListener("click", item.isPhrase ? h.onPhraseTap : h.onPreviewTap);
       strip.append(btn);
     }
   }

@@ -88,7 +88,7 @@ export function getPhraseSegments(
       // L230：词语路径优先于单字
       const phrase = queryPhrase(ds, seg);
       if (phrase !== "") {
-        displayParts.push(phrase.slice(1, -1)); // L232：剥掉括号
+        displayParts.push(phrase.slice(0, -1)); // L232：剥掉尾部 •
         // L234：词语命中时仍需自动拆分，供逐字选择
         const splitSeg = splitSequence(seg);
         partsList.push(splitSeg.split("'"));

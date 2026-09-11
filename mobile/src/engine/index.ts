@@ -22,7 +22,7 @@ export interface Engine {
   querySingleChar(splitText: string, startIdx?: number, count?: number): string;
   /** 多字预览串 */
   queryMultiChars(splitText: string): string;
-  /** 编码 → 词语，带括号 */
+  /** 编码 → 词语，尾部带「•」标记（词候选的显示标记） */
   queryPhrase(code: string): string;
   /** 自动分词 */
   splitSequence(original: string): string;

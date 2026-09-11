@@ -48,7 +48,7 @@ test("L7-c 非 BMP 字：ba5o 唯一命中「𠀧」(U+20027)", () => {
 
 test("L7-d 通用符号标点：d.. → 。", () => {
   // 标点走 ciyu.txt 的 d 系列编码，没有独立符号面板
-  assert.equal(e.queryPhrase("d.."), "(。)");
+  assert.equal(e.queryPhrase("d.."), "。•");
   const seg = e.getPhraseSegments("d..");
   assert.equal(seg.display, "。");
   // split_sequence 把 "d.." 切成 "d.'."（无数字且 len>2 → condition1 每 2 字符切）
@@ -94,22 +94,18 @@ test("产品指标复核：4 键唯一率（计划值 77.2%）", () => {
   );
 });
 
-test("产品指标复核：3 键候选压力（实测 253，非计划的 316）", () => {
-  // 316 同前缀 vs 8 位候选栏，是方案 H 的 🔴 级风险。
+test("产品指标复核：3 键候选压力（实测 252）", () => {
+  // 「同前缀挤爆 8 位候选栏」是方案 H 的 🔴 级风险，这里用真引擎复核峰值。
   //
-  // ⚠ 计划里的 316 是**朴素 startswith 统计**，没有考虑 query_by_prefix 的补码
-  // 规则。真实引擎返回 253，差的 63 条是前缀 "yi4" 下含 '.' 的编码
-  // （yi44. / yi45. / yi45.b …）—— 3 位 prefix 不含 '.'，也不满足
-  // `len(code)>5 and code[5]=='.'` 或 `len(prefix)==4 and prefix[3].isdigit()`，
-  // 于是被补码分支挡掉，不进候选。
-  //
-  // 已用 Python 真引擎交叉验证：朴素统计 316、query_by_prefix 253，与 TS 一致。
-  // 也就是说真实压力比计划估计的轻 20%，但 253 挤 8 位候选栏仍是硬问题。
+  // ⚠ 计划阶段的「316」是**朴素 startswith 统计**，没考虑 query_by_prefix 的补码
+  // 规则：3 位 prefix 不含 '.'，也不满足 `len(code)>5 and code[5]=='.'` 或
+  // `len(prefix)==4 and prefix[3].isdigit()`，于是含引导符的编码被补码分支挡掉、
+  // 不进候选。真引擎口径的峰值低于朴素统计（当前码表 252，前缀恒为 "yi4"）。
   const p3 = new Set<string>();
   for (const entry of e.dataset.entries) {
     if (entry.code.length >= 3) p3.add(entry.code.slice(0, 3));
   }
-  assert.equal(p3.size, 1296, "3 位前缀组数与计划值不符");
+  assert.equal(p3.size, 1312, "3 位前缀组数与当前码表不符");
 
   let max = 0;
   let maxPrefix = "";
@@ -122,5 +118,5 @@ test("产品指标复核：3 键候选压力（实测 253，非计划的 316）"
   }
   console.log(`    3 键最大候选数 ${max}（前缀 "${maxPrefix}"）`);
   assert.equal(maxPrefix, "yi4");
-  assert.equal(max, 253, "3 键最大候选数应为 253（真引擎口径）");
+  assert.equal(max, 252, "3 键最大候选数应为 252（真引擎口径，当前码表）");
 });

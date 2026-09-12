@@ -334,6 +334,51 @@ local function nav_scan(full_input, confirmed)
   return gate_ok, target, has_cand, head_end
 end
 
+-- 自动上字判定（P4-D）。1:1 对齐 ime.py:581-598 的四条件：
+--   ① 单字态 —— 输入无人工 `'`，且自动拆分 split_sequence 后仍无 `'`
+--      （有虚拟 `'` 即多字态，前端走多字分支，根本没有自动上字）；
+--   ② 码长 > 3（`#st` 是全 ASCII 字节数，与前端 len 等价）；
+--   ③ 当前页候选里「余码不含 `.`」的恰好 1 条 —— 前端只查当前页，
+--      而 main_function 开头会把 current_page 重置为 0（ime.py:544-545），
+--      翻页不重跑该函数，故判定恒基于第 0 页 5 条，这里同样只看前 page_size 条；
+--   ④ 上屏那一条的首字。
+-- 返回该候选的 0-based 页内下标与首字；不触发返回 nil。
+--
+-- 为什么不能直接用 librime 原生 speller/auto_select（判据见 gear/speller.cc
+-- AutoSelectUniqueCandidate）：它要求「段内候选总数恰好 1 条」，与 ③ 不等价 ——
+--   漏触发：ba13 → 八 / 捌.（ba13. 是捌的补码）总数 2，原生不触发而前端要上屏「八」；
+--   误上屏：gs34 → 廾.c、mo24 → 无.u，候选恰 1 条但余码以 `.` 开头（补码引导中），
+--           ① 的语义是「尚未确定」不上屏，原生会直接上屏；
+--   更致命：原生看不见解书的自动拆分（delimiters 只含人工 `'`），多字态输入整串被当一段，
+--           字链候选天然恰好 1 条 → buce/bucen/bu44x 一类连续双字输入会被整串误上屏。
+-- 故判定一律在 Lua 侧做，上屏走 lua_processor@*jieshu_autocommit 的 ctx:select()。
+local function auto_commit_target(full_input)
+  if not full_input or full_input == "" then return nil, nil end
+  if full_input:find("'", 1, true) then return nil, nil end
+  local proc = process_input(full_input)
+  -- proc ~= full_input 说明首字符前有非码字符（process_input 会丢弃前导），
+  -- 此时候选下标与输入长度对不上，保守不判（线上 gate 保证不可达）。
+  if proc == "" or proc ~= full_input then return nil, nil end
+  local st = split_sequence(proc)
+  if st == "" or #st <= 3 then return nil, nil end
+  if st:find("'", 1, true) then return nil, nil end
+  local res = query_by_prefix(st)
+  local hit_i, hit_w, n = nil, nil, 0
+  local page = 5                                  -- menu/page_size（前端页大小同为 5）
+  for i = 1, #res do
+    if i > page then break end
+    local c = res[i]
+    local w = first_char(c)
+    if not c:sub(#w + 1):find(".", 1, true) then -- 余码不含 '.' = 这条已打全
+      n = n + 1
+      if n > 1 then return nil, nil end          -- 非点候选 >1 → 无法确定，不触发
+      hit_i, hit_w = i - 1, w
+    end
+  end
+  if n ~= 1 then return nil, nil end
+  return hit_i, hit_w
+end
+
 -- get_phrase_segments 的显示层（ime.py L273-286 / L578-586）：
 -- 用户敲了人工单引号时，前端不再用「全段首选链」，而是逐个人工段各查一次词：
 --   段长 < 3            → 该段前缀首候选
@@ -437,7 +482,13 @@ end
 --       拆分（"deepseek"→de/ep/se/ek）当成当前 part，给出 "de" 的候选（用户报的「多出 d 的
 --       逐字选择」）。
 --     · 未冻结的字面段头："deepseek'ce" 这种整段形态 → 走前端 get_phrase_segments 预览串。
-local function build_candidates(seg_input, seg_start)
+-- full_input = 整条 composition 输入（env.engine.context.input），供 P4-D 预上字提示判定；
+--   nil = 不判定（离线回归逐字用例没有整串上下文）。判定命中时给目标候选 comment 挂
+--   「预」（延迟一键语义：候选即下一键将自动上屏的字，见 jieshu_autocommit.lua）。
+--   auto_commit_target 的守卫（无引号、单字态、无前导残码）天然挡掉人工分段/逐字
+--   partial 等形态，故只有「段铺满整串的单字态」才可能命中 —— 此时 res 与判定同源
+--   同序，ac_index 直接就是本函数单字分支产出的页内下标。
+local function build_candidates(seg_input, seg_start, full_input)
   seg_start = seg_start or 0
   local manual_lead = seg_input:sub(1, 1) == "'"
   local proc = process_input(seg_input)
@@ -516,10 +567,19 @@ local function build_candidates(seg_input, seg_start)
   if not st:find("'", 1, true) then
     -- 单字模式：前缀候选（字+余码注释），桶序=真源行序
     local res = query_by_prefix(st)
+    -- P4-D 预上字提示：判定与 res 同一次查询口径（见本函数头注），命中即挂「预」
+    local ac_index = nil
+    if full_input then
+      ac_index = auto_commit_target(full_input)
+    end
     for i = 1, #res do
       local c = res[i]
       local w = first_char(c)
-      cands[#cands + 1] = { w, c:sub(#w + 1) }
+      local comment = c:sub(#w + 1)
+      if ac_index ~= nil and ac_index == i - 1 then
+        comment = comment == "" and "预" or ("预 " .. comment)
+      end
+      cands[#cands + 1] = { w, comment }
     end
   else
     local ph = query_phrase(proc)
@@ -559,7 +619,11 @@ local function jieshu_translator(input, seg, env)
     end
     return
   end
-  local cands = build_candidates(input, seg.start)
+  -- 整串输入供预上字判定（P4-D）；取不到时 nil，退化为无「预」提示的既有行为
+  local full_input = nil
+  local ok_fi, fi = pcall(function() return env.engine.context.input end)
+  if ok_fi and type(fi) == "string" then full_input = fi end
+  local cands = build_candidates(input, seg.start, full_input)
   local total = #cands
   local ps = page_size_of(env)
   -- 页码落点判定。preedit 的 prompt 位有三个前置条件（Composition::GetPreedit，
@@ -598,6 +662,7 @@ if __jieshu_test_mode then
     preedit_with_page = preedit_with_page,
     char_walk = char_walk,
     nav_scan = nav_scan,
+    auto_commit_target = auto_commit_target,
     load = load_data,
   }
 end
@@ -608,6 +673,7 @@ jieshu_query_api = {
   process_input = process_input,
   split_sequence = split_sequence,
   nav_scan = nav_scan,
+  auto_commit_target = auto_commit_target,
 }
 
 return jieshu_translator

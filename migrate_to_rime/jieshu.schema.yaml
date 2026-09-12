@@ -20,6 +20,11 @@ switches:
 
 engine:
   processors:
+    # P4-D 自动上字：必须排在 gate **之前** —— 它 select() 上屏后会 Clear() 输入流，
+    # 当前按键要继续流到 gate，由 gate 按「空输入流」规则处置（小写字母放行、
+    # 数字/大写/符号拦截穿透），这才等价于 ime.py「自动上字后输入框已清空」的状态。
+    # 排在 gate 之后则 gate 已用清空前的输入判过一轮，当前键会被当成码字符推进空输入流。
+    - lua_processor@*jieshu_autocommit
     # 第十一轮：gate 提到链首——ascii_composer 在西文模式下会于 composing 中
     # 直接 PushInput 并终止链，绕过检入；gate 领先后任何进输入流的字符必经检入，
     # 西文模式由 gate 内 get_option(ascii_mode) 判定后整体放行。

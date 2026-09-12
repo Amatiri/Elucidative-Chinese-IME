@@ -18,20 +18,20 @@ b	418	不|u44	八|a13	巴|a19	疤|a1b	芭|a1c	蚆|a1i	釟|a1j	吧|a1k	叭|a1kb	�
 b1	0	
 ce	6	厕|4c	册|4j	侧|4r	测|4u	恻|4x	策|4z
 ce4	6	厕|c	册|j	侧|r	测|u	恻|x	策|z
-ce4u	1	测|
-ce4u.	1	測|
+ce4u	1	测|预
+ce4u.	1	測|预
 yig	1	一个|
 yige	1	一个|
 bu44ba13	1	不八|
 bu44ba13bu44	1	不八不|
 bua	0	
 qqq	1	丘去|
-ba13.	1	捌|
+ba13.	1	捌|预
 ba13a	0	
 b;du	2	病毒|•	兵都|
 ceu	2	测试|•	厕是|
-bu44	1	不|
-ba13	2	八|	捌|.
+bu44	1	不|预
+ba13	2	八|预	捌|.
 123	0	
 bu4	11	不|4	部|b	蔀|c	布|j	钚|jb	埠|t	埔|tf	步|v	瓿|w	怖|x	簿|z
 b;d	1	兵的|
@@ -86,3 +86,22 @@ deepseek	0
 deepseek'ce	1	deepseek厕|
 deepseek'mo	1	deepseek摸|
 nav 0 deepseek'ce	1	1	11	8
+ac bu44	0	不
+ac ba13	0	八
+ac ba13.	0	捌
+ac bu4	-1	
+ac gs34	-1	
+ac mo24	-1	
+ac ne47	-1	
+ac buce	-1	
+ac bucen	-1	
+ac bu44x	-1	
+ac b;,d	-1	
+ac mox;	-1	
+ac yig	-1	
+ac bu44ba13	-1	
+ac deepseek	-1	
+ac bu44'ba13	-1	
+ac b;du'ceu	-1	
+ac 'bu44	-1	
+ac 4bu44	-1	

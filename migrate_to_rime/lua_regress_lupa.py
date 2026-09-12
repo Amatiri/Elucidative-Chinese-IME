@@ -76,8 +76,12 @@ for c in __cases_raw:gmatch("[^\n]+") do cases[#cases + 1] = c end
 
 local out = {}
 for _, c in ipairs(cases) do
+  local ac_input = c:match("^ac%s+(.*)$")
   local nav_conf, nav_input = c:match("^nav%s+(%d+)%s+(.*)$")
-  if nav_conf then
+  if ac_input then
+    local idx, txt = __jieshu_test.auto_commit_target(ac_input)
+    out[#out + 1] = c .. "\t" .. (idx == nil and -1 or idx) .. "\t" .. (txt or "")
+  elseif nav_conf then
     local gate, target, has, head = __jieshu_nav_test.nav_scan(nav_input, tonumber(nav_conf))
     out[#out + 1] = c .. "\t" .. (gate and 1 or 0) .. "\t" .. (has and 1 or 0) .. "\t"
       .. tostring(target ~= nil and target or -1) .. "\t"
@@ -85,7 +89,7 @@ for _, c in ipairs(cases) do
   else
     local start, input = c:match("^#(%d+)%s+(.*)$")
     if start then start = tonumber(start) else start = 0 input = c end
-    local cands = __jieshu_test.build_candidates(input, start)
+    local cands = __jieshu_test.build_candidates(input, start, start == 0 and input or nil)
     local t = {}
     for _, x in ipairs(cands) do
       t[#t + 1] = x[1] .. "|" .. (x[2] or "")

@@ -48,6 +48,7 @@
   lua\jieshu_drop_native.lua      # 原生候选丢弃垫片
   lua\jieshu_gate.lua             # 输入流检入门控
   lua\jieshu_nav.lua              # 逐字定位（`=` 跳到待选段 / `-` 回退重选）
+  lua\jieshu_autocommit.lua       # 自动上字（>3 码且页内唯一非点候选，见 2.14）
   lua\data\jieshu_single.txt      # 单字真源逐字节拷贝（查询层运行期直读）
   lua\data\jieshu_ciyu.txt        # 词表真源逐字节拷贝
 ```
@@ -81,7 +82,8 @@
 ### 2.2 引擎链路
 
 ```
-按键 → lua_processor: jieshu_gate（链首检入）
+按键 → lua_processor: jieshu_autocommit（自动上字判定，必须排在 gate 前，见 2.14）
+     → lua_processor: jieshu_gate（链首检入）
      → lua_processor: jieshu_nav（`=`/`-` 逐字定位，必须排在 key_binder 前，见 2.12）
      → ascii_composer / selector / speller（alphabet 收编码字符，' 作分段符）
      → translator 链: lua_translator@*jieshu_query（产出全部候选）
@@ -128,8 +130,10 @@ prism 由全部码构建、与前缀条目无关（推断，未实测），但�
 输入流非空（码内数字 / `;` / `.` / 人工 `'` 照常输入）、功能键与方向键、`a-z` 一律放行；
 其余可打印字符（空流下的大写、数字、符号）**拦截**，按键原样穿透到应用。
 
-**gate 必须排在处理链最前**：`ascii_composer` 在西文模式下会直接 `PushInput` 并终止链，
-排它身后的 processor 收不到按键（返工两轮的根因）。
+**gate 必须排在 `ascii_composer` 之前**：`ascii_composer` 在西文模式下会直接 `PushInput`
+并终止链，排它身后的 processor 收不到按键（返工两轮的根因）。P4-D 的
+`jieshu_autocommit` 又排在 gate **之前**（上屏后要由 gate 按空输入流规则处置当前键，
+见 2.14），所以 gate 不再是字面上的「链首」，但「gate 在 ascii_composer 前」的约束不变。
 
 **P4-B 的 `jieshu_nav` 紧随 gate 之后**（在 `key_binder` 之前）：本机 `default.yaml`（万象）
 把 `-`/`=` 绑成了 `Page_Up`/`Page_Down`，排到 key_binder 后面就抢不到键。理由与取舍见 2.12。
@@ -294,34 +298,107 @@ RIME 分段只看字符类，选完首字后剩余串会被当成一段，原逻
 
 **回归与边界**：88 例 fengari 通道 0 差异；新增真实段形态用例，nav 快照改四元组（gate/has_cand/target/head_end）；`get_phrase_segments` 对拍一致。冻结失败走 pcall 兜底回整段预览；多个可查段二次 `=` 走整串预览；手动 Left 停在 `'` 后归类退化；`-` 对冻结段无效。2026-09-11 实机复测：① `deepseek'ce` 按 `=` 出 6 条 `ce` 裸候选；② `ce'deepseek` 按 `=` 不再出 `de` 系；③ `deepseek'mox;` 按 `=` 出 `mo` 35 条裸候选且上屏保留 `deepseek`。全部闭环。
 
+### 2.14 自动上字（P4-D，2026-09-12 实机复测通过）
+
+> 3 码且唯一候选自动上屏。对齐 `ime.py:581-598` 四条件：① 单字态（输入无人工 `'`，
+> 且 `split_sequence` 后仍无 `'`）；② 码长 > 3；③ 当前页 5 条中「余码不含 `.`」的
+> 恰好 1 条（前端 main_function 开头把 current_page 重置为 0 且翻页不重跑判定，
+> 故恒基于第 0 页）；④ 上屏那一条的首字。
+
+**先纠错**：本表 §四 原判「RIME 无原生等价物」**不成立** —— librime 有
+`speller/auto_select`，且本方案的 express_editor 构造时把 `_auto_commit` 置 true
+（`gear/editor.cc`），`AutoSelectUniqueCandidate` → `ConfirmCurrentSelection` →
+`OnSelect` 会真正 `Commit()` 上屏，不只是选中。但它的**判定口径**不可用：
+
+| 原生判据（`gear/speller.cc`）       | 与前端的偏差                        | 真源实测（8398 条单字，码长全 ≥4）                                                          |
+| ----------------------------- | ----------------------------- | ------------------------------------------------------------------------------ |
+| 段内候选总数恰好 1 条（`Prepare(2)==1`） | 前端是「页内非点候选恰 1 条」              | 漏触发 98 例（`ba13`→八/捌.，前端要上屏「八」原生不动）；误上屏 15 例（`gs34`→廾.c、`mo24`→无.u，补码引导中前端明确排除） |
+| `delimiters` 只含人工 `'`         | 看不见解书的自动拆分                    | 多字态输入整串被当一段，字链候选天然恰好 1 条 → `buce/bucen/bu44x/b;,d` 一类连续双字输入全部被整串误上屏            |
+| `auto_select_pattern`（C++ 正则） | 无法表达 `split_sequence` 的迭代拆分语义 | 纯配置无解                                                                          |
+
+**实现**：判定收进查询层 `auto_commit_target(full_input)`（1:1 复刻上述四条件，
+复用 `process_input` / `split_sequence` / `query_by_prefix`，返回候选 0-based 页内
+下标与首字），上屏交给新组件 `lua_processor@*jieshu_autocommit`：`ctx:select(index)`
+→ `select_notifier` → `engine.cc::OnSelect` → 段 kConfirmed → `_auto_commit` →
+`Commit()` —— 与原生 auto_select 的上屏路径完全同一条；下标越界时 `Select` 返回
+false，天然安全。
+
+**两个时机事实**：
+
+1. processor 在按键到达时先跑，此刻 `ctx.input` 还是**上一次按键之后**的状态 ⇒
+   判定命中时上屏的是上一键打出的码，当前键随后照常走链（连打无感；停手时编码
+   保留、按空格上屏，首选即目标字）。
+2. 组件必须排在 `jieshu_gate` **之前**：`select()` 上屏会 `Clear()` 清空输入流，
+   当前键要继续流到 gate、由它按「空输入流」规则处置（小写字母放行、数字/大写/
+   符号拦截穿透）—— 等价 ime.py「自动上字后输入框已清空」；排在 gate 之后则 gate
+   已用清空前的输入判过一轮，当前键会被当成码字符推进刚清空的输入流。
+
+**触发键白名单**：a-z / 0-9 / `;` / `.` / `'`（alphabet 全集，**空格不在内**，见下）。
+选字键（Shift+1~5 → !@#$%）、方向键、Esc、Backspace、`=`/`-` 一律不触发 ——
+用户按这些键说明想操作当前编码/候选，不该被自动上字截胡。
+
+**实机修复记录（2026-09-12 首轮复测出 2 bug，均已修）**：
+
+1. **`bu44`+空格 → 「不 」**（多出一个字面空格）。根因：空格在白名单内，commit
+   `Clear()` 后空格继续走链，空输入流下 gate 对空格 REJECT 穿透到应用。
+   修复：**空格移出白名单**，改走 express_editor 原生路径（有输入流时空格经 gate
+   composing 分支放行 → `Editor::Confirm` → `ConfirmCurrentSelection()` 上屏高亮
+   候选）。可行性由全码表统计背书：枚举码表全部完整码的 >3 前缀 + 副码形态共
+   **14642 个可达输入，判定命中 12982 例的目标下标全部为 0**（高亮默认位），原生
+   上屏即目标字；且用户翻页后空格上屏的是翻到的候选，尊重用户的主动选择。
+2. **`ba13`+`.` → 「八.」而非「捌」**。根因：`.` 在白名单内，commit「八」后 `.` 在
+   空输入流穿透成字面点。修复：**`.` 保留触发但加 peek** —— 预上字状态下先试
+   `auto_commit_target(input..".")`：命中（`ba13.`→捌、`ce4u.`→測）则不 commit，
+   放 `.` 进输入流重新判定（候选与「预」提示随之刷新）；不命中（`bu44.` 无此码
+   形态）则照常上屏目标字，`.` 在空输入流穿透（与既有标点行为一致）。
+   注：ime.py 的自动上字是**即时上屏**（`real_time_var` trace 回调判定命中立即
+   `replace_content`+清空，ime.py:585-598），`ba13.` 在前端须关自动上字才打得出；
+   RIME 的延迟一键语义恰好让「`.` 并入编码」成为可能，此为对前端的刻意增强。
+3. **预上字提示**（用户新增需求）：判定命中时目标候选 comment 挂「预」字
+   （`build_candidates` 新增第三参 `full_input`＝`env.engine.context.input` 整串，
+   在单字模式分支判定——`auto_commit_target` 的守卫天然挡掉人工分段/逐字
+   partial 形态）。余码非空显示「预 .」形，空则「预」。
+
+**回归**：用例新增 `ac <输入串>` 形态 19 条（触发 3：`bu44`/`ba13`/`ba13.`；拦截
+16：3 码 `bu4`、补码引导 `gs34`/`mo24`/`ne47`、多字态 `buce` 类、人工引号
+`bu44'ba13`/`'bu44`、前导杂字符 `4bu44`），两通道 **107 例 0 差异**。
+「预」标记使 build_candidates 快照恰有 5 例变化（`bu44`/`ba13`/`ba13.`/`ce4u`/
+`ce4u.`，差异仅为目标候选多挂「预」，其余 102 例零变化）；另有按键级探针 13 例
+（mock key/env，lupa）全 PASS：空格不触发 ×2、`.` peek 命中放行 ×2 / 不命中
+commit ×2、字母/数字/分号 commit ×3、release/ctrl/选字键/3 码未满不触发 ×4。
+**实机复测（2026-09-12）**：修复后全部通过 —— `bu44`+空格出「不」无多余空格、
+`ba13`+`.` 出「捌」（候选带「预」）、`bu44`+`.` 的穿透点行为、连打/翻页/
+西文模式不受影响。P4-D 收官。
+
 ## 三、已实现功能
 
-| 能力                   | 表现                                                                                     |
-| -------------------- | -------------------------------------------------------------------------------------- |
-| 单字查询                 | `bu44`→不、`ba13`→八、`ba13.`→捌（补码点号直通）                                                    |
-| 自动拆分连续编码             | `bu44ba13`→「不八」链、`yig`→「一个」（白名单链）                                                      |
-| 词语候选                 | `ceu`→「测试」+「厕是」、`b;du`→「病毒」+「兵都」                                                       |
-| 优先上词                 | 全码精确命中时词排在字链之前（Lua 多段模式下恒开）                                                            |
-| 人工 `'` 分段 + 词语增强预览   | `b;du'ceu`→「病毒测试」、`b;d'u`→「兵的是」                                                        |
-| 候选余码提示               | comment 列显示剩余编码                                                                        |
-| 逐段子回显                | 按子段产出回显，无候选的段按编码原样留在串里，与前端一致（见 2.8）                                                    |
-| 候选页码显示               | 单页不显示；多页时显示 `页N`（不给总页数）：段铺到输入尾 → 挂在应用内编码后（prompt 位），否则挂在候选 comment（余码之后，只挂每页首条）（见 2.9） |
-| 多音字逐条列出              | 同字不同码各自成条（不写 `uniquifier`，见 2.10）；`oo`→7 条含 哦4k/哦2k/哦3k                                |
-| 无候选段                 | `bua`→候选栏清空不产出候选，编码留在行内 preedit（应用内虚线），对齐前端「候选清空、编码原位」语义；空格/Esc 的处置待键盘复测               |
-| 空输入流检入               | 只有小写字母唤起输入，数字/大写/符号直出（gate，已复测）                                                        |
-| 空格上屏 / ↑↓ 翻页         | 空格=首选上屏；↑↓ 经 key_binder 重绑为翻页                                                          |
-| `!@#$%`（Shift+1~5）选字 | `menu/alternative_select_keys` 走原生 selector（2026-09-10 键盘复测 1~5 全通过，见 2.7）             |
-| 多字逐字选择               | 选完一字后只出下一个 part 的候选，Shift+1~5 连续逐字、末字自动上屏（见 2.11，已复测）                                  |
-| 逐字定位键 `=` / `-`      | `=` 把光标跳到当前待选段末尾（不用手数 Left 进入逐字）；`-` 等同 Backspace 回退重选（见 2.12，已复测）                     |
-| 码内 `0-9 . ;` 输入      | speller 收编，正常参与查字                                                                      |
-| 皮肤与外观                | 「宣纸」双配色 + 字体布局 + 页大小/字号/横竖排（`weasel.custom.yaml`；导出以本目录真源为准覆盖）                         |
-| 导出闭环                 | 校验→渲染→逐字节同步→diff 摘要→原子写+备份                                                             |
-| 离线回归                 | 同一份用例与快照双通道：`lua_regress.js`（fengari，Lua 5.3 语义）/ `lua_regress_lupa.py`（lupa，本机可直接跑）   |
+| 能力                   | 表现                                                                                               |
+| -------------------- | ------------------------------------------------------------------------------------------------ |
+| 单字查询                 | `bu44`→不、`ba13`→八、`ba13.`→捌（补码点号直通）                                                              |
+| 自动拆分连续编码             | `bu44ba13`→「不八」链、`yig`→「一个」（白名单链）                                                                |
+| 词语候选                 | `ceu`→「测试」+「厕是」、`b;du`→「病毒」+「兵都」                                                                 |
+| 优先上词                 | 全码精确命中时词排在字链之前（Lua 多段模式下恒开）                                                                      |
+| 人工 `'` 分段 + 词语增强预览   | `b;du'ceu`→「病毒测试」、`b;d'u`→「兵的是」                                                                  |
+| 候选余码提示               | comment 列显示剩余编码                                                                                  |
+| 逐段子回显                | 按子段产出回显，无候选的段按编码原样留在串里，与前端一致（见 2.8）                                                              |
+| 候选页码显示               | 单页不显示；多页时显示 `页N`（不给总页数）：段铺到输入尾 → 挂在应用内编码后（prompt 位），否则挂在候选 comment（余码之后，只挂每页首条）（见 2.9）           |
+| 多音字逐条列出              | 同字不同码各自成条（不写 `uniquifier`，见 2.10）；`oo`→7 条含 哦4k/哦2k/哦3k                                          |
+| 无候选段                 | `bua`→候选栏清空不产出候选，编码留在行内 preedit（应用内虚线），对齐前端「候选清空、编码原位」语义；空格/Esc 的处置待键盘复测                         |
+| 空输入流检入               | 只有小写字母唤起输入，数字/大写/符号直出（gate，已复测）                                                                  |
+| 空格上屏 / ↑↓ 翻页         | 空格=首选上屏；↑↓ 经 key_binder 重绑为翻页                                                                    |
+| `!@#$%`（Shift+1~5）选字 | `menu/alternative_select_keys` 走原生 selector（2026-09-10 键盘复测 1~5 全通过，见 2.7）                       |
+| 多字逐字选择               | 选完一字后只出下一个 part 的候选，Shift+1~5 连续逐字、末字自动上屏（见 2.11，已复测）                                            |
+| 逐字定位键 `=` / `-`      | `=` 把光标跳到当前待选段末尾（不用手数 Left 进入逐字）；`-` 等同 Backspace 回退重选（见 2.12，已复测）                               |
+| 自动上字                 | >3 码且当前页唯一「非点候选」自动上屏；判定在 Lua（`auto_commit_target`），上屏走 `ctx:select()` 原生链路；触发键=码字符（空格走原生 Confirm，`.` 带 peek，见 2.14）；预上字时目标候选 comment 挂「预」（2026-09-12 已复测） |
+| 码内 `0-9 . ;` 输入      | speller 收编，正常参与查字                                                                                |
+| 皮肤与外观                | 「宣纸」双配色 + 字体布局 + 页大小/字号/横竖排（`weasel.custom.yaml`；导出以本目录真源为准覆盖）                                   |
+| 导出闭环                 | 校验→渲染→逐字节同步→diff 摘要→原子写+备份                                                                       |
+| 离线回归                 | 同一份用例与快照双通道：`lua_regress.js`（fengari，Lua 5.3 语义）/ `lua_regress_lupa.py`（lupa，本机可直接跑）             |
 
 ### 离线回归用法（改动 Lua 查询层后必跑）
 
 ```
-# 通道 A（lupa）：需 pip install lupa，本机两个 python 均未装（2026-09-10 核实）
+# 通道 A（lupa，C 真 Lua）：需 pip install lupa —— 本机已装（见下方环境事实）
 python migrate_to_rime\lua_regress_lupa.py            # 比对快照，有差异 exit 1
 python migrate_to_rime\lua_regress_lupa.py --update   # 确认行为变更后刷新快照
 
@@ -332,12 +409,23 @@ node migrate_to_rime\lua_regress.js
 node migrate_to_rime\lua_regress.js --update
 ```
 
-本机实测可用的一条命令（Git Bash）：
+本机实测可用的两条命令（两条都跑，互为交叉验证）：
 
 ```
+python migrate_to_rime\lua_regress_lupa.py                    # 通道 A：lupa 2.8 / C 真 Lua
+
 NODE_PATH=C:/Users/yuifsama/.workbuddy/binaries/node/workspace/node_modules \
-  node migrate_to_rime/lua_regress.js
+  node migrate_to_rime/lua_regress.js                         # 通道 B：fengari / Lua 5.3 语义
 ```
+
+**本机环境事实（2026-09-12 复核）**：本机有**两个** CPython。`D:\python\python.exe`
+（3.14.3，`lupa` 2.8 装在它的 user site `%APPDATA%\Python\Python314\site-packages`）；
+WorkBuddy 等工具会话的 PATH 里托管解释器（3.13.12，无第三方包）可能排在前面 ——
+`python` 解析到谁取决于会话，**跑通道 A 请显式写 `D:\python\python.exe
+migrate_to_rime\lua_regress_lupa.py`**（2026-09-12 实测：裸 `python` 解析到托管
+3.13.12 时 lupa 报 ModuleNotFoundError）。通道 B 的 fengari 装在 WorkBuddy 托管
+node 工作区，`NODE_PATH` 方式不变。两通道共用同一份用例与快照（2026-09-12：
+107 例两通道 0 差异）。
 
 脚本用仓库内真源（本目录 `jieshu_query.lua` + `jieshu_nav.lua` + `dict/` 码表）跑用例，不依赖部署结果。
 用例行两种写法：
@@ -346,6 +434,9 @@ NODE_PATH=C:/Users/yuifsama/.workbuddy/binaries/node/workspace/node_modules \
   （例：`#4 ba13bu44` = 前面已有 4 字节的已确认段，剩余段是 `ba13bu44`）；不带前缀 = 段从输入头开始。
 - `nav <已确认> <输入串>`：覆盖 2.12 的定位逻辑，比对的是 `next_target` 算出的**目标光标位置**；
   `-1` = 没有可跳的目标（已全部确认）。例：`nav 0 bu44ba13bu44` → `4`。
+- `ac <输入串>`：覆盖 2.14 的自动上字判定，比对 `auto_commit_target` 的两列输出——
+  候选 0-based 页内下标与上屏首字；`-1` + 空 = 不触发。例：`ac bu44` → `0` + `不`、
+  `ac ba13` → `0` + `八`（捌. 因余码含点被排除）、`ac gs34` → `-1`（廾.c 补码引导中）。
   fengari 的 `io.open` 未实现，脚本以内存桩喂数据并复刻 Windows 文本模式对 `\r` 的剥离。
   快照中 `|` 之后是 comment 字段：**多段模式的「词/字」标记属 RIME 侧显示层，不来自 Python 真源**，
   单字模式的余码同理；`|` 之前的候选文本仍严格对拍 Python 真源。
@@ -357,7 +448,6 @@ NODE_PATH=C:/Users/yuifsama/.workbuddy/binaries/node/workspace/node_modules \
 | 项                       | 归属阶段  | 说明                                                     |
 | ----------------------- | ----- | ------------------------------------------------------ |
 | 逐字模式下「字面段」对齐（P4-A2）     | P4 可选 | 2.13 已处理导航侧（字面段跳过、原码并入候选文本）；首个 part 无候选时仍退回整体语义（不产出候选） |
-| 自动上字（>3 码且唯一候选自动上屏）     | P4 决策 | RIME 无原生等价物；若做则走 Lua processor                         |
 | 简繁切换                    | P4 可选 | 补码繁体/异体已正常入表，可挂 `simplifier`                           |
 | 全拼→双拼桥、笔画/部件反查、无数字简码版   | P4 可选 | 增强项，每项独立可弃                                             |
 | 导出并入 `main.py` 工具链      | P4 之后 | 因 RIME 路径因人而异，倾向保持独立脚本 + 本 README                      |

@@ -105,20 +105,39 @@ for c in __cases_raw:gmatch("[^\\n]+") do cases[#cases + 1] = c end
 
 local out = {}
 for _, c in ipairs(cases) do
-  local ac_input = c:match("^ac%s+(.*)$")
-  local nav_conf, nav_input = c:match("^nav%s+(%d+)%s+(.*)$")
+  -- P4-E 开关态前缀（可叠加在任意用例前，供开关矩阵用例使用）：
+  --   op<位图> <原用例>   位图个位 = 自动上字，十位 = 优先上词；1=开 0=关
+  --   例：op10 bu44ba13 → 自动上字关、优先上词开
+  -- 无前缀 = 全开（与既有 107 例语义完全一致，快照不受影响）
+  local rest = c
+  local ac_on, pp_on = true, true
+  local bits, tail = rest:match("^op(%d%d?)%s+(.*)$")
+  if bits then
+    ac_on = bits:sub(-1) == "1"
+    -- 判 bit 长度要写成嵌套 if，不能写 "len>=2 and (..) or true" —— Lua 的 and/or
+    -- 链在 and 段为 false 时会落到 or true，把「关」吃成「开」（十位读不出 0）。
+    pp_on = true
+    if #bits >= 2 then pp_on = (bits:sub(-2, -2) == "1") end
+    rest = tail
+  end
+  local ac_input = rest:match("^ac%s+(.*)$")
+  local nav_conf, nav_input = rest:match("^nav%s+(%d+)%s+(.*)$")
   if ac_input then
+    -- 按键级判定：开关关闭时 jieshu_autocommit 整段不动作
     local idx, txt = __jieshu_test.auto_commit_target(ac_input)
-    out[#out + 1] = c .. "\\t" .. (idx == nil and -1 or idx) .. "\\t" .. (txt or "")
+    local fired = ac_on and (idx ~= nil)
+    out[#out + 1] = c .. "\\t" .. (fired and idx or -1) .. "\\t" .. (fired and (txt or "") or "")
   elseif nav_conf then
     local gate, target, has, head = __jieshu_nav_test.nav_scan(nav_input, tonumber(nav_conf))
     out[#out + 1] = c .. "\\t" .. (gate and 1 or 0) .. "\\t" .. (has and 1 or 0) .. "\\t"
       .. tostring(target ~= nil and target or -1) .. "\\t"
       .. tostring(head ~= nil and head or -1)
   else
-    local start, input = c:match("^#(%d+)%s+(.*)$")
-    if start then start = tonumber(start) else start = 0 input = c end
-    local cands = __jieshu_test.build_candidates(input, start, start == 0 and input or nil)
+    local start, input = rest:match("^#(%d+)%s+(.*)$")
+    if start then start = tonumber(start) else start = 0 input = rest end
+    -- 第四参 = 优先上词；第五参 = 自动上字（同时门控「预」提示，见 build_candidates 头注）
+    local cands = __jieshu_test.build_candidates(input, start,
+      (start == 0) and input or nil, pp_on, ac_on)
     local t = {}
     for _, x in ipairs(cands) do
       t[#t + 1] = x[1] .. "|" .. (x[2] or "")

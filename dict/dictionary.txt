@@ -2776,7 +2776,6 @@
 車 ju14.
 疽 ju1b
 苴 ju1c
-菹 ju1cu
 鞠 ju1g
 鞫 ju1gh
 锔 ju1j
@@ -7329,6 +7328,7 @@
 雅 ya3w
 亚 ya45
 轧 ya4c
+压 ya4ct
 札 ya4m
 娅 ya4n
 氩 ya4q
@@ -7343,6 +7343,7 @@
 忧 yb1x
 悠 yb1xu
 尤 yb24
+尢 yb24.
 由 yb25
 邮 yb2b
 疣 yb2by
@@ -7378,6 +7379,7 @@
 侑 yb4rr
 幼 yb4t
 诱 yb4y
+噎 ye1k
 椰 ye1m
 耶 ye1o
 掖 ye1u
@@ -7395,8 +7397,10 @@
 靥 ye4g
 烨 ye4h
 叶 ye4k
+咽 ye4kg
 腋 ye4r
 液 ye4u
+掖 ye4ud
 谒 ye4y
 央 yh16
 殃 yh1d
@@ -7436,6 +7440,8 @@
 黟 yi1h
 铱 yi1j
 咿 yi1k
+噫 yi1kx
+椅 yi1m
 医 yi1o
 猗 yi1q
 依 yi1r
@@ -7451,6 +7457,7 @@
 贻 yi2bt
 疑 yi2bu
 彝 yi2c
+荑 yi2cd
 移 yi2h
 颐 yi2i
 咦 yi2k
@@ -7478,7 +7485,9 @@
 倚 yi3r
 佁 yi3rt
 矣 yi3s
+尾 yi3sm.h
 踦 yi3z
+迤 yi3zr
 一 yi42
 义 yi44
 義 yi44.
@@ -7813,9 +7822,12 @@
 焉 yj1hv
 咽 yj1k
 阉 yj1m
+阏 yj1mf
 嫣 yj1n
-胭 yj1r
-臙 yj1r.
+殷 yj1p
+腌 yj1r
+胭 yj1rg
+臙 yj1rg.
 淹 yj1u
 崦 yj1ud
 湮 yj1ut
@@ -7834,6 +7846,7 @@
 妍 yj2n
 研 yj2s
 沿 yj2u
+铅 yj2u.j
 岩 yj2us
 筵 yj2z
 郾 yj3b
@@ -7858,6 +7871,7 @@
 艳 yj4d
 燕 yj4h
 焰 yj4hd
+焱 yj4hd.h
 觃 yj4j
 咽 yj4k
 唁 yj4kk
@@ -7879,6 +7893,7 @@
 吆 yk1k
 妖 yk1n
 腰 yk1r
+约 yk1s.h
 要 yk1x
 邀 yk1z
 尧 yk2g
@@ -7886,6 +7901,7 @@
 姚 yk2n
 爻 yk2p
 肴 yk2r
+侥 yk2rg
 繇 yk2s
 徭 yk2t
 垚 yk2tt
@@ -7901,6 +7917,7 @@
 杳 yk3m
 舀 yk3v
 窈 yk3x
+疟 yk4b
 药 yk4c
 耀 yk4g
 靿 yk4gt
@@ -7947,6 +7964,7 @@
 茚 yn4cj
 印 yn4j
 胤 yn4r
+饮 yn4u
 窨 yn4x
 哟 yo1k
 唷 yo1kr
@@ -7980,6 +7998,7 @@
 韵 yp4y
 酝 yp4yl
 运 yp4z
+员 yp4z.k
 孕 yp4zn
 冤 yr1d
 肙 yr1k
@@ -8048,6 +8067,7 @@
 恿 ys3x
 踊 ys3z
 用 ys49
+佣 ys4r
 曰 yt10
 约 yt1s
 哕 yt3k
@@ -8060,6 +8080,7 @@
 钥 yt4jj
 阅 yt4m
 粤 yt4mk
+栎 yt4my
 樾 yt4mz
 龠 yt4r
 岳 yt4u
@@ -8068,6 +8089,7 @@
 越 yt4z
 跃 yt4zy
 於 yu1f
+吁 yu1k
 纡 yu1s
 淤 yu1u
 迂 yu1z
@@ -8086,6 +8108,7 @@
 雩 yu2i
 蝓 yu2ir
 觎 yu2j
+喁 yu2k
 榆 yu2m
 盂 yu2my
 娱 yu2n
@@ -8134,6 +8157,8 @@
 谷 yu4b.u
 寓 yu4bt
 芋 yu4c
+蔚 yu4cc
+尉 yu4cs.u
 豫 yu4d
 煜 yu4h
 燠 yu4ho
@@ -8141,7 +8166,8 @@
 预 yu4i
 蜮 yu4ih
 钰 yu4j
-喻 yu4k
+吁 yu4k
+喻 yu4kr
 鬻 yu4kv
 驭 yu4m
 阈 yu4mh
@@ -8195,6 +8221,7 @@
 萦 y;2s
 茔 y;2t
 瀛 y;2u
+荥 y;2uc
 滢 y;2uy
 莹 y;2w
 迎 y;2z
@@ -8248,6 +8275,7 @@
 憎 zg1x
 赠 zg4b
 锃 zg4j
+综 zg4s
 甑 zg4w
 赃 zh1b
 臧 zh1i
@@ -8264,6 +8292,7 @@
 锱 zi1j
 咨 zi1k
 嗞 zi1kd
+吱 zi1kv
 姿 zi1n
 龇 zi1nc
 髭 zi1p
@@ -8340,6 +8369,7 @@
 笮 zo2z
 左 zo3g
 佐 zo3r
+撮 zo3u
 阼 zo4b
 凿 zo4c
 座 zo4g
@@ -8378,6 +8408,7 @@
 疭 zs4b
 粽 zs4m
 纵 zs4s
+菹 zu1c
 租 zu1h
 卒 zu2d
 族 zu2f

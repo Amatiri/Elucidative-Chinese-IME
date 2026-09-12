@@ -31,8 +31,14 @@
 -- 在空输入流穿透（既有标点行为）。
 --
 -- 返回值映射与 C++ 枚举相反（lua_gears.cc，见 jieshu_gate.lua 头注）：
---   0 = kRejected（终止链、按键穿透到应用）；1 = kAccepted（吞键）；2 = kNoop（继续链）。
+--   0 = kRejected（终止键链、按键穿透到应用）；1 = kAccepted（吞键）；2 = kNoop（继续链）。
 -- 本组件是旁路动作，一律返回 2，绝不吞键。
+--
+-- P4-E 开关「自动上字」（switches: jieshu_auto_commit，states [ 字, · ]，默认开）：
+-- 对齐 ime.py 的 auto_commit_enabled（ime.py:48 默认 "1"，ime.py:585 处判定）。
+-- 关闭时本组件整段不动作 —— 判定与上屏都不跑，编码照常留在输入流里按空格上屏。
+-- 查询层的「预」提示同步由 jieshu_translator 用同一开关关掉（见 jieshu_query.lua
+-- 的 option_on），否则会出现「挂着预标记却永不自动上屏」的矛盾状态。
 
 local K_CONTINUE = 2
 
@@ -62,6 +68,20 @@ local function get_api()
   return api
 end
 
+-- P4-E 开关读取（与 jieshu_query.lua 的 option_on / auto_commit_on 逐字一致，三处必须同步）：
+--   · `Context:get_option` 在 lua 侧由 WRAPMEM 直通 C++ 成员，**永远返回 bool，不会返回 nil**。
+--   · 默认态由 schema 的 `reset` 决定（engine.cc::InitializeOptions 只在 reset>=0 时
+--     set_option；不写 reset 的开关根本不 set_option，读到的就是 false）。
+--     本方案写了 `reset: 1` → 默认开，对齐 ime.py:48。
+--   ⇒ 无需三态兜底：true=开、false=关，直接照用。
+--     `pcall` 只防「ctx/方法不可用」（测试桩、引擎异常），失败时按 ime.py 默认值 true 走。
+local function auto_commit_on(ctx)
+  if not ctx then return true end
+  local ok, v = pcall(function() return ctx:get_option("jieshu_auto_commit") end)
+  if not ok then return true end
+  return v and true or false
+end
+
 local function autocommit(key, env)
   local ctx = env.engine and env.engine.context
   if not ctx then return K_CONTINUE end
@@ -76,6 +96,9 @@ local function autocommit(key, env)
   -- 西文模式（含 ascii_composer 的 inline_ascii 临时态）整体放行
   local ok_a, ascii = pcall(function() return ctx:get_option("ascii_mode") end)
   if ok_a and ascii then return K_CONTINUE end
+  -- P4-E 开关：关掉自动上字就整段不动作（判定与上屏都不跑）。
+  -- 三态判定见上面的 auto_commit_on —— nil（option 从未被 set_option 过）按默认态开。
+  if not auto_commit_on(ctx) then return K_CONTINUE end
 
   local a = get_api()
   if not a or not a.auto_commit_target then
@@ -118,6 +141,7 @@ if __jieshu_autocommit_test_mode then
     get_api = get_api,
     triggers_autocommit = triggers_autocommit,
     autocommit = autocommit,
+    auto_commit_on = auto_commit_on,
   }
 end
 

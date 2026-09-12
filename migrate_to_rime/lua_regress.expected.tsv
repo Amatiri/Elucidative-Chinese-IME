@@ -105,3 +105,31 @@ ac bu44'ba13	-1
 ac b;du'ceu	-1	
 ac 'bu44	-1	
 ac 4bu44	-1	
+op00 b;du	2	兵都|	病毒|•
+op00 ceu	2	厕是|	测试|•
+op00 bu	20	不|44	晡|1r	逋|1z	不|24	卜|31	哺|3k	卟|3kb	堡|3t	捕|3u	补|3y	部|4b	蔀|4c	布|4j	钚|4jb	埠|4t	埔|4tf	步|4v	瓿|4w	怖|4x	簿|4z
+op00 bu1	2	晡|r	逋|z
+op01 b;du	2	兵都|	病毒|•
+op01 ceu	2	厕是|	测试|•
+op10 b;du	2	病毒|•	兵都|
+op10 ceu	2	测试|•	厕是|
+op10 bu44	1	不|
+op10 ba13	2	八|	捌|.
+op10 ba13.	1	捌|
+op10 ce4u.	1	測|
+op10 bu44ba13	1	不八|
+op00 bu44	1	不|
+op00 ba13	2	八|	捌|.
+op11 b;du	2	病毒|•	兵都|
+op11 ceu	2	测试|•	厕是|
+op11 bu44	1	不|预
+op00 ac bu44	-1	
+op01 ac bu44	0	不
+op10 ac bu44	-1	
+op11 ac bu44	0	不
+op10 ac ba13	-1	
+op01 ac ba13	0	八
+op00 ac b;du'ceu	-1	
+op10 b;du'ceu	1	病毒测试|
+op01 ce4u	1	测|预
+op10 ce4u	1	测|

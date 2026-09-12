@@ -41,7 +41,7 @@
 
 ```
 <RIME 用户资料夹>\
-  jieshu.schema.yaml              # 输入方案定义
+  jieshu.schema.yaml              # 输入方案定义（含 P4-E 的两个 switches）
   jieshu.dict.yaml                # 音节图宿主词典（字全码 + 可见前缀 + 词全码）
   weasel.custom.yaml              # 小狼毫皮肤（「宣纸」双配色 + 字体布局）
   lua\jieshu_query.lua            # 查询层（候选的实际生产者）
@@ -52,6 +52,13 @@
   lua\data\jieshu_single.txt      # 单字真源逐字节拷贝（查询层运行期直读）
   lua\data\jieshu_ciyu.txt        # 词表真源逐字节拷贝
 ```
+
+> P4-E 的两个开关**本方案选择不登记** `default.custom.yaml` 的 `switcher/save_options`
+> —— 选单里能切换（靠 `jieshu.schema.yaml` 的 `switches:` 声明），但切走方案再切回来会
+> 回默认态（都是「开」，与 `ime.py:48-49` 一致，观感影响很小）。
+> **不要**为了「记忆」往 `default.custom.yaml` 的 `switcher:` 加东西：`patch` 是整体替换，
+> 会把 `default.yaml` 的 `hotkeys` 等一并顶掉、**方案选单直接打不开**（2026-09-12 踩过，见 2.16）。
+> 该文件由小狼毫「输入法设定」维护，**不在本仓库**。
 
 ### 日常维护
 
@@ -151,6 +158,7 @@ prism 由全部码构建、与前缀条目无关（推断，未实测），但�
 | `punctuator`                                                            | 内联最小符号表                                                  | 不写 `import_preset: default`——定制环境下 default.yaml 可能没有 punctuator 段，照抄会编译失败 |
 | `key_binder`                                                            | `import_preset: default` + `Up/Down → Page_Up/Page_Down` | 原生 ↑↓ 是移高亮，翻页需重绑                                                          |
 | `recognizer/patterns.jieshu`                                            | 含 `'` 的码集正则                                              | 人工分段后整段仍带 jieshu tag；**不引 default**（其 email/url pattern 会抢键，见 2.7）        |
+| `switches`（P4-E）                                                       | `jieshu_auto_commit` / `jieshu_phrase_priority`，`states` 次位=开 + **`reset: 1`** | 两个功能开关，**默认开**（`reset: 1`，对齐 `ime.py:48-49`）；`states[0]`=关、`states[1]`=开，默认态由 `reset` 决定而非 states 顺序（见 2.15）。**不登记 `save_options`**（登记要把全局 `switcher` 节点整个覆盖、会弄瘫选单，见 2.16） |
 
 `ascii_composer/switch_key` 用官方默认（Shift_L: inline_ascii），与 gate 让位不冲突；
 `speller/algebra` 不设（派生拼写会引入跨音节合并并按字典序排，已废弃）。
@@ -370,30 +378,160 @@ commit ×2、字母/数字/分号 commit ×3、release/ctrl/选字键/3 码未�
 `ba13`+`.` 出「捌」（候选带「预」）、`bu44`+`.` 的穿透点行为、连打/翻页/
 西文模式不受影响。P4-D 收官。
 
+### 2.15 方案选单开关：自动上字 / 优先上词（P4-E，2026-09-12）
+
+把 `ime.py` 底部设置栏的两个按钮搬进 RIME 方案选单，与前端 1:1 对齐
+（`ime.py:48-49` 默认均为 `"1"`=开，`:1024-1061` 是两个 TI 标签的点击切换）。
+
+| 开关             | `switches.name`         | `states`    | `reset` | 默认 | 影响                                                                  |
+| -------------- | ----------------------- | ----------- | ------- | -- | ------------------------------------------------------------------- |
+| 自动上字           | `jieshu_auto_commit`    | `[ ·, 字 ]`  | `1`     | 开  | 关：判定与上屏都不跑，编码留在输入流按空格上屏；**同时关掉候选的「预」标记**                             |
+| 优先上词           | `jieshu_phrase_priority` | `[ ·, 词 ]`  | `1`     | 开  | 多字模式候选顺序 `[词,链]` / `[链,词]`（关：词**仍在**，只退到链后，可用 Shift+2 显式选）        |
+
+**⚠️ 两个源码级事实（2026-09-12 核实，此前连错两轮，勿再凭推测改）**：
+
+**① `states` 下标 ↔ option 值**：`states[0]` ↔ `false`（关）、`states[1]` ↔ `true`（开）。
+
+**② 「默认态」由 `reset` 决定，与 `states` 顺序无关** —— 这是最容易搞错的一点：
+
+```cpp
+// engine.cc :: ConcreteEngine::InitializeOptions()
+switches.FindOption([this](Switches::SwitchOption option) {
+  if (option.reset_value >= 0) {                        // ← 只有写了 reset 才进这个分支
+    context_->set_option(option.option_name,
+                         (option.reset_value != 0));    // = (reset != 0)
+  }
+  return Switches::kContinue;
+});
+// switches.cc :: reset_value():  无 `reset` → 返回 -1
+```
+
+⇒ **不写 `reset` 的 switch，`InitializeOptions` 根本不会调 `set_option`**，
+该 option 永远不进 `Context::options_`，`get_option` 走 `context.cc` 的
+`return false` 分支 ⇒ **表现为「默认关」，与 `states` 怎么排无关**。
+⇒ 要默认开，**唯一**办法是写 `reset: 1`（值非 0 → `true`）。
+
+**③ 附带纠正**：`Context:get_option` 在 lua 侧由 `WRAPMEM` 直通 C++ 同名成员
+（`hchunhui/librime-lua` 的 `ContextReg::methods`），**永远返回 `bool`，不可能返回 `nil`**。
+所以「nil 是三态之一、需要兜底」是**错误认知**（我此前据此写了 `if v == nil then return true`，
+该分支从未生效 —— 这也正是「首装默认关」的直接原因）。C++ 侧未命中时同样 `return false`。
+
+**为什么 states 只写单个汉字**：RIME 的 `switches` 没有「选项长名称」机制，选单里显示的就是
+`states` 里的串。雾凇的「中英标点」「简繁切换」靠状态字本身表意（`[ ¥, $ ]`、`[ 简, 繁 ]`）。
+本方案用 `[ ·, 字 ]` / `[ ·, 词 ]` 配合 `reset: 1` —— 默认落在次位，选单首屏显示的就是
+「字」/「词」（功能名），点一下切到 `·`（关）。
+
+**关于 `reset` 的代价（已确认接受）**：`reset` 的语义是「每次切方案回默认态」，
+所以用户手动关掉后，**切走方案再切回来会强制回到「开」**。对「推荐默认全开」的定位
+而言这正是想要的。另外它不进 `switcher/save_options` 的持久化名单 —— 但那不是缺点：
+雾凇 `emoji` 每次重置是 `reset: 1` 的直接后果，与持久化名单无关。
+
+**关于跨会话记忆（本方案选择不开启）**：唯一能持久化的是登记进 `default.custom.yaml` 的
+`switcher/save_options`。但 `patch` 对该节点是**整体替换**而非深度合并 ——
+只写 `save_options` 一个键会把 `default.yaml` 的 `caption`/`hotkeys`/`fold_options` 等
+一并顶掉，**方案选单（F4）直接打不开**（2026-09-12 实际踩过，详见 §2.16）。
+权衡后本方案**不登记**，配合 `reset: 1` 得到「每次都是默认全开」的干净行为。
+
+**读取判决**（三处实现必须同步：`jieshu_query.lua` 的 `option_on`、
+`jieshu_autocommit.lua` 的 `auto_commit_on`）：
+
+```
+读到的值       行为     理由
+true         → 开      schema 的 reset: 1 给到的默认值，或用户从选单切到「字/词」
+false        → 关      用户从选单切到「·」
+pcall 失败    → 开      仅防「ctx / 方法不可用」（测试桩、引擎异常），按 ime.py 的默认值走。
+                       ⚠️ 这不是三态判定 —— get_option 不会返回 nil（见上面 ③）。
+```
+
+实现落在两个组件，各有一个局部函数（**没有抽公共模块**：lua 侧的函数值不能挂字段，
+共享要走 `jieshu_query_api` 那种全局表，而这里只有 6 行、抄一遍比建一条通路更稳）：
+
+- `jieshu_query.lua` 的 `option_on(ctx, name)` —— translator 读两个开关；
+- `jieshu_autocommit.lua` 的 `auto_commit_on(ctx)` —— processor 读自动上字。
+
+**两个开关互相独立**（对齐 `ime.py`：`auto_commit_enabled` 只管 `:585` 的自动上屏，
+`phrase_priority` 只管 `:336-340 / :436-441 / :561 / :608` 的顺序与空格取值）：
+
+- **自动上字关** ⇒ `build_candidates` 不挂「预」。理由：那个字永远不会自动上屏，
+  留着「预」是误导。故 `build_candidates` 收两个独立开关参数
+  （`phrase_priority` 管顺序、`ac_on` 管预提示），**不是**一个参数兼管两件事。
+- **优先上词关** ⇒ 单字模式的候选**完全不变**（`query_by_prefix` 不跨段匹配，
+  已实测 10289 个非空输入中「自动拆分态又有单字候选」为 **0 例**，
+  两个开关都碰不到单字分支）。
+
+**回归**：新增开关矩阵用例 28 条（`op<位图> <原用例>`，个位=自动上字、十位=优先上词），
+两通道 **135 例 0 差异**；另有 lupa 按键级探针验证 `true/false/nil` 三态
+（true 与 nil 上屏、false 不上屏）全 PASS。既有 107 例无前缀 = 全开，
+快照逐字节未变 —— 证明默认路径零回归。
+
+### 2.16 事故记录：`patch` 是整体替换，手改 `switcher` 会把方案选单打瘫（2026-09-12）
+
+**背景**：P4-E 初版想让两个开关跨会话记忆，于是往 `D:\输入法\default.custom.yaml` 写了：
+
+```yaml
+patch:
+  schema_list:
+    - {schema: double_pinyin_sogou}
+    - {schema: jieshu}
+  switcher:
+    save_options: [ascii_punct, traditionalization, emoji, full_shape,
+                   search_single_char, jieshu_auto_commit, jieshu_phrase_priority]
+```
+
+**症状**：方案选单（F4）**彻底打不开**。
+
+**根因**：`*.custom.yaml` 的 `patch` 是**按节点整体替换**，不是深度合并。
+`default.yaml:32-51` 的 `/switcher` 节点含 6 个键
+（`caption` / `hotkeys` / `save_options` / `fold_options` / `abbreviate_options` /
+`option_list_separator`），patch 一提交其余 5 个全被顶掉 —— `switcher_settings`
+拿不到 `hotkeys`，于是没有任何键能唤起选单。
+
+**排查判据（照这套查，别只看源文件）**：
+
+1. 看**编译产物** `D:\输入法\build\default.yaml` 的该节点 —— 运行时真正读的是它。
+   本例该文件 `switcher:` 段只到 `save_options` 就 EOF，
+   `caption`/`hotkeys`/`fold_options` 等在全文中 **0 命中**。
+2. 看当次部署会话的 **WARNING 日志**（`%TEMP%\rime.weasel\`）：
+   `switcher_settings.cc:118] hotkeys not defined.`，时间戳正好落在
+   「读完所有 schema、开始构造选单」那一刻。
+3. 反证语法无问题：INFO 日志有 `config_compiler.cc:214] patching switcher`
+   —— 有这行说明 patch 已正常解析并应用，**问题在语义不在 YAML 格式**。
+4. 别误判噪声：`circular dependencies detected in melt_eng.schema` /
+   `radical_pinyin.schema` 是配套方案自己的既有问题；
+   `finished updating schemas: 4 success, 0 failure` 说明字典与方案本身没事。
+
+**处置**：`default.custom.yaml` 的 `patch` 回退为只有 `schema_list`，
+`switcher` 全段交回 `default.yaml`；**不登记 `save_options`**（接受切方案回默认态）。
+
+**通用教训**：改大节点里的单个键时，要么把该节点的**全部必要键**一并写进 patch，
+要么干脆别碰这个节点。**「功能能不能切」只取决于方案自己的 `switches:` 声明；
+`save_options` 只决定「跨会话是否记住」** —— 为了「记忆」去动全局 `switcher` 节点、
+代价是把整个选单弄瘫，明显不值。
+
 ## 三、已实现功能
 
-| 能力                   | 表现                                                                                               |
-| -------------------- | ------------------------------------------------------------------------------------------------ |
-| 单字查询                 | `bu44`→不、`ba13`→八、`ba13.`→捌（补码点号直通）                                                              |
-| 自动拆分连续编码             | `bu44ba13`→「不八」链、`yig`→「一个」（白名单链）                                                                |
-| 词语候选                 | `ceu`→「测试」+「厕是」、`b;du`→「病毒」+「兵都」                                                                 |
-| 优先上词                 | 全码精确命中时词排在字链之前（Lua 多段模式下恒开）                                                                      |
-| 人工 `'` 分段 + 词语增强预览   | `b;du'ceu`→「病毒测试」、`b;d'u`→「兵的是」                                                                  |
-| 候选余码提示               | comment 列显示剩余编码                                                                                  |
-| 逐段子回显                | 按子段产出回显，无候选的段按编码原样留在串里，与前端一致（见 2.8）                                                              |
-| 候选页码显示               | 单页不显示；多页时显示 `页N`（不给总页数）：段铺到输入尾 → 挂在应用内编码后（prompt 位），否则挂在候选 comment（余码之后，只挂每页首条）（见 2.9）           |
-| 多音字逐条列出              | 同字不同码各自成条（不写 `uniquifier`，见 2.10）；`oo`→7 条含 哦4k/哦2k/哦3k                                          |
-| 无候选段                 | `bua`→候选栏清空不产出候选，编码留在行内 preedit（应用内虚线），对齐前端「候选清空、编码原位」语义；空格/Esc 的处置待键盘复测                         |
-| 空输入流检入               | 只有小写字母唤起输入，数字/大写/符号直出（gate，已复测）                                                                  |
-| 空格上屏 / ↑↓ 翻页         | 空格=首选上屏；↑↓ 经 key_binder 重绑为翻页                                                                    |
-| `!@#$%`（Shift+1~5）选字 | `menu/alternative_select_keys` 走原生 selector（2026-09-10 键盘复测 1~5 全通过，见 2.7）                       |
-| 多字逐字选择               | 选完一字后只出下一个 part 的候选，Shift+1~5 连续逐字、末字自动上屏（见 2.11，已复测）                                            |
-| 逐字定位键 `=` / `-`      | `=` 把光标跳到当前待选段末尾（不用手数 Left 进入逐字）；`-` 等同 Backspace 回退重选（见 2.12，已复测）                               |
+| 能力                   | 表现                                                                                                                                                        |
+| -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 单字查询                 | `bu44`→不、`ba13`→八、`ba13.`→捌（补码点号直通）                                                                                                                       |
+| 自动拆分连续编码             | `bu44ba13`→「不八」链、`yig`→「一个」（白名单链）                                                                                                                         |
+| 词语候选                 | `ceu`→「测试」+「厕是」、`b;du`→「病毒」+「兵都」                                                                                                                          |
+| 优先上词                 | 全码精确命中时词排在字链之前（P4-D 及以前为硬编码**恒开**；**P4-E 起改为开关，默认开**，见 2.15）                                                                                               |
+| 人工 `'` 分段 + 词语增强预览   | `b;du'ceu`→「病毒测试」、`b;d'u`→「兵的是」                                                                                                                           |
+| 候选余码提示               | comment 列显示剩余编码                                                                                                                                           |
+| 逐段子回显                | 按子段产出回显，无候选的段按编码原样留在串里，与前端一致（见 2.8）                                                                                                                       |
+| 候选页码显示               | 单页不显示；多页时显示 `页N`（不给总页数）：段铺到输入尾 → 挂在应用内编码后（prompt 位），否则挂在候选 comment（余码之后，只挂每页首条）（见 2.9）                                                                    |
+| 多音字逐条列出              | 同字不同码各自成条（不写 `uniquifier`，见 2.10）；`oo`→7 条含 哦4k/哦2k/哦3k                                                                                                   |
+| 无候选段                 | `bua`→候选栏清空不产出候选，编码留在行内 preedit（应用内虚线），对齐前端「候选清空、编码原位」语义；空格/Esc 的处置待键盘复测                                                                                  |
+| 空输入流检入               | 只有小写字母唤起输入，数字/大写/符号直出（gate，已复测）                                                                                                                           |
+| 空格上屏 / ↑↓ 翻页         | 空格=首选上屏；↑↓ 经 key_binder 重绑为翻页                                                                                                                             |
+| `!@#$%`（Shift+1~5）选字 | `menu/alternative_select_keys` 走原生 selector（2026-09-10 键盘复测 1~5 全通过，见 2.7）                                                                                |
+| 多字逐字选择               | 选完一字后只出下一个 part 的候选，Shift+1~5 连续逐字、末字自动上屏（见 2.11，已复测）                                                                                                     |
+| 逐字定位键 `=` / `-`      | `=` 把光标跳到当前待选段末尾（不用手数 Left 进入逐字）；`-` 等同 Backspace 回退重选（见 2.12，已复测）                                                                                        |
 | 自动上字                 | >3 码且当前页唯一「非点候选」自动上屏；判定在 Lua（`auto_commit_target`），上屏走 `ctx:select()` 原生链路；触发键=码字符（空格走原生 Confirm，`.` 带 peek，见 2.14）；预上字时目标候选 comment 挂「预」（2026-09-12 已复测） |
-| 码内 `0-9 . ;` 输入      | speller 收编，正常参与查字                                                                                |
-| 皮肤与外观                | 「宣纸」双配色 + 字体布局 + 页大小/字号/横竖排（`weasel.custom.yaml`；导出以本目录真源为准覆盖）                                   |
-| 导出闭环                 | 校验→渲染→逐字节同步→diff 摘要→原子写+备份                                                                       |
-| 离线回归                 | 同一份用例与快照双通道：`lua_regress.js`（fengari，Lua 5.3 语义）/ `lua_regress_lupa.py`（lupa，本机可直接跑）             |
+| 码内 `0-9 . ;` 输入      | speller 收编，正常参与查字                                                                                                                                         |
+| 皮肤与外观                | 「宣纸」双配色 + 字体布局 + 页大小/字号/横竖排（`weasel.custom.yaml`；导出以本目录真源为准覆盖）                                                                                            |
+| 导出闭环                 | 校验→渲染→逐字节同步→diff 摘要→原子写+备份                                                                                                                                |
+| 离线回归                 | 同一份用例与快照双通道：`lua_regress.js`（fengari，Lua 5.3 语义）/ `lua_regress_lupa.py`（lupa，本机可直接跑）                                                                      |
 
 ### 离线回归用法（改动 Lua 查询层后必跑）
 
@@ -425,10 +563,10 @@ WorkBuddy 等工具会话的 PATH 里托管解释器（3.13.12，无第三方包
 migrate_to_rime\lua_regress_lupa.py`**（2026-09-12 实测：裸 `python` 解析到托管
 3.13.12 时 lupa 报 ModuleNotFoundError）。通道 B 的 fengari 装在 WorkBuddy 托管
 node 工作区，`NODE_PATH` 方式不变。两通道共用同一份用例与快照（2026-09-12：
-107 例两通道 0 差异）。
+135 例两通道 0 差异）。
 
 脚本用仓库内真源（本目录 `jieshu_query.lua` + `jieshu_nav.lua` + `dict/` 码表）跑用例，不依赖部署结果。
-用例行两种写法：
+用例行三种写法（`op` 前缀可叠加在任意一种之前）：
 
 - `#<n> <段串>`（行首带 `#<n> ` 前缀）：`n` = 段的起始偏移（`seg.start`），覆盖 2.11 的逐字模式
   （例：`#4 ba13bu44` = 前面已有 4 字节的已确认段，剩余段是 `ba13bu44`）；不带前缀 = 段从输入头开始。
@@ -437,6 +575,11 @@ node 工作区，`NODE_PATH` 方式不变。两通道共用同一份用例与快
 - `ac <输入串>`：覆盖 2.14 的自动上字判定，比对 `auto_commit_target` 的两列输出——
   候选 0-based 页内下标与上屏首字；`-1` + 空 = 不触发。例：`ac bu44` → `0` + `不`、
   `ac ba13` → `0` + `八`（捌. 因余码含点被排除）、`ac gs34` → `-1`（廾.c 补码引导中）。
+- **`op<位图> <原用例>`（P4-E 开关矩阵）**：位图**个位 = 自动上字、十位 = 优先上词**，
+  `1` 开 `0` 关。两者独立，故 4 种组合都要有用例。例：`op10 bu44ba13` = 自动上字关 +
+  优先上词开；`op01 ceu` = 自动上字开 + 优先上词关 → 出「厕是 / 测试•」（链在前，
+  且第 0 位带「预」）。**不加 `op` 前缀 = 全开**，与 2.14 之前的 107 例语义完全一致，
+  故那份快照逐字节未变。
   fengari 的 `io.open` 未实现，脚本以内存桩喂数据并复刻 Windows 文本模式对 `\r` 的剥离。
   快照中 `|` 之后是 comment 字段：**多段模式的「词/字」标记属 RIME 侧显示层，不来自 Python 真源**，
   单字模式的余码同理；`|` 之前的候选文本仍严格对拍 Python 真源。
@@ -445,13 +588,12 @@ node 工作区，`NODE_PATH` 方式不变。两通道共用同一份用例与快
 
 ## 四、尚未实现 / 未开始
 
-| 项                       | 归属阶段  | 说明                                                     |
-| ----------------------- | ----- | ------------------------------------------------------ |
-| 逐字模式下「字面段」对齐（P4-A2）     | P4 可选 | 2.13 已处理导航侧（字面段跳过、原码并入候选文本）；首个 part 无候选时仍退回整体语义（不产出候选） |
-| 简繁切换                    | P4 可选 | 补码繁体/异体已正常入表，可挂 `simplifier`                           |
-| 全拼→双拼桥、笔画/部件反查、无数字简码版   | P4 可选 | 增强项，每项独立可弃                                             |
-| 导出并入 `main.py` 工具链      | P4 之后 | 因 RIME 路径因人而异，倾向保持独立脚本 + 本 README                      |
-| 与 `ime.py` 并行试用期、前端退役决定 | P5    | 按实际手感决定切换/双前端/回滚；`ime.py` 不提前删除                        |
+| 项                          | 归属阶段  | 说明                                |
+| -------------------------- | ----- | --------------------------------- |
+| 简繁切换                       | P4 可选 | 解书音形通过补码实现，而非切换模式                 |
+| 全拼→双拼桥、笔画/部件反查（形部表）、无数字简码版 | P4 可选 | 更接近“工具”内容，而非输入功能                  |
+| 导出并入 `main.py` 工具链         | P4 之后 | 因 RIME 路径因人而异，倾向保持独立脚本 + 本 README |
+| 与 `ime.py` 并行试用期、前端退役决定    | P5    | 按实际手感决定切换/双前端/回滚；`ime.py` 不提前删除   |
 
 明确**放弃**的映射：内输模式（RIME 系统级候选窗即「外输」且更通用）、形部表悬浮窗、剪贴板同步。
 

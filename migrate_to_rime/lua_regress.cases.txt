@@ -105,3 +105,31 @@ ac bu44'ba13
 ac b;du'ceu
 ac 'bu44
 ac 4bu44
+op00 b;du
+op00 ceu
+op00 bu
+op00 bu1
+op01 b;du
+op01 ceu
+op10 b;du
+op10 ceu
+op10 bu44
+op10 ba13
+op10 ba13.
+op10 ce4u.
+op10 bu44ba13
+op00 bu44
+op00 ba13
+op11 b;du
+op11 ceu
+op11 bu44
+op00 ac bu44
+op01 ac bu44
+op10 ac bu44
+op11 ac bu44
+op10 ac ba13
+op01 ac ba13
+op00 ac b;du'ceu
+op10 b;du'ceu
+op01 ce4u
+op10 ce4u

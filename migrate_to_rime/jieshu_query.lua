@@ -488,8 +488,16 @@ end
 --   auto_commit_target 的守卫（无引号、单字态、无前导残码）天然挡掉人工分段/逐字
 --   partial 等形态，故只有「段铺满整串的单字态」才可能命中 —— 此时 res 与判定同源
 --   同序，ac_index 直接就是本函数单字分支产出的页内下标。
-local function build_candidates(seg_input, seg_start, full_input)
+-- phrase_priority（P4-E）= 「优先上词」开关，决定多字模式的候选顺序 [词,链] / [链,词]。
+-- ac_on（P4-E）= 「自动上字」开关，**仅**用于门控「预」提示 —— 关掉自动上字就不该再挂
+--   「预」（那个字永远不会自动上屏，挂标记是误导）。两个开关互相独立：优先上词只管
+--   顺序，自动上字只管预提示，互不影响。
+-- 两个参数缺省均为 true（离线回归不传前缀时的既有 107 例语义，以及线上调用点之外的
+--   直接调用），保持向后兼容。
+local function build_candidates(seg_input, seg_start, full_input, phrase_priority, ac_on)
   seg_start = seg_start or 0
+  if phrase_priority == nil then phrase_priority = true end
+  if ac_on == nil then ac_on = true end
   local manual_lead = seg_input:sub(1, 1) == "'"
   local proc = process_input(seg_input)
   if proc == "" then return {} end
@@ -568,8 +576,9 @@ local function build_candidates(seg_input, seg_start, full_input)
     -- 单字模式：前缀候选（字+余码注释），桶序=真源行序
     local res = query_by_prefix(st)
     -- P4-D 预上字提示：判定与 res 同一次查询口径（见本函数头注），命中即挂「预」
+    -- P4-E：自动上字关闭时不挂「预」—— 那个字不会再自动上屏，标记会成为误导
     local ac_index = nil
-    if full_input then
+    if full_input and ac_on then
       ac_index = auto_commit_target(full_input)
     end
     for i = 1, #res do
@@ -582,10 +591,19 @@ local function build_candidates(seg_input, seg_start, full_input)
       cands[#cands + 1] = { w, comment }
     end
   else
+    -- 多字模式：候选 = 有序 [词, 链] 或 [链, 词]，跟随「优先上词」（P4-E）。
+    -- 对齐 ime.py _build_multi_candidates:429-442 —— 关优先上词时词**不消失**，
+    -- 只是退到链后面，仍可用 Shift+2（@）显式选；变的只有空格首选（前端在
+    -- ime.py:561 判 phrase_priority 决定空格取 current_phrase 还是 last_output_text）。
     local ph = query_phrase(proc)
-    if ph ~= "" then cands[#cands + 1] = { ph, "•" } end
     local chain = query_multi_chars(st)
-    if chain ~= "" then cands[#cands + 1] = { chain, "" } end
+    if phrase_priority then
+      if ph ~= "" then cands[#cands + 1] = { ph, "•" } end
+      if chain ~= "" then cands[#cands + 1] = { chain, "" } end
+    else
+      if chain ~= "" then cands[#cands + 1] = { chain, "" } end
+      if ph ~= "" then cands[#cands + 1] = { ph, "•" } end
+    end
   end
   return cands
 end
@@ -599,6 +617,26 @@ end
 local function seg_tags_str(seg)
   local ok, s = pcall(function() return tostring(seg.tags) end)
   return ok and s or "?"
+end
+
+-- P4-E 开关读取。两个开关的 `switches` 声明见 jieshu.schema.yaml。
+--
+-- ⚠️ 语义（2026-09-12 源码级核实，此前连错两轮，勿再凭推测改）：
+--   · `Context:get_option` 在 lua 侧由 WRAPMEM 直通 C++ 同名成员，**永远返回 bool**，
+--     **不可能返回 nil**（hchunhui/librime-lua types.cc 的 ContextReg::methods；
+--     C++ 侧 context.cc 未命中时 `return false`）。所以「nil 是三态之一」是错的。
+--   · 默认态**不由 states 顺序决定**，而由 schema 的 `reset` 决定：
+--     engine.cc::InitializeOptions 只在 `reset_value >= 0` 时才 set_option，
+--     即**不写 reset 的开关根本不会 set_option** → 读到的就是 false。
+--     本方案两个开关都写了 `reset: 1` = 默认开（对齐 ime.py:48-49 的 "1"）。
+--   ⇒ 因此这里**无需任何兜底**：读到 true 是开、false 是关，直接照用。
+--     `pcall` 仅用于「ctx 或方法不可用」的防御（如测试桩、引擎异常），
+--     失败时按 ime.py 的默认值 true 走，不是在做三态判定。
+local function option_on(ctx, name)
+  if not ctx then return true end
+  local ok, v = pcall(function() return ctx:get_option(name) end)
+  if not ok then return true end
+  return v and true or false
 end
 
 local function jieshu_translator(input, seg, env)
@@ -623,7 +661,12 @@ local function jieshu_translator(input, seg, env)
   local full_input = nil
   local ok_fi, fi = pcall(function() return env.engine.context.input end)
   if ok_fi and type(fi) == "string" then full_input = fi end
-  local cands = build_candidates(input, seg.start, full_input)
+  -- P4-E：优先上词决定多段候选顺序；自动上字决定「预」提示是否挂出
+  -- （两者独立，故都要读——见 build_candidates 的 phrase_priority / ac_on 参数说明）
+  local ctx = env.engine and env.engine.context
+  local cands = build_candidates(input, seg.start, full_input,
+                                 option_on(ctx, "jieshu_phrase_priority"),
+                                 option_on(ctx, "jieshu_auto_commit"))
   local total = #cands
   local ps = page_size_of(env)
   -- 页码落点判定。preedit 的 prompt 位有三个前置条件（Composition::GetPreedit，

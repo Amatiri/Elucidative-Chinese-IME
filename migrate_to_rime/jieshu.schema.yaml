@@ -17,6 +17,40 @@ schema:
 switches:
   - name: ascii_mode
     states: [ 中文, 西文 ]
+  # P4-E 开关：与 ime.py 底部设置栏的两个按钮 1:1 对应（ime.py:48-49 默认均为 "1"=开）。
+  # 状态串只用单个汉字，是 RIME 的固有约束 —— switches 没有「选项长名称」机制，
+  # 只能靠 states 里的字自报家门（雾凇的 [ ¥, $ ] / [ 简, 繁 ] 同理）。
+  #
+  # ⚠️ 下标语义（2026-09-12 源码级纠正，此前连错两轮）：
+  #   **states[0] ↔ option false（关）；states[1] ↔ option true（开）。**
+  #
+  # ⚠️⚠️ 但「默认态」**不由 states 顺序决定**，而是由 `reset` 决定 —— 这是关键：
+  #   engine.cc::InitializeOptions（ConcreteEngine）:
+  #     switches.FindOption([this](Switches::SwitchOption option) {
+  #       if (option.reset_value >= 0) {                       // ← 只有写了 reset 才 set
+  #         context_->set_option(option.option_name,
+  #                              (option.reset_value != 0));   // = (reset != 0)
+  #       } ...
+  #     });
+  #   switches.cc::reset_value: 无 `reset` → 返回 -1。
+  #   ⇒ **不写 reset 的 switch，InitializeOptions 根本不调 set_option**，
+  #     该 option 永不进入 Context::options_，`get_option` 走 `return false` 分支
+  #     （context.cc：查不到就 `return false`，**永远返回 bool，不可能返回 nil**）。
+  #   ⇒ 即「不写 reset = 默认关」，与 states 写什么无关。
+  #   ⇒ 要默认开，**唯一**的办法是写 `reset: 1`（值非 0 → true）。
+  #
+  # 因此下面两个开关写 `reset: 1` = 默认开，对齐 ime.py:48-49 的 "1"。
+  #
+  # 代价（已与用户确认接受）：「每次切方案回默认态」是 reset 的语义，所以用户手动
+  # 关掉后，切走再切回来会**强制回到开**；且它不会进 switcher/save_options 的持久化
+  # 名单（雾凇只给 emoji 加了 reset: 1，故 user.yaml 记 emoji: true 却每次重置）。
+  # 对「推荐默认全开」的定位而言，这正是想要的行为。
+  - name: jieshu_auto_commit
+    states: [ ·, 字 ]            # 下标0 ·=关，下标1 字=自动上字开
+    reset: 1                     # 默认态=下标1=「字」= 开（对齐 ime.py:48）
+  - name: jieshu_phrase_priority
+    states: [ ·, 词 ]            # 下标0 ·=关，下标1 词=优先上词开
+    reset: 1                     # 默认态=下标1=「词」= 开（对齐 ime.py:49）
 
 engine:
   processors:

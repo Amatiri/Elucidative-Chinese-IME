@@ -31,9 +31,7 @@
 㞎 ba3s
 把 ba3u
 爸 ba4f
-靶 ba4g
 霸 ba4i
-杷 ba4m
 耙 ba4n
 坝 ba4t
 把 ba4u
@@ -669,7 +667,6 @@
 镝 di2j
 嘀 di2k
 籴 di2m
-杓 di2mu
 嫡 di2n
 狄 di2q
 敌 di2u
@@ -744,7 +741,6 @@
 祷 dk3s
 岛 dk3u
 捣 dk3uu
-忑 dk3x
 蹈 dk3z
 到 dk4d
 稻 dk4h
@@ -785,7 +781,6 @@
 掂 dm1u
 巅 dm1ui
 滇 dm1uv
-玷 dm1w
 典 dm3b
 点 dm3h
 碘 dm3s
@@ -910,7 +905,6 @@
 队 dv4b
 对 dv4c
 兑 dv4d
-镦 dv4j
 碓 dv4s
 祋 dv4sp
 怼 dv4x
@@ -922,13 +916,13 @@
 喋 dx2km
 耋 dx2l
 牒 dx2p
-佚 dx2r
 碟 dx2s
 堞 dx2t
 垤 dx2tv
 谍 dx2y
 鲽 dx2ym
 迭 dx2z
+佚 dx2z.r
 蹀 dx2zm
 嘚 dz1k
 得 dz3t
@@ -1035,7 +1029,7 @@
 访 fh3y
 放 fh4u
 藩 fj1c
-蕃 fj1ct
+蕃 fj1c.t
 帆 fj1j
 幡 fj1jt
 番 fj1t
@@ -1100,7 +1094,6 @@
 咈 fu2k
 匐 fu2l
 桴 fu2m
-枹 fu2mb
 榑 fu2mc
 凫 fu2n
 鵩 fu2n;
@@ -1207,13 +1200,12 @@
 个 ge41
 戛 ga1g
 嘎 ga1k
-呷 ga1kj
-咖 ga1kl
+咖 ga1kj
 伽 ga1r
 旮 ga1rj
 胳 ga1ru
 夹 ga1ru.j
-轧 ga2c
+轧 ga2c.h
 钆 ga2j
 嘎 ga2k
 噶 ga2kc
@@ -1421,10 +1413,10 @@
 冠 gr1dc
 观 gr1j
 棺 gr1m
-矜 gr1mj
 倌 gr1r
 纶 gr1s
 鳏 gr1y
+矜 gr1y.m
 莞 gr3c
 馆 gr3u
 琯 gr3w
@@ -1553,7 +1545,7 @@
 胍 gw1r
 寡 gw3b
 剐 gw3d
-呱 gw3k
+呱 gw3k.h
 卦 gw4b
 坬 gw4t
 挂 gw4u
@@ -6618,6 +6610,7 @@
 翁 wg1y
 蓊 wg3c
 瓮 wg4w
+尢 wh14
 汪 wh1u
 尪 wh1y
 亡 wh22

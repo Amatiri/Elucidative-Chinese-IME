@@ -93,6 +93,7 @@
 保护 bkhu
 保持 bkii
 包括 bkko
+保留 bklq
 报名 bkm;
 保证 bkvg
 宝藏 bkzh
@@ -286,6 +287,8 @@
 电视机 dmuij
 电影院 dmy;y
 点赞 dmzj
+多出 doiu
+多处 doiu4
 多邻国 dolng
 多少 douk
 敦煌 dphd
@@ -572,6 +575,8 @@
 海南 hlnj
 海豚 hltp
 还是 hlui
+还行 hlx;
+海星 hlx;1
 还有 hlyb
 还要 hlyk
 孩子 hlzi
@@ -592,6 +597,7 @@
 回复 hvfu
 恢复 hvfu4
 回过神 hvgou
+回馈 hvkv
 回来 hvll
 会晤 hvwu
 挥舞 hvwu3
@@ -632,6 +638,7 @@
 常用 ihys
 常用字 ihysz
 翅膀 iibh
+吃饭 iifj
 彳亍 iii
 魑魅魍魉 iimzwhl imwl
 ɪ iis
@@ -798,6 +805,8 @@
 决议 jtyi
 决意 jtyi4
 举措 juco
+聚合 juhe
+居合 juhe2
 拒绝 jujt
 距离 juli
 居然 jurj
@@ -1006,6 +1015,7 @@
 澳门 okmf
 二次元 orciy
 而且 orqx
+二十 orui2
 苹果 p;go
 平均 p;jp
 评价 p;jw
@@ -1406,6 +1416,7 @@
 蛇尾 uewz3
 身份 ufff
 身份证 ufffv
+审查 ufia
 神经 ufj;
 什么 ufm
 神秘 ufmi
@@ -1473,6 +1484,7 @@
 ∠ ujc3
 山东 ujds
 ∫ ujf
+删除 ujiu
 山西 ujxi
 陕西 ujxi1
 ∅ uksji
@@ -1944,6 +1956,7 @@
 隐晦 ynhv
 银灰 ynhv1
 淫秽 ynhv4
+音码 ynma3s
 引起 ynqi
 印刷 ynuw
 因为 ynwz

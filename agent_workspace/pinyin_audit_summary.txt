@@ -1,0 +1,208 @@
+  ha2 : 虾
+  hb3 : 吽
+  hf2 : 艮
+  hh2 : 桁
+  hj3 : 阚
+  hj4 : 旰 邯
+  hk2 : 皋
+  ho0 : 伙
+  ho4 : 嚄
+  hp2 : 混
+  hp4 : 浑
+  hr2 : 垸
+  hu2 : 隺
+  hv1 : 珲 虺
+  hw4 : 稞 粿
+  ia2 : 苴
+  ib1 : 妯
+  ig1 : 噌 樘
+  ih2 : 裳
+  ih4 : 玚
+  ii2 : 坻 芪
+  ii4 : 佁 眙 踅
+  ij3 : 刬
+  ip2 : 肫
+  ji1 : 卟 齐
+  jp4 : 隽
+  jt2 : 噱 撅 蠼
+  ju1 : 佝
+  ju2 : 桔
+  ju3 : 岨
+  ju4 : 瞿 蘧
+  jw2 : 袷
+  jx1 : 苴
+  jx2 : 偈
+  kb4 : 佝
+  ke4 : 剋
+  kg3 : 忐
+  kh1 : 闶
+  kk4 : 槁
+  ko4 : 栝
+  ks1 : 倥 硿
+  ks4 : 矼
+  kv2 : 隗
+  l;2 : 呤 崚
+  la2 : 剌
+  lc2 : 廖
+  lc3 : 撩 瞭
+  le1 : 肋
+  li4 : 仂 叻 珞
+  lk3 : 潦
+  lk4 : 潦
+  ll4 : 徕
+  lm2 : 磷
+  lu4 : 蓼
+  lx0 : 咧
+  ly3 : 瘘
+  lz2 : 儡
+  ma0 : 麽
+  ma1 : 嬷 孖
+  ma2 : 嘛 麽
+  ma4 : 唛 犸
+  mb2 : 呣
+  me0 : 麽
+  mf2 : 汶
+  mg3 : 黾
+  mj2 : 谩
+  mk3 : 茆
+  mm3 : 眄 黾
+  mn2 : 玟
+  mo4 : 貉
+  mu3 : 姥
+  mv0 : 呣
+  mz4 : 味
+  na0 : 呐
+  nc3 : 尥
+  ne1 : 呢
+  nh0 : 囔
+  ni3 : 祢
+  ni4 : 倪 嶷
+  nm3 : 辗
+  nn2 : 恁
+  nu2 : 帑
+  nu3 : 呶
+  nv0 : 嗯
+  nv2 : 唔
+  nz3 : 哪
+  nz4 : 那
+  oa2 : 嗄
+  ob1 : 呕 沤 𬉼
+  ob4 : 呕
+  oe4 : 阏
+  oj4 : 顸
+  ok3 : 拗
+  ok4 : 敖
+  ol1 : 嗳 欸
+  ol2 : 硙
+  ol3 : 佁
+  ol4 : 呃
+  oo0 : 喔
+  oo3 : 哦 嚄
+  oo4 : 喔
+  or4 : 佴
+  pa2 : 钯
+  pc1 : 嘌
+  pc3 : 缥
+  pc4 : 嫖
+  ph2 : 房
+  pi1 : 铍
+  pi2 : 埤 芘
+  pi3 : 吡
+  pj2 : 柈
+  pm2 : 褊 谝
+  po1 : 朴 泺 陂
+  pz4 : 𬇙
+  qc4 : 谯
+  qd1 : 将 矼 跄
+  qd3 : 镪
+  qi1 : 恓
+  qi2 : 伎
+  qi3 : 綮
+  qm4 : 芊
+  qn2 : 矜
+  qq2 : 艽
+  qs1 : 芎
+  qt4 : 汋 芍 隺
+  qx2 : 癿
+  qx4 : 漆
+  rg2 : 艿
+  rg4 : 艿
+  rh3 : 穰
+  ro4 : 芮
+  si0 : 思
+  si4 : 食
+  sk1 : 缲
+  sk3 : 埽
+  t;1 : 町
+  ta4 : 漯
+  tc2 : 苕
+  te4 : 忒
+  ti2 : 绨
+  ti4 : 剔
+  tj1 : 舔
+  tj2 : 蕈
+  tl3 : 呔
+  tm2 : 钿
+  tm3 : 栝 町
+  tp2 : 炖
+  ts1 : 熥
+  ts2 : 侗
+  ts3 : 侗
+  tu2 : 菟
+  uf3 : 吲
+  ug4 : 乘 晟
+  uk2 : 杓
+  uk3 : 捎
+  uu1 : 娶
+  va3 : 苴
+  va4 : 吒 拃 笮
+  vb4 : 繇
+  ve3 : 褚
+  vf1 : 坫 溱
+  vg1 : 徵 怔
+  vg4 : 町 铮
+  vh1 : 障
+  vi1 : 𨙸
+  vi3 : 祁 茋
+  vi4 : 擿 知
+  vj3 : 拃
+  vk1 : 嘲
+  vo2 : 杓 箸
+  vp1 : 圫 屯
+  vs1 : 忪
+  vu3 : 褚
+  vu4 : 苧
+  vz4 : 这
+  wa4 : 靺
+  wh4 : 王
+  wj3 : 箢
+  wj4 : 妧
+  wo4 : 杌
+  wu1 : 喔 於
+  wu3 : 呒
+  wu4 : 唔
+  wz1 : 倭
+  wz3 : 芟
+  wz4 : 遗
+  xc4 : 芍
+  xi1 : 栖 歙 腊
+  xi4 : 郄
+  xm1 : 妗
+  xm3 : 铣
+  xn2 : 镡
+  xp1 : 窨
+  xu1 : 砉
+  xu4 : 旮
+  xw1 : 岈
+  xx2 : 接
+  ya4 : 札
+  yb2 : 尢
+  yh3 : 咉
+  yi2 : 一
+  yi4 : 一 仡 泄 洫 焱 衣
+  yj3 : 剡
+  yk2 : 繇
+  yn2 : 圻
+  yu4 : 语 谷 雨
+  zi0 : 子
+  zr4 : 赚

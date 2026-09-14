@@ -344,6 +344,7 @@
 氛围 ffwz2
 分析 ffxi
 风险 fgxm3
+房地产 fhdii
 方法 fhfa
 方面 fhmm
 方案 fhoj
@@ -353,6 +354,8 @@
 返回 fjhv
 范畴 fjib
 反馈 fjkv
+繁琐 fjso
+繁瑣 fjso.
 繁体 fjti
 反提 fjti2
 繁体字 fjtiz
@@ -779,6 +782,7 @@
 今天 jntm
 进退 jntv
 金属 jnuu
+紧张 jnvh
 进行 jnx;
 进一步 jnyib
 军队 jpdv
@@ -1089,6 +1093,7 @@
 确定 qtd;
 确认 qtrf
 确实 qtui2
+区别 qubx
 取得 qude
 驱动 quds
 ・ r.d
@@ -1654,9 +1659,11 @@
 注册 vuce
 祝福 vufu
 嘱咐 vufu4
+祝贺 vuhe
 主任 vurf
 主人 vurf2
 助人为乐 vurfwzl vrwl
+主张 vuvh
 主席 vuxi
 注意 vuyi
 主义 vuyi4

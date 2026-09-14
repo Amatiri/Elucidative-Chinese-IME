@@ -42,9 +42,7 @@
 罢 ba4w
 鲅 ba4y
 𠀧 ba5o
-巴 ba09
 吧 ba0k
-叭 ba0kb
 𣬶 ba0m
 罢 ba0w
 飙 bc1f
@@ -57,9 +55,7 @@
 骉 bc1mm
 骠 bc1mp
 杓 bc1mu
-嫖 bc1n
 膘 bc1r
-摽 bc1u
 婊 bc3n
 表 bc3q
 裱 bc3y
@@ -81,7 +77,6 @@
 绷 bg1s
 祊 bg1sf
 崩 bg1u
-抨 bg1up
 甭 bg2k
 绷 bg3s
 琫 bg3w
@@ -106,8 +101,7 @@
 蚌 bh4i
 镑 bh4j
 棒 bh4m
-棓 bh4mk
-榜 bh4mp
+棓 bh4m.k
 傍 bh4r
 磅 bh4s
 塝 bh4t
@@ -133,9 +127,7 @@
 必 bi44
 陛 bi4b
 邲 bi4bb
-贲 bi4bh
 赑 bi4bm
-陂 bi4bp
 痹 bi4bt
 毖 bi4bx
 弊 bi4c
@@ -154,7 +146,6 @@
 币 bi4j
 铋 bi4jx
 哔 bi4k
-吡 bi4kb
 觱 bi4kg
 咇 bi4kx
 闭 bi4m
@@ -215,7 +206,6 @@
 拌 bj4u
 扮 bj4uf
 苞 bk1c
-苴 bk1cq
 剥 bk1d
 煲 bk1h
 炮 bk1hl
@@ -315,10 +305,8 @@
 饽 bo1uz
 癶 bo1v
 玻 bo1w
-趵 bo1z
 薄 bo2c
 簿 bo2c.z
-茀 bo2cf
 亳 bo2d
 帛 bo2j
 铂 bo2jb
@@ -338,7 +326,6 @@
 渤 bo2ul
 舶 bo2v
 箔 bo2z
-孛 bo2zs
 跛 bo3z
 簸 bo3zq
 薄 bo4c
@@ -367,7 +354,6 @@
 怖 bu4x
 簿 bu4z
 瘪 bx1b
-蔽 bx1c
 憋 bx1x
 鳖 bx1y
 癿 bx2b
@@ -384,7 +370,6 @@
 北 bz3b
 邶 bz4b
 辈 bz4c
-茀 bz4cf
 蓓 bz4cr
 鞴 bz4g
 焙 bz4h
@@ -422,6 +407,7 @@
 饼 b;3u
 病 b;4b
 并 b;4d
+並 b;4d.
 靐 b;4i
 摒 b;4u
 从 cs2r
@@ -472,7 +458,6 @@
 次 ci4b
 赐 ci4by
 刺 ci4d
-蚝 ci4i
 伺 ci4r
 佽 ci4rb
 骖 cj1m
@@ -1364,11 +1349,11 @@
 干 gj45
 幹 gj45.
 榦 gj45.m
+赣 gj4b
 旰 gj4r
 绀 gj4s
 倝 gj4sr
 淦 gj4u
-赣 gj4y
 皋 gk1b
 高 gk1d
 羔 gk1h
@@ -3541,6 +3526,7 @@
 瘤 lq2b
 刘 lq2d
 旒 lq2f
+㐬 lq2f.d
 鎏 lq2j
 镏 lq2jt
 镠 lq2jy
@@ -3640,7 +3626,6 @@
 逯 lu4zi
 箓 lu4zu
 氇 lu0m
-泪 lv4u
 俩 lw3r
 咧 lx1k
 咧 lx3k
@@ -5380,6 +5365,7 @@
 唢 so3k
 索 so3s
 琐 so3w
+瑣 so3w.
 荪 sp1c
 狲 sp1q
 飧 sp1u
@@ -5411,6 +5397,7 @@
 讼 ss4yg
 送 ss4z
 苏 su1c
+蘇 su1c.
 甦 su1c.g
 稣 su1h
 窣 su1x
@@ -6031,8 +6018,8 @@
 芍 uk2c
 苕 uk2cv
 韶 uk2y
-捎 uk31
 少 uk33
+捎 uk3u
 少 uk43
 邵 uk4b
 召 uk4b.k
@@ -6711,6 +6698,7 @@
 污 wu1u
 诬 wu1y
 无 wu24
+無 wu24.
 毋 wu27
 芜 wu2c
 鼯 wu2f
@@ -7109,6 +7097,7 @@
 羞 xq1h
 咻 xq1k
 修 xq1m
+脩 xq1m.r
 髹 xq1p
 貅 xq1q
 休 xq1r
@@ -7492,7 +7481,6 @@
 义 yi44
 義 yi44.
 亦 yi45
-夕 yi45.
 𥩖 yi45.b
 弋 yi47
 乂 yi48
@@ -7505,8 +7493,6 @@
 𤸸 yi4bm
 寱 yi4bn
 𤷅 yi4bo
-疙 yi4bq
-𢖴 yi4bq.x
 痬 yi4br
 瘗 yi4bt
 瘞 yi4bt.
@@ -7522,8 +7508,6 @@
 虉 yi4cn.
 𠩫 yi4co
 艾 yi4cp
-厌 yi4cq
-厭 yi4cq.
 异 yi4cs
 異 yi4cs.
 轶 yi4cu
@@ -7543,7 +7527,6 @@
 殪 yi4du
 𣧄 yi4dx
 翊 yi4dy
-施 yi4f
 圛 yi4g
 㢞 yi4gg
 𢈶 yi4gh
@@ -7566,7 +7549,6 @@
 䖊 yi4hp
 𧆦 yi4hp.r
 焬 yi4hr
-移 yi4ht
 燡 yi4hw
 燱 yi4hx
 熤 yi4hy
@@ -7608,7 +7590,6 @@
 唈 yi4kk
 𠶷 yi4kl
 嗌 yi4km
-噎 yi4ku
 㘁 yi4kw
 𠲚 yi4kz
 勚 yi4l
@@ -7654,9 +7635,8 @@
 𦔫 yi4nw.y
 嬑 yi4nx
 鶂 yi4n;
-医 yi4o
+㔴 yi4o
 𠣗 yi4o.l
-㔴 yi4ot
 𠥦 yi4ot.
 耴 yi4ow
 毅 yi4p
@@ -7688,7 +7668,6 @@
 曎 yi4rt
 𠓋 yi4rt.g
 佚 yi4ru
-失 yi4ru.
 伿 yi4rv
 易 yi4rw
 臆 yi4rx
@@ -7709,19 +7688,13 @@
 𡊁 yi4to
 𡊶 yi4to.
 坄 yi4tp
-圪 yi4tq
-𡉛 yi4tq.
-𡍡 yi4tq.t
 埸 yi4tr
 抑 yi4u
-印 yi4u.j
-噫 yi4u.k
 浥 yi4ub
 㵩 yi4uc
-渫 yi4uc.m
 饐 yi4ud
 泄 yi4ue
-㵧 yi4ug
+潩 yi4ug
 𣷩 yi4uh
 浳 yi4ui
 挹 yi4uk
@@ -7738,14 +7711,13 @@
 泆 yi4uu
 𡾾 yi4uv
 斁 yi4uw
-射 yi4uw.
 𭣧 yi4uw.k
 歝 yi4uw.q
-澺 yi4ux
+擇 yi4ux
 瀷 yi4uy
 懿 yi4uz
 㱅 yi4uz.q
-潩 yi4u;
+澺 yi4u;
 艗 yi4v
 𣦌 yi4vg
 𦨇 yi4vy
@@ -7784,7 +7756,6 @@
 裔 yi4yj
 译 yi4yk
 褹 yi4yl
-袂 yi4yl.
 𥃠 yi4ym
 翳 yi4yp
 衵 yi4yr
@@ -7804,16 +7775,15 @@
 䇩 yi4zr
 𥱃 yi4zz
 㴒 yi8u
+㵧 yi8uc
 浂 yi8ug
 𢩮 yi8ui
 㶠 yi8uk
 搤 yi8um
 㲼 yi8up
-潩 yi8ut
 撎 yi8uu
 𣿉 yi8uv
 亄 yi8uw
-擇 yi8ux
 㵝 yi8uy
 𡄻 yi8uz
 鄢 yj1b
@@ -7917,7 +7887,7 @@
 杳 yk3m
 舀 yk3v
 窈 yk3x
-疟 yk4b
+疟 yk4b.h
 药 yk4c
 耀 yk4g
 靿 yk4gt
@@ -7941,7 +7911,6 @@
 寅 yn2b
 鄞 yn2bj
 荶 yn2c
-芩 yn2c.
 霪 yn2i
 银 yn2j
 吟 yn2k
@@ -7951,7 +7920,6 @@
 圻 yn2t.
 夤 yn2tb
 淫 yn2u
-沂 yn2uj
 訚 yn2y
 尹 yn37
 隐 yn3b
@@ -7989,7 +7957,6 @@
 允 yp3s
 郓 yp4b
 蕴 yp4c
-芸 yp4cl
 熨 yp4h
 晕 yp4r
 韫 yp4w
@@ -8006,7 +7973,6 @@
 鸢 yr1ni
 渊 yr1u
 箢 yr1z
-阮 yr2b
 原 yr2c
 芫 yr2co
 辕 yr2ct
@@ -8031,7 +7997,6 @@
 援 yr2uv
 爰 yr2v
 鼋 yr2y
-畹 yr3t
 远 yr3z
 院 yr4b
 苑 yr4c
@@ -8141,7 +8106,6 @@
 庾 yu3gf
 圉 yu3gx
 禹 yu3k
-栩 yu3m
 龉 yu3n
 伛 yu3r
 俣 yu3rw
@@ -8154,7 +8118,7 @@
 雨 yu45
 与 yu47
 郁 yu4b
-谷 yu4b.u
+谷 yu4br.u
 寓 yu4bt
 芋 yu4c
 蔚 yu4cc
@@ -8182,7 +8146,6 @@
 毓 yu4rd
 昱 yu4rl
 域 yu4t
-禺 yu4tj
 堉 yu4tr
 御 yu4tx
 浴 yu4u
@@ -8300,9 +8263,7 @@
 滋 zi1u
 嵫 zi1ud
 淄 zi1ux
-甾 zi1x
-訾 zi1y
-鲻 zi1yx
+鲻 zi1y
 孜 zi1z
 趑 zi1zc
 孳 zi1zd
@@ -8371,7 +8332,6 @@
 佐 zo3r
 撮 zo3u
 阼 zo4b
-凿 zo4c
 座 zo4g
 唑 zo4k
 柞 zo4m
@@ -8415,7 +8375,6 @@
 镞 zu2j
 足 zu2k
 阻 zu3b
-岨 zu3b.u
 俎 zu3r
 组 zu3s
 祖 zu3sq

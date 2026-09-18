@@ -149,6 +149,7 @@
 不对 budv
 部队 budv4
 部分 buff
+补偿 buih
 补充 buis
 不仅 bujn
 布局 buju
@@ -272,6 +273,7 @@
 导数 dkuu4
 导致 dkvi
 ︶ dkx
+导向 dkxd
 ） dky
 （ dkz
 （） dkzy
@@ -329,6 +331,7 @@
 “ dyz
 “” dyzy
 👀 eyj3m
+🍥 eyubj
 法兰西 faljx
 法律 faly
 发散 fasj
@@ -440,6 +443,7 @@
 改编 glbm1
 改动 glds
 改革 glge
+概念 glnm
 改造 glzk
 μ gmu
 Μ gmuc
@@ -813,6 +817,7 @@
 锦上添花 juth jnuhtmh
 具体 juti
 矩阵 juvf
+居中 juvs
 举行 jux;
 纪释析义输入法 juxf juxyurf
 纪释析义 juxy jiuixiyi
@@ -905,6 +910,7 @@
 褴褛 ljly
 篮球 ljqq
 劳动 lkds
+劳动力 lkdsl
 老师 lkui
 联邦 lmbh
 联合 lmhe
@@ -1325,6 +1331,7 @@
 停止 t;vi
 停滞 t;vi4
 它们 tamf
+投入 tbru
 投资 tbzi
 条件 tcjm
 条目 tcmu
@@ -1396,6 +1403,7 @@
 受到 ubdk4
 ≠ ubdy
 手机 ubji
+收集 ubji2
 ⊂ ubkhj
 收敛 ublm
 ∉ ubuy
@@ -1510,6 +1518,7 @@
 输入 uuru
 输入法 uuruf
 薯条 uutc
+舒适 uuui
 叔叔 uuuu
 施氏食狮史 uuuuu
 熟悉 uuxi
@@ -1857,6 +1866,8 @@
 选拔 xrba
 选举 xrju
 暄软 xrrr
+悬置 xrvi
+选址 xrvi3
 旋转 xrvr
 选项 xrxd
 轩辕 xryr
@@ -1914,6 +1925,7 @@
 也会 yehv
 也能 yeng
 样子 yhzi
+以便 yibm4r
 一次 yici
 一定 yid;
 意大利 yidal
@@ -1958,6 +1970,7 @@
 淫秽 ynhv4
 音码 ynma3s
 引起 ynqi
+因素 ynsu
 印刷 ynuw
 因为 ynwz
 隐形 ynx;
@@ -1968,7 +1981,9 @@
 氤氲 ynyp1
 音乐 ynyt
 运动 ypds
+运河 yphe
 云南 ypnj
+运输 ypuu
 运行 ypx;
 允许 ypxu
 愿景 yrj;

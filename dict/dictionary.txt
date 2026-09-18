@@ -1647,7 +1647,6 @@
 褐 he4y
 痕 hf2b
 拫 hf2u
-艮 hf2u.
 狠 hf3q
 很 hf3t
 𬣳 hf3y
@@ -1693,7 +1692,6 @@
 喊 hj3k
 阚 hj3m
 罕 hj3w
-邯 hj4b
 菡 hj4c
 焊 hj4h
 颔 hj4i
@@ -1951,8 +1949,6 @@
 華 hw2s.
 滑 hw2u
 划 hw4d
-稞 hw4h
-粿 hw4h.m
 桦 hw4m
 婳 hw4n
 化 hw4r
@@ -2005,7 +2001,6 @@
 衩 ia4y
 诧 ia4yv
 瘳 ib1b
-妯 ib1n
 抽 ib1u
 搊 ib1u;
 稠 ib2h

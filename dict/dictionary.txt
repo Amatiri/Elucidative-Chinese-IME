@@ -2135,7 +2135,6 @@
 笞 ii1z
 匙 ii2b
 茌 ii2c
-芪 ii2c.
 弛 ii2g
 驰 ii2m
 坻 ii2t
@@ -2165,7 +2164,6 @@
 敕 ii4u
 饬 ii4ur
 翅 ii4y
-踅 ii4z
 觇 ij1j
 搀 ij1u
 掺 ij1us
@@ -2392,7 +2390,6 @@
 几 ji12
 击 ji15
 乩 ji1b
-卟 ji1b.k
 𬯀 ji1bq
 赍 ji1bs
 芨 ji1c
@@ -2717,7 +2714,6 @@
 鷢 jt2nc
 獗 jt2q
 玃 jt2qk
-蠼 jt2qk.i
 倔 jt2r
 臄 jt2rh
 傕 jt2rw
@@ -2757,7 +2753,6 @@
 俱 ju1r
 居 ju1s
 拘 ju1u
-佝 ju1u.
 崌 ju1ug
 泃 ju1uk
 掬 ju1ul
@@ -2789,7 +2784,6 @@
 巨 ju45
 具 ju4b
 苣 ju4c
-蘧 ju4cz
 剧 ju4d
 飓 ju4f
 炬 ju4h
@@ -2852,7 +2846,6 @@
 皆 jx1bb
 疖 jx1bj
 节 jx1c
-苴 jx1cq
 秸 jx1h
 喈 jx1k
 嗟 jx1ki
@@ -3023,7 +3016,6 @@
 铿 kg1j
 吭 kg1k
 坑 kg1t
-忐 kg3x
 康 kh1g
 糠 kh1m
 闶 kh1md
@@ -3058,7 +3050,6 @@
 㸆 kk4h
 铐 kk4j
 犒 kk4n
-槁 kk4n.m
 开 kl14
 揩 kl1u
 剀 kl3d

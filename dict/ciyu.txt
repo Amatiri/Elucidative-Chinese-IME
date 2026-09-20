@@ -395,6 +395,7 @@
 β gbe
 Β gbec
 构成 gbig
+购物 gbwu
 χ gch
 Χ gchc
 广东 gdds
@@ -484,6 +485,7 @@
 关系 grxi
 关于 gryu
 公告 gsgk
+公共 gsgs4
 共和 gshe
 σ gsi
 Σ gsic
@@ -618,6 +620,8 @@
 查看 iakj
 ʌ ias
 查询 iaxp2
+差异 iayi
+差一点 iayid
 ð idh
 创新 idxn
 创业 idye
@@ -649,6 +653,7 @@
 产品 ijpn
 产生 ijug
 阐述 ijuu
+产业 ijye
 超过 ikgo
 超级 ikji
 超模 ikmo
@@ -800,6 +805,7 @@
 均衡 jphg
 军事 jpui
 军训 jpxp
+均匀 jpyp
 酒店 jqdm
 纠偏 jqpm
 诀别 jtbx
@@ -871,6 +877,7 @@
 考虑 kkly
 考试 kkui
 开始 klui
+扩大 koda
 扩展 kovj
 困难 kpnj
 空格 ksge
@@ -918,6 +925,7 @@
 链接 lmjx1
 廉洁 lmjx2
 连续 lmxu
+琳琅满目 lnlhmjm llmm
 吝啬 lnse
 逻辑 loji
 论述 lpuu
@@ -964,6 +972,7 @@
 描述 mcuu
 懵懂 mgds3
 盲打 mhda3
+密度 midu
 米哈游 mihay
 曼波 mjbo1
 耄耋 mkdx
@@ -1043,8 +1052,10 @@
 便宜 pmyi
 偏移 pmyi2
 拼音 pnyn
+普遍 pubm
 扑克 puke
 葡萄牙 putky
+普通 puts
 配合 pzhe
 培训 pzxp
 培养 pzyh
@@ -1271,6 +1282,7 @@
 如此 ruci
 如果 rugo
 如何 ruhe
+如下 ruxw
 ゛ rvodm
 わ rwa
 ワ rwak
@@ -1317,6 +1329,7 @@
 扫描 skmc
 死而后已 sohy siorhby
 所属国 souug
+缩小 soxc
 缩写 soxx
 所以 soyi
 算法 srfa
@@ -1356,6 +1369,7 @@
 探索 tjso
 坍缩 tjso1
 探讨 tjtk
+弹性 tjx;4
 探险 tjxm
 淘宝 tkbk
 套餐 tkcj
@@ -1801,6 +1815,7 @@
 委员会 wzyrh
 位于 wzyu
 星巴克 x;bak
+幸福 x;fu
 形成 x;ig
 形容词 x;rsc
 形式 x;ui
@@ -1815,7 +1830,9 @@
 消化 xchw4
 消除 xciu
 效率 xcly
+销售 xcub
 消息 xcxi
+效应 xcy;
 相比而言 xdbiory xboy
 相对 xddv
 想法 xdfa
@@ -1905,6 +1922,7 @@
 应付 y;fu
 应该 y;gl
 英吉利 y;jil
+应接不暇 y;jxbux yjbx
 影响 y;xd
 英语 y;yu
 优点 ybdm3
@@ -1943,6 +1961,9 @@
 伊斯兰 yisil
 以上 yiuh
 艺术 yiuu
+依偎 yiwz1
+以为 yiwz2
+意味 yiwz4
 依稀 yixi
 以下 yixw
 一些 yixx

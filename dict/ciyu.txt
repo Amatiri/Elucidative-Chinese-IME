@@ -216,6 +216,7 @@
 剉冰 cob;1
 错误 cowu
 存在 cpzl
+促进 cujn
 。 d..
 ， d.b
 · d.d
@@ -291,6 +292,7 @@
 点赞 dmzj
 多出 doiu
 多处 doiu4
+哆啦A梦 dolaozm dolaaam
 多邻国 dolng
 多少 douk
 敦煌 dphd
@@ -445,6 +447,7 @@
 改动 glds
 改革 glge
 概念 glnm
+改善 gluj
 改造 glzk
 μ gmu
 Μ gmuc
@@ -650,6 +653,7 @@
 彳亍 iii
 魑魅魍魉 iimzwhl imwl
 ɪ iis
+持续 iixu
 产品 ijpn
 产生 ijug
 阐述 ijuu
@@ -783,6 +787,7 @@
 禁入 jn4ru4
 浸入 jn4ru42
 进步 jnbu
+尽管 jngr
 进化 jnhw4
 紧急 jnji
 进击 jnji1
@@ -968,6 +973,7 @@
 麻烦 mafj
 麻将 majd
 麻酱 majd4
+马尔萨斯 maorsas
 马上 mauh
 描述 mcuu
 懵懂 mgds3
@@ -1103,6 +1109,7 @@
 钱库 qmku
 前面 qmmm
 潜能 qmng
+前所未有 qmsowzy qswy
 前往 qmwh
 迁移 qmyi
 群众 qpvs
@@ -1323,6 +1330,7 @@
 四川 siir
 思考 sikk
 四码 sima3s
+死亡 siwh
 思想 sixd
 私信 sixn
 散步 sjbu4
@@ -1420,6 +1428,7 @@
 收集 ubji2
 ⊂ ubkhj
 收敛 ublm
+寿命 ubm;
 ∉ ubuy
 首先 ubxm
 双地支 uddivi
@@ -1859,6 +1868,7 @@
 西藏 xizh
 洗澡 xizk
 现代 xmdl
+陷阱 xmj;
 先进 xmjn
 羡慕 xmmu
 嫌弃 xmqi
@@ -2031,6 +2041,8 @@
 淤积 yuji1
 预览 yulj
 舆论 yulp
+预期 yuqi
+与其 yuqi2
 于是 yuui
 语文 yuwf
 怎么样 zfmey

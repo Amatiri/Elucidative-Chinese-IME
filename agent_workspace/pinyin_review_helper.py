@@ -11,8 +11,9 @@
 5. 该字各读音在 dictionary.txt 中是否存在（含形码）
 
 用法：
-  python pinyin_review_helper.py 虾:ha2 吽:hb3 ...
-  或直接编辑 PAIRS
+  python pinyin_review_helper.py 虾:ha2 吽:hb3 ...          # 显式给 (字:音码)
+  python pinyin_review_helper.py --from=21 --limit=21      # 汇总表第 21 条起取 21 条
+  （无参数＝汇总表前 20 条）
 """
 
 import io
@@ -146,13 +147,16 @@ def abc_of(py_tone3):
 SUMMARY_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "pinyin_audit_summary.txt")
 
 
-def load_pairs_from_summary(limit=20):
-    """从 pinyin_audit_summary.txt 读取 (字, 音码) 对，取前 limit 个字。
+def load_pairs_from_summary(start=1, limit=20):
+    """从 pinyin_audit_summary.txt 读取 (字, 音码) 对，取第 start 条起的 limit 条。
 
     文件格式： 音码 : 汉字1 汉字2 ...
     例：      li4 : 仂 叻 珞
+
+    start 为 1 起算的序号（第几条第几个字），用于分批续审。
     """
     pairs = []
+    idx = 0
     with open(SUMMARY_FILE, encoding="utf-8") as f:
         for raw in f:
             line = raw.strip()
@@ -161,6 +165,9 @@ def load_pairs_from_summary(limit=20):
             code, _, chars = line.partition(":")
             code = code.strip()
             for ch in chars.split():
+                idx += 1
+                if idx < start:
+                    continue
                 pairs.append((ch, code))
                 if len(pairs) >= limit:
                     return pairs
@@ -168,13 +175,27 @@ def load_pairs_from_summary(limit=20):
 
 
 def main():
-    if len(sys.argv) > 1:
+    argv = list(sys.argv[1:])
+    start, limit = 1, 20
+    explicit = []
+    for a in argv:
+        if a.startswith("--from="):
+            start = int(a.partition("=")[2])
+        elif a.startswith("--limit="):
+            limit = int(a.partition("=")[2])
+        else:
+            explicit.append(a)
+
+    if explicit:
         pairs = []
-        for a in sys.argv[1:]:
+        for a in explicit:
             ch, _, code = a.partition(":")
             pairs.append((ch, code))
     else:
-        pairs = load_pairs_from_summary(20)
+        pairs = load_pairs_from_summary(start, limit)
+        if pairs:
+            print(f"# 数据源 pinyin_audit_summary.txt 第 {start}–{start + len(pairs) - 1} 条"
+                  f"（{pairs[0][0]} {pairs[0][1]} → {pairs[-1][0]} {pairs[-1][1]}）")
 
     cwp = load_cwp()
     dic = load_dict_entries()

@@ -3307,7 +3307,6 @@
 鳢 li3yq
 逦 li3z
 力 li44
-仂 li44.r
 丽 li45
 隶 li49
 痢 li4b
@@ -3418,7 +3417,6 @@
 镰 lm2j
 梿 lm2m
 联 lm2o
-磷 lm2s
 涟 lm2u
 濂 lm2ug
 怜 lm2x
@@ -3631,7 +3629,6 @@
 侣 ly3r
 膂 ly3rf
 偻 ly3rn
-瘘 ly3rn.b
 缕 ly3s
 屡 ly3sn
 履 ly3st
@@ -3725,7 +3722,6 @@
 骂 ma4k
 唛 ma4kq
 杩 ma4m
-犸 ma4q
 祃 ma4s
 吗 ma0k
 麽 ma0k.t
@@ -3903,7 +3899,6 @@
 绵 mm2s
 丏 mm37
 免 mm3d
-黾 mm3k
 勉 mm3l
 眄 mm3m
 娩 mm3n
@@ -3913,6 +3908,7 @@
 沔 mm3u
 湎 mm3um
 渑 mm3uy
+黾 mm3uy.k
 面 mm40
 眄 mm4m
 民 mn24
@@ -3994,7 +3990,8 @@
 墓 mu4t
 沐 mu4u
 慕 mu4x
-呒 mv2k
+呣 mv2k
+呒 mv2kw.h
 呣 mv0k
 乜 mx19
 咩 mx1k
@@ -4060,7 +4057,6 @@
 鸟 nc37
 茑 nc3c
 袅 nc3y
-尥 nc3yu
 脲 nc4r
 尿 nc4s
 娘 nd2n
@@ -4143,9 +4139,9 @@
 黏 nm2h
 粘 nm2m
 鲇 nm2y
-辗 nm3c
-辇 nm3cf
+辇 nm3c
 碾 nm3s
+辗 nm3s.c
 捻 nm3u
 撵 nm3uc
 廿 nm45
@@ -4181,16 +4177,17 @@
 弄 ns4c
 疟 nt4b
 虐 nt4h
-帑 nu2j
 驽 nu2m
 奴 nu2n
 孥 nu2z
+帑 nu2z.j
 弩 nu3g
 呶 nu3k
 努 nu3l
 胬 nu3r
 怒 nu4x
-唔 nv2k
+嗯 nv2k
+唔 nv2k.w
 嗯 nv0k
 捏 nx1u
 乜 nx49
@@ -4234,7 +4231,7 @@
 吖 oa1ky
 腌 oa1r
 啊 oa2k
-嗄 oa2kx
+嗄 oa2k.x
 啊 oa3k
 啊 oa4k
 啊 oa0k

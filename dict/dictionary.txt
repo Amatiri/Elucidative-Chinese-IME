@@ -136,6 +136,7 @@
 薜 bi4cx
 毙 bi4d
 庇 bi4g
+芘 bi4g.c
 弼 bi4gb
 庳 bi4gp
 髀 bi4gs
@@ -2837,7 +2838,7 @@
 岬 jw3u
 稼 jw4h
 驾 jw4m
-架 jw4mk
+架 jw4ml
 嫁 jw4n
 价 jw4r
 假 jw4rk
@@ -4327,7 +4328,6 @@
 揞 oj3u
 荌 oj4c
 黯 oj4h
-顸 oj4i
 錌 oj4j
 案 oj4m
 闇 oj4m;
@@ -4386,7 +4386,7 @@
 懊 ok4x
 锿 ol1j
 哎 ol1k
-嗳 ol1kv
+嗳 ol1k.v
 唉 ol1ky
 娭 ol1n
 欸 ol1q
@@ -4400,7 +4400,6 @@
 騃 ol2m
 𫘤 ol2m.
 敱 ol2p
-硙 ol2s
 挨 ol2u
 捱 ol2uc
 溰 ol2u;
@@ -4418,7 +4417,6 @@
 鑀 ol4j
 唉 ol4k
 嗌 ol4km
-呃 ol4ko
 嗳 ol4kv
 叆 ol4l
 瞹 ol4m
@@ -4436,9 +4434,7 @@
 瑷 ol4w
 噢 oo1k
 哦 oo2k
-哦 oo3k
-嚄 oo3kc
-喔 oo4ks
+嚄 oo3k
 喔 oo0k
 而 or22
 儿 or23
@@ -4454,14 +4450,18 @@
 二 or43
 贰 or43.
 佴 or4r
-诶 oz4y
+欸 oz1q
+欸 oz2q
+诶 oz2y
+欸 oz3q
+欸 oz4q
 平 p;25
 葩 pa1c
 啪 pa1k
 趴 pa1z
-钯 pa2j
 杷 pa2m
 耙 pa2n
+钯 pa2n.j
 扒 pa2u
 爬 pa2v
 琶 pa2w
@@ -4489,7 +4489,6 @@
 漂 pc3u
 嘌 pc4k
 骠 pc4m
-嫖 pc4n
 漂 pc4u
 票 pc4x
 喷 pf1k
@@ -4631,8 +4630,7 @@
 骈 pm2m
 胼 pm2r
 便 pm2rg
-谝 pm2y
-褊 pm2yh
+褊 pm2y
 蹁 pm2z
 谝 pm3y
 片 pm44
@@ -4922,7 +4920,6 @@
 遣 qm3z
 茜 qm4c
 芡 qm4cd
-芊 qm4cq
 欠 qm4d
 椠 qm4m
 歉 qm4q
@@ -7178,6 +7175,7 @@
 洫 xu4u
 溆 xu4uk
 恤 xu4x
+恓 xu4x.x
 酗 xu4y
 蓿 xu0c
 虾 xw1i

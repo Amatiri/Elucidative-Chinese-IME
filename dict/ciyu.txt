@@ -1678,12 +1678,12 @@
 ú vpu2
 ǔ vpu3
 ù vpu4
-ê vpx0
 ü vpy0
 ǖ vpy1
 ǘ vpy2
 ǚ vpy3
 ǜ vpy4
+ê vpz0
 这期神了 vqul veqiufl
 ⿰ vr.
 转换 vrhr

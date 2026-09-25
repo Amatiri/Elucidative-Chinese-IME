@@ -40,9 +40,11 @@
 丷 bdm
 冖 bdp
 本质 bfvi
+蹦蹦跳跳 bgbgtct bbtt
 𢦏 bgc
 囗 bgo
 龷 bgs4bu
+蹦跳 bgtc
 𭠍 bgx
 丌 bhb
 ⺌ bhd
@@ -73,6 +75,7 @@
 比赛 bisl
 必须 bixu
 毕业 biye
+必要 biyk
 龹 bjc
 皀 bjd
 𠘨 bjf
@@ -96,6 +99,7 @@
 保留 bklq
 报名 bkm;
 保证 bkvg
+报纸 bkvi
 宝藏 bkzh
 拜拜 blbl
 百度 bldu
@@ -200,12 +204,17 @@
 仓库 chku
 词汇 cihv
 刺激 ciji
+词频 cipn
+次品 cipn3
 词条 citc
 此外 ciwl
 词语 ciyu
 餐馆 cjgr3
 参加 cjjw
 参考 cjkk
+参与 cjyu
+残余 cjyu2
+操场 ckih
 操作 ckzo
 菜单 cldj
 采访 clfh
@@ -215,6 +224,7 @@
 采用 clys
 剉冰 cob;1
 错误 cowu
+存储 cpiu
 存在 cpzl
 促进 cujn
 。 d..
@@ -236,6 +246,7 @@
 打字 dazi4
 豆包 dbb
 逗号 dbhk4
+调动 dcds
 调度 dcdu
 调查 dcia
 ’ ddy
@@ -252,6 +263,10 @@
 提防 difh2
 地府 difu3
 地理 dili3
+第二 dior4
+地盘 dipj
+底盘 dipj2
+的确 diqt
 地区 diqu
 敌人 dirf
 地位 diwz
@@ -287,6 +302,7 @@
 电话 dmhw
 点击 dmji
 电脑 dmnk
+电视 dmui4
 电视机 dmuij
 电影院 dmy;y
 点赞 dmzj
@@ -332,6 +348,8 @@
 ” dyy
 “ dyz
 “” dyzy
+👌 eok
+😊 ewzxc
 👀 eyj3m
 🍥 eyubj
 法兰西 faljx
@@ -354,13 +372,18 @@
 风险 fgxm3
 房地产 fhdii
 方法 fhfa
+放回 fhhv
 方面 fhmm
 方案 fhoj
 放弃 fhqi
 放肆 fhsi
 方式 fhui
+反观 fjgr
+饭馆 fjgr3
 返回 fjhv
 范畴 fjib
+番剧 fjju
+饭局 fjju2
 反馈 fjkv
 繁琐 fjso
 繁瑣 fjso.
@@ -397,6 +420,7 @@
 β gbe
 Β gbec
 构成 gbig
+购买 gbml
 购物 gbwu
 χ gch
 Χ gchc
@@ -432,6 +456,7 @@
 甘肃 gjsu
 κ gka
 Κ gkac
+高跟鞋 gkgfx
 高考 gkkk
 告诉 gksu
 高速 gksu4
@@ -446,6 +471,7 @@
 改编 glbm1
 改动 glds
 改革 glge
+概率 glly
 概念 glnm
 改善 gluj
 改造 glzk
@@ -521,7 +547,7 @@
 公示 gsui4o
 公主 gsvu
 共享 gsxd
-工作 gsz
+工作 gszo
 τ gta
 Τ gtac
 θ gth
@@ -560,6 +586,8 @@
 河南 henj
 核心 hexn
 何意味 heyiwz
+盒子 hezi
+合资 hezi1
 合作 hezo
 很多 hfdo
 鹤发童颜 hfty hefatsy
@@ -654,6 +682,7 @@
 魑魅魍魉 iimzwhl imwl
 ɪ iis
 持续 iixu
+缠绵 ijmm
 产品 ijpn
 产生 ijug
 阐述 ijuu
@@ -841,9 +870,12 @@
 假如 jwru
 加入 jwru4
 家庭 jwt;
+假设 jwue
 价值 jwvi
 加油 jwyb
 加载 jwzl4
+阶段 jxdr
+截断 jxdr4
 解读 jxdu
 结构 jxgb
 桔槔 jxgk1m
@@ -852,6 +884,7 @@
 接触 jxiu4
 接近 jxjn
 解决 jxjt
+节假日 jxjwr
 界面 jxmm
 截面 jxmm4
 接纳 jxna
@@ -865,7 +898,10 @@
 解析 jxxi
 接下来 jxxwl
 矿泉水 kdqru
+课表 kebc
+课标 kebc1
 科创 keid
+课程 keig
 科技 keji
 客气 keqi4
 课堂 keth
@@ -932,6 +968,7 @@
 连续 lmxu
 琳琅满目 lnlhmjm llmm
 吝啬 lnse
+临时 lnui
 逻辑 loji
 论述 lpuu
 论文 lpwf
@@ -997,6 +1034,7 @@
 目标 mubc
 目的 mudi
 目前 muqm
+每个 mzge
 没关系 mzgrx
 玫瑰 mzgv
 美丽 mzli
@@ -1004,6 +1042,8 @@
 美利坚 mzlij
 美妙 mzmc
 媒体 mzti
+没事 mzui
+美食 mzui2
 美少女 mzukn
 美术 mzuu
 没有 mzy
@@ -1109,6 +1149,7 @@
 钱库 qmku
 前面 qmmm
 潜能 qmng
+缱绻 qmqr
 前所未有 qmsowzy qswy
 前往 qmwh
 迁移 qmyi
@@ -1129,7 +1170,10 @@
 确实 qtui2
 区别 qubx
 取得 qude
+渠道 qudk
+取到 qudk4
 驱动 quds
+恰好 qwhk
 ・ r.d
 ･ r.dh
 ー r;;
@@ -1160,8 +1204,10 @@
 人类 rflz
 人民币 rfmnb
 忍耐 rfnl
+认同 rfts
 认识 rfui
 认真 rfvf
+认知 rfvi
 任务 rfwu
 认为 rfwz
 が rga
@@ -1345,6 +1391,7 @@
 松鼠 ssuu3
 素材 sucl
 随便 svbm
+随机 svji
 虽然 svrj
 随时 svui
 随着 svve
@@ -1352,11 +1399,15 @@
 停止 t;vi
 停滞 t;vi4
 它们 tamf
+© tbjqr
 投入 tbru
 投资 tbzi
+※ tcjkk tx;1
 条件 tcjm
 条目 tcmu
+调试 tcui
 调整 tcvg
+调休 tcxq
 特别 tebx
 醍醐灌顶 thgd tihugrd
 替代 tidl
@@ -1393,6 +1444,8 @@
 添加 tmjw
 填写 tmxx
 天涯 tmya
+♂ tnj2
+♀ tny3
 团队 trdv
 同步 tsbu
 通道 tsdk
@@ -1403,6 +1456,9 @@
 统治 tsvi4
 同志 tsvi4x
 统一 tsyi
+同一 tsyi1
+同意 tsyi4
+同一个 tsyig
 土地 tudi
 ↑ tuh
 • tuidm
@@ -1443,6 +1499,9 @@
 射击 ueji1
 涉及 ueji2
 社稷 ueji4
+社区 uequ
+摄取 uequ3
+舍去 uequ4
 设为 uewz
 蛇尾 uewz3
 身份 ufff
@@ -1463,6 +1522,8 @@
 生理 ugli3
 生物 ugwu
 声音 ugyn
+上半 uhbj
+上班 uhbj1
 ≡ uhdy
 上海 uhhl
 上课 uhke
@@ -1527,6 +1588,7 @@
 顺利 upli
 ∂ upmdk
 顺序 upxu
+‰ uqfv
 ∑ uqh
 ≌ uqrdg
 △ usjx
@@ -1535,6 +1597,7 @@
 实时监测 uujc uiuijmc
 数据 uuju
 数据库 uujuk
+数量 uuld
 数列 uulx
 鼠目寸光 uumucpg umcg
 枢纽 uunq
@@ -1555,6 +1618,7 @@
 水果 uvgo
 睡觉 uvjc
 水平 uvp;
+‱ uwfv
 ∞ uwq
 ≤ uxydy
 ≈ uydy
@@ -1639,6 +1703,7 @@
 展现 vjxm
 找到 vkdk
 召唤 vkhr
+照常 vkih
 照片 vkpm
 ⿹ vl.1
 ⿽ vl.2
@@ -1825,6 +1890,9 @@
 位于 wzyu
 星巴克 x;bak
 幸福 x;fu
+型号 x;hk
+幸好 x;hk3
+星号 x;hk4
 形成 x;ig
 形容词 x;rsc
 形式 x;ui
@@ -1843,11 +1911,13 @@
 消息 xcxi
 效应 xcy;
 相比而言 xdbiory xboy
+相等 xddg
 相对 xddv
 想法 xdfa
 相辅相成 xdfuxdi xfxi
 香港 xdgh
 相关 xdgr
+相互 xdhu
 响亮 xdld
 向量 xdld4
 项目 xdmu
@@ -1857,6 +1927,8 @@
 详细 xdxi
 西班牙 xibjy
 西北 xibz3
+习惯 xigr
+吸管 xigr3
 喜欢 xihr
 习近平 xijnp
 西南 xinj2
@@ -1943,6 +2015,9 @@
 游乐园 ybley
 有利于 ybliy
 又双叒叕 ybudrov
+油脂 ybvi1
+优质 ybvi4
+幼稚 ybvi4h
 有助于 ybvuy
 游玩 ybwj
 游戏 ybxi
@@ -1955,6 +2030,7 @@
 样子 yhzi
 以便 yibm4r
 一次 yici
+依次 yici4
 一定 yid;
 意大利 yidal
 一旦 yidj
@@ -1971,6 +2047,7 @@
 伊斯兰 yisil
 以上 yiuh
 艺术 yiuu
+已知 yivi1
 依偎 yiwz1
 以为 yiwz2
 意味 yiwz4
@@ -2000,6 +2077,7 @@
 银灰 ynhv1
 淫秽 ynhv4
 音码 ynma3s
+隐秘 ynmi
 引起 ynqi
 因素 ynsu
 印刷 ynuw
@@ -2017,6 +2095,7 @@
 运输 ypuu
 运行 ypx;
 允许 ypxu
+运作 ypzo
 愿景 yrj;
 原理 yrli
 原来 yrll
@@ -2033,6 +2112,8 @@
 永矢弗谖 ysuifux yufx
 欲速则不达 yszd yszbd
 阅读 ytdu
+月份 ytff
+约分 ytff1
 越野 ytye
 遇到 yudk
 雨尘 yuif

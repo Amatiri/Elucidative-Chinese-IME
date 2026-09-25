@@ -5168,7 +5168,6 @@
 绕 rk4s
 若 ro4c
 叒 ro4c.k
-芮 ro4cn
 弱 ro4g
 偌 ro4r
 箬 ro4z
@@ -5509,7 +5508,6 @@
 体 ti3r
 剃 ti4d
 薙 ti4d.c
-剔 ti4d.y
 嚏 ti4k
 替 ti4r
 倜 ti4rv
@@ -5522,13 +5520,11 @@
 逖 ti4z
 贪 tj1b
 瘫 tj1bn
-舔 tj1k
 坍 tj1t
 摊 tj1u
 滩 tj1un
 痰 tj2b
 郯 tj2by
-蕈 tj2c
 弹 tj2g
 镡 tj2j
 檀 tj2m
@@ -5715,7 +5711,6 @@
 厅 t;1c
 烃 t;1h
 听 t;1k
-町 t;1t
 汀 t;1u
 葶 t;2c
 莛 t;2cj
@@ -5730,6 +5725,7 @@
 梃 t;3m
 侹 t;3r
 圢 t;3t
+町 t;3td
 挺 t;3u
 艇 t;3v
 梃 t;4m
@@ -5991,7 +5987,6 @@
 苕 uk2cv
 韶 uk2y
 少 uk33
-捎 uk3u
 少 uk43
 邵 uk4b
 召 uk4b.k
@@ -6037,7 +6032,6 @@
 枢 uu1mq
 毹 uu1my
 姝 uu1n
-娶 uu1nq
 倏 uu1q
 舒 uu1r
 纾 uu1s
@@ -6108,7 +6102,6 @@
 闸 va2m
 札 va2mw
 扎 va2u
-苴 va3c
 眨 va3m
 砟 va3s
 拃 va3u
@@ -6121,7 +6114,6 @@
 柞 va4mv
 榨 va4mx
 笮 va4mx.z
-拃 va4u
 诈 va4y
 馇 va0u
 州 vb13
@@ -6197,7 +6189,6 @@
 砧 vf1s
 祯 vf1sb
 臻 vf1t
-坫 vf1tb
 溱 vf1u
 珍 vf1w
 甄 vf1wt
@@ -6238,13 +6229,11 @@
 郑 vg4b
 症 vg4bv
 铮 vg4j
-町 vg4t
 政 vg4u
 挣 vg4ud
 怔 vg4x
 证 vg4y
 诤 vg4yd
-障 vh1b
 章 vh1d
 张 vh1g
 蟑 vh1i

@@ -3992,7 +3992,7 @@
 沐 mu4u
 慕 mu4x
 呣 mv2k
-呒 mv2kw.h
+呒 mv2kw
 呣 mv0k
 乜 mx19
 咩 mx1k
@@ -4814,6 +4814,7 @@
 其 qi2b
 亓 qi2b.o
 祁 qi2bs
+𨙸 qi2bv
 荠 qi2c
 萁 qi2cb
 蕲 qi2cd
@@ -4843,7 +4844,6 @@
 崎 qi2u
 淇 qi2ub
 岐 qi2uv
-𨙸 qi2uv.b
 歧 qi2v
 齐 qi2w
 琪 qi2wb
@@ -6292,7 +6292,6 @@
 跖 vi2z
 踯 vi2zb
 止 vi32
-祁 vi3b
 芷 vi3c
 茋 vi3cd
 咫 vi3i
@@ -6372,7 +6371,6 @@
 盏 vj3m
 展 vj3s
 崭 vj3u
-拃 vj3uv
 占 vj4b
 佔 vj4b.r
 蘸 vj4c
@@ -6428,7 +6426,6 @@
 着 vo2m
 著 vo2m.c
 箸 vo2m.z
-杓 vo2mu
 斫 vo2s
 浊 vo2u
 汋 vo2uu
@@ -6642,19 +6639,17 @@
 斡 wo4d
 卧 wo4i
 幄 wo4j
-杌 wo4m
 龌 wo4n
 肟 wo4r
 握 wo4u
 渥 wo4us
 沃 wo4uy
 乌 wu17
+於 wu17.f
 邬 wu1b
-於 wu1f
 巫 wu1g
 钨 wu1j
 呜 wu1k
-喔 wu1ks
 屋 wu1s
 圬 wu1t
 污 wu1u
@@ -6674,7 +6669,6 @@
 午 wu31
 五 wu34
 庑 wu3g
-呒 wu3k
 鹉 wu3n
 牾 wu3nk
 妩 wu3nw
@@ -6808,7 +6802,6 @@
 崤 xc2ur
 晓 xc3r
 筱 xc3z
-芍 xc4c
 肖 xc4h
 哮 xc4k
 啸 xc4ks
@@ -6942,7 +6935,6 @@
 㔾 xm19.j
 锨 xm1j
 籼 xm1m
-妗 xm1n
 氙 xm1q
 仙 xm1r
 纤 xm1s
@@ -7281,7 +7273,6 @@
 亚 ya45
 轧 ya4c
 压 ya4ct
-札 ya4m
 娅 ya4n
 氩 ya4q
 揠 ya4u

@@ -84,6 +84,7 @@
 办公室 bjgsu
 巿 bjj
 叚 bjk
+搬迁 bjqm
 钅 bjr
 卩 bjs
 冂 bjt
@@ -155,6 +156,7 @@
 部分 buff
 补偿 buih
 补充 buis
+部件 bujm
 不仅 bujn
 布局 buju
 不利于 buliy
@@ -373,6 +375,7 @@
 房地产 fhdii
 方法 fhfa
 放回 fhhv
+房间 fhjm
 方面 fhmm
 方案 fhoj
 放弃 fhqi
@@ -552,6 +555,7 @@
 Τ gtac
 θ gth
 Θ gthc
+估计 guji
 顾客 guke
 姑娘 gund
 υ gup
@@ -827,6 +831,7 @@
 斤斤计较 jnjnjij jjjj
 津津有味 jnjnybw jjyw
 尽量 jnld
+进来 jnll
 今年 jnnm2
 进入 jnru
 今天 jntm
@@ -966,6 +971,7 @@
 链接 lmjx1
 廉洁 lmjx2
 连续 lmxu
+邻居 lnju
 琳琅满目 lnlhmjm llmm
 吝啬 lnse
 临时 lnui
@@ -991,6 +997,7 @@
 蕾丝 lzsi1
 累死 lzsi3
 耒耜 lzsi4
+类推 lztv
 类型 lzx;
 明白 m;bl
 名词 m;ci
@@ -1059,6 +1066,7 @@
 你说得对 niuodedv
 男娘 njnd
 奈何 nlhe
+耐久 nljq
 年代 nmdl
 年龄 nml;
 年轻 nmq;
@@ -1068,6 +1076,7 @@
 额度 oedu
 恶毒 oedu2
 俄罗斯 oelos
+昂贵 ohgv
 安徽 ojhv
 安全 ojqr
 按照 ojvk
@@ -1627,6 +1636,7 @@
 ⊆ uziji
 诈骗 vapm
 周榜 vbb
+周边 vbbm
 周年 vbnm
 状况 vdkd
 状态 vdtl
@@ -1666,6 +1676,9 @@
 智慧 vihv4x
 ⿳ vii.
 支持 viii
+指出 viiu
+支出 viiu1
+掷出 viiu15
 直接 vijx
 指令 vil;
 质量 vild
@@ -1773,6 +1786,7 @@
 主人 vurf2
 助人为乐 vurfwzl vrwl
 主张 vuvh
+住宅 vuvl
 主席 vuxi
 注意 vuyi
 主义 vuyi4
@@ -1881,6 +1895,8 @@
 微软 wzrr
 葳蕤 wzrv
 为什么 wzufm
+卫生 wzug
+维生素 wzugs
 位置 wzvi
 未知 wzvi1
 微笑 wzxc
@@ -2031,6 +2047,7 @@
 样子 yhzi
 以便 yibm4r
 一次 yici
+以此 yici3
 依次 yici4
 一定 yid;
 意大利 yidal
@@ -2126,6 +2143,7 @@
 预期 yuqi
 与其 yuqi2
 于是 yuui
+与众不同 yuvsbut yvbt
 语文 yuwf
 怎么样 zfmey
 增加 zgjw

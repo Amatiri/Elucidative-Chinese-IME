@@ -31,6 +31,7 @@
 表述 bcuu
 标准 bcvp
 表现 bcxm
+标新立异 bcxnliy
 凵 bcy
 亠 bdh
 𢎨 bdi
@@ -100,6 +101,7 @@
 保留 bklq
 报名 bkm;
 保证 bkvg
+保障 bkvh
 报纸 bkvi
 宝藏 bkzh
 拜拜 blbl
@@ -162,10 +164,10 @@
 不利于 buliy
 不列颠 bulxd
 部门 bumf
-部署配置 bupv buuupzv
 饣 bur
 补贴 butx
 部首 buub3
+部署 buuu3
 氵 buv
 氺 buvd
 攵 buw
@@ -366,10 +368,12 @@
 奋斗 ffdb
 分类 fflz
 分配 ffpz
+分散 ffsj4
 分支 ffvi1
 分钟 ffvs
 分为 ffwz
 氛围 ffwz2
+分享 ffxd
 分析 ffxi
 风险 fgxm3
 房地产 fhdii
@@ -513,6 +517,7 @@
 管理 grli
 官吏 grli4
 惯例 grli4r
+关联 grlm
 观众 grvs
 关系 grxi
 关于 gryu
@@ -548,7 +553,10 @@
 公事 gsui4k
 攻势 gsui4l
 公示 gsui4o
+公正 gsvg4
 公主 gsvu
+功效 gsxc
+供销 gsxc1
 共享 gsxd
 工作 gszo
 τ gta
@@ -588,6 +596,7 @@
 河北 hebz
 合理 heli
 河南 henj
+合同 hets
 核心 hexn
 何意味 heyiwz
 盒子 hezi
@@ -631,9 +640,11 @@
 环境 hrj;
 红包 hsbk
 红领巾 hsl;j
+鸿蒙 hsmg2
 湖北 hubz
 互联网 hulmw
 湖南 hunj
+互相 huxd
 回答 hvda
 回复 hvfu
 恢复 hvfu4
@@ -645,6 +656,7 @@
 会议 hvyi
 回忆 hvyi4
 会员 hvyr
+画舌添足 hwuetmz hutz
 话说 hwuo
 化学 hwxt
 华夏 hwxw
@@ -732,6 +744,10 @@
 经济 j;ji
 经纪 j;ji4s
 境界 j;jx
+经历 j;li
+经理 j;li3
+敬礼 j;li3s
+精力 j;li4
 竟然 j;rj
 精神 j;uf
 竞争 j;vg
@@ -744,7 +760,14 @@
 教科书 jckeu
 交流 jclq
 交通 jcts
+教师 jcui
+浇湿 jcui1
+礁石 jcui2
+教室 jcui4
+搅屎棍 jcuig
 交往 jcwh
+交易 jcyi
+教义 jcyi4
 教育 jcyu
 讲讲 jdjd
 将计就计 jdjijqj
@@ -778,6 +801,7 @@
 极其 jiqi2
 计算 jisr
 计算机 jisrj
+集体 jiti
 集团 jitr
 即使 jiui3
 技术 jiuu
@@ -817,6 +841,7 @@
 检验 jmyj
 简言之 jmyjv
 建言献策 jmyjxmc jyxc
+建造 jmzk
 禁入 jn4ru4
 浸入 jn4ru42
 进步 jnbu
@@ -848,9 +873,11 @@
 酒店 jqdm
 纠偏 jqpm
 诀别 jtbx
+决策 jtce
 决定 jtd;
 觉得 jtde
 绝对 jtdv
+角色 jtse
 决议 jtyi
 决意 jtyi4
 举措 juco
@@ -920,6 +947,7 @@
 看看 kjkj4
 看来 kjll
 看着 kjve
+考察 kkia
 考虑 kkly
 考试 kkui
 开始 klui
@@ -931,6 +959,7 @@
 恐惧 ksju
 控制 ksvi
 酷狗 kugb
+快捷 kyjx
 块钱 kyqm
 领导 l;dk
 灵魂 l;hp
@@ -958,12 +987,16 @@
 例如 liru
 历史 liui
 理由 liyb
+利益 liyi
+礼仪 liyi2
+离异 liyi4
 利用 liys
 例子 lizi
 褴褛 ljly
 篮球 ljqq
 劳动 lkds
 劳动力 lkdsl
+老虎 lkhu
 老师 lkui
 联邦 lmbh
 联合 lmhe
@@ -1078,6 +1111,7 @@
 俄罗斯 oelos
 昂贵 ohgv
 安徽 ojhv
+安居乐业 ojjuley
 安全 ojqr
 按照 ojvk
 按下 ojxw
@@ -1112,6 +1146,7 @@
 葡萄牙 putky
 普通 puts
 配合 pzhe
+配置 pzvi4
 培训 pzxp
 培养 pzyh
 青海 q;hl
@@ -1166,11 +1201,13 @@
 秋词 qqci
 秋辞 qqci2
 龟兹 qqci2d
+求索 qqso
 全部 qrbu
 权当 qrdh1
 全国 qrgo
 权力 qrli
 权利 qrli4
+全面 qrmm
 全能 qrng
 全球 qrqq
 全体 qrti
@@ -1182,6 +1219,8 @@
 渠道 qudk
 取到 qudk4
 驱动 quds
+区域 quyu
+趋于 quyu2
 恰好 qwhk
 ・ r.d
 ･ r.dh
@@ -1219,6 +1258,7 @@
 认知 rfvi
 任务 rfwu
 认为 rfwz
+任意 rfyi4
 が rga
 ガ rgak
 げ rge
@@ -1399,6 +1439,7 @@
 松树 ssuu
 松鼠 ssuu3
 素材 sucl
+诉求 suqq
 随便 svbm
 随机 svji
 虽然 svrj
@@ -1417,6 +1458,8 @@
 调试 tcui
 调整 tcvg
 调休 tcxq
+跳跃 tcyt
+条约 tcyt1
 特别 tebx
 醍醐灌顶 thgd tihugrd
 替代 tidl
@@ -1495,6 +1538,7 @@
 收敛 ublm
 寿命 ubm;
 ∉ ubuy
+受制于 ubviy
 首先 ubxm
 双地支 uddivi
 ⟺ udgjw
@@ -1513,6 +1557,8 @@
 舍去 uequ4
 设为 uewz
 蛇尾 uewz3
+深度 ufdu
+慎独 ufdu2
 身份 ufff
 身份证 ufffv
 审查 ufia
@@ -1638,6 +1684,7 @@
 周榜 vbb
 周边 vbbm
 周年 vbnm
+周期 vbqi
 状况 vdkd
 状态 vdtl
 装修 vdxq
@@ -1838,6 +1885,7 @@
 ⿾ vzy.
 ՞ warmwh
 文本 wfbf
+稳定 wfd;
 文档 wfdh
 稳当 wfdh0
 问候 wfhb
@@ -1885,11 +1933,13 @@
 物质 wuvi
 无职转生 wuvivru wvvu
 乌兹别克斯坦 wzbkst wzbt
+为何 wzhe2
 维护 wzhu
 渭城朝雨浥轻尘 wzigvkyuyiq;i wivyyqi
 危机 wzji
 微积分 wzjif
 为了 wzle
+未来 wzll
 委内瑞拉 wznzrvl wnrl
 围绕 wzrk
 微软 wzrr
@@ -1905,6 +1955,7 @@
 委员会 wzyrh
 位于 wzyu
 星巴克 x;bak
+行动 x;ds
 幸福 x;fu
 型号 x;hk
 幸好 x;hk3
@@ -1919,6 +1970,7 @@
 形象 x;xd
 行走 x;zb
 消费者 xcfzv
+效果 xcgo
 笑话 xchw
 消化 xchw4
 消除 xciu
@@ -1934,6 +1986,8 @@
 香港 xdgh
 相关 xdgr
 相互 xdhu
+相交 xdjc
+香蕉 xdjc1
 响亮 xdld
 向量 xdld4
 项目 xdmu
@@ -1958,6 +2012,7 @@
 现代 xmdl
 陷阱 xmj;
 先进 xmjn
+衔接 xmjx
 羡慕 xmmu
 嫌弃 xmqi
 现实 xmui
@@ -1970,6 +2025,7 @@
 新建 xnjm
 信笺 xnjm1
 信件 xnjm4
+新加坡 xnjwp
 新闻 xnwf
 信息 xnxi
 新增 xnzg
@@ -2013,6 +2069,7 @@
 下载 xwzl
 歇斯底里 xxsidil
 协调 xxtc
+协同 xxts
 谢谢 xxxx
 写作 xxzo
 协作 xxzo4
@@ -2127,11 +2184,13 @@
 涌动 ysds
 用户 yshu
 拥护 yshu4
+用途 ystu
 永矢弗谖 ysuifux yufx
 欲速则不达 yszd yszbd
 阅读 ytdu
 月份 ytff
 约分 ytff1
+约束 ytuu
 越野 ytye
 遇到 yudk
 雨尘 yuif
@@ -2145,6 +2204,7 @@
 于是 yuui
 与众不同 yuvsbut yvbt
 语文 yuwf
+责任 zerf4
 怎么样 zfmey
 增加 zgjw
 增长 zgvh

@@ -47,7 +47,7 @@
 飑 bc1fl
 彪 bc1h
 镖 bc1j
-镳 bc1jg
+镳 bc1jl
 标 bc1m
 髟 bc1mi
 骉 bc1mm
@@ -443,6 +443,7 @@
 呲 ci1k
 跐 ci1z
 茨 ci2c
+茈 ci2cv
 兹 ci2d.u
 辞 ci2k
 辭 ci2k.
@@ -568,6 +569,7 @@
 褡 da1y
 答 da1z
 瘩 da2b
+荙 da2c
 靼 da2g
 鞑 da2gz
 龘 da2l
@@ -1798,6 +1800,7 @@
 寰 hr2b
 郇 hr2bx
 萑 hr2c
+荁 hr2cg
 圜 hr2g
 桓 hr2m
 鹮 hr2n
@@ -1992,6 +1995,7 @@
 𥻗 ia2mm
 猹 ia2q
 碴 ia2s
+垞 ia2t
 搽 ia2u
 嵖 ia2um
 叉 ia34
@@ -2333,7 +2337,7 @@
 胶 jc1r
 礁 jc1s
 教 jc1u
-浇 jc1ut
+浇 jc1uy
 鲛 jc1y
 跤 jc1z
 嚼 jc2k
@@ -3394,6 +3398,7 @@
 劳 lk2l
 崂 lk2u
 醪 lk2y
+荖 lk3c
 铑 lk3j
 老 lk3l
 栳 lk3m
@@ -3650,6 +3655,7 @@
 氯 ly4q
 绿 ly4s
 律 ly4t
+垏 ly4ty
 滤 ly4u
 虑 ly4x
 勒 lz1g
@@ -4326,6 +4332,7 @@
 媕 oj1nh
 氨 oj1q
 腤 oj1r
+垵 oj1t
 峖 oj1u
 谙 oj1y
 韽 oj1yj
@@ -5174,6 +5181,7 @@
 冉 rj35
 苒 rj3c
 染 rj3m
+荛 rk2c
 桡 rk2m
 娆 rk2n
 饶 rk2u
@@ -6108,6 +6116,7 @@
 楂 va1m
 查 va1md
 扎 va1u
+挓 va1ub
 揸 va1ud
 渣 va1um
 齇 va1z
@@ -8174,6 +8183,7 @@
 匝 za1o
 臜 za1r
 扎 za1u
+拶 za1ux
 䨿 za2f
 杂 za2m
 砸 za2s
@@ -8241,6 +8251,7 @@
 孳 zi1zd
 孖 zi1zz
 子 zi31
+茈 zi3c
 秭 zi3h
 籽 zi3m
 梓 zi3mx
@@ -8261,6 +8272,7 @@
 咱 zj2k
 昝 zj3r
 攒 zj3u
+拶 zj3ux
 趱 zj3z
 赞 zj4b
 錾 zj4j

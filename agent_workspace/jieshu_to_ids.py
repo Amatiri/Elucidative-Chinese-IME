@@ -527,6 +527,9 @@ def main():
                 print(f"IDS 序列: {ids}")
                 print(f"字统网链接: {url}")
                 print("（未自动打开，如需打开请使用 --open 选项）")
+        else:
+            # 转换失败（编码不存在/参数缺失等），以非零码退出供脚本判断
+            sys.exit(1)
     else:
         # 交互模式：默认不打开网页
         while True:

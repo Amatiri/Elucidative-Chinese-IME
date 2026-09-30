@@ -40,6 +40,7 @@
 ⺈ bdkt
 丷 bdm
 冖 bdp
+本身 bfuf
 本质 bfvi
 蹦蹦跳跳 bgbgtct bbtt
 𢦏 bgc
@@ -286,6 +287,7 @@
 淡紫 djzi3
 单字 djzi4
 「」 djzy
+到底 dkdi
 道理 dkli
 道歉 dkqm
 ︵ dku
@@ -392,6 +394,7 @@
 番剧 fjju
 饭局 fjju2
 反馈 fjkv
+反思 fjsi
 繁琐 fjso
 繁瑣 fjso.
 繁体 fjti
@@ -518,7 +521,9 @@
 官吏 grli4
 惯例 grli4r
 关联 grlm
+观念 grnm
 观众 grvs
+关注 grvu
 关系 grxi
 关于 gryu
 公告 gsgk
@@ -558,6 +563,8 @@
 功效 gsxc
 供销 gsxc1
 共享 gsxd
+供应 gsy;4
+公寓 gsyu
 工作 gszo
 τ gta
 Τ gtac
@@ -597,6 +604,9 @@
 合理 heli
 河南 henj
 合同 hets
+合适 heui
+核实 heui2
+何时 heui2r
 核心 hexn
 何意味 heyiwz
 盒子 hezi
@@ -664,6 +674,7 @@
 ɑ iaa
 差不多 iabud
 æ iae
+插件 iajm4
 查看 iakj
 ʌ ias
 查询 iaxp2
@@ -727,6 +738,7 @@
 重庆 isq;
 ˈ istress
 重新 isxn
+厨房 iufh
 处理 iuli3
 ʊ ius
 初中 iuvs
@@ -885,6 +897,7 @@
 居合 juhe2
 拒绝 jujt
 距离 juli
+居民 jumn
 居然 jurj
 锦上添花 juth jnuhtmh
 具体 juti
@@ -913,6 +926,7 @@
 桔槔 jxgk1m
 结果 jxgo
 结合 jxhe
+结婚 jxhp
 接触 jxiu4
 接近 jxjn
 解决 jxjt
@@ -962,6 +976,7 @@
 快捷 kyjx
 块钱 kyqm
 领导 l;dk
+灵活 l;ho
 灵魂 l;hp
 零重码 l;ism
 另外 l;wl
@@ -997,6 +1012,7 @@
 劳动 lkds
 劳动力 lkdsl
 老虎 lkhu
+牢骚 lksk1
 老师 lkui
 联邦 lmbh
 联合 lmhe
@@ -1012,6 +1028,7 @@
 论述 lpuu
 论文 lpwf
 留存 lqcp
+流程 lqig
 流行 lqx;
 流星 lqx;1
 垄断 lsdr
@@ -1050,6 +1067,7 @@
 麻烦 mafj
 麻将 majd
 麻酱 majd4
+马克思 makes
 马尔萨斯 maorsas
 马上 mauh
 描述 mcuu
@@ -1128,9 +1146,12 @@
 平台 p;tl
 蓬勃 pgbo
 朋友 pgyb
+疲惫 pibz
+披风 pifg1
 皮肤 pifu
 批改 pigl
 批量 pild
+批判 pipj
 匹配 pipz
 批准 pivp
 判断 pjdr
@@ -1151,6 +1172,7 @@
 培养 pzyh
 青海 q;hl
 清楚 q;iu
+清除 q;iu2
 请教 q;jc
 青椒 q;jc1
 情况 q;kd
@@ -1450,6 +1472,7 @@
 停滞 t;vi4
 它们 tamf
 © tbjqr
+头脑 tbnk3
 投入 tbru
 投资 tbzi
 ※ tcjkk tx;1
@@ -1678,6 +1701,7 @@
 ≤ uxydy
 ≈ uydy
 ⊙ uyr2
+衰退 uytv
 ∵ uyw
 ⊆ uziji
 诈骗 vapm
@@ -1691,6 +1715,7 @@
 浙江 vejd
 这里 veli
 这种 vevs
+哲学 vext
 这些 vexx
 这样 veyh
 振动 vfds
@@ -1969,6 +1994,7 @@
 行为 x;wz
 形象 x;xd
 行走 x;zb
+消费 xcfz
 消费者 xcfzv
 效果 xcgo
 笑话 xchw
@@ -2020,6 +2046,7 @@
 线性 xmx;4
 线性方程组 xmx;fhigz
 线性相关 xmx;xdg xxxg
+现象 xmxd
 现在 xmzl
 新疆 xnjd
 新建 xnjm
@@ -2099,6 +2126,7 @@
 优秀 ybxq
 有意思 ybyisi0
 由于 ybyu
+鱿鱼 ybyu2d
 也会 yehv
 也能 yeng
 样子 yhzi
@@ -2186,6 +2214,7 @@
 拥护 yshu4
 用途 ystu
 永矢弗谖 ysuifux yufx
+拥有 ysyb
 欲速则不达 yszd yszbd
 阅读 ytdu
 月份 ytff

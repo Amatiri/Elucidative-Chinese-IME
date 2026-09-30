@@ -74,7 +74,8 @@ def main():
               f"{len(zones):>6}{single_zones / len(zones) * 100:>9.2f}%")
     print()
     print("独体字数字主码分布:", " ".join(f"{k}:{v}" for k, v in sorted(digits.items())))
-    input("回车以退出...")
+    if sys.stdin.isatty():
+        input("回车以退出...")
 
 if __name__ == "__main__":
     main()

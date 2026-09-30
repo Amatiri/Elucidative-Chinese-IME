@@ -1289,6 +1289,7 @@
 哏 gf2k
 艮 gf39
 艮 gf49
+茛 gf4c
 亘 gf4r
 赓 gg1b
 庚 gg1g
@@ -1377,6 +1378,7 @@
 诰 gk4y
 赅 gl1b
 陔 gl1bh
+荄 gl1c
 垓 gl1t
 该 gl1y
 改 gl3u
@@ -1832,6 +1834,7 @@
 訇 hs1l
 宏 hs2b
 蕻 hs2c
+荭 hs2cs
 竑 hs2d
 弘 hs2g
 虹 hs2i
@@ -2262,6 +2265,7 @@
 串 ir45
 钏 ir4j
 冲 is1b
+茺 is1c
 舂 is1f
 充 is1o
 涌 is1u
@@ -2371,6 +2375,7 @@
 窖 jc4xg
 酵 jc4y
 醮 jc4yh
+茳 jd1c
 豇 jd1d
 姜 jd1n
 将 jd1p
@@ -3863,6 +3868,7 @@
 满 mj3u
 滿 mj3u.
 蔓 mj4c
+𬜬 mj4cw
 幔 mj4j
 镘 mj4jr
 嫚 mj4n
@@ -4062,6 +4068,7 @@
 哪 na3k
 乸 na3n
 那 na4b
+𦰡 na4c
 钠 na4j
 呐 na4k
 娜 na4n
@@ -4169,6 +4176,7 @@
 念 nm4x
 您 nn2x
 恁 nn2x.
+𦰡 no2c
 娜 no2n
 傩 no2r
 挪 no2u
@@ -4738,6 +4746,7 @@
 娉 p;1n
 砯 p;1s
 苹 p;2c
+荓 p;2cb
 萍 p;2cu
 凭 p;2j
 枰 p;2m
@@ -5051,6 +5060,7 @@
 蛆 qu1i
 蛐 qu1iq
 驱 qu1m
+㭕 qu1mt
 区 qu1o
 屈 qu1s
 祛 qu1st
@@ -6494,6 +6504,7 @@
 踵 vs3z
 中 vs45
 重 vs49
+茽 vs4c
 种 vs4h
 众 vs4r
 衆 vs4r.f
@@ -7485,6 +7496,7 @@
 埶 yi4c.t
 弈 yi4cd
 𠨾 yi4ce
+薏 yi4cl
 𬟁 yi4cn
 虉 yi4cn.
 𠩫 yi4co
@@ -7493,8 +7505,7 @@
 異 yi4cs.
 轶 yi4cu
 𢍰 yi4cw
-薏 yi4cx
-羿 yi4cy
+羿 yi4cx
 奕 yi4d
 劓 yi4db
 𡙘 yi4dc

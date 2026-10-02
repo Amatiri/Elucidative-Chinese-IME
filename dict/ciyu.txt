@@ -238,6 +238,7 @@
 、 d.p
 定制 d;vi
 定义 d;yi
+订阅 d;yt
 达到 dadk
 大概 dagl
 大会 dahv
@@ -430,6 +431,7 @@
 β gbe
 Β gbec
 构成 gbig
+构建 gbjm
 购买 gbml
 购物 gbwu
 χ gch
@@ -564,6 +566,7 @@
 供销 gsxc1
 共享 gsxd
 供应 gsy;4
+公有 gsyb
 公寓 gsyu
 工作 gszo
 τ gta
@@ -790,6 +793,7 @@
 江西 jdxi
 鞠躬尽瘁 jgjc jugsjnc
 基本 jibf
+记得 jide2
 基地 jidi
 极端 jidr
 机构 jigb
@@ -949,6 +953,7 @@
 科创 keid
 课程 keig
 科技 keji
+克隆 kels
 客气 keqi4
 课堂 keth
 可视化 keuihw
@@ -1119,6 +1124,8 @@
 奈何 nlhe
 耐久 nljq
 年代 nmdl
+年级 nmji
+年纪 nmji4
 年龄 nml;
 年轻 nmq;
 内蒙古 nzmgg
@@ -1450,6 +1457,7 @@
 死亡 siwh
 思想 sixd
 私信 sixn
+私有 siyb
 散步 sjbu4
 扫描 skmc
 死而后已 sohy siorhby
@@ -1525,6 +1533,8 @@
 同步 tsbu
 通道 tsdk
 通过 tsgo
+统计 tsji
+通缉 tsji1
 痛苦 tsku
 同时 tsui
 通知 tsvi
@@ -1725,6 +1735,7 @@
 政策 vgce
 政府 vgfu
 整个 vgge
+整合 vghe
 整洁 vgjx2
 整理 vgli
 证明 vgm;
@@ -1997,6 +2008,7 @@
 消费 xcfz
 消费者 xcfzv
 效果 xcgo
+消耗 xchk4
 笑话 xchw
 消化 xchw4
 消除 xciu

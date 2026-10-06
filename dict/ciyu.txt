@@ -1511,6 +1511,7 @@
 探索 tjso
 坍缩 tjso1
 探讨 tjtk
+§ tjx2
 弹性 tjx;4
 探险 tjxm
 淘宝 tkbk
@@ -1653,6 +1654,8 @@
 ⊥ uivvi
 实行 uix;
 实现 uixm
+时限 uixm4
+视线 uixm4s
 适应 uiy;
 事业 uiye
 使用 uiys

@@ -1069,6 +1069,7 @@
 孵 fu1l
 麸 fu1m
 肤 fu1r
+砆 fu1s
 敷 fu1u
 玞 fu1w
 趺 fu1z
@@ -3194,6 +3195,7 @@
 䁖 lb1m
 搂 lb1u
 蒌 lb2c
+剅 lb2d
 髅 lb2g
 蝼 lb2i
 喽 lb2k
@@ -3701,6 +3703,7 @@
 铃 l;2j
 呤 l;2k
 棂 l;2m
+柃 l;2mr
 棱 l;2mt
 龄 l;2n
 姈 l;2nr
@@ -3817,6 +3820,7 @@
 邙 mh2b
 芒 mh2c
 茫 mh2cu
+厖 mh2cy
 氓 mh2d
 盲 mh2m
 杧 mh2mw
@@ -4153,6 +4157,7 @@
 艿 nl3c
 奶 nl3n
 氖 nl3q
+迺 nl3z
 耐 nl4c
 萘 nl4cd
 奈 nl4d
@@ -5896,6 +5901,7 @@
 虱 ui1i
 嘘 ui1k
 鸤 ui1n
+䴓 ui1nj
 狮 ui1q
 师 ui1r
 湿 ui1u
@@ -6018,6 +6024,7 @@
 杓 uk27.m
 芍 uk2c
 苕 uk2cv
+柖 uk2m
 玿 uk2w
 韶 uk2y
 少 uk33
@@ -6551,6 +6558,7 @@
 助 vu4l
 柱 vu4m
 驻 vu4md
+柷 vu4mx
 杼 vu4my
 住 vu4r
 伫 vu4rb
@@ -6693,6 +6701,7 @@
 无 wu24
 無 wu24.
 毋 wu27
+郚 wu2b
 芜 wu2c
 鼯 wu2f
 蜈 wu2i
@@ -8018,6 +8027,7 @@
 蛹 ys3i
 咏 ys3k
 勇 ys3l
+栐 ys3m
 俑 ys3r
 泳 ys3u
 涌 ys3uy
@@ -8227,6 +8237,7 @@
 曾 zg1d
 缯 zg1s
 增 zg1t
+増 zg1t.j
 罾 zg1w
 憎 zg1x
 赠 zg4b

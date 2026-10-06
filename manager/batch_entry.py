@@ -5,8 +5,10 @@ from manager.file_processor import process_file
 import re
 from pypinyin import pinyin, Style
 
-# 待录入表：与码表同目录，供批量录入"txt"快捷导入与录毕回写
+# 待录入表：与码表同目录，供录毕回写
 PENDING_FILE = os.path.join(os.path.dirname(DATA_FILE), "待录入.txt")
+# 待录入拼音表：批量录入"txt"的音码来源（由 agent_workspace/sync_pending_pinyin.py 维护）
+PENDING_PINYIN_FILE = os.path.join(os.path.dirname(DATA_FILE), "待录入_拼音.txt")
 BATCH_SIZE = 10
 
 final_dict = {
@@ -90,6 +92,29 @@ def get_tone(pinyin_str):
     return '0'
 
 
+def pinyin_to_abc(pinyin_str):
+    """单个读音 → 三字母音码；转换失败返回空串。
+
+    pinyin_str 为带数字调的拼音（如 ya4）；无数字时按轻声（调 0）处理。
+    """
+    base = re.sub(r'\d', '', pinyin_str)
+    if not base:
+        return ""
+
+    if base in special_cases:
+        mapped = special_cases[base]   # 例如 "nv"
+        a_code = mapped[0]
+        b_code = mapped[1]
+    else:
+        a_code = get_initial(pinyin_str)
+        b_code = get_final(pinyin_str)
+    c_code = get_tone(pinyin_str)
+
+    if a_code and b_code and c_code:
+        return f"{a_code}{b_code}{c_code}"
+    return ""
+
+
 def hanzi_to_abc(hanzi):
     pinyin_list = pinyin(hanzi, style=Style.TONE3, heteronym=True)
     abc_codes = []
@@ -104,22 +129,9 @@ def hanzi_to_abc(hanzi):
                 py_with_tone = py[:-1] + '0'
 
             # 去掉声调数字，得到纯拼音，例如 ng4 -> ng
-            base = re.sub(r'\d', '', py_with_tone)
-
-            if base in special_cases:
-                mapped = special_cases[base]   # 例如 "nv"
-                a_code = mapped[0]
-                b_code = mapped[1]
-                c_code = get_tone(py_with_tone)
-            else:
-                a_code = get_initial(py_with_tone)
-                b_code = get_final(py_with_tone)
-                c_code = get_tone(py_with_tone)
-
-            if a_code and b_code and c_code:
-                abc_code = f"{a_code}{b_code}{c_code}"
-                if abc_code not in abc_codes:
-                    abc_codes.append(abc_code)
+            abc_code = pinyin_to_abc(py_with_tone)
+            if abc_code and abc_code not in abc_codes:
+                abc_codes.append(abc_code)
 
     return abc_codes if abc_codes else []
 
@@ -151,6 +163,36 @@ def generate_pending_list(hanzi_string):
         else:
             for abc_code in missing_codes:
                 pending_list.append((hanzi, abc_code))
+    return pending_list, len(pending_list), full_dict
+
+
+def load_pending_entries():
+    """从 待录入_拼音.txt 读取「汉字 音码」条目，音码严格采用表中给出的值。
+
+    与 generate_pending_list 的区别：不再用 pypinyin 生成音码；
+    已录入码表的条目直接跳过，取前 BATCH_SIZE 条。
+    返回 (待录入列表, 条目数, 完整词典)。
+    """
+    existing_dict, full_dict = load_dictionary()
+    if not os.path.exists(PENDING_PINYIN_FILE):
+        print(f"待录入拼音表不存在：{PENDING_PINYIN_FILE}")
+        return [], 0, full_dict
+    pending_list = []
+    with open(PENDING_PINYIN_FILE, encoding='utf-8-sig') as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            parts = re.split(r'[\t ]+', line, maxsplit=1)
+            if len(parts) != 2 or not re.fullmatch(r'[a-z][a-z;][0-9]', parts[1].strip()):
+                print(f"跳过格式异常行(应为「汉字 空格 音码」)：{line}")
+                continue
+            hanzi, abc_code = parts[0].strip(), parts[1].strip()
+            if (hanzi, abc_code) in existing_dict:
+                continue
+            pending_list.append((hanzi, abc_code))
+            if len(pending_list) >= BATCH_SIZE:
+                break
     return pending_list, len(pending_list), full_dict
 
 
@@ -230,28 +272,27 @@ def sync_pending_file():
 def batch_add_entries():
     """批量录入汉字编码"""
     from_file = False
+    pending_list = None
     while True:
         user_input = input("连续汉字: ").strip()
         if not user_input:
             return
         if user_input == 'txt':
-            if not os.path.exists(PENDING_FILE):
-                print("待录入表不存在,请重新输入:")
+            pending_list, count, full_dict = load_pending_entries()
+            if not count:
+                print("待录入拼音表无可录条目(表为空或均已录入),请重新输入:")
+                pending_list = None
                 continue
-            with open(PENDING_FILE, encoding='utf-8-sig') as f:
-                chars = extract_chinese(f.read())
-            if not chars:
-                print("待录入表为空,请重新输入:")
-                continue
-            user_input = ''.join(chars[:BATCH_SIZE])
             from_file = True
-            print(f"待录入表前 {len(user_input)} 字：{user_input}")
+            print(f"待录入拼音表 {count} 条：" + ' '.join(h + c for h, c in pending_list))
+            break
         chinese_input = extract_chinese(user_input)
         if not chinese_input:
             print("全非中文,请重新输入:")
             continue
         break
-    pending_list, count, full_dict = generate_pending_list(chinese_input)
+    if pending_list is None:
+        pending_list, count, full_dict = generate_pending_list(chinese_input)
     new_entries = []
     modified_entries = []
     hanzi_abc_map = {}

@@ -217,6 +217,7 @@
 餐馆 cjgr3
 参加 cjjw
 参考 cjkk
+参数 cjuu4
 参与 cjyu
 残余 cjyu2
 操场 ckih
@@ -318,6 +319,7 @@
 哆啦A梦 dolaozm dolaaam
 多邻国 dolng
 多少 douk
+多音字 doynz
 敦煌 dphd
 — dpv
 ￥ dqm
@@ -333,6 +335,7 @@
 … dul
 独立 duli
 肚腩 dunj3
+读取 duqu
 独体字 dutiz
 》 duy
 读音 duyn
@@ -450,6 +453,7 @@
 Ε gepc
 η get
 Η getc
+格式 geui
 各种 gevs
 根据 gfju
 跟随 gfsv
@@ -646,6 +650,7 @@
 获得 hode
 活动 hods
 火柴 hoil
+获取 hoqu3
 或者 hove
 活着 hove0
 婚姻 hpyn
@@ -684,6 +689,7 @@
 差异 iayi
 差一点 iayid
 ð idh
+创建 idjm
 创新 idxn
 创业 idye
 创造 idzk
@@ -771,6 +777,7 @@
 晶莹 j;y;2
 经验 j;yj
 静音 j;yn
+脚本 jcbf
 交互 jchu
 教科书 jckeu
 交流 jclq
@@ -888,6 +895,7 @@
 均匀 jpyp
 酒店 jqdm
 纠偏 jqpm
+纠正 jqvg
 诀别 jtbx
 决策 jtce
 决定 jtd;
@@ -2174,6 +2182,8 @@
 一些 yixx
 一样 yiyh
 意义 yiyi44
+严格 yjge
+阉割 yjge1
 眼睛 yjj;
 眼镜 yjj;4
 研究 yjjq
@@ -2217,6 +2227,7 @@
 愿景 yrj;
 原理 yrli
 原来 yrll
+元素 yrsu
 原始 yrui
 圆石 yrui2
 原式 yrui4

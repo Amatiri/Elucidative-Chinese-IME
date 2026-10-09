@@ -2,3 +2,6 @@ __pycache__/
 other/
 dict/dictionary_no_number.txt
 .workbuddy/
+
+# 网页码表数据：整体迁移生成、每次整理都会重排，不入库（理据另存 rationale-data.js）
+help/webpage/dictionary-data.js

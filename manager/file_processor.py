@@ -2,7 +2,16 @@ import re
 import os
 import json
 from datetime import datetime
-from config import DATA_FILE, CIYU_FILE, DATA_NO_NUMBER_FILE, BASE_DIR
+from config import DATA_FILE, CIYU_FILE, BASE_DIR
+
+
+# ── 网页数据文件 ──
+# 码表：整体由 dictionary.txt / ciyu.txt 迁移生成，量大且每次整理都会重排，
+#       故不入库（见 .gitignore），仅供本地与线上查询页使用。
+# 理据：逐条手工撰写，入库维护，每次修改只应产生增量的行级 diff。
+WEB_DIR = os.path.join(BASE_DIR, "help", "webpage")
+WEB_DATA_FILE = os.path.join(WEB_DIR, "dictionary-data.js")
+RATIONALE_FILE = os.path.join(WEB_DIR, "rationale-data.js")
 
 
 def char_priority(c):
@@ -302,21 +311,15 @@ def process_filey(input_file, output_file):
         print(f"处理文件时发生错误: {e}")
 
 
-def _read_existing_rationale(output_path):
-    """读取已有 dictionary-data.js 中的 rationale 对象，保留已填充的理据。"""
-    try:
-        with open(output_path, "r", encoding="utf-8") as f:
-            content = f.read()
-    except FileNotFoundError:
-        return {}
-
-    match = re.search(r'rationale:\s*(\{)', content)
+def _parse_js_object(content, pattern):
+    """按括号配对截取 JS 文本中的对象字面量并解析为 dict；失败返回 {}。"""
+    match = re.search(pattern, content)
     if not match:
         return {}
 
     start = match.start(1)
     depth = 0
-    end = start
+    end = None
     for i in range(start, len(content)):
         if content[i] == '{':
             depth += 1
@@ -325,11 +328,104 @@ def _read_existing_rationale(output_path):
             if depth == 0:
                 end = i + 1
                 break
+    if end is None:
+        return {}
 
     try:
         return json.loads(content[start:end])
     except json.JSONDecodeError:
         return {}
+
+
+def read_rationale(path=None):
+    """读取理据文件（rationale-data.js）→ dict，保持文件行序。"""
+    path = path or RATIONALE_FILE
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            content = f.read()
+    except FileNotFoundError:
+        return {}
+    return _parse_js_object(content, r'jieshuRationale\s*=\s*(\{)')
+
+
+def read_legacy_rationale(path=None):
+    """读取旧版合并文件（dictionary-data.js）中的 rationale 对象，仅用于一次性迁移。"""
+    path = path or WEB_DATA_FILE
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            content = f.read()
+    except FileNotFoundError:
+        return {}
+    return _parse_js_object(content, r'rationale\s*:\s*(\{)')
+
+
+def sort_rationale(rationale):
+    """按码表（dictionary.txt）字符顺序重排理据。
+
+    码表中不存在的字保持原有相对顺序并置于末尾，保证任何情况下都不丢条目。
+    """
+    ordered = []
+    seen = set()
+    try:
+        with open(DATA_FILE, "r", encoding="utf-8-sig") as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                ch = re.split(r"\s+", line, maxsplit=1)[0]
+                if ch in rationale and ch not in seen:
+                    seen.add(ch)
+                    ordered.append(ch)
+    except FileNotFoundError:
+        pass
+
+    for ch in rationale:
+        if ch not in seen:
+            ordered.append(ch)
+
+    return {ch: rationale[ch] for ch in ordered}
+
+
+def format_rationale_js(rationale):
+    """序列化为理据 JS 文件内容：每行 1 条，便于 diff 精确定位变化。"""
+    lines = []
+    for ch, val in rationale.items():
+        key_json = json.dumps(ch, ensure_ascii=False, separators=(',', ':'))
+        val_json = json.dumps(val, ensure_ascii=False, separators=(',', ':'))
+        lines.append(f"  {key_json}:{val_json}")
+
+    body = ",\n".join(lines)
+    return (
+        "// 解书音形 · 理据数据 — 手工维护，每行 1 条，勿手改格式\n"
+        "// 写入：manager/rationale_add.py（整理排序：manager/file_processor.py）\n"
+        f"// 条目：{len(rationale)}\n"
+        "window.jieshuRationale = {\n"
+        + (body + "\n" if body else "")
+        + "};\n"
+    )
+
+
+def write_rationale(rationale, path=None, sort=True):
+    """写出理据文件（每行 1 条）。sort=True 时先按码表顺序重排。"""
+    path = path or RATIONALE_FILE
+    ordered = sort_rationale(rationale) if sort else dict(rationale)
+    os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(format_rationale_js(ordered))
+    return ordered
+
+
+def build_rationale_data():
+    """整理理据：按码表顺序排序后写回 rationale-data.js，返回条目数。
+
+    首次运行（理据文件不存在）时，从旧版 dictionary-data.js 的 rationale
+    对象迁移数据。
+    """
+    rationale = read_rationale()
+    if not rationale:
+        rationale = read_legacy_rationale()
+    ordered = write_rationale(rationale)
+    return len(ordered)
 
 
 def _format_json_lines(obj, per_line=20):
@@ -368,9 +464,9 @@ def _format_json_lines(obj, per_line=20):
 
 
 def build_web_data():
-    """生成网页查询用的 JS 数据文件"""
-    help_dir = os.path.join(BASE_DIR, "help/webpage")
-    output_path = os.path.join(help_dir, "dictionary-data.js")
+    """生成网页查询用的码表 JS 数据文件（dictionary-data.js，不入库）"""
+    help_dir = WEB_DIR
+    output_path = WEB_DATA_FILE
 
     # 汉字码表 → charMap
     entry_count = 0
@@ -399,30 +495,17 @@ def build_web_data():
                 codes = codes_str.split()
                 phrase_map[phrase] = codes
 
-    # 保留已有 rationale，不覆盖手工填充的内容
-    existing_rationale = _read_existing_rationale(output_path)
-
-    # 按 chars 顺序重排 rationale
-    sorted_rationale = {}
-    for ch in char_map:
-        if ch in existing_rationale:
-            sorted_rationale[ch] = existing_rationale[ch]
-    for ch, val in existing_rationale.items():
-        if ch not in sorted_rationale:
-            sorted_rationale[ch] = val
-    existing_rationale = sorted_rationale
-
-    # 写出 JS（每行最多 20 个条目）
+    # 写出 JS（每行最多 20 个条目；理据不在此文件，见 rationale-data.js）
     js = (
         "// 解书音形 · 码表数据 — 由 manager.file_processor 自动生成，勿手动编辑\n"
+        "// 本文件不入库（见 .gitignore），理据见同目录 rationale-data.js\n"
         f"// 生成时间：{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
         f"// 汉字条目：{entry_count} | 去重后字符：{len(char_map)} | 词语：{len(phrase_map)}\n"
         "window.jieshuDict = {\n"
         f"  entryCount: {entry_count},\n"
         f"  phraseCount: {len(phrase_map)},\n"
         f"  chars: {_format_json_lines(char_map, 20)},\n"
-        f"  phrases: {_format_json_lines(phrase_map, 20)},\n"
-        f"  rationale: {_format_json_lines(existing_rationale, 20)}\n"
+        f"  phrases: {_format_json_lines(phrase_map, 20)}\n"
         "};\n"
     )
     os.makedirs(help_dir, exist_ok=True)
@@ -435,12 +518,13 @@ def main_menu():
     """整理码表主入口"""
     single_count = process_file(DATA_FILE, DATA_FILE)
     phrase_count = sort_file_by_second_part(CIYU_FILE, CIYU_FILE)
-    process_filey(DATA_FILE, DATA_NO_NUMBER_FILE)
+    #process_filey(DATA_FILE, DATA_NO_NUMBER_FILE)
     web_chars, web_phrases = build_web_data()
-    return single_count, phrase_count, web_chars, web_phrases
+    rationale_count = build_rationale_data()
+    return single_count, phrase_count, web_chars, web_phrases, rationale_count
 
 
 if __name__ == "__main__":
-    single, phrase = main_menu()
-    print(f"整理完成！码表条目：{single}+{phrase} ")
+    single, phrase, _, _, rationale = main_menu()
+    print(f"整理完成！码表条目：{single}+{phrase}，理据：{rationale}")
     input()

@@ -402,6 +402,7 @@
 邴 b;3b
 炳 b;3h
 柄 b;3m
+昺 b;3r
 屏 b;3s
 禀 b;3sd
 饼 b;3u
@@ -922,6 +923,7 @@
 喋 dx2km
 耋 dx2l
 牒 dx2p
+昳 dx2r
 碟 dx2s
 堞 dx2t
 垤 dx2tv
@@ -1854,6 +1856,7 @@
 哄 hs4k
 讧 hs4y
 乎 hu11
+轷 hu1c
 烀 hu1h
 呼 hu1k
 唿 hu1kx
@@ -2742,6 +2745,7 @@
 臄 jt2rh
 傕 jt2rw
 绝 jt2s
+砄 jt2sg
 掘 jt2u
 撅 jt2uc
 抉 jt2ug
@@ -3347,6 +3351,7 @@
 荔 li4cl
 莅 li4cr
 厉 li4cw
+轹 li4cy
 立 li4d
 利 li4h
 雳 li4i
@@ -3575,6 +3580,7 @@
 栊 ls2m
 眬 ls2ml
 聋 ls2o
+昽 ls2r
 砻 ls2s
 泷 ls2u
 珑 ls2w
@@ -3718,6 +3724,7 @@
 聆 l;2o
 伶 l;2r
 令 l;2rd
+昤 l;2rr
 绫 l;2s
 祾 l;2st
 夌 l;2t
@@ -4171,6 +4178,7 @@
 奈 nl4d
 柰 nl4m
 鼐 nl4mn
+耏 nl4mo
 佴 nl4r
 蔫 nm1c
 拈 nm1u
@@ -4479,6 +4487,7 @@
 而 or22
 儿 or23
 陑 or2b
+耏 or2m
 鸸 or2n
 耳 or37
 尔 or3d
@@ -4489,6 +4498,7 @@
 迩 or3z
 二 or43
 贰 or43.
+咡 or4k
 佴 or4r
 欸 oz1q
 欸 oz2q
@@ -5636,6 +5646,7 @@
 钿 tm2j
 甜 tm2k
 阗 tm2m
+盷 tm2my
 鿬 tm2s
 填 tm2t
 畋 tm2u
@@ -6139,6 +6150,7 @@
 帅 uy4r
 谁 uz2y
 这 ve4z
+奓 va1d
 喳 va1k
 吒 va1ke
 哳 va1ku
@@ -6252,6 +6264,7 @@
 轸 vf3c
 稹 vf3h
 枕 vf3m
+昣 vf3r
 缜 vf3s
 畛 vf3t
 诊 vf3y
@@ -6350,6 +6363,7 @@
 止 vi32
 芷 vi3c
 茋 vi3cd
+轵 vi3ck
 咫 vi3i
 凪 vi3j
 只 vi3k
@@ -7039,6 +7053,7 @@
 臽 xm4d
 羡 xm4h
 霰 xm4i
+𪾢 xm4m
 献 xm4q
 腺 xm4r
 𬀪 xm4rj
@@ -7134,6 +7149,7 @@
 萱 xr1cb
 煊 xr1h
 喧 xr1k
+咺 xr1kg
 暄 xr1r
 瑄 xr1w
 谖 xr1y
@@ -7210,6 +7226,7 @@
 婿 xu4n
 旭 xu4r
 旮 xu4r.
+昫 xu4rj
 续 xu4s
 絮 xu4sr
 绪 xu4sv
@@ -7336,6 +7353,7 @@
 压 ya4ct
 娅 ya4n
 氩 ya4q
+砑 ya4s
 揠 ya4u
 讶 ya4y
 迓 ya4z
@@ -7841,6 +7859,7 @@
 兖 yj3db
 剡 yj3dh
 鼹 yj3f
+䶮 yj3l
 眼 yj3m
 俨 yj3r
 偃 yj3ro
@@ -7883,6 +7902,7 @@
 约 yk1s.h
 要 yk1x
 邀 yk1z
+轺 yk2c
 尧 yk2g
 铫 yk2j
 姚 yk2n

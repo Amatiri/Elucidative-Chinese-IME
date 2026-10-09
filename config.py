@@ -4,7 +4,6 @@ import subprocess
 import sys
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_FILE = os.path.join(BASE_DIR, "dict", "dictionary.txt")
-DATA_NO_NUMBER_FILE = os.path.join(BASE_DIR, "dict","dictionary_no_number.txt")
 CIYU_FILE = os.path.join(BASE_DIR,"dict", "ciyu.txt")
 PACKAGE_LIST = ["pypinyin", "keyboard", "pyperclip", "pywin32"]
 

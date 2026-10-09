@@ -65,7 +65,6 @@ def run_input_method_blocking():
 
 DICT_ITEMS = [
     ("DATA_FILE", "单字码表"),
-    ("DATA_NO_NUMBER_FILE", "单字无数字码表"),
     ("CIYU_FILE", "词语码表"),
 ]
 
@@ -119,7 +118,7 @@ def apply_dict_paths(updates):
 
 
 def set_dict_paths(inputs):
-    """处理三个码表路径输入（与 DICT_ITEMS 一一对应）。
+    """处理两个码表路径输入（与 DICT_ITEMS 一一对应）。
 
     空或 _ 保持原值；非法项仅该项保持不变；最后确认依赖库安装。
     """
@@ -148,7 +147,7 @@ def set_dict_paths(inputs):
 
 
 def handle_dict_paths():
-    """功能10交互入口：连续三次输入三个码表的相对路径。"""
+    """功能10交互入口：连续两次输入两个码表的相对路径。"""
     inputs = []
     for name, label in DICT_ITEMS:
         current_rel = os.path.relpath(os.path.normpath(getattr(config, name)), config.BASE_DIR)
@@ -173,8 +172,8 @@ def run_interactive_menu():
             elif choice == '4':
                 interactive_mode()
             elif choice == '5':
-                single, phrase, web_chars, web_phrases = main_menu()
-                print(f"整理完成！码表条目：{single}+{phrase}")
+                single, phrase, web_chars, web_phrases, rationale_count = main_menu()
+                print(f"整理完成！码表条目：{single}+{phrase}，理据：{rationale_count}")
             elif choice == '6':
                 rationale_main()
             elif choice == '7':
@@ -243,7 +242,7 @@ def parse_args():
     parser.add_argument('--query-web', action='store_true',
                         help='打开查询编码网页（help/webpage/index.html）')
     parser.add_argument("--dict", nargs="*", metavar="路径",
-                        help="依次设置 单字/无数字/词语 三个码表的存储路径（相对程序目录，"
+                        help="依次设置 单字/词语 两个码表的存储路径（相对程序目录，"
                              "'_' 保持原路径）；需单独使用，修改后重启生效")
     parser.add_argument("--show", "--display", action="store_true",
                         help="只查不写：配合 --ciyu 查词语码表、--rationale 查理据")
@@ -270,7 +269,7 @@ def main():
             raise OperationError(
                 f"冲突：--dict 需单独使用。"
             )
-        if len(args.dict) != 3:
+        if len(args.dict) != 2:
             print(f"--dict 路径数量不对，放弃。")
             return
         set_dict_paths(args.dict)

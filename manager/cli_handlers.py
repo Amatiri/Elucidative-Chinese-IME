@@ -8,7 +8,8 @@ from .dictionary import ensure_data_file, query_chars, load_dictionary
 from .batch_entry import batch_add_entries
 from .single_entry import single_add_entry, modify_entry
 from .abc_analyzer import interactive_mode, analyze_abc_zone
-from .file_processor import main_menu, sort_file_by_second_part, process_file, build_web_data
+from .file_processor import main_menu, sort_file_by_second_part, process_file
+from .file_processor import RATIONALE_FILE
 from .ciyu_ops import ciyumain, get_existing_word_info, add_to_ciyu, has_dot_in_codes
 from .ciyu_ops import append_dot_to_code, generate_default_codes_for_word, check_code_exists
 from .guess_game import bmmamain
@@ -103,8 +104,8 @@ def handle_query(args):
 def handle_sort(args):
     """--sort 整理码表"""
     try:
-        single, phrase, web_chars, web_phrases = main_menu()
-        print(f"整理完成！码表条目：{single}+{phrase}")
+        single, phrase, web_chars, web_phrases, rationale_count = main_menu()
+        print(f"整理完成！码表条目：{single}+{phrase}，理据：{rationale_count}")
     except EOFError:
         raise OperationError("整理码表功能需要终端交互，无法在非终端（如管道）环境下执行。")
 
@@ -138,7 +139,7 @@ def handle_rationale(args):
     rationale[args.char] = val
     if save_rationale(rationale):
         print(f"[OK] {args.char} → {val.replace(chr(10), ' / ')}")
-    build_web_data()
+        print(f"理据总数：{len(rationale)}（{RATIONALE_FILE}）")
 
 
 def handle_add(args):

@@ -447,6 +447,8 @@
 
     <script src="dictionary-data.js">
     </script>
+    <script src="rationale-data.js">
+    </script>
     <script>
         // ── 汉字判断 ──
         function isHanzi(c) {
@@ -558,13 +560,22 @@
             return null;
         }
 
+        // ── 理据表 ──
+        // 理据独立存放于 rationale-data.js（window.jieshuRationale，每行 1 条）；
+        // 兼容旧版把 rationale 合并进码表的数据（window.jieshuDict.rationale）。
+        function getRationaleMap() {
+            if (window.jieshuRationale) return window.jieshuRationale;
+            const d = window.jieshuDict;
+            return (d && d.rationale) || {};
+        }
+
         // ── 汉字编码理据 ──
         function getCharRationale(ch, code, multi) {
-            const dict = window.jieshuDict;
+            const rationale = getRationaleMap();
 
             // 多音字 && 有人工理据 → 直接返回
-            if (multi && dict.rationale && dict.rationale[ch]) {
-                return dict.rationale[ch];
+            if (multi && rationale[ch]) {
+                return rationale[ch];
             }
 
             // 累积拼接
@@ -589,8 +600,8 @@
             }
 
             // ③ 手工理据（单音字放最后，多音字无人工理据时也走这里）
-            if (!multi && dict.rationale && dict.rationale[ch]) {
-                parts.push(dict.rationale[ch]);
+            if (!multi && rationale[ch]) {
+                parts.push(rationale[ch]);
             }
 
             // 兜底
@@ -748,11 +759,15 @@
         // ── 底部数据信息 ──
         (function showDataInfo() {
             const d = window.jieshuDict;
-            if (!d) return;
+            const info = document.getElementById('data-info');
+            if (!d || !d.chars) {
+                info.textContent = '未找到码表数据 dictionary-data.js —— 请在项目目录运行 python main.py --sort 生成';
+                return;
+            }
             const ec = d.entryCount || Object.values(d.chars).reduce((s, c) => s + c.length, 0);
             const pc = d.phraseCount || Object.keys(d.phrases).length;
-            document.getElementById('data-info').textContent =
-                `收录 ${ec} 条汉字条目 · ${pc} 条词语条目`;
+            const rc = Object.keys(getRationaleMap()).length;
+            info.textContent = `收录 ${ec} 条汉字条目 · ${pc} 条词语条目 · ${rc} 条理据`;
         })();
 
         // ── 实时查询 ──
@@ -766,6 +781,12 @@
             const text = this.value;
             if (!text.trim()) {
                 resultEl.innerHTML = '';
+                resultHeader.hidden = true;
+                return;
+            }
+
+            if (!window.jieshuDict) {
+                resultEl.innerHTML = '<div class="empty-state">码表数据未加载 —— 运行 python main.py --sort 生成 dictionary-data.js</div>';
                 resultHeader.hidden = true;
                 return;
             }

@@ -1,25 +1,26 @@
 """
-理据添加器 — 为 dictionary-data.js 中的汉字补充手工理据
+理据添加器 — 为 help/webpage/rationale-data.js 中的汉字补充手工理据
 支持三种模式：
   1. 按序添加 — 从码表第一个缺少理据的合体字条目开始
   2. 随机添加 — 随机选取一个缺少理据的条目
   3. 指定汉字 — 用户输入汉字，逐条添加理据（支持批量）
+
+理据独立于码表存放（rationale-data.js，每行 1 条、随码表顺序排序，正常入库），
+因此添加理据不会触碰 dictionary-data.js（码表，整体生成、不入库）。
 """
 
 import sys
 import os
 import re
-import json
 import random
 
 # ── 路径 ──
 # 将项目根目录加入 sys.path，以便导入 config
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import config
-from manager.file_processor import build_web_data
+from manager.file_processor import RATIONALE_FILE, read_rationale, write_rationale
 
 DATA_FILE = config.DATA_FILE
-WEB_DATA_FILE = os.path.join(config.BASE_DIR, "help", "webpage", "dictionary-data.js")
 
 # 独体字主码 → 数字类
 SOLO_DIGITS = set("0123456789")
@@ -52,68 +53,17 @@ def load_entries():
 
 
 def load_rationale():
-    """从 dictionary-data.js 读取 rationale 对象（同 file_processor._read_existing_rationale）"""
-    try:
-        with open(WEB_DATA_FILE, "r", encoding="utf-8") as f:
-            content = f.read()
-    except FileNotFoundError:
-        return {}
-
-    match = re.search(r'rationale:\s*(\{)', content)
-    if not match:
-        return {}
-
-    start = match.start(1)
-    depth = 0
-    end = start
-    for i in range(start, len(content)):
-        if content[i] == '{':
-            depth += 1
-        elif content[i] == '}':
-            depth -= 1
-            if depth == 0:
-                end = i + 1
-                break
-
-    try:
-        return json.loads(content[start:end])
-    except json.JSONDecodeError:
-        return {}
+    """从 rationale-data.js 读取理据对象"""
+    return read_rationale(RATIONALE_FILE)
 
 
 def save_rationale(rationale_dict):
-    """将 rationale 写回 dictionary-data.js"""
-    with open(WEB_DATA_FILE, "r", encoding="utf-8") as f:
-        content = f.read()
-
-    new_json = json.dumps(rationale_dict, ensure_ascii=False, separators=(',', ':'))
-
-    match = re.search(r'rationale:\s*\{', content)
-    if not match:
-        # 文件里没有 rationale → 插入在末尾 } 前
-        insert_pos = content.rfind('}')
-        if insert_pos == -1:
-            print("错误：无法定位 dictionary-data.js 插入点")
-            return False
-        content = (content[:insert_pos]
-                   + f"  rationale: {new_json}\n"
-                   + content[insert_pos:])
-    else:
-        start = match.start()
-        depth = 0
-        end = start
-        for i in range(start, len(content)):
-            if content[i] == '{':
-                depth += 1
-            elif content[i] == '}':
-                depth -= 1
-                if depth == 0:
-                    end = i + 1
-                    break
-        content = content[:start] + f"rationale: {new_json}" + content[end:]
-
-    with open(WEB_DATA_FILE, "w", encoding="utf-8") as f:
-        f.write(content)
+    """将理据写回 rationale-data.js（每行 1 条，按码表顺序排序）"""
+    try:
+        write_rationale(rationale_dict, RATIONALE_FILE)
+    except OSError as e:
+        print(f"错误：理据文件写入失败 - {e}")
+        return False
     return True
 
 
@@ -287,9 +237,10 @@ def mode_specified(entries, rationale):
 
 def main():
     print("解书音形 · 理据添加器")
-    entries = load_entries()    
+    entries = load_entries()
     rationale = load_rationale()
     print(f"*码表条目{len(entries)}, 手工理据{len(rationale)}")
+    print(f"*理据文件: {RATIONALE_FILE}")
 
     # 统计
     total_need = sum(1 for _, code in entries if needs_rationale("", code))
@@ -307,13 +258,10 @@ def main():
 
         if choice == '1':
             mode_sequential(entries, rationale)
-            build_web_data()
         elif choice == '2':
             mode_random(entries, rationale)
-            build_web_data()
         elif choice == '3':
             mode_specified(entries, rationale)
-            build_web_data()
         elif choice == '':
             print("退出")
             break

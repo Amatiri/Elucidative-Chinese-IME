@@ -28,6 +28,7 @@
 𢆉 bcn
 表情 bcq;
 表示 bcui
+标识 bcui2
 表述 bcuu
 标准 bcvp
 表现 bcxm
@@ -212,6 +213,8 @@
 词频 cipn
 次品 cipn3
 词条 citc
+辞书 ciuu
+次数 ciuu4
 此外 ciwl
 词语 ciyu
 餐馆 cjgr3
@@ -266,6 +269,7 @@
 登录 dglu
 当时 dhui
 地点 didm
+地段 didr
 地方 difh
 提防 difh2
 地府 difu3
@@ -278,10 +282,12 @@
 敌人 dirf
 地位 diwz
 第一 diyi
+单独 djdu
 蛋黄 djhd
 但是 djui
 单位 djwz
 」 djy
+单元 djyr
 「 djz
 单子 djzi
 胆子 djzi0
@@ -411,6 +417,7 @@
 反映 fjy;4
 翻译 fjyi
 封妻荫子 fqyz fgqiynz
+服从 fucs
 辅导员 fudky
 符合 fuhe
 复合 fuhe2
@@ -532,6 +539,7 @@
 关注 grvu
 关系 grxi
 关于 gryu
+宫殿 gsdm
 公告 gsgk
 公共 gsgs4
 共和 gshe
@@ -539,6 +547,7 @@
 Σ gsic
 工程 gsig
 共产党 gsijd
+公交 gsjc
 公交车 gsjci
 攻击 gsji
 供给 gsji3
@@ -553,6 +562,7 @@
 公民 gsmn
 功能 gsng
 公司 gssi
+宫廷 gst;
 共同 gsts
 公式 gsui
 工时 gsui2
@@ -633,6 +643,7 @@
 汉字 hjzi
 好吧 hkb
 好罢 hkba
+号码 hkma3
 好像 hkxd
 胡克希伍 hkxw hukexiw
 海拔 hlba
@@ -822,6 +833,7 @@
 技能 jing
 机器 jiqi
 极其 jiqi2
+既然 jirj
 计算 jisr
 计算机 jisrj
 集体 jiti
@@ -955,6 +967,7 @@
 借助 jxvu
 解析 jxxi
 接下来 jxxwl
+口罩 kbvk
 矿泉水 kdqru
 课表 kebc
 课标 kebc1
@@ -1013,6 +1026,7 @@
 里面 limm
 理念 linm
 例如 liru
+离散 lisj
 历史 liui
 理由 liyb
 利益 liyi
@@ -1042,6 +1056,7 @@
 论文 lpwf
 留存 lqcp
 流程 lqig
+流转 lqvr
 流行 lqx;
 流星 lqx;1
 垄断 lsdr
@@ -1073,6 +1088,7 @@
 明确 m;qt
 明天 m;tm
 明知故问 m;viguw mvgw
+命中 m;vs
 明显 m;xm
 命运 m;yp
 名字 m;zi
@@ -1083,6 +1099,8 @@
 马克思 makes
 马尔萨斯 maorsas
 马上 mauh
+某人 mbrf
+某种 mbvs3
 描述 mcuu
 懵懂 mgds3
 盲打 mhda3
@@ -1105,6 +1123,7 @@
 目标 mubc
 目的 mudi
 目前 muqm
+每次 mzci4
 每个 mzge
 没关系 mzgrx
 玫瑰 mzgv
@@ -1172,6 +1191,7 @@
 判断 pjdr
 排队 pldv
 派对 pldv4
+拍摄 plue
 排序 plxu
 偏好 pmhk
 便宜 pmyi
@@ -1232,6 +1252,7 @@
 潜能 qmng
 缱绻 qmqr
 前所未有 qmsowzy qswy
+牵涉 qmue
 前往 qmwh
 迁移 qmyi
 群众 qpvs
@@ -1256,6 +1277,7 @@
 渠道 qudk
 取到 qudk4
 驱动 quds
+取款 qukr
 区域 quyu
 趋于 quyu2
 恰好 qwhk
@@ -1473,6 +1495,7 @@
 缩小 soxc
 缩写 soxx
 所以 soyi
+损坏 sphy
 算法 srfa
 松树 ssuu
 松鼠 ssuu3
@@ -1586,7 +1609,7 @@
 ⟺ udgjw
 双拼 udpn1
 ° udu4
-≥ udydy
+≥ udydy uge
 ∃ uee
 社会 uehv
 社交 uejc
@@ -1594,11 +1617,14 @@
 射击 ueji1
 涉及 ueji2
 社稷 ueji4
+赦免 uemm
 社区 uequ
 摄取 uequ3
 舍去 uequ4
 设为 uewz
 蛇尾 uewz3
+摄像 uexd
+摄影 uey;
 深度 ufdu
 慎独 ufdu2
 身份 ufff
@@ -1619,6 +1645,7 @@
 生理 ugli3
 生物 ugwu
 声音 ugyn
+剩余 ugyu2
 上半 uhbj
 上班 uhbj1
 ≡ uhdy
@@ -1639,6 +1666,7 @@
 师范 uifj4
 × uig2 tco4
 时光 uigd
+事故 uigu
 时候 uihb
 市场 uiih
 实际 uiji
@@ -1719,7 +1747,7 @@
 水平 uvp;
 ‱ uwfv
 ∞ uwq
-≤ uxydy
+≤ uxydy ule
 ≈ uydy
 ⊙ uyr2
 衰退 uytv
@@ -1758,11 +1786,13 @@
 中華人民共和國 vhrmghg. vhrg.
 震撼首发 vhuf vfhjubf
 ⿱ vi.
+指标 vibc
 直播 vibo
 只不过 vibug
 制定 vid;
 知道 vidk
 指导 vidk3
+直到 vidk4
 制度 vidu
 支付宝 vifub
 指挥 vihv1
@@ -1811,6 +1841,7 @@
 找到 vkdk
 召唤 vkhr
 照常 vkih
+照明 vkm;
 照片 vkpm
 ⿹ vl.1
 ⿽ vl.2
@@ -1969,6 +2000,7 @@
 无关痛痒 wugrtsy wgty
 物理 wuli
 无论 wulp
+雾霾 wuml
 武器 wuqi
 雾气 wuqi4
 无穷 wuqs
@@ -2195,6 +2227,7 @@
 严重 yjvs
 要点 ykdm
 要求 ykqq
+钥匙 ykui0
 一目了然 ymlr yimulcr
 有没有 ymy
 隐藏 ynch

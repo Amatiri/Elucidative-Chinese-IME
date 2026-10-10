@@ -8,15 +8,6 @@
 
 **其他**:帮助文档:help/。码表:dict/。功能模块包:manager/。文件路径与常量配置:config.py(单击安装依赖库)。agent工作区:agent_workspace/(一些辅助工具)。[移动端web演示](mobile/README.md):mobile/。[迁移rime](migrate_to_rime/README.md):migrate_to_rime/, 使用rime_export.py。
 
-**查询网页数据**(help/webpage/, 拆成两份, 用途不同):
-
-| 文件 | 内容 | 入库 |
-| --- | --- | --- |
-| `dictionary-data.js` | 码表(`window.jieshuDict`: 汉字/词语编码、条目统计) | 否(生成物, 已 gitignore) |
-| `rationale-data.js` | 理据(`window.jieshuRationale`: 每行 1 条, 按码表顺序) | 是 |
-
-码表由 `python main.py --sort` 整体迁移生成, 量大会整篇重排, 故不入库; 理据逐条手工撰写, 每行 1 条, 增删只产生行级 diff。新克隆的仓库需要先跑一次 `--sort`, 否则查询网页会提示缺码表数据。
-
 *以下二、三中的功能均以ime.py为准, web和rime端可能不尽相同*
 
 ## 二、外观与设置
@@ -103,12 +94,11 @@
    - 统计独体率、主码分布、副码率
 5. **整理码表** - 字典整理优化
    - 自动去重和排序
-   - 创建无数字简码版本
    - 一级简码优先排列
-   - 生成网页码表dictionary-data.js, 并按码表顺序整理理据rationale-data.js
+   - 生成网页码表dictionary-data.js, 并按码表顺序整理理据rationale-data.js。
+   - 新克隆的仓库需要先跑一次整理, 否则查询网页会提示缺码表数据。
 6. **添加理据** - 为汉字补充手工理据
-   - 理据存放于help/webpage/rationale-data.js(每行1条, 按码表顺序排序, 入库提交)。
-   - 理据与码表分离, 添加理据不会再重写码表文件dictionary-data.js。
+   - 理据存放于help/webpage/rationale-data.js，每行1条。
    - 自动判断需理据条目：合体字无补码、或有实质补码者。
    - 三种添加模式：按序（从首缺开始）、随机、指定汉字（可批量）。
    - 交互时显示当前条目及已有理据，支持多行（\n），按a跳过，自动保存。
@@ -190,7 +180,7 @@ ABCD(E)(.F)
 
 2. **副码选择顺序**
    
-   空 > 部首别码 > 余字解析码 > e > ; > 其他字母
+   空 > 部首别码 > 余字解析码 > e > ; 
 
 3. **核心方法**
    

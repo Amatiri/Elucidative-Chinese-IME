@@ -147,18 +147,18 @@ prism 由全部码构建、与前缀条目无关（推断，未实测），但�
 
 ### 2.5 `jieshu.schema.yaml` 关键配置及原因
 
-| 配置                                                                      | 值                                                        | 原因                                                                        |
-| ----------------------------------------------------------------------- | -------------------------------------------------------- | ------------------------------------------------------------------------- |
-| `engine/translators`                                                    | lua 排在 `table_translator` 前                              | 同段候选由首个产出非空的 translator 独占；lua 有候选时独占，无候选时不产出（真源无该前缀码，table 也空，整段落 raw）   |
-| `engine/filters`                                                        | **只留丢弃垫片，不写 `uniquifier`**                               | 丢弃泄漏的原生 table 候选；不写 uniquifier 的原因见 2.10（会吞掉多音字条目）                        |
-| `speller/alphabet` + `delimiter`                                        | 字母表 = `CODE_CHARS` 去掉 `'`；`'` 只作分隔符                      | 数字/`;`/`.` 收编为码字符（`.` 必须收，数百条补码）；真源 0 条码含 `'`                             |
-| `speller/initials`                                                      | 仅小写字母                                                    | 段首准入的纵深防御，与 gate 互补（见 2.4）                                                |
-| `translator/enable_completion` / `enable_sentence` / `enable_user_dict` | 全 `false`                                                | 2.1 纪律红线                                                                  |
-| `menu/page_size` + `alternative_select_keys`                            | `5` + `!@#$%`                                            | 对齐前端 5 选；选字键 = Shift+1~5，见 2.7                                            |
-| `punctuator`                                                            | 内联最小符号表                                                  | 不写 `import_preset: default`——定制环境下 default.yaml 可能没有 punctuator 段，照抄会编译失败 |
-| `key_binder`                                                            | `import_preset: default` + `Up/Down → Page_Up/Page_Down` | 原生 ↑↓ 是移高亮，翻页需重绑                                                          |
-| `recognizer/patterns.jieshu`                                            | 含 `'` 的码集正则                                              | 人工分段后整段仍带 jieshu tag；**不引 default**（其 email/url pattern 会抢键，见 2.7）        |
-| `switches`（P4-E）                                                       | `jieshu_auto_commit` / `jieshu_phrase_priority`，`states` 次位=开 + **`reset: 1`** | 两个功能开关，**默认开**（`reset: 1`，对齐 `ime.py:48-49`）；`states[0]`=关、`states[1]`=开，默认态由 `reset` 决定而非 states 顺序（见 2.15）。**不登记 `save_options`**（登记要把全局 `switcher` 节点整个覆盖、会弄瘫选单，见 2.16） |
+| 配置                                                                      | 值                                                                              | 原因                                                                                                                                                                         |
+| ----------------------------------------------------------------------- | ------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `engine/translators`                                                    | lua 排在 `table_translator` 前                                                    | 同段候选由首个产出非空的 translator 独占；lua 有候选时独占，无候选时不产出（真源无该前缀码，table 也空，整段落 raw）                                                                                                    |
+| `engine/filters`                                                        | **只留丢弃垫片，不写 `uniquifier`**                                                     | 丢弃泄漏的原生 table 候选；不写 uniquifier 的原因见 2.10（会吞掉多音字条目）                                                                                                                         |
+| `speller/alphabet` + `delimiter`                                        | 字母表 = `CODE_CHARS` 去掉 `'`；`'` 只作分隔符                                            | 数字/`;`/`.` 收编为码字符（`.` 必须收，数百条补码）；真源 0 条码含 `'`                                                                                                                              |
+| `speller/initials`                                                      | 仅小写字母                                                                          | 段首准入的纵深防御，与 gate 互补（见 2.4）                                                                                                                                                 |
+| `translator/enable_completion` / `enable_sentence` / `enable_user_dict` | 全 `false`                                                                      | 2.1 纪律红线                                                                                                                                                                   |
+| `menu/page_size` + `alternative_select_keys`                            | `5` + `!@#$%`                                                                  | 对齐前端 5 选；选字键 = Shift+1~5，见 2.7                                                                                                                                             |
+| `punctuator`                                                            | 内联最小符号表                                                                        | 不写 `import_preset: default`——定制环境下 default.yaml 可能没有 punctuator 段，照抄会编译失败                                                                                                  |
+| `key_binder`                                                            | `import_preset: default` + `Up/Down → Page_Up/Page_Down`                       | 原生 ↑↓ 是移高亮，翻页需重绑                                                                                                                                                           |
+| `recognizer/patterns.jieshu`                                            | 含 `'` 的码集正则                                                                    | 人工分段后整段仍带 jieshu tag；**不引 default**（其 email/url pattern 会抢键，见 2.7）                                                                                                         |
+| `switches`（P4-E）                                                        | `jieshu_auto_commit` / `jieshu_phrase_priority`，`states` 次位=开 + **`reset: 1`** | 两个功能开关，**默认开**（`reset: 1`，对齐 `ime.py:48-49`）；`states[0]`=关、`states[1]`=开，默认态由 `reset` 决定而非 states 顺序（见 2.15）。**不登记 `save_options`**（登记要把全局 `switcher` 节点整个覆盖、会弄瘫选单，见 2.16） |
 
 `ascii_composer/switch_key` 用官方默认（Shift_L: inline_ascii），与 gate 让位不冲突；
 `speller/algebra` 不设（派生拼写会引入跨音节合并并按字典序排，已废弃）。
@@ -383,10 +383,10 @@ commit ×2、字母/数字/分号 commit ×3、release/ctrl/选字键/3 码未�
 把 `ime.py` 底部设置栏的两个按钮搬进 RIME 方案选单，与前端 1:1 对齐
 （`ime.py:48-49` 默认均为 `"1"`=开，`:1024-1061` 是两个 TI 标签的点击切换）。
 
-| 开关             | `switches.name`         | `states`    | `reset` | 默认 | 影响                                                                  |
-| -------------- | ----------------------- | ----------- | ------- | -- | ------------------------------------------------------------------- |
-| 自动上字           | `jieshu_auto_commit`    | `[ ·, 字 ]`  | `1`     | 开  | 关：判定与上屏都不跑，编码留在输入流按空格上屏；**同时关掉候选的「预」标记**                             |
-| 优先上词           | `jieshu_phrase_priority` | `[ ·, 词 ]`  | `1`     | 开  | 多字模式候选顺序 `[词,链]` / `[链,词]`（关：词**仍在**，只退到链后，可用 Shift+2 显式选）        |
+| 开关   | `switches.name`          | `states`   | `reset` | 默认  | 影响                                                         |
+| ---- | ------------------------ | ---------- | ------- | --- | ---------------------------------------------------------- |
+| 自动上字 | `jieshu_auto_commit`     | `[ ·, 字 ]` | `1`     | 开   | 关：判定与上屏都不跑，编码留在输入流按空格上屏；**同时关掉候选的「预」标记**                   |
+| 优先上词 | `jieshu_phrase_priority` | `[ ·, 词 ]` | `1`     | 开   | 多字模式候选顺序 `[词,链]` / `[链,词]`（关：词**仍在**，只退到链后，可用 Shift+2 显式选） |
 
 **⚠️ 两个源码级事实（2026-09-12 核实，此前连错两轮，勿再凭推测改）**：
 
@@ -515,7 +515,7 @@ patch:
 | 单字查询                 | `bu44`→不、`ba13`→八、`ba13.`→捌（补码点号直通）                                                                                                                       |
 | 自动拆分连续编码             | `bu44ba13`→「不八」链、`yig`→「一个」（白名单链）                                                                                                                         |
 | 词语候选                 | `ceu`→「测试」+「厕是」、`b;du`→「病毒」+「兵都」                                                                                                                          |
-| 优先上词                 | 全码精确命中时词排在字链之前（P4-D 及以前为硬编码**恒开**；**P4-E 起改为开关，默认开**，见 2.15）                                                                                               |
+| 优先上词                 | 全码精确命中时词排在字链之前（P4-D 及以前为硬编码**恒开**；**P4-E 起改为开关，默认开**，见 2.15）                                                                                              |
 | 人工 `'` 分段 + 词语增强预览   | `b;du'ceu`→「病毒测试」、`b;d'u`→「兵的是」                                                                                                                           |
 | 候选余码提示               | comment 列显示剩余编码                                                                                                                                           |
 | 逐段子回显                | 按子段产出回显，无候选的段按编码原样留在串里，与前端一致（见 2.8）                                                                                                                       |

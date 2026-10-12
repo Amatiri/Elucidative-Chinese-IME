@@ -120,6 +120,7 @@
 编程 bmig2
 编辑 bmji
 边界 bmjx4
+变量 bmld4
 编码 bmma
 彡 bms
 𠃜 bmz
@@ -253,6 +254,7 @@
 大众 davs
 大小 daxc
 大学 daxt
+大于 dayu2
 打字 dazi4
 豆包 dbb
 逗号 dbhk4
@@ -295,6 +297,7 @@
 淡紫 djzi3
 单字 djzi4
 「」 djzy
+到达 dkda
 到底 dkdi
 道理 dkli
 道歉 dkqm
@@ -364,10 +367,26 @@
 ” dyy
 “ dyz
 “” dyzy
+🌍 edqfv
+🌐 edqjw
+🌎 edqmv
+🌏 edqyv
+🔍 efdj
+🔥 eho3
+😭 eku1k
+💯 emjff eff100
 👌 eok
+🎉 eq;vu epldv
+🙏 eqidk
+🍬 eth2m
 😊 ewzxc
+✨ ex;1r
+😂 excku
+🤔 exd3x esikk
+❤️ exn
 👀 eyj3m
 🍥 eyubj
+👍 ezj4b edmzj
 法兰西 faljx
 法律 faly
 发散 fasj
@@ -529,6 +548,7 @@
 关闭 grbi
 ρ grh
 Ρ grhc
+观察 gria
 关键 grjm
 管理 grli
 官吏 grli4
@@ -602,6 +622,7 @@
 规划 gvhw
 桂花 gvhw1
 归化 gvhw4
+规律 gvly
 规模 gvmo
 贵州 gvvb
 规则 gvze
@@ -721,6 +742,7 @@
 场景 ihj;
 长江 ihjd
 尝试 ihui
+常数 ihuu4
 常用 ihys
 常用字 ihysz
 翅膀 iibh
@@ -1255,6 +1277,7 @@
 牵涉 qmue
 前往 qmwh
 迁移 qmyi
+群体 qpti
 群众 qpvs
 秋词 qqci
 秋辞 qqci2
@@ -1277,6 +1300,8 @@
 渠道 qudk
 取到 qudk4
 驱动 quds
+区分 quff
+区间 qujm1
 取款 qukr
 区域 quyu
 趋于 quyu2
@@ -1576,6 +1601,7 @@
 同一 tsyi1
 同意 tsyi4
 同一个 tsyig
+通用 tsys
 土地 tudi
 ↑ tuh
 • tuidm
@@ -1592,7 +1618,7 @@
 → tyb
 ○ tyr2
 ← tzo
-∀ uaa
+∀ uaa urfyi
 沙漠 uamo
 ∪ ub;4
 受到 ubdk4
@@ -1610,7 +1636,7 @@
 双拼 udpn1
 ° udu4
 ≥ udydy uge
-∃ uee
+∃ uee ucpzl
 社会 uehv
 社交 uejc
 设计 ueji
@@ -2282,6 +2308,7 @@
 约束 ytuu
 越野 ytye
 遇到 yudk
+语法 yufa3
 雨尘 yuif
 雨尘さま yuifsama
 预计 yuji
@@ -2310,6 +2337,7 @@
 自习 zixi2
 自信 zixn
 咱们 zjmf
+早上 zkuh
 再次 zlci4
 坐标 zobc
 做到 zodk

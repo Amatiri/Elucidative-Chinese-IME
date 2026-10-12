@@ -955,9 +955,9 @@ base_height = 1920
 init_x = int(screen_width * (2250 / base_width))
 init_y = int(screen_height * (1250 / base_height))
 
-ctx.external_mode = True
-window.title("解书音形-外输")
-window.geometry(f"{win_w}x{scale_size(_BASE_WIN_H)}+{init_x}+{init_y}")
+ctx.external_mode = False
+window.title("解书音形-内输")
+window.geometry(f"{win_w}x{win_h_norm}+{init_x}+{init_y}")
 window.configure(bg='#FFF3C7')
 window.attributes('-topmost', True)
 window.attributes('-alpha', 0.95)
@@ -1180,11 +1180,8 @@ def on_main_window_close():
     print("[前端]已退出")
 window.protocol("WM_DELETE_WINDOW", on_main_window_close)
 
-# ── 启动初始化：默认外输模式 ──
-window.withdraw()                     # 先隐藏，避免闪烁
-window.overrideredirect(True)         # 无标题栏
-_apply_display_mode()                 # 应用外输精简布局
-keyboard.press_and_release("shift")  # 与系统输入法协调
-# 窗口保持隐藏，外输模式下等编码输入后 _show_external_window 自动显示
+# ── 启动初始化：默认内输模式 ──
+window.overrideredirect(False)        # 保留标题栏
+_apply_display_mode()                 # 应用内输完整布局
 print("\n[前端]启动成功")
 window.mainloop()

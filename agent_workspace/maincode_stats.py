@@ -11,11 +11,15 @@ import collections
 import os
 
 sys.stdout.reconfigure(encoding="utf-8")
-sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
-from config import DATA_FILE
+
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, PROJECT_ROOT)
+
+import config
 
 
-def read_dictionary(file_path=DATA_FILE):
+def read_dictionary(file_path=config.DATA_FILE):
     """读取码表，返回 {编码: 汉字} 字典，跳过含点补或长度<4的条目。"""
     dictionary = {}
     with open(file_path, encoding="utf-8") as f:

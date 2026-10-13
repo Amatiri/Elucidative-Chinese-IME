@@ -304,8 +304,6 @@ RIME 分段只看字符类，选完首字后剩余串会被当成一段，原逻
 - **冻结段首字面段**：`nav_scan` 返回 `head_end`，`freeze_literal_head` 依次：光标收到 `head_end` → 重取 `comp:back()` → 标 `kConfirmed` → `comp:push_back(Segment(head_end, head_end))` 推进当前起点。效果：`deepseek'ce` 进入 `ce` 裸候选，上屏保留 `deepseek`；`ce'deepseek` 不再出 `de` 系；`deepseek'mox;` 出 `mo` 裸候选。仅当前段 `start==0` 且铺到 `head_end` 时冻结。
 - **段首人工 `'` 归类**：`manual_lead` 时用 `char_walk(proc.."'")`；字面段只给一条原码候选覆盖整段，可查段只出首分段候选。
 
-**回归与边界**：88 例 fengari 通道 0 差异；新增真实段形态用例，nav 快照改四元组（gate/has_cand/target/head_end）；`get_phrase_segments` 对拍一致。冻结失败走 pcall 兜底回整段预览；多个可查段二次 `=` 走整串预览；手动 Left 停在 `'` 后归类退化；`-` 对冻结段无效。2026-09-11 实机复测：① `deepseek'ce` 按 `=` 出 6 条 `ce` 裸候选；② `ce'deepseek` 按 `=` 不再出 `de` 系；③ `deepseek'mox;` 按 `=` 出 `mo` 35 条裸候选且上屏保留 `deepseek`。全部闭环。
-
 ### 2.14 自动上字（P4-D，2026-09-12 实机复测通过）
 
 > 3 码且唯一候选自动上屏。对齐 `ime.py:581-598` 四条件：① 单字态（输入无人工 `'`，
@@ -362,21 +360,10 @@ false，天然安全。
    注：ime.py 的自动上字是**即时上屏**（`real_time_var` trace 回调判定命中立即
    `replace_content`+清空，ime.py:585-598），`ba13.` 在前端须关自动上字才打得出；
    RIME 的延迟一键语义恰好让「`.` 并入编码」成为可能，此为对前端的刻意增强。
-3. **预上字提示**（用户新增需求）：判定命中时目标候选 comment 挂「预」字
+3. **预上字提示**：判定命中时目标候选 comment 挂「预」字
    （`build_candidates` 新增第三参 `full_input`＝`env.engine.context.input` 整串，
    在单字模式分支判定——`auto_commit_target` 的守卫天然挡掉人工分段/逐字
    partial 形态）。余码非空显示「预 .」形，空则「预」。
-
-**回归**：用例新增 `ac <输入串>` 形态 19 条（触发 3：`bu44`/`ba13`/`ba13.`；拦截
-16：3 码 `bu4`、补码引导 `gs34`/`mo24`/`ne47`、多字态 `buce` 类、人工引号
-`bu44'ba13`/`'bu44`、前导杂字符 `4bu44`），两通道 **107 例 0 差异**。
-「预」标记使 build_candidates 快照恰有 5 例变化（`bu44`/`ba13`/`ba13.`/`ce4u`/
-`ce4u.`，差异仅为目标候选多挂「预」，其余 102 例零变化）；另有按键级探针 13 例
-（mock key/env，lupa）全 PASS：空格不触发 ×2、`.` peek 命中放行 ×2 / 不命中
-commit ×2、字母/数字/分号 commit ×3、release/ctrl/选字键/3 码未满不触发 ×4。
-**实机复测（2026-09-12）**：修复后全部通过 —— `bu44`+空格出「不」无多余空格、
-`ba13`+`.` 出「捌」（候选带「预」）、`bu44`+`.` 的穿透点行为、连打/翻页/
-西文模式不受影响。P4-D 收官。
 
 ### 2.15 方案选单开关：自动上字 / 优先上词（P4-E，2026-09-12）
 
@@ -411,103 +398,6 @@ switches.FindOption([this](Switches::SwitchOption option) {
 `return false` 分支 ⇒ **表现为「默认关」，与 `states` 怎么排无关**。
 ⇒ 要默认开，**唯一**办法是写 `reset: 1`（值非 0 → `true`）。
 
-**③ 附带纠正**：`Context:get_option` 在 lua 侧由 `WRAPMEM` 直通 C++ 同名成员
-（`hchunhui/librime-lua` 的 `ContextReg::methods`），**永远返回 `bool`，不可能返回 `nil`**。
-所以「nil 是三态之一、需要兜底」是**错误认知**（我此前据此写了 `if v == nil then return true`，
-该分支从未生效 —— 这也正是「首装默认关」的直接原因）。C++ 侧未命中时同样 `return false`。
-
-**为什么 states 只写单个汉字**：RIME 的 `switches` 没有「选项长名称」机制，选单里显示的就是
-`states` 里的串。雾凇的「中英标点」「简繁切换」靠状态字本身表意（`[ ¥, $ ]`、`[ 简, 繁 ]`）。
-本方案用 `[ ·, 字 ]` / `[ ·, 词 ]` 配合 `reset: 1` —— 默认落在次位，选单首屏显示的就是
-「字」/「词」（功能名），点一下切到 `·`（关）。
-
-**关于 `reset` 的代价（已确认接受）**：`reset` 的语义是「每次切方案回默认态」，
-所以用户手动关掉后，**切走方案再切回来会强制回到「开」**。对「推荐默认全开」的定位
-而言这正是想要的。另外它不进 `switcher/save_options` 的持久化名单 —— 但那不是缺点：
-雾凇 `emoji` 每次重置是 `reset: 1` 的直接后果，与持久化名单无关。
-
-**关于跨会话记忆（本方案选择不开启）**：唯一能持久化的是登记进 `default.custom.yaml` 的
-`switcher/save_options`。但 `patch` 对该节点是**整体替换**而非深度合并 ——
-只写 `save_options` 一个键会把 `default.yaml` 的 `caption`/`hotkeys`/`fold_options` 等
-一并顶掉，**方案选单（F4）直接打不开**（2026-09-12 实际踩过，详见 §2.16）。
-权衡后本方案**不登记**，配合 `reset: 1` 得到「每次都是默认全开」的干净行为。
-
-**读取判决**（三处实现必须同步：`jieshu_query.lua` 的 `option_on`、
-`jieshu_autocommit.lua` 的 `auto_commit_on`）：
-
-```
-读到的值       行为     理由
-true         → 开      schema 的 reset: 1 给到的默认值，或用户从选单切到「字/词」
-false        → 关      用户从选单切到「·」
-pcall 失败    → 开      仅防「ctx / 方法不可用」（测试桩、引擎异常），按 ime.py 的默认值走。
-                       ⚠️ 这不是三态判定 —— get_option 不会返回 nil（见上面 ③）。
-```
-
-实现落在两个组件，各有一个局部函数（**没有抽公共模块**：lua 侧的函数值不能挂字段，
-共享要走 `jieshu_query_api` 那种全局表，而这里只有 6 行、抄一遍比建一条通路更稳）：
-
-- `jieshu_query.lua` 的 `option_on(ctx, name)` —— translator 读两个开关；
-- `jieshu_autocommit.lua` 的 `auto_commit_on(ctx)` —— processor 读自动上字。
-
-**两个开关互相独立**（对齐 `ime.py`：`auto_commit_enabled` 只管 `:585` 的自动上屏，
-`phrase_priority` 只管 `:336-340 / :436-441 / :561 / :608` 的顺序与空格取值）：
-
-- **自动上字关** ⇒ `build_candidates` 不挂「预」。理由：那个字永远不会自动上屏，
-  留着「预」是误导。故 `build_candidates` 收两个独立开关参数
-  （`phrase_priority` 管顺序、`ac_on` 管预提示），**不是**一个参数兼管两件事。
-- **优先上词关** ⇒ 单字模式的候选**完全不变**（`query_by_prefix` 不跨段匹配，
-  已实测 10289 个非空输入中「自动拆分态又有单字候选」为 **0 例**，
-  两个开关都碰不到单字分支）。
-
-**回归**：新增开关矩阵用例 28 条（`op<位图> <原用例>`，个位=自动上字、十位=优先上词），
-两通道 **135 例 0 差异**；另有 lupa 按键级探针验证 `true/false/nil` 三态
-（true 与 nil 上屏、false 不上屏）全 PASS。既有 107 例无前缀 = 全开，
-快照逐字节未变 —— 证明默认路径零回归。
-
-### 2.16 事故记录：`patch` 是整体替换，手改 `switcher` 会把方案选单打瘫（2026-09-12）
-
-**背景**：P4-E 初版想让两个开关跨会话记忆，于是往 `D:\输入法\default.custom.yaml` 写了：
-
-```yaml
-patch:
-  schema_list:
-    - {schema: double_pinyin_sogou}
-    - {schema: jieshu}
-  switcher:
-    save_options: [ascii_punct, traditionalization, emoji, full_shape,
-                   search_single_char, jieshu_auto_commit, jieshu_phrase_priority]
-```
-
-**症状**：方案选单（F4）**彻底打不开**。
-
-**根因**：`*.custom.yaml` 的 `patch` 是**按节点整体替换**，不是深度合并。
-`default.yaml:32-51` 的 `/switcher` 节点含 6 个键
-（`caption` / `hotkeys` / `save_options` / `fold_options` / `abbreviate_options` /
-`option_list_separator`），patch 一提交其余 5 个全被顶掉 —— `switcher_settings`
-拿不到 `hotkeys`，于是没有任何键能唤起选单。
-
-**排查判据（照这套查，别只看源文件）**：
-
-1. 看**编译产物** `D:\输入法\build\default.yaml` 的该节点 —— 运行时真正读的是它。
-   本例该文件 `switcher:` 段只到 `save_options` 就 EOF，
-   `caption`/`hotkeys`/`fold_options` 等在全文中 **0 命中**。
-2. 看当次部署会话的 **WARNING 日志**（`%TEMP%\rime.weasel\`）：
-   `switcher_settings.cc:118] hotkeys not defined.`，时间戳正好落在
-   「读完所有 schema、开始构造选单」那一刻。
-3. 反证语法无问题：INFO 日志有 `config_compiler.cc:214] patching switcher`
-   —— 有这行说明 patch 已正常解析并应用，**问题在语义不在 YAML 格式**。
-4. 别误判噪声：`circular dependencies detected in melt_eng.schema` /
-   `radical_pinyin.schema` 是配套方案自己的既有问题；
-   `finished updating schemas: 4 success, 0 failure` 说明字典与方案本身没事。
-
-**处置**：`default.custom.yaml` 的 `patch` 回退为只有 `schema_list`，
-`switcher` 全段交回 `default.yaml`；**不登记 `save_options`**（接受切方案回默认态）。
-
-**通用教训**：改大节点里的单个键时，要么把该节点的**全部必要键**一并写进 patch，
-要么干脆别碰这个节点。**「功能能不能切」只取决于方案自己的 `switches:` 声明；
-`save_options` 只决定「跨会话是否记住」** —— 为了「记忆」去动全局 `switcher` 节点、
-代价是把整个选单弄瘫，明显不值。
-
 ## 三、已实现功能
 
 | 能力                   | 表现                                                                                                                                                        |
@@ -531,62 +421,8 @@ patch:
 | 码内 `0-9 . ;` 输入      | speller 收编，正常参与查字                                                                                                                                         |
 | 皮肤与外观                | 「宣纸」双配色 + 字体布局 + 页大小/字号/横竖排（`weasel.custom.yaml`；导出以本目录真源为准覆盖）                                                                                            |
 | 导出闭环                 | 校验→渲染→逐字节同步→diff 摘要→原子写+备份                                                                                                                                |
-| 离线回归                 | 同一份用例与快照双通道：`lua_regress.js`（fengari，Lua 5.3 语义）/ `lua_regress_lupa.py`（lupa，本机可直接跑）                                                                      |
 
-### 离线回归用法（改动 Lua 查询层后必跑）
-
-```
-# 通道 A（lupa，C 真 Lua）：需 pip install lupa —— 本机已装（见下方环境事实）
-python migrate_to_rime\lua_regress_lupa.py            # 比对快照，有差异 exit 1
-python migrate_to_rime\lua_regress_lupa.py --update   # 确认行为变更后刷新快照
-
-# 通道 B（fengari，Lua 5.3 语义，与 A 同一份用例与快照）—— 本机现成可用：
-npm install fengari                  # 任意 node 工作区（本机装在 WorkBuddy 托管工作区）
-set NODE_PATH=<装了 fengari 的 node_modules 绝对路径>
-node migrate_to_rime\lua_regress.js
-node migrate_to_rime\lua_regress.js --update
-```
-
-本机实测可用的两条命令（两条都跑，互为交叉验证）：
-
-```
-python migrate_to_rime\lua_regress_lupa.py                    # 通道 A：lupa 2.8 / C 真 Lua
-
-NODE_PATH=C:/Users/yuifsama/.workbuddy/binaries/node/workspace/node_modules \
-  node migrate_to_rime/lua_regress.js                         # 通道 B：fengari / Lua 5.3 语义
-```
-
-**本机环境事实（2026-09-12 复核）**：本机有**两个** CPython。`D:\python\python.exe`
-（3.14.3，`lupa` 2.8 装在它的 user site `%APPDATA%\Python\Python314\site-packages`）；
-WorkBuddy 等工具会话的 PATH 里托管解释器（3.13.12，无第三方包）可能排在前面 ——
-`python` 解析到谁取决于会话，**跑通道 A 请显式写 `D:\python\python.exe
-migrate_to_rime\lua_regress_lupa.py`**（2026-09-12 实测：裸 `python` 解析到托管
-3.13.12 时 lupa 报 ModuleNotFoundError）。通道 B 的 fengari 装在 WorkBuddy 托管
-node 工作区，`NODE_PATH` 方式不变。两通道共用同一份用例与快照（2026-09-12：
-135 例两通道 0 差异）。
-
-脚本用仓库内真源（本目录 `jieshu_query.lua` + `jieshu_nav.lua` + `dict/` 码表）跑用例，不依赖部署结果。
-用例行三种写法（`op` 前缀可叠加在任意一种之前）：
-
-- `#<n> <段串>`（行首带 `#<n> ` 前缀）：`n` = 段的起始偏移（`seg.start`），覆盖 2.11 的逐字模式
-  （例：`#4 ba13bu44` = 前面已有 4 字节的已确认段，剩余段是 `ba13bu44`）；不带前缀 = 段从输入头开始。
-- `nav <已确认> <输入串>`：覆盖 2.12 的定位逻辑，比对的是 `next_target` 算出的**目标光标位置**；
-  `-1` = 没有可跳的目标（已全部确认）。例：`nav 0 bu44ba13bu44` → `4`。
-- `ac <输入串>`：覆盖 2.14 的自动上字判定，比对 `auto_commit_target` 的两列输出——
-  候选 0-based 页内下标与上屏首字；`-1` + 空 = 不触发。例：`ac bu44` → `0` + `不`、
-  `ac ba13` → `0` + `八`（捌. 因余码含点被排除）、`ac gs34` → `-1`（廾.c 补码引导中）。
-- **`op<位图> <原用例>`（P4-E 开关矩阵）**：位图**个位 = 自动上字、十位 = 优先上词**，
-  `1` 开 `0` 关。两者独立，故 4 种组合都要有用例。例：`op10 bu44ba13` = 自动上字关 +
-  优先上词开；`op01 ceu` = 自动上字开 + 优先上词关 → 出「厕是 / 测试•」（链在前，
-  且第 0 位带「预」）。**不加 `op` 前缀 = 全开**，与 2.14 之前的 107 例语义完全一致，
-  故那份快照逐字节未变。
-  fengari 的 `io.open` 未实现，脚本以内存桩喂数据并复刻 Windows 文本模式对 `\r` 的剥离。
-  快照中 `|` 之后是 comment 字段：**多段模式的「词/字」标记属 RIME 侧显示层，不来自 Python 真源**，
-  单字模式的余码同理；`|` 之前的候选文本仍严格对拍 Python 真源。
-
----
-
-## 四、尚未实现 / 未开始
+## 四、暂不实现
 
 | 项                          | 归属阶段  | 说明                                |
 | -------------------------- | ----- | --------------------------------- |

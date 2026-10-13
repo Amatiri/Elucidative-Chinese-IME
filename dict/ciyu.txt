@@ -79,6 +79,7 @@
 必须 bixu
 毕业 biye
 必要 biyk
+版本 bjbf
 龹 bjc
 皀 bjd
 𠘨 bjf
@@ -322,6 +323,8 @@
 电视 dmui4
 电视机 dmuij
 电影院 dmy;y
+典雅 dmya
+电压 dmya1
 点赞 dmzj
 多出 doiu
 多处 doiu4
@@ -455,6 +458,7 @@
 负责 fuze
 非常 fzih
 飞机 fzji
+肥胖 fzph
 α gal
 Α galc
 β gbe
@@ -555,6 +559,7 @@
 惯例 grli4r
 关联 grlm
 观念 grnm
+管制 grvi
 观众 grvs
 关注 grvu
 关系 grxi
@@ -725,6 +730,7 @@
 创新 idxn
 创业 idye
 创造 idzk
+彻底 iedi
 ɜ iee
 ə ies
 沉默 ifmo
@@ -781,6 +787,7 @@
 ˈ istress
 重新 isxn
 厨房 iufh
+除了 iule
 处理 iuli3
 ʊ ius
 初中 iuvs
@@ -1712,6 +1719,7 @@
 ÷ uiu2
 实施 uiui1
 时时 uiui2
+事实 uiui2b
 实实在在 uiuizlz
 ⊥ uivvi
 实行 uix;
@@ -1844,6 +1852,12 @@
 指示 viui4
 直视 viui4s
 至少 viuk
+支书 viuu1
+直属 viuu3
+指数 viuu4
+质数 viuu4l
+植树 viuu4m
+直抒胸臆 viuuxsy vuxy
 执行 vix;
 只有 viyb
 职业 viye
@@ -2145,6 +2159,7 @@
 修改 xqgl
 选拔 xrba
 选举 xrju
+渲染 xrrj
 暄软 xrrr
 悬置 xrvi
 选址 xrvi3
@@ -2159,6 +2174,7 @@
 学生 xtug
 学校 xtxc
 学习 xtxi
+血压 xtya
 学院 xtyr
 学园 xtyr2
 许多 xudo
@@ -2246,6 +2262,8 @@
 眼睛 yjj;
 眼镜 yjj;4
 研究 yjjq
+严厉 yjli
+艳丽 yjli4
 眼泪 yjlz
 颜色 yjse
 验证 yjvg
@@ -2322,6 +2340,7 @@
 语文 yuwf
 责任 zerf4
 怎么样 zfmey
+增大 zgda4
 增加 zgjw
 增长 zgvh
 字典 zidm

@@ -7,9 +7,14 @@ rime_export.py —— 把解书码表真源导出为 RIME 方案文件（实现�
 
 用法：
   python migrate_to_rime\\rime_export.py                  # 首次会询问 RIME 用户资料夹路径
-  python migrate_to_rime\\rime_export.py --single         # 只导出单字表
+  python migrate_to_rime\\rime_export.py --single         # 只读单字真源（跳过词表；调试用）
   python migrate_to_rime\\rime_export.py --target <路径>  # 临时指定 RIME 用户资料夹（不写回）
-  python migrate_to_rime\\rime_export.py --skip-config     # 只动码表与 Lua，不碰方案/皮肤配置
+  python migrate_to_rime\\rime_export.py --skip-config     # 只动 Lua 数据，不碰方案/皮肤配置
+
+⚠️ 2026-10-14 起**不再生成 jieshu.dict.yaml**：该词典是「回退原生通道」的遗留产物，
+   实测对方案零贡献（分段不读词典，唯一读词典的 table_translator 产出被全数丢弃，
+   见 README 2.3 的实测纠正）。渲染逻辑（_header / _render / _write_if_changed）全部保留，
+   run() 里留了一段标着 [词典导出] 的注释代码，取消注释即可恢复生成。
 """
 
 import argparse
@@ -67,6 +72,8 @@ CONFIG_SYNC_FILES = [
     (os.path.join(SCRIPT_DIR, "weasel.custom.yaml"), "weasel.custom.yaml"),
 ]
 
+# jieshu.dict.yaml 已停由 run() 生成（2026-10-14，见 run() 的 [词典导出] 段）；
+# 常量保留，供「恢复导出」与「旧产物提示」使用。
 SINGLE_DICT_NAME = "jieshu.dict.yaml"
 CIYU_TABLE_NAME = "jieshu_ciyu"
 
@@ -273,6 +280,11 @@ def _header(name, version):
 def _render(singles, ciyu_entries, name, version):
     """第七轮定案：前缀匹配转精确查表（补全通道关闭）。
 
+    ⚠️ 本词典是「回退原生通道」的遗留产物，现行方案不读它：候选来自 lua/data/*.txt，
+    table_translator 的产出全被 jieshu_drop_native 丢弃（2026-10-14 实测：删源 yaml、
+    或只剩 1 条条目，均不影响任何功能；详见 README 2.3 的实测纠正）。
+    ⇒ run() 默认**不再调用本函数**（见 run() 的 [词典导出] 段），此处仅为随时可恢复而保留。
+
     条目构成：
       1) 单字全码：不⇥bu44⇥w⇥（注释空）
       2) 单字可见真前缀：不⇥bu4⇥w⇥4、不⇥b⇥w⇥u44 …… 注释=余码，
@@ -422,7 +434,12 @@ def _sync_config_files(target_dir):
 
 
 def run(target_dir, with_ciyu=True, version=None, with_config=True):
-    """导出入口。target_dir 为 RIME 用户资料夹；version 缺省用当天日期。"""
+    """导出入口。target_dir 为 RIME 用户资料夹；version 缺省用当天日期。
+
+    2026-10-14 起**不再生成 `jieshu.dict.yaml`**（该词典是原生通道遗留产物，实测对
+    方案零贡献，见 README 2.3 的实测纠正）。渲染逻辑原样保留，需要时把下面
+    [词典导出] 段的三行取消注释即可恢复；`version` 参数也只服务那一段。
+    """
     if version is None:
         import datetime
         version = datetime.date.today().strftime("%Y.%m%d")
@@ -432,14 +449,31 @@ def run(target_dir, with_ciyu=True, version=None, with_config=True):
     print(f"[SRC] 码表真源目录：{source_dir}")
     print(f"[TGT] RIME 用户资料夹：{target_dir}")
 
+    # 真源读取保留（与词典无关）：_read_entries 顺带完成格式校验——编码含
+    # CODE_CHARS 之外的字符 / 缺编码列 / 词条含制表符 / 编码以 ' 开头，都在这拦下。
     singles = _dedup_keep_order(_read_entries(SOURCE_SINGLE, "单字表"))
     ciyu = (_dedup_keep_order(_read_entries(SOURCE_CIYU, "词表"))
             if with_ciyu else [])
-    content, (full_n, prefix_n, ciyu_n) = _render(singles, ciyu, "jieshu", version)
-    _write_if_changed(
-        os.path.join(target_dir, SINGLE_DICT_NAME),
-        content,
-        f"字全码{full_n}+前缀{prefix_n}+词{ciyu_n}")
+    print(f"[CHECK] 真源校验通过：单字 {len(singles)} 条，词 {len(ciyu)} 条")
+
+    # ===== [词典导出] 已停用（2026-10-14）=========================================
+    # 原生通道遗留产物 jieshu.dict.yaml：分段由 matcher（recognizer 正则）与
+    # abc_segmentor（speller/alphabet）决定，都不读词典；唯一读词典的
+    # table_translator 产出又被 jieshu_drop_native 全数丢弃 ⇒ 生成它只有成本没有收益。
+    # 逻辑保留在 _header / _render / _write_if_changed，取消下面三行注释即恢复导出。
+    # content, (full_n, prefix_n, ciyu_n) = _render(singles, ciyu, "jieshu", version)
+    # _write_if_changed(
+    #     os.path.join(target_dir, SINGLE_DICT_NAME),
+    #     content,
+    #     f"字全码{full_n}+前缀{prefix_n}+词{ciyu_n}")
+    # =============================================================================
+    print(f"[SKIP] {SINGLE_DICT_NAME} 不再生成（原生通道遗留产物，见 README 2.3）")
+    stale_dict = os.path.join(target_dir, SINGLE_DICT_NAME)
+    if os.path.isfile(stale_dict):
+        print(f"[HINT] 资料夹里仍有旧的 {SINGLE_DICT_NAME}：它只喂养原生通道遗留链路"
+              f"（候选会被丢弃），留着无害；要清干净可手动删除该文件与 "
+              f"build\\jieshu.{{table,prism}}.bin。")
+
     _sync_lua_runtime(target_dir)
     if with_config:
         _sync_config_files(target_dir)
@@ -448,17 +482,18 @@ def run(target_dir, with_ciyu=True, version=None, with_config=True):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(
-        description="导出解书码表为 RIME 词典与方案文件（见 migrate_to_rime/README.md）")
+        description="导出解书码表为 RIME 方案文件：Lua 查询数据 + 方案/皮肤配置"
+                    "（不再生成 jieshu.dict.yaml，见 migrate_to_rime/README.md）")
     parser.add_argument("--target", default=None,
                         help="RIME 用户资料夹绝对路径；缺省用 config.py 的 RIME_USER_DIR，"
                              "该值为空时交互式询问并写回 config.py")
     parser.add_argument("--single", action="store_true",
-                        help="只导出单字词典（调试用）")
+                        help="只读/校验单字真源、跳过词表读取（词典生成已停用；不影响 lua/data 同步）")
     parser.add_argument("--skip-config", action="store_true",
                         help="跳过 jieshu.schema.yaml / weasel.custom.yaml 同步"
-                             "（只动码表与 Lua）")
+                             "（只动 Lua 数据）")
     parser.add_argument("--version", default=None,
-                        help="词典 version 字段（默认当天日期）")
+                        help="词典 version 字段（默认当天日期）；仅恢复 [词典导出] 后有效")
     args = parser.parse_args(argv)
     try:
         run(target_dir=resolve_target_dir(args.target),

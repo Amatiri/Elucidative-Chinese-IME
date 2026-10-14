@@ -2,8 +2,10 @@
 -- 1:1 移植 manager/dictionary_frontend.py 六函数（process_input / split_sequence /
 -- query_by_prefix / query_multi_chars / query_phrase / get_phrase_segments），
 -- 逻辑字节级（码域全 ASCII）。
--- 候选 type = "jieshu"；原生 table_translator 降级为音节图宿主，其候选由
--- jieshu_drop_native.lua 丢弃（依据：librime entry_collector 编译期丢弃词典 comment 列、
+-- 候选 type = "jieshu"；原生 table_translator 是原生通道遗留（全方案唯一读词典者，
+-- 词典已自 2026-10-14 停由导出生成），与分段无关——分段靠 matcher 的 recognizer 正则
+-- 与 abc_segmentor 的 speller/alphabet；
+-- 其候选一律由 jieshu_drop_native.lua 丢弃（依据：librime entry_collector 编译期丢弃词典 comment 列、
 -- completion 跨音节合并按字典序——原生通道无法同时满足 页序=行序 / 余码注释 / 严格链）。
 -- 真源与影子对拍：python 全管道 fuzz 3 万样本 0 差异（_tmp_lua_port_test）。
 -- 数据文件由 migrate_to_rime/rime_export.py 从项目真源同步到 <user_data>/lua/data/。

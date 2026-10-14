@@ -119,7 +119,9 @@
 变化 bmhw
 变成 bmig
 编程 bmig2
+鞭长莫及 bmihmoj
 编辑 bmji
+边际 bmji4
 边界 bmjx4
 变量 bmld4
 编码 bmma
@@ -202,6 +204,7 @@
 讠 byj
 肀 byl
 𠃓 byw
+杯弓蛇影 bzgsuey bguy
 北京 bzj;
 背景 bzj;3
 𥫗 bzr
@@ -269,6 +272,7 @@
 ； dfh
 等待 dgdl
 等级 dgji
+等价 dgjw4
 登录 dglu
 当时 dhui
 地点 didm
@@ -357,6 +361,7 @@
 对不起 dvbuq
 对的 dvd
 对话 dvhw
+对牛弹琴 dvnqtjq dntq
 对齐 dvqi
 堆砌 dvqi4
 对象 dvxd
@@ -441,6 +446,7 @@
 封妻荫子 fqyz fgqiynz
 服从 fucs
 辅导员 fudky
+覆盖 fugl
 符合 fuhe
 复合 fuhe2
 负荷 fuhe4
@@ -711,7 +717,7 @@
 会议 hvyi
 回忆 hvyi4
 会员 hvyr
-画舌添足 hwuetmz hutz
+画蛇添足 hwuetmz hutz
 话说 hwuo
 化学 hwxt
 华夏 hwxw
@@ -798,6 +804,7 @@
 出租车 iuzui
 ʒ izh
 警纪 j;3ji4
+井底之蛙 j;diviw jdvw
 经典 j;dm3
 经过 j;go
 精华 j;hw
@@ -887,6 +894,7 @@
 简洁 jmjx2
 见解 jmjx3
 简介 jmjx4
+健康 jmkh
 监控 jmks
 建立 jmli
 见面 jmmm
@@ -1007,6 +1015,7 @@
 客气 keqi4
 课堂 keth
 可视化 keuihw
+刻舟求剑 kevbqqj kvqj
 科学 kext
 可以 keyi
 肯定 kfd;
@@ -1030,12 +1039,14 @@
 酷狗 kugb
 快捷 kyjx
 块钱 kyqm
+快速 kysu4
 领导 l;dk
 灵活 l;ho
 灵魂 l;hp
 零重码 l;ism
 另外 l;wl
 另一个 l;yig
+领域 l;yu
 拉风 lafg
 拉缝 lafg4
 了解 lcjx
@@ -1200,6 +1211,7 @@
 澳门 okmf
 二次元 orciy
 而且 orqx
+儿童 orts
 二十 orui2
 苹果 p;go
 平均 p;jp
@@ -1218,6 +1230,7 @@
 匹配 pipz
 批准 pivp
 判断 pjdr
+炮弹 pkdj
 排队 pldv
 派对 pldv4
 拍摄 plue
@@ -1556,6 +1569,8 @@
 条约 tcyt1
 特别 tebx
 醍醐灌顶 thgd tihugrd
+题材 ticl
+体裁 ticl2
 替代 tidl
 提高 tigk
 提供 tigs
@@ -1568,6 +1583,8 @@
 提问 tiwf
 体系 tixi
 体现 tixm
+提议 tiyi
+题意 tiyi4
 体验 tiyj
 体育 tiyu
 探究 tjjq
@@ -1637,6 +1654,7 @@
 寿命 ubm;
 ∉ ubuy
 受制于 ubviy
+守株待兔 ubvudlt uvdt
 首先 ubxm
 双地支 uddivi
 ⟺ udjy
@@ -1728,6 +1746,11 @@
 视线 uixm4s
 适应 uiy;
 事业 uiye
+实验 uiyj
+食盐 uiyj2
+誓言 uiyj2k
+饰演 uiyj3
+试验 uiyj4
 使用 uiys
 º ujb0
 ¹ ujb1
@@ -1815,6 +1838,7 @@
 证明 vgm;
 整体 vgti
 政体 vgti3r
+整数 vguu4
 政治 vgvi
 账号 vhhk
 中华人民共和国 vhrmghg vhrg
@@ -1866,6 +1890,7 @@
 旨意 viyi4x
 直译 viyi4y
 只要 viyk
+制造 vizk
 展开 vjkl
 战略 vjlt
 ㇯ vjm.
@@ -2024,6 +2049,7 @@
 王者 whve
 望文生义 whwfugy wwuy
 网页 whye
+亡羊补牢 whyhbul wybl
 完毕 wjbi
 完璧归赵 wjbigvv wbgv
 完成 wjig
@@ -2225,6 +2251,7 @@
 有意思 ybyisi0
 由于 ybyu
 鱿鱼 ybyu2d
+叶公好龙 yegshkl yghl
 也会 yehv
 也能 yeng
 样子 yhzi
@@ -2366,6 +2393,7 @@
 作为 zowz
 座位 zowz4
 左右 zoyb
+作业 zoye
 作用 zoys
 遵循 zpxp
 总统 zsts

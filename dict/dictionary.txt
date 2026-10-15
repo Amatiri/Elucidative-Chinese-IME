@@ -462,6 +462,7 @@
 次 ci4b
 赐 ci4by
 刺 ci4d
+朿 ci4d.m
 伺 ci4r
 佽 ci4rb
 骖 cj1m
@@ -576,6 +577,7 @@
 荙 da2c
 靼 da2g
 鞑 da2gz
+炟 da2h
 龘 da2l
 妲 da2n
 打 da2u
@@ -2088,6 +2090,7 @@
 忱 if2x
 谌 if2y
 碜 if3s
+疢 if4b
 称 if4h
 稱 if4h.
 龀 if4n
@@ -2483,8 +2486,8 @@
 吉 ji2k
 亟 ji2kl
 极 ji2m
-棘 ji2mc
-楫 ji2mk
+棘 ji2mm
+楫 ji2mq
 嫉 ji2n
 佶 ji2r
 伋 ji2rj
@@ -3004,6 +3007,7 @@
 扣 kb4u
 哐 kd1k
 匡 kd1o
+洭 kd1u
 诓 kd1y
 筐 kd1z
 狂 kd2q
@@ -3040,6 +3044,7 @@
 颏 ke2i
 咳 ke2k
 壳 ke2u
+炣 ke3h
 坷 ke3t
 渴 ke3u
 岢 ke3uk
@@ -3096,6 +3101,7 @@
 考 kk3l
 栲 kk3m
 拷 kk3u
+洘 kk3ul
 靠 kk4f
 㸆 kk4h
 铐 kk4j
@@ -4950,11 +4956,13 @@
 契 qi4d
 器 qi4k
 亟 qi4kl
+咠 qi4ko
 槭 qi4m
 砌 qi4s
 碛 qi4sz
 汽 qi4u
 泣 qi4ul
+洓 qi4um
 汔 qi4ur
 憩 qi4x
 讫 qi4y
@@ -5059,6 +5067,7 @@
 泅 qq2u
 球 qq2w
 裘 qq2y
+訄 qq2yj
 遒 qq2z
 逑 qq2zq
 糗 qq3m
@@ -6470,6 +6479,7 @@
 谵 vj1yy
 斩 vj3c
 辗 vj3cs
+飐 vj3f
 盏 vj3m
 展 vj3s
 崭 vj3u
@@ -7000,6 +7010,7 @@
 淅 xi1um
 浠 xi1up
 汐 xi1ut
+饻 xi1uy
 奚 xi1v
 惜 xi1x
 恓 xi1xk
@@ -8109,6 +8120,7 @@
 恿 ys3x
 踊 ys3z
 用 ys49
+㶲 ys4h
 佣 ys4r
 曰 yt10
 约 yt1s

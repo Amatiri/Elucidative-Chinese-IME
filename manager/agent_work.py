@@ -44,8 +44,6 @@ def list_available_modules(modules_info):
         return None
 
     print("解书音形 - agent_workspace工具表")
-    for idx, (name, _) in enumerate(available, start=1):
-        print(f"{idx}.{name}")
     return available
 
 
@@ -56,6 +54,8 @@ def run_selected_module(available):
         sys.path.insert(0, dir_path)
 
     while True:
+        for idx, (name, _) in enumerate(available, start=1):
+            print(f"{idx}.{name}")
         choice = input("选择: ").strip()
         if not choice:
             break

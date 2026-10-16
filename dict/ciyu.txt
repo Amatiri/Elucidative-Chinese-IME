@@ -124,6 +124,7 @@
 边际 bmji4
 边界 bmjx4
 变量 bmld4
+便利 bmli4
 编码 bmma
 彡 bms
 𠃜 bmz
@@ -287,6 +288,7 @@
 的确 diqt
 地区 diqu
 敌人 dirf
+地铁 ditx
 地位 diwz
 第一 diyi
 单独 djdu
@@ -316,6 +318,7 @@
 （ dkz
 （） dkzy
 代表 dlbc
+带来 dlll
 代码 dlma
 代替 dlti
 〕 dly
@@ -581,7 +584,10 @@
 公交 gsjc
 公交车 gsjci
 攻击 gsji
+公鸡 gsji1
 供给 gsji3
+共计 gsji4
+功绩 gsji4s
 工具 gsju
 公开 gskl
 公里 gsli
@@ -772,6 +778,7 @@
 超级 ikji
 超模 ikmo
 超市 ikui
+超越 ikyt
 ː ilength
 拆分 ilff
 ŋ ing
@@ -902,6 +909,7 @@
 减免 jmmm3
 建模 jmmo
 缄默 jmmo4
+检票 jmpc
 键盘 jmpj
 箭头 jmtb
 简体 jmti
@@ -1069,6 +1077,7 @@
 例如 liru
 离散 lisj
 历史 liui
+理性 lix;4
 理由 liyb
 利益 liyi
 礼仪 liyi2
@@ -1142,6 +1151,7 @@
 马上 mauh
 某人 mbrf
 某种 mbvs3
+某些 mbxx1
 描述 mcuu
 懵懂 mgds3
 盲打 mhda3
@@ -1163,6 +1173,7 @@
 明日方舟 mrfv m;rifhv
 目标 mubc
 目的 mudi
+目录 mulu4
 目前 muqm
 每次 mzci4
 每个 mzge
@@ -1196,6 +1207,8 @@
 年纪 nmji4
 年龄 nml;
 年轻 nmq;
+内涵 nzhj
+内含 nzhj2
 内蒙古 nzmgg
 内容 nzrs
 偶尔 obor
@@ -1240,6 +1253,7 @@
 便宜 pmyi
 偏移 pmyi2
 拼音 pnyn
+破坏 pohy
 普遍 pubm
 扑克 puke
 葡萄牙 putky
@@ -1695,6 +1709,7 @@
 ¬ ufz1
 √ ugfhk tdv4
 生活 ugh
+升级 ugji2
 胜利 ugli
 生理 ugli3
 生物 ugwu
@@ -1735,6 +1750,7 @@
 室内 uinz4
 视频 uipn
 食品 uipn3
+适配 uipz4
 事情 uiq;
 时期 uiqi
 ÷ uiu2
@@ -1785,6 +1801,7 @@
 数据 uuju
 数据库 uujuk
 数量 uuld
+疏理 uuli3
 数列 uulx
 鼠目寸光 uumucpg umcg
 枢纽 uunq
@@ -1839,6 +1856,7 @@
 整洁 vgjx2
 整理 vgli
 证明 vgm;
+政权 vgqr2
 整体 vgti
 政体 vgti3r
 整数 vguu4
@@ -1887,6 +1905,8 @@
 植树 viuu4m
 直抒胸臆 viuuxsy vuxy
 执行 vix;
+秩序 vixu
+只需 vixu1
 只有 viyb
 职业 viye
 质疑 viyi2
@@ -1970,6 +1990,8 @@
 中华民国 vshwmng vhmg
 中華民國 vshwmng. vhmg.
 忠诚 vsig
+种植 vsvi2
+终止 vsvi3
 重要 vsyk
 终于 vsyu
 逐步 vubu
@@ -2082,6 +2104,7 @@
 武术 wuuu4
 物质 wuvi
 无职转生 wuvivru wvvu
+物种 wuvs3
 乌兹别克斯坦 wzbkst wzbt
 为何 wzhe2
 维护 wzhu
@@ -2142,6 +2165,8 @@
 香蕉 xdjc1
 响亮 xdld
 向量 xdld4
+项链 xdlm
+相连 xdlm2
 项目 xdmu
 相似 xdsi
 相同 xdts2
@@ -2154,6 +2179,7 @@
 喜欢 xihr
 习近平 xijnp
 西南 xinj2
+习俗 xisu
 系统 xits
 喜上眉梢 xiuhmzu
 蟋蟀 xiuy
@@ -2167,6 +2193,7 @@
 衔接 xmjx
 羡慕 xmmu
 嫌弃 xmqi
+显然 xmrj
 现实 xmui
 显示 xmui4
 线性 xmx;4
@@ -2278,6 +2305,7 @@
 意思 yisi0
 伊斯兰 yisil
 以上 yiuh
+意识 yiui2y
 艺术 yiuu
 已知 yivi1
 依偎 yiwz1
@@ -2328,6 +2356,7 @@
 音乐 ynyt
 运动 ypds
 运河 yphe
+蕴含 yphj
 云南 ypnj
 运输 ypuu
 运行 ypx;

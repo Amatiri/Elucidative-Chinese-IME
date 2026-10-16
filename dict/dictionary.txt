@@ -458,6 +458,7 @@
 瓷 ci2wb
 慈 ci2x
 词 ci2y
+泚 ci3u
 此 ci3v
 次 ci4b
 赐 ci4by
@@ -802,6 +803,7 @@
 阽 dm4bv
 奠 dm4d
 店 dm4g
+扂 dm4h
 钿 dm4j
 甸 dm4l
 殿 dm4p
@@ -1258,6 +1260,7 @@
 咣 gd1k
 胱 gd1r
 垙 gd1t
+洸 gd1u
 广 gd37
 犷 gd3q
 逛 gd4z
@@ -1937,6 +1940,7 @@
 恢 hv1x
 诙 hv1y
 翚 hv1yj
+袆 hv1yw
 茴 hv2c
 回 hv2g
 廻 hv2g.j
@@ -2110,6 +2114,7 @@
 丞 ig25
 乘 ig26
 承 ig29
+宬 ig2b
 程 ig2h
 呈 ig2k
 橙 ig2m
@@ -2228,6 +2233,7 @@
 阐 ij3m
 骣 ij3ms
 旵 ij3r
+浐 ij3u
 谄 ij3y
 刬 ij4d
 颤 ij4i
@@ -2294,6 +2300,7 @@
 舂 is1f
 充 is1o
 涌 is1u
+㳘 is1uo
 艟 is1v
 忡 is1x
 憧 is1xt
@@ -2387,6 +2394,7 @@
 湫 jc3uh
 矫 jc3uq
 搅 jc3ux
+恔 jc3x
 较 jc4c
 藠 jc4cb
 轿 jc4ck
@@ -2428,6 +2436,7 @@
 匠 jd4o
 将 jd4p
 绛 jd4s
+洚 jd4u
 酱 jd4y
 几 ji12
 击 ji15
@@ -3895,6 +3904,7 @@
 靡 mi3f
 弭 mi3g
 脒 mi3r
+洣 mi3u
 宓 mi4b
 幂 mi4d
 秘 mi4h
@@ -4109,6 +4119,7 @@
 暝 m;2rd
 名 m;2t
 溟 m;2u
+洺 m;2ut
 酩 m;3y
 命 m;4r
 你 ni3r
@@ -4809,6 +4820,7 @@
 屏 p;2s
 坪 p;2t
 泙 p;2u
+洴 p;2ub
 瓶 p;2w
 玶 p;2wg
 评 p;2y
@@ -5969,6 +5981,7 @@
 狮 ui1q
 师 ui1r
 湿 ui1u
+浉 ui1ur
 诗 ui1y
 十 ui25
 实 ui2b
@@ -6298,6 +6311,7 @@
 祯 vf1sb
 臻 vf1t
 溱 vf1u
+浈 vf1ub
 珍 vf1w
 甄 vf1wt
 箴 vf1z
@@ -6551,6 +6565,7 @@
 屯 vp19
 肫 vp1r
 圫 vp1t
+窀 vp1x
 谆 vp1y
 准 vp3b
 专 vr17
@@ -6767,6 +6782,7 @@
 屋 wu1s
 圬 wu1t
 污 wu1u
+洿 wu1uk
 诬 wu1y
 无 wu24
 無 wu24.
@@ -6849,6 +6865,7 @@
 峗 wz2ud
 涠 wz2ug
 沩 wz2ul
+洈 wz2uo
 嵬 wz2uv
 𣲗 wz2uw
 惟 wz2x
@@ -6915,6 +6932,7 @@
 箫 xc1z
 逍 xc1zh
 淆 xc2u
+洨 xc2uj
 崤 xc2ur
 晓 xc3r
 筱 xc3z
@@ -7280,6 +7298,7 @@
 畜 xu4t
 洫 xu4u
 溆 xu4uk
+㳚 xu4uu
 恤 xu4x
 恓 xu4x.x
 酗 xu4y
@@ -7522,6 +7541,7 @@
 壹 yi1u
 揖 yi1uk
 漪 yi1uq
+洢 yi1ur
 一 yi22
 夷 yi26
 宜 yi2b

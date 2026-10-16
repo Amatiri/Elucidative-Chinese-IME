@@ -27,7 +27,8 @@ from manager.agent_work import main as agent_main
 
 
 def show_menu():
-    print("解书音形 - 管理程序")
+    print("解书音形 - 管理程序    v0.6.7-beta")
+    #print("                       v0.6.7-beta")
     print("1.批量录入  ", end="")
     print("2.添加单字  ", end="")
     print("3.编辑修改")

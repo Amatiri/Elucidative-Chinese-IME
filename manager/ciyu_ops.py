@@ -149,6 +149,8 @@ def process_two_char_word(word):
     if len(code1) > 1:
         while True:
             choice = input(f"{word[0]} 读音选: ").strip()
+            if choice == "":
+                return None
             if not choice.isdigit():
                 print("请输入数字")
                 continue
@@ -165,6 +167,8 @@ def process_two_char_word(word):
     if len(code2) > 1:
         while True:
             choice = input(f"{word[1]} 读音选: ").strip()
+            if choice == "":
+                return None
             if not choice.isdigit():
                 print("请输入数字")
                 continue
@@ -195,10 +199,13 @@ def process_two_char_word(word):
             choice = input("编码选：")
             if choice == "":
                 return None
+            if len(choice)== 1 and not choice.isdigit():
+                return choice
             start_index = int(choice)
             if 1 <= start_index <= len(all_combinations):
                 selected_combinations = [all_combinations[start_index-1]]
                 return selected_combinations
+        
             else:
                 print(f"请输入1到{len(all_combinations)}之间的数字")
         except ValueError:
@@ -226,6 +233,8 @@ def process_multi_char_word(word):
         if len(codes) > 1:
             while True:
                 choice = input(f"{char} 读音选: ").strip()
+                if choice == "":
+                    return None
                 if not choice.isdigit():
                     print("请输入数字")
                     continue

@@ -502,6 +502,7 @@
 改革开放 ggkf glgeklf
 更新 ggxn
 刚才 ghcl
+刚刚 ghgh1
 觥筹交错 gijc gsibjcc
 ι gio
 Ι gioc
@@ -810,13 +811,13 @@
 出现 iuxm
 出租车 iuzui
 ʒ izh
-警纪 j;3ji4
 井底之蛙 j;diviw jdvw
 经典 j;dm3
 经过 j;go
 精华 j;hw
 净化 j;hw4
 经济 j;ji
+警纪 j;ji4
 经纪 j;ji4s
 境界 j;jx
 经历 j;li
@@ -923,8 +924,6 @@
 简言之 jmyjv
 建言献策 jmyjxmc jyxc
 建造 jmzk
-禁入 jn4ru4
-浸入 jn4ru42
 进步 jnbu
 尽管 jngr
 进化 jnhw4
@@ -940,6 +939,8 @@
 进来 jnll
 今年 jnnm2
 进入 jnru
+禁入 jnru4
+浸入 jnru42
 今天 jntm
 进退 jntv
 金属 jnuu
@@ -1014,6 +1015,7 @@
 解析 jxxi
 接下来 jxxwl
 口罩 kbvk
+口语 kbyu
 矿泉水 kdqru
 课表 kebc
 课标 kebc1
@@ -1153,6 +1155,7 @@
 某种 mbvs3
 某些 mbxx1
 描述 mcuu
+描写 mcxx
 懵懂 mgds3
 盲打 mhda3
 密度 midu
@@ -1250,6 +1253,7 @@
 拍摄 plue
 排序 plxu
 偏好 pmhk
+偏向 pmxd
 便宜 pmyi
 偏移 pmyi2
 拼音 pnyn
@@ -1274,6 +1278,7 @@
 庆祝 q;vu
 罄竹难书 q;vunju qvnu
 清晰 q;xi
+情绪 q;xu
 憔悴 qccv
 巧妙 qcmc
 祈祷 qidk3
@@ -1470,6 +1475,7 @@
 レ rrek
 り rri
 リ rrik brl
+软件 rrjm
 ろ rro
 ロ rrok
 る rru
@@ -1811,6 +1817,7 @@
 舒适 uuui
 叔叔 uuuu
 施氏食狮史 uuuuu
+属性 uux;
 熟悉 uuxi
 数学 uuxt
 ∈ uuy
@@ -2196,6 +2203,7 @@
 显然 xmrj
 现实 xmui
 显示 xmui4
+限制 xmvi4
 线性 xmx;4
 线性方程组 xmx;fhigz
 线性相关 xmx;xdg xxxg
@@ -2304,6 +2312,7 @@
 旖旎 yini3
 意思 yisi0
 伊斯兰 yisil
+意图 yitu2
 以上 yiuh
 意识 yiui2y
 艺术 yiuu

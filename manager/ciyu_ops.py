@@ -367,7 +367,6 @@ def ciyumain():
                 codes = general_symbol.split()
             else:
                 codes = process_multi_char_word(word)
-
             if not word or not codes:
                 print(f"跳过 {word}")
                 continue
@@ -375,7 +374,6 @@ def ciyumain():
             codes, proceed = resolve_code_conflicts(word, codes)
             if not proceed or not codes:
                 continue
-
             print(f"{word} {' '.join(codes)}")
             add_to_ciyu(word, codes, overwrite=True)
         count = sort_file_by_second_part(CIYU_FILE, CIYU_FILE)

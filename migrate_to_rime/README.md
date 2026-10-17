@@ -130,33 +130,6 @@
 且 ≤ 1）在源码里原样保留，但**导出自 2026-10-14 起已不再调用它**（见下方「治本已落地」）：
 对现行 lua 链路，那份词典本来就是零贡献 + 纯泄漏源。
 
-> **⚠️ 2026-10-14 实测纠正：旧说法「音节图宿主」不成立（因果倒置）。**
-> 旧表述称 `table_translator` 是「音节图宿主」、prism「供 `matcher`/`abc_segmentor` 判定合法编码段」。
-> **实测**：把 `<RIME 用户资料夹>\jieshu.dict.yaml` 换成只剩一条 `病毒 b;du` 的桩词典（388 B），
-> 乃至整个删掉——**方案全功能正常**。当前 `build\jieshu.table.bin` 只含 `b;du` 一条，
-> `jieshu.prism.bin` **只有一条 spelling**（`b;du`）：prism 若真是分段前提，此时应当全盘失效，
-> 而实测毫无影响。
-> **源码**同样否定它（librime master）：
->
-> - `gear/matcher.cc`：`Matcher : Segmentor`，构造只读 `recognizer/patterns`
->   （`patterns_.LoadConfig(config, "recognizer")`），`Proceed()` 按正则命中给段打 tag；
-> - `gear/abc_segmentor.cc`：构造只读 `speller/alphabet|delimiter|initials|finals`，
->   `Proceed()` 按 `alphabet_.find(input[k])` 切段。
->
-> 两个 segmentor 都不持有词典 / prism 引用，于是 lua translator 的 tag 门
-> `seg:has_tag("jieshu") or seg:has_tag("abc")` 拿到的只是「正则 tag + 字符类 tag」，与词典无关。
-> 唯一读词典的 `table_translator` 排在 `translators` 末位（同段首非空独占）且产出被 filter
-> 全数丢弃 ⇒ 对可见行为零贡献。
-> **另有一层运行期掩护**：table_translator 加载的是 `build\jieshu.{table,prism}.bin`，源 `.dict.yaml`
-> 只是部署期的编译输入。2026-10-14 的部署日志（`%TEMP%\rime.weasel\*`）把这条链路记全了：
-> `dict_compiler.cc:86] source file 'D:\输入法\jieshu.dict.yaml' does not exist.`（全日志唯一一条 E）
-> → `dict_compiler.cc:109] reuse existing table: ...\build\jieshu.table.bin`（复用旧产物，不重建）
-> → `prism.cc:106] found double array image of size 256`（对照 melt_eng 796672 / radical_pinyin 244480）
-> → `deployment_tasks.cc:375] dictionary 'jieshu' is ready.` → `4 success, 0 failure`。
-> 即：部署方只把缺词典记成一条 E，方案照常就绪，运行期照旧加载那份 1 条条目的旧产物。
-> 所以「删源无感」= **功能上不需要** + **残留产物兜住**；要连 `build\jieshu.{table,prism}.bin`
-> 一并清理，engine 对「组件加载失败」的处置尚未实测。
-
 代价是**泄漏是常态**：词典里 25413 条「可见前缀」table_translator 都认，而 lua 的
 `query_by_prefix` 带补码隐藏规则，于是大量条目只被 table 看见、由 `jieshu_drop_native` 丢弃
 （实测单会话 15501 条）。这不影响正确性——泄漏条目**注定被丢**，不可能改变候选栏内容——

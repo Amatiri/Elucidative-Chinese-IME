@@ -7,6 +7,7 @@
   直接连接输出（无空格），未找到的编码以 "--" 占位。
 
 码表定位与 sync_pending_pinyin.py 一致：先定位项目根，再导入 config。
+查询无效率要求，每次输出前都重新读取码表，目标码表变化可即时生效。
 """
 import os
 import sys
@@ -23,19 +24,16 @@ if PROJECT_ROOT not in sys.path:
 import config
 
 
-_code_to_symbol_cache = None
-
-
 def _load_code_to_symbol():
-    """延迟加载词语码表 ciyu.txt，返回 {编码: 通用符号} 映射。
+    """重新读取词语码表 ciyu.txt，返回 {编码: 通用符号} 映射。
 
     行格式「符号 空格 编码[ 空格 编码...]」：一个符号可带多个编码，须全部登记
     （语义与 dictionary_frontend.query_phrase 的 code in parts[1:] 一致）。
     同一编码多行出现时保留文件中首次出现（query_phrase 顺序扫描、命中即返回）。
+
+    查询没有效率要求，故每次调用都重新读表，不做缓存，
+    以便目标码表文件变化后立即反映到查询结果中。
     """
-    global _code_to_symbol_cache
-    if _code_to_symbol_cache is not None:
-        return _code_to_symbol_cache
     mapping = {}
     with open(config.CIYU_FILE, encoding="utf-8") as f:
         for line in f:
@@ -44,7 +42,6 @@ def _load_code_to_symbol():
                 symbol = parts[0]
                 for code in parts[1:]:
                     mapping.setdefault(code, symbol)
-    _code_to_symbol_cache = mapping
     return mapping
 
 
@@ -65,7 +62,7 @@ def distribute(line):
 
 def lookup_symbols(codes_str):
     """按空格分隔编码串，在词语码表中查找对应通用符号，直接连接（无空格）；
-    未找到的编码以 "--" 占位。"""
+    未找到的编码以 "--" 占位。每次调用都重新读表。"""
     mapping = _load_code_to_symbol()
     return "".join(mapping.get(code, "--") for code in codes_str.split())
 

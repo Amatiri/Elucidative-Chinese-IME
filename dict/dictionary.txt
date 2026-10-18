@@ -5993,6 +5993,7 @@
 時 ui2r.
 食 ui2rl
 什 ui2rs
+祏 ui2s
 埘 ui2t
 拾 ui2u
 湜 ui2ur
@@ -7467,6 +7468,7 @@
 釉 yb4my
 佑 yb4r
 侑 yb4rr
+祐 yb4s
 幼 yb4t
 诱 yb4y
 噎 ye1k

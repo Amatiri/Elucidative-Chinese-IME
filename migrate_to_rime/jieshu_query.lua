@@ -43,6 +43,10 @@ local function load_data()
     return
   end
   for line in f:lines() do
+    -- Android/Linux 的 io.open 不做 CRLF 转换，行尾残留 \r，会让 `%S+$` 全部失配
+    -- （2026-10-18 安卓 Trime 实测：8505 行 0 条命中 → 候选栏全空）。
+    -- Windows 文本模式已吃掉 \r，此处为幂等剥离；括号只取 gsub 第一个返回值。
+    line = (line:gsub("\r$", ""))
     local word, code = line:match("^(%S+)%s+(%S+)$")
     if word and code ~= "" then
       local k = code:sub(1, 1)
@@ -55,6 +59,7 @@ local function load_data()
   f = io.open(dir .. "/jieshu_ciyu.txt", "r")
   if f then
     for line in f:lines() do
+      line = (line:gsub("\r$", ""))  -- 同上：跨平台行尾剥离
       local word, rest = line:match("^(%S+)%s+(.+)$")
       if word and rest then
         for code in rest:gmatch("%S+") do

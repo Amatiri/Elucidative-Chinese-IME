@@ -1,7 +1,7 @@
 # 解书音形 → RIME 移植（migrate_to_rime）
 
 把本仓库的「解书音形」码表移植为一套 RIME 输入方案（标识 `jieshu`，菜单名「解书音形」），
-在小狼毫（Weasel）等 librime 发行版下日常可用。本目录是 **RIME 侧的全部真源**：
+在小狼毫（Weasel）与安卓同文（Trime）等 librime 发行版下可用。本目录是 **RIME 侧的全部真源**：
 导出脚本、Lua 模块、方案配置、离线回归都在这里；改这里 → 跑导出 → 部署生效。
 
 > 依据：RIME 官方《Rime with Schemata》、librime 源码（`speller.cc` / `abc_segmentor.cc` /
@@ -42,6 +42,7 @@
 ```
 <RIME 用户资料夹>\
   jieshu.schema.yaml              # 输入方案定义（含 P4-E 的两个 switches）
+  jieshu.dict.yaml                # 方案声明的词典（安卓 Trime 部署必需，见下）
   weasel.custom.yaml              # 小狼毫皮肤（「宣纸」双配色 + 字体布局）
   lua\jieshu_query.lua            # 查询层（候选的实际生产者）
   lua\jieshu_drop_native.lua      # 原生候选丢弃垫片
@@ -52,9 +53,15 @@
   lua\data\jieshu_ciyu.txt        # 词表真源逐字节拷贝
 ```
 
-⚠️ **`jieshu.dict.yaml` 自 2026-10-14 起不再生成**（原生通道遗留产物，详见 2.3 的实测纠正与
-「治本已落地」）。资料夹里若还留着旧文件，导出**不会**自动删除、只在控制台提示一句：它只喂养
-注定被丢弃的原生候选，留着无害。
+> **为什么 `jieshu.dict.yaml` 必须生成（2026-10-18 定稿）**：安卓同文（Trime v3.3.x）
+> 重新部署时会校验方案声明的 `translator/dictionary`，**缺该文件直接部署失败**
+> （实机确认）。Windows 小狼毫不读它——候选全部来自 `lua/data/*.txt`，词典候选被
+> `jieshu_drop_native` 全数丢弃——但为统一两端逻辑，导出**默认始终生成**作为兜底；
+> 它不改变任何可见候选行为（依据见 2.3）。
+
+> **安卓（同文 Trime）部署要点**：需要 `jieshu.schema.yaml` + `jieshu.dict.yaml` +
+> 整个 `lua/` 目录（含 `lua/data/*.txt`）；`weasel.custom.yaml` 是小狼毫专用皮肤，安卓不需要。
+> 文件放进手机 RIME 用户资料夹后在 App 内「重新部署」即可。
 
 > P4-E 的两个开关**本方案选择不登记** `default.custom.yaml` 的 `switcher/save_options`
 > —— 选单里能切换（靠 `jieshu.schema.yaml` 的 `switches:` 声明），但切走方案再切回来会
@@ -66,12 +73,12 @@
 ### 日常维护
 
 - **码表更新后**：在 `main.py` 工具链里整理码表（真源永远是 `dict/`），然后重跑
-  `python migrate_to_rime\rime_export.py` 并「重新部署」——一条命令同时刷新 Lua 数据与方案配置
-  （`jieshu.dict.yaml` 已不再生成，见上）。
+  `python migrate_to_rime\rime_export.py` 并「重新部署」——一条命令同时刷新词典、
+  Lua 数据与方案配置。
 - **改方案 / 皮肤**：只改本目录的 `jieshu.schema.yaml` / `weasel.custom.yaml`，再跑导出回灌。
   注意小狼毫「输入法设定」会回写已部署的 `weasel.custom.yaml`，下次导出以本目录真源为准覆盖。
-- `rime_export.py` 其他参数：`--single`（只读/校验单字真源、跳过词表）、`--skip-config`
-  （只动 Lua 数据，不碰方案/皮肤）、`--version <串>`（词典 version 字段，恢复 [词典导出] 后才有效）、
+- `rime_export.py` 其他参数：`--single`（只读/校验单字真源、跳过词表，词典只含单字）、
+  `--skip-config`（只动词典与 Lua 数据，不碰方案/皮肤）、`--version <串>`（词典 version 字段）、
   `--target <路径>`（本次临时指定资料夹，不写回 config）。
 
 ---
@@ -119,7 +126,8 @@
 
 结论：`lua_translator@*jieshu_query` 整段接管查询；原生 `table_translator` 退为**遗留残骸**
 （全方案唯一读词典的组件，产出候选注定被 `jieshu_drop_native` 丢弃）——它既不是分段前提，
-也不参与任何可见行为，旧称「音节图宿主」已作废（实测纠正见下）。
+也不参与任何可见行为，旧称「音节图宿主」已作废。**但词典文件本身仍是必需产物**：
+安卓 Trime 部署会校验方案声明的 `translator/dictionary`，缺文件直接失败（见 2.3.1）。
 查询层是 `manager/dictionary_frontend.py` 六个函数的 1:1 移植：
 `split_sequence`（自动拆分连续编码）、`query_by_prefix`（前缀查字，含补码隐藏规则与
 `;` 占位、`.X` 简打容错）、`query_phrase`（词码整串全等，天然满足「完全匹配优先」）、
@@ -127,19 +135,27 @@
 以及余码注释（原生通道物理不可达，由 Lua 写在候选 comment 上）。
 
 词典侧的渲染规则（全码 + 全部**可见**前缀 + 词全码，权重 `q × 10^len`，`q` 内嵌逆源行序
-且 ≤ 1）在源码里原样保留，但**导出自 2026-10-14 起已不再调用它**（见下方「治本已落地」）：
-对现行 lua 链路，那份词典本来就是零贡献 + 纯泄漏源。
+且 ≤ 1）保持不变，导出自 2026-10-18 起**恢复默认生成**（原因见 2.3.1）。对现行 lua 链路，
+词典的候选产出仍是零贡献 + 纯泄漏源，但文件本身是安卓部署的硬性前置。
 
-代价是**泄漏是常态**：词典里 25413 条「可见前缀」table_translator 都认，而 lua 的
+代价是**泄漏是常态**：词典里约 2.6 万条「可见前缀」table_translator 都认，而 lua 的
 `query_by_prefix` 带补码隐藏规则，于是大量条目只被 table 看见、由 `jieshu_drop_native` 丢弃
 （实测单会话 15501 条）。这不影响正确性——泄漏条目**注定被丢**，不可能改变候选栏内容——
 但垫片日志必须静默：默认只在首次丢弃时打一条 `log.info`，要明细需把
 `jieshu_drop_native.lua` 的 `VERBOSE` 改为 true。
-**治本已落地（2026-10-14）**：`rime_export.py` **不再生成 `jieshu.dict.yaml`**——渲染逻辑
-（`_header` / `_render` / `_write_if_changed`）全部保留，`run()` 里留了一段标着 `[词典导出]`
-的注释代码，取消注释即恢复。资料夹里的旧 `jieshu.dict.yaml` 不会被自动删除，导出只给一句提示。
-⇒ 这条路从此只是「曾经的退路」，新代价是：**全新机器上 `table_translator` 将无表可载**
-（engine 对「组件加载失败」的处置尚未实测；本机因 build 残留照旧，见上）。
+
+#### 2.3.1 词典生成的跨平台约束（2026-10-18 定稿）
+
+| 端 | 是否读词典 | 是否必须存在 |
+| --- | --- | --- |
+| Windows 小狼毫 | 否（候选全部来自 lua） | 否（有它无它候选一致） |
+| **安卓同文 Trime v3.3.x** | 否（同上） | **是——部署校验方案声明的词典，缺失即失败** |
+
+**变更史**：2026-10-14 曾停用生成，依据是「Windows 端候选零贡献」；2026-10-18 实机发现
+安卓 Trime 缺 `jieshu.dict.yaml` 时部署直接失败，故恢复生成。
+**现行策略**：导出**默认始终生成** `jieshu.dict.yaml`（无「不生成」开关），用同一份产物
+同时满足安卓部署校验与 Windows 端兜底；词典以 LF 写出（`atomic_write(newline="")`），
+两端通吃。泄漏条目的丢弃逻辑不变，候选行为不受影响。
 
 ### 2.4 输入流检入（`jieshu_gate` lua_processor）
 
@@ -457,8 +473,9 @@ switches.FindOption([this](Switches::SwitchOption option) {
 
 | #   | 风险                     | 状态与缓解                                                                                      |
 | --- | ---------------------- | ------------------------------------------------------------------------------------------ |
-| R7  | 码表更新后忘记重导出             | 一条 `rime_export.py` 同时刷新 Lua 与方案配置；整理码表后手动执行                                               |
+| R7  | 码表更新后忘记重导出             | 一条 `rime_export.py` 同时刷新词典、Lua 与方案配置；整理码表后手动执行                                               |
 | R10 | Lua 查询层静默失效            | 三件套：`[jieshu_probe]` 采样日志 + 垫片首条 info（`VERBOSE` 可开明细）+ 离线回归快照；数据缺失时 `log.error` 上报；回滚预案保生产 |
 | R11 | 单字母前缀候选量过大（最大桶约 900 条） | 目前实测无感；若出现卡顿，给 `query_by_prefix` 加截断按页供数                                                   |
+| R12 | 安卓 Trime 部署要求方案词典存在，缺 `jieshu.dict.yaml` 即部署失败 | 2026-10-18 起导出默认始终生成该词典；Windows 端行为不受影响（见 2.3.1）                                        |
 
 （R1–R6、R8、R9 已在历轮实测中解除或消解。）

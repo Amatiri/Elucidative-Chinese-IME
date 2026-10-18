@@ -336,10 +336,11 @@ EXTENDED_ROOT_MAP = {
 _code_to_char_cache = None
 
 def _load_code_to_char():
-    """延迟加载 dictionary.txt，返回 {编码: 汉字} 映射。"""
-    global _code_to_char_cache
-    if _code_to_char_cache is not None:
-        return _code_to_char_cache
+    """重新读取 dictionary.txt，返回 {编码: 汉字} 映射。
+
+    查询没有效率要求，故每次调用都重新读表，不做缓存，
+    以便词典文件变化后立即反映到查询结果中。
+    """
     mapping = {}
     try:
         with open(config.DATA_FILE, encoding="utf-8") as f:
@@ -353,7 +354,6 @@ def _load_code_to_char():
     except FileNotFoundError:
         import sys as _sys
         _sys.stderr.write(f"警告: 词典文件不存在: {config.DATA_FILE}\n")
-    _code_to_char_cache = mapping
     return mapping
 
 
@@ -418,7 +418,7 @@ def resolve_leaf(token: str) -> str:
             f"编码「{token}」不存在：长度为 2 的编码应在部首双码或扩展字根中，但未找到匹配项"
         )
 
-    # 4. 长度 > 2：查整字词典
+    # 4. 长度 > 2：查整字词典（每次重新读表，实时反映文件变化）
     code_to_char = _load_code_to_char()
     if token in code_to_char:
         return code_to_char[token]

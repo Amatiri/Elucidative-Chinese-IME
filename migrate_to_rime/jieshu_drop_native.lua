@@ -4,8 +4,8 @@
 -- 本 filter 兜底丢弃 type=="table"（标点 punct、lua 的 jieshu 等一律放行）。
 --
 -- 日志策略（第十一轮）：默认静默，只在首次丢弃时打一条 info。
--- 注（2026-10-14）：jieshu.dict.yaml 已停由 rime_export.py 生成 ⇒ 全新部署下本垫片无事可做；
--- 保留它是为了兼容「旧词典产物仍在」的机器，以及随时恢复词典导出（[词典导出] 段）。
+-- 注（2026-10-18）：jieshu.dict.yaml 已恢复由 rime_export.py 生成（安卓 Trime 部署必需，
+-- 缺文件即部署失败）⇒ 全新部署下本垫片仍是常规链路：table_translator 认到的前缀条目逐条丢弃。
 -- 依据（2026-09-10 实测）：泄漏是设计内的常态——table_translator 是全方案唯一读词典者
 -- （与分段无关：分段由 matcher/abc_segmentor 按 recognizer 正则与 speller/alphabet 决定），
 -- 词典里 25413 条「可见前缀」条目它都认，而 lua 的 query_by_prefix 带补码隐藏规则，

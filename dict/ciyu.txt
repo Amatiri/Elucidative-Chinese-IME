@@ -735,6 +735,7 @@
 插件 iajm4
 查看 iakj
 ʌ ias
+查找 iavk
 查询 iaxp2
 差异 iayi
 差一点 iayid
@@ -1348,7 +1349,7 @@
 恰好 qwhk
 ・ r.d
 ･ r.dh
-ー r;;
+ー r;; r;;k
 ば rba
 バ rbak
 べ rbe

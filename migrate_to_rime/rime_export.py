@@ -11,6 +11,11 @@ rime_export.py —— 把解书码表真源导出为 RIME 方案文件（实现�
   python migrate_to_rime\\rime_export.py --target <路径>  # 临时指定 RIME 用户资料夹（不写回）
   python migrate_to_rime\\rime_export.py --skip-config     # 只动 Lua 数据，不碰方案/皮肤配置
 
+两端皮肤/键盘**默认一并导出**（不设开关，减少分支）：
+  weasel.custom.yaml → 小狼毫（Weasel）皮肤；trime.custom.yaml → 安卓同文（Trime）键盘。
+  同一份产物目录里两份都在，各端只读自己那一份，互不影响（详见 README 一、部署方法）。
+  安卓端用法：--target <预备文件夹> 导出后，把目录内容整体拷进手机 /sdcard/rime/。
+
 ✅ 2026-10-18 起**恢复生成 jieshu.dict.yaml**：安卓 Trime 部署**强制要求**方案声明的
    词典文件存在（缺文件即部署失败，2026-10-18 实机确认）。Windows 端不读它（候选全部来自
    lua/data/*.txt，table_translator 的产出一律被 jieshu_drop_native 丢弃），但为统一两端
@@ -67,9 +72,14 @@ LUA_TARGET_CIYU = os.path.join("lua", "data", "jieshu_ciyu.txt")
 # (源绝对路径, 目标相对 <user_data> 的相对路径)
 #   jieshu.schema.yaml   输入方案（engine/speller/translator/filters/recognizer）
 #   weasel.custom.yaml   小狼毫皮肤：布局 + 字体 + 两套「宣纸」配色
+#   trime.custom.yaml    安卓同文（Trime）键盘：方案 H 布局 + 3 个 preset_keys
+# 两端皮肤**默认一并导出**（2026-10-21 起）：同一份产物目录里两份都在，
+# 各端只读自己那一份——小狼毫不认 trime.custom.yaml，Trime 不认 weasel.custom.yaml，
+# 互不影响；这样安卓端只需「导出 → 整份拷进手机」，不必分别处理。
 CONFIG_SYNC_FILES = [
     (os.path.join(SCRIPT_DIR, "jieshu.schema.yaml"), "jieshu.schema.yaml"),
     (os.path.join(SCRIPT_DIR, "weasel.custom.yaml"), "weasel.custom.yaml"),
+    (os.path.join(SCRIPT_DIR, "trime.custom.yaml"), "trime.custom.yaml"),
 ]
 
 # jieshu.dict.yaml 由 run() 生成（2026-10-18 恢复：安卓 Trime 部署强制要求该文件存在）。
@@ -410,10 +420,13 @@ def _sync_lua_runtime(target_dir):
 
 
 def _sync_config_files(target_dir):
-    """把 migrate_to_rime\\ 下的方案与皮肤配置同步到 <user_data> 根。
+    """把 migrate_to_rime\\ 下的方案与两端皮肤/键盘配置同步到 <user_data> 根。
 
     与 Lua 同一条纪律：migrate_to_rime\\ 是唯一真源，改那里再跑导出，不要直接改
     <user_data> 根的文件。内容无变化则跳过；有变化先备份 .bak 再替换。
+
+    导出清单：jieshu.schema.yaml（两端共用）+ weasel.custom.yaml（小狼毫皮肤）
+    + trime.custom.yaml（安卓同文键盘）。后两者各端只认自己那份，互不影响。
 
     注意 weasel.custom.yaml 会被小狼毫「输入法设定」回写（补 customization: 头、
     重排缩进），回写后与真源逐字节不同 —— 下次导出会以真源为准覆盖回去，
@@ -470,21 +483,27 @@ def run(target_dir, with_ciyu=True, version=None, with_config=True):
     _sync_lua_runtime(target_dir)
     if with_config:
         _sync_config_files(target_dir)
-        print("[HINT] 配置已更新，请在小狼毫托盘执行「重新部署」后生效。")
+        print("[HINT] 配置已更新：")
+        print("       · Windows 小狼毫 → 托盘菜单「重新部署」生效。")
+        print("       · 安卓同文 Trime → 把本目录内容整体拷进手机 /sdcard/rime/，"
+              "再在 App 内「重新布署」。")
 
 
 def main(argv=None):
     parser = argparse.ArgumentParser(
-        description="导出解书码表为 RIME 方案文件：Lua 查询数据 + 词典 + 方案/皮肤配置"
-                    "（jieshu.dict.yaml 默认生成，安卓部署必需；见 migrate_to_rime/README.md）")
+        description="导出解书码表为 RIME 方案文件：Lua 查询数据 + 词典 + 方案/两端皮肤配置"
+                    "（jieshu.dict.yaml 默认生成，安卓部署必需；"
+                    "weasel.custom.yaml 与 trime.custom.yaml 默认一并导出；"
+                    "见 migrate_to_rime/README.md）")
     parser.add_argument("--target", default=None,
                         help="RIME 用户资料夹绝对路径；缺省用 config.py 的 RIME_USER_DIR，"
-                             "该值为空时交互式询问并写回 config.py")
+                             "该值为空时交互式询问并写回 config.py"
+                             "（安卓端可指向预备文件夹，导出后拷进手机 /sdcard/rime/）")
     parser.add_argument("--single", action="store_true",
                         help="只读/校验单字真源、跳过词表读取（词典只含单字，调试用）")
     parser.add_argument("--skip-config", action="store_true",
-                        help="跳过 jieshu.schema.yaml / weasel.custom.yaml 同步"
-                             "（只动 Lua 数据）")
+                        help="跳过 jieshu.schema.yaml / weasel.custom.yaml / trime.custom.yaml "
+                             "同步（只动 Lua 数据）")
     parser.add_argument("--version", default=None,
                         help="词典 jieshu.dict.yaml 的 version 字段（默认当天日期）")
     args = parser.parse_args(argv)

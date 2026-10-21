@@ -11,23 +11,26 @@
 #   4. 方案选单切换到「解书音形」——preset_keyboards 的 ID 等于 schema_id（jieshu），
 #      KeyboardWindow.smartMatchKeyboard() 自动绑定本键盘，无需手动选布局。
 #
-# 布局真源：mobile/src/ui/keymap.ts（方案 H，10 列）。本文件取 6 行变体
-#   （keymap.ts ROW2~ROW6；ROW1 的显示区/候选条由 Trime 原生候选栏承接，翻页键
-#   落位到 ⌫ 的左右滑，见下方注释）。
+# 布局真源：mobile/src/ui/keymap.ts（方案 H，10 列 × 5 行）。
+#   本版取 **5 行**（keymap.ts ROW2~ROW5 共 4 行键区，与 Web 版默认形态一致）：
+#   ROW1 的显示区/候选条由 Trime 原生候选栏承接（键盘上方的 InputBar），
+#   ROW1 的翻页键 ∨/∧ 由候选栏右上角的「∨」按钮（FlexboxUnrolledCandidateWindow
+#   全量候选浮窗）承接，故本键盘不再自绘翻页键。
 #
 # 补丁安全性：只新增 preset_keyboards/jieshu 与 3 个 preset_keys 新键，
 #   不 patch 任何已有域——回滚 = 删本文件 + 重新部署，不影响其他方案与键盘。
 #
 # 编制依据：other/archive_rime/trime_keyboard.md（2026-10-14 源码级调研）及其
 #   引用的 Trime v3.3.12 源码（Keyboard.kt / Key.kt / KeyAction.kt /
-#   CommonKeyboardActionListener.kt / KeyboardWindow.kt 等）。
+#   CommonKeyboardActionListener.kt / KeyboardWindow.kt / CompactCandidateDelegate.kt
+#   / InputBarDelegate.kt 等）。
 
 patch:
   # ------------------------------------------------------------------
   # 一、preset_keys 扩展（trime_keyboard.md §八 落地步骤 2）
-  #     内置 trime.yaml 的 preset_keys（BackSpace/Return/space/Page_Up/
-  #     Page_Down/Left/Right/Shift_L/Settings/clipboard_window/IME_switch…）
-  #     全部沿用，不重新定义；只新增下面三个自用键。
+  #     内置 trime.yaml 的 preset_keys（BackSpace/Return/space/Shift_L/Menu/
+  #     Left/Right/clipboard_window/IME_switch…）全部沿用，不重新定义；
+  #     只新增下面三个自用键。
   # ------------------------------------------------------------------
 
   # A 键上滑/长按：切换 schema 开关 jieshu_auto_commit（自动上字）。
@@ -53,7 +56,7 @@ patch:
     text: "{Control+a}{BackSpace}"
 
   # ------------------------------------------------------------------
-  # 二、方案 H 键盘（trime_keyboard.md §二 逐键映射表 + §5.0 四项裁决）
+  # 二、方案 H 键盘（5 行版：ROW2~ROW5）
   # ------------------------------------------------------------------
   "preset_keyboards/jieshu":
     name: 解书音形
@@ -61,19 +64,21 @@ patch:
     ascii_mode: 0            # 默认中文态（解书无西文模式需求，码字符全是 a-z 小写）
     reset_ascii_mode: true   # 弹出/切换键盘时重置为中文态
     width: 10                # 普通键默认权重 10 = 10 列布局，每键 10%
-    height: 52               # 行高；5 行键区合计 260，由 style/keyboard_height(250) 等比缩放
+    height: 52               # 行高；4 行键区合计 208，由 style/keyboard_height(250) 等比缩放
     lock: true               # 切换程序时记住当前键盘
     # 键帽字母大写：对齐 keymap.ts 设计稿（code 一律小写进 rime，大小写只影响显示）。
-    # 偏离调研文档 §1.2 的 label_transform: none——文档未展开理由，而方案 H 键帽
-    # 按设计稿为大写（keymap.ts ROW3/4/5 的 main 均为 "Q"…"M"），故取 uppercase
-    # （与内置 qwerty0 同款；西文态自动回落小写，不影响编码）。
+    # 偏离调研文档 §1.2 的 label_transform: none——方案 H 键帽按设计稿为大写
+    # （keymap.ts ROW3/4/5 的 main 均为 "Q"…"M"），故取 uppercase（与内置 qwerty0
+    # 同款；西文态自动回落小写，不影响编码）。
+    # ⚠ 副作用：键帽恒为大写，故「大写锁定」状态不体现在字母上，改由「'」键的
+    #   键位配色体现（on_key_back_color 0x23948e = 锁定态，off 0xd3d7da = 未锁定）。
     label_transform: uppercase
     # 不写 columns：每行权重恰为 100，靠权重折行比列数精确（调研 §1.2）。
     # 不写 keyboard_height / auto_height_index：用 style 内置默认 250。
     # 不写 landscape_keyboard：横屏布局暂不设（调研 §1.2）。
     # 不 patch style/keyboards：v3.3.12 的 GeneralStyle 已无 keyboards 字段
-    #   （源码核实，见文件末「与调研文档的差异」），该补丁键会被静默忽略；
-    #   键盘自动绑定只走 preset_keyboards + schema_id，不依赖它。
+    #   （源码核实），该补丁键会被静默忽略；键盘自动绑定只走 preset_keyboards
+    #   + schema_id，不依赖它。
     keys:
       # ---- Row2：数字行（keymap.ts:86-97）----
       # 1-5 上滑 = !@#$%（裁决 2：直发键符）。编码态经 gate 放行 → selector 按
@@ -125,43 +130,54 @@ patch:
       - {click: l, swipe_up: '"', label_symbol: '"'}
       - {click: ';', swipe_up: ':', label_symbol: ':'}
 
-      # ---- Row5：底行（keymap.ts:134-160）----
-      # 6 行变体下，X/V/B/N/M 的功能已提升为 Row6 主键（keymap.ts hideSubIn6Row：
-      # 副字符隐藏且上滑视作单点），故此五键保持纯编码键、无 label_symbol；
-      # C（设置）与 '（大写锁定）不在提升之列，副字符与上滑保留。
-      # ' 上滑 = Shift_L（内建 shift_lock: ascii_long：中文态单击即锁定、西文态打字用）。
-      # Z 上滑「部件表浮层」按裁决 3 暂不实现，Z 保持纯编码键。
-      # = 单击 / - 上滑：jieshu_nav.lua 在 key_binder 前拦截（migrate README 2.12），
-      #   编码态逐字定位/回退，空闲态由 gate 拦截直出符号。
-      # ⌫：单击退格（连发自预设继承）；上滑清空已上屏文本；左右滑翻页——
-      #   ROW1 的 ∨/∧ 翻页键在此落位（调研 §二 Row1 建议方案；候选栏自身翻页 UI
-      #   行为以真机为准）。
-      - {click: "'", swipe_up: Shift_L, label_symbol: ⇪}
-      - {click: z}
-      - {click: x}
-      - {click: c, swipe_up: Settings, label_symbol: 设}
-      - {click: v}
-      - {click: b}
-      - {click: 'n'}
-      - {click: m}
+      # ---- Row5：底行（keymap.ts:134-160，5 行形态：功能全部回到本行的上滑位）----
+      #
+      # ' 键 = **Trime 原生 Shift 键**（修 2026-10-21 实测问题 1）：
+      #   单击 = 大写锁定开关（shift_lock: ascii_long → 中文态「单击即锁」，
+      #     再单击一次解除），空闲态/编码态一致。
+      #   为什么必须做成真正的 Shift 键：Trime 的大写锁定开关逻辑挂在 Key 对象的
+      #   modifier 状态上（Keyboard.mShiftKey ← setModifierKey(click.code)），
+      #   只有「click 动作是 Shift_L」的键才会成为 mShiftKey；锁定后
+      #   clickModifierKey → mShiftKey.setOn() 才能「再按一次即解锁」。
+      #   若该键的 click 不是 Shift_L（如原方案的 click=' + 上滑 Shift_L），
+      #   mShiftKey 为 null，锁定后 setOn 无处可翻转 → 大写永远退不回小写
+      #   （根因三处：Keyboard.kt:320-345 setModifierKey、Keyboard.kt:389-405
+      #    clickModifierKey、KeyView.kt:199-206 processKeyAction）。
+      #   形态参照内置 26 键键盘（trime-default.yaml:1105 的 {click: Shift_L,
+      #   has_menu: "'"}、wiki「五笔双键(一)」的 {click: Shift_L, composing: "'"}）：
+      #   本键不再挂 composing 变体（人工分段 ' 已改由 Z 键上滑承担）。
+      #   键帽显示「大写」（显式 label）；锁定态由键位配色体现：
+      #   on_key_back_color（青）↔ off_key_back_color（灰）。
+      #   ⚠ 锁定期间 IME 整体旁路：字母变大写、数字/符号被 jieshu_gate 判为非
+      #     a-z 而原样直通应用；再单击一次即可解除（不存在「锁死后无法解锁」）。
+      #
+      # Z：上滑 = 英文撇号 '（**临时占用**该上滑位：原拟留给「部件表浮层」，
+      #    按裁决 3 暂不实现）——2026-10-21 定：人工分段符 ' 的唯一入口。
+      #    空闲态上滑 = 直出英文撇号；编码态上滑 = 人工分段（delimiter）。
+      # X：上滑切换输入法（内建 IME_switch；5 行形态下该功能回到本键上滑位）。
+      # C：上滑 = **切换方案（方案选单）**，内建 Menu 预设
+      #    （CommonKeyboardActionListener: KEYCODE_MENU → EnabledSchemaPickerDialog，
+      #     即已启用输入方案列表）——修 2026-10-21 实测问题 2：不再跳 Trime App 设置页。
+      # V/B/N/M：上滑分别为 逗号 / 空格 / 句点 / 回车（裁决 1：回车 = 电脑回车键，
+      #    编码态原编码上屏、空闲态 handleReturnKey 尊重输入框 ActionLabel）。
+      # =：单击 / 上滑 '-'，由 jieshu_nav.lua 在 key_binder 前拦截（migrate README 2.12），
+      #    编码态逐字定位/回退，空闲态由 gate 拦截直出符号。
+      # ⌫：单击退格（连发自 BackSpace 预设继承 repeatable: true）；上滑清空已上屏文本。
+      #    **不再自绘翻页**——候选栏右上角「∨」按钮（FlexboxUnrolledCandidateWindow）
+      #    已提供全量候选浮窗（修 2026-10-21 实测问题 4）。
+      - {click: Shift_L, send_bindings: true, label: 大写}
+      - {click: z, swipe_up: "'", label_symbol: "'"}
+      - {click: x, swipe_up: IME_switch, label_symbol: 🌐}
+      - {click: c, swipe_up: Menu, label_symbol: 案}
+      - {click: v, swipe_up: ',', label_symbol: ','}
+      - {click: b, swipe_up: space, label_symbol: 空}
+      - {click: 'n', swipe_up: '.', label_symbol: '.'}
+      - {click: m, swipe_up: Return, label_symbol: ↵}
       - {click: '=', swipe_up: '-', label_symbol: '-'}
-      - {click: BackSpace, swipe_left: Page_Up, swipe_right: Page_Down, swipe_up: jieshu_clear, label_symbol: 清}
-
-      # ---- Row6：6 行变体追加行（keymap.ts:193-207）----
-      # 把最高频功能提升为主键：🌐 切输入法 / , 英文逗号 / 空格 5U / . 句点 / ↵ 回车 2U。
-      # 空格：编码态 Editor::Confirm 上屏首选、空闲态输出空格（与 B 上滑同源）。
-      # ↵：裁决 1——与电脑回车键同行为（编码态 CommitRawInput 原编码上屏、
-      #   空闲态 handleReturnKey 尊重输入框 ActionLabel），原生双态、无 lua。
-      # , 与 .：编码态为 rime 默认语义（, DirectCommit 先上候选；. 是 alphabet
-      #   码字符作补码引导），空闲态 gate 拦截直出（裁决 4）。
-      - {click: IME_switch}
-      - {click: ','}
-      - {click: space, width: 50}
-      - {click: '.'}
-      - {click: Return, width: 20}
+      - {click: BackSpace, swipe_up: jieshu_clear, label_symbol: 清}
 
 # ==================================================================
-# 与调研文档（trime_keyboard.md）的差异（均为有依据的主动决策，待用户裁决）：
+# 与调研文档（trime_keyboard.md）的差异（均有依据，待用户裁决）：
 #
 # 1. label_transform: uppercase（文档 §1.2 建议 none）。
 #    理由：方案 H 键帽按设计稿显示大写字母；uppercase 与内置 qwerty0 同款，
@@ -171,17 +187,26 @@ patch:
 #    理由：Trime v3.3.12 的 GeneralStyle（源码核实）已无 keyboards 字段，
 #    该补丁键会被部署器静默忽略；键盘自动绑定（KeyboardWindow.
 #    smartMatchKeyboard）只读 preset_keyboards + schema_id，不依赖它。
-#    旧版 Trime 上不写也等价于默认 [.default]（自动匹配），行为一致。
 #
-# 3. 取 6 行变体（ROW2~ROW6 共 5 行键区），未做 5/6 行双布局。
-#    理由：单键盘定义无法运行时切行数；6 行把空格/回车/逗号/句点提升为主键，
-#    日常可用性更高，且 keymap.ts 的 Row5 上滑在 6 行下按 hideSubIn6Row
-#    语义关闭（X/V/B/N/M 纯编码化），无功能损失。如需 5 行版：删 Row6、
-#    并给 V/B/N/M/X 补回 swipe_up 与 label_symbol 即可。
+# 3. 取 5 行（ROW2~ROW5）而非 6 行——对齐 Web 版默认形态（2026-10-21 实测反馈）。
+#    6 行变体的写法（若日后需要）：在末行追加
+#      - {click: IME_switch} / - {click: ','} / - {click: space, width: 50}
+#      - {click: '.'} / - {click: Return, width: 20}
+#    并把 X/V/B/N/M 降级为纯编码键（keymap.ts 的 hideSubIn6Row 语义）。
 #
-# 真机验证清单见 trime_keyboard.md §7.4（8 项）；本文件的重点复测项：
-#   - 1-5 上滑选候选、6-0 上滑符号默认语义观感；
-#   - A/S 键帽 ·/字、·/词 是否随开关实时刷新；
-#   - M…（本布局无 M 上滑）↵ 编码态原编码上屏、空闲态 ActionLabel；
-#   - ⌫ 左右滑翻页与滑动手感；
-#   - ' 键顶 ⇪ 字形是否正常（symbol.ttf 覆盖存疑时改用「⇧」或「大写」）。
+# 4. ' 键改为 Trime 原生 Shift 键（{click: Shift_L, send_bindings: true}），
+#    而非「click=' + 上滑 Shift_L」——见文件内 2026-10-21 实测问题 1 的源码根因；
+#    该键不再兼作人工分段符，' 改由 Z 键上滑提供（2026-10-21 定）。
+#
+# 5. C 键上滑由 Settings（Trime App 设置页）改为 Menu（方案选单），
+#    见 2026-10-21 实测问题 2。
+#
+# 6. 删除 ⌫ 键的左右滑翻页（Page_Up/Page_Down），见 2026-10-21 实测问题 4。
+#
+# 真机验证清单（2026-10-21 轮）：
+#   - 「大写」键：单击 → 键位变青（锁定大写）→ 再单击 → 恢复灰色；
+#     大写锁定时打字应整体直通应用（字母变大写）；
+#   - Z 键上滑 → 空闲态直出英文撇号 '，编码态作人工分段符；
+#   - C 键上滑 → 弹出方案选单（可切到其它已启用方案）；
+#   - ⌫ 键左右滑 → 不应再有翻页动作；候选栏「∨」→ 全量候选浮窗可翻可点；
+#   - 空格/回车：B 上滑 = 空格，M 上滑 = 回车（编码态原编码上屏、空闲态换行）。

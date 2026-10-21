@@ -127,6 +127,8 @@
 便利 bmli4
 编码 bmma
 彡 bms
+便携 bmxx
+编写 bmxx3
 𠃜 bmz
 𠂇 bna
 𰀂 bnt
@@ -267,6 +269,7 @@
 调动 dcds
 调度 dcdu
 调查 dcia
+调研 dcyj
 ’ ddy
 ‘ ddz
 得到 dedk
@@ -307,6 +310,8 @@
 「」 djzy
 到达 dkda
 到底 dkdi
+导出 dkiu1
+到处 dkiu4
 道理 dkli
 道歉 dkqm
 ︵ dku
@@ -460,6 +465,10 @@
 福建 fujm
 副码 fuma3s
 父亲 fuqn1
+复制 fuvi
+赋值 fuvi2
+福祉 fuvi3
+肤质 fuvi4
 负债 fuvl4
 辅助 fuvu
 服务 fuwu
@@ -502,6 +511,7 @@
 γ gga
 Γ ggac
 更多 ggdo
+更加 ggjw
 改革开放 ggkf glgeklf
 更新 ggxn
 刚才 ghcl
@@ -658,6 +668,7 @@
 后来 hbll
 后面 hbmm
 候选 hbxr
+后续 hbxu
 皇帝 hddi
 黄昏 hdhp
 皇上 hduh
@@ -718,10 +729,13 @@
 互联网 hulmw
 湖南 hunj
 互相 huxd
+回报 hvbk
+汇报 hvbk4
 回答 hvda
 回复 hvfu
 恢复 hvfu4
 回过神 hvgou
+回归 hvgv
 回馈 hvkv
 回来 hvll
 会晤 hvwu
@@ -806,10 +820,13 @@
 重庆 isq;
 ˈ istress
 重新 isxn
+初次 iuci4
+除此之外 iuciviw icvw
 厨房 iufh
 除了 iule
 处理 iuli3
 ʊ ius
+初始 iuui
 初中 iuvs
 初衷 iuvs1
 处刑 iux;2
@@ -924,6 +941,7 @@
 健体 jmti3
 简体字 jmtiz
 建设 jmue
+减少 jmuk
 建筑 jmvu
 键位图 jmwztu
 建议 jmyi4
@@ -1004,6 +1022,7 @@
 结构 jxgb
 桔槔 jxgk1m
 结果 jxgo
+接管 jxgr
 结合 jxhe
 结婚 jxhp
 接触 jxiu4
@@ -1015,6 +1034,7 @@
 接纳 jxna
 街头 jxtb
 接头 jxtb2
+截图 jxtu
 接受 jxub4
 解释 jxui
 介绍 jxuk
@@ -1227,6 +1247,7 @@
 额度 oedu
 恶毒 oedu2
 俄罗斯 oelos
+额外 oewl
 昂贵 ohgv
 安徽 ojhv
 安居乐业 ojjuley
@@ -1259,6 +1280,7 @@
 炮弹 pkdj
 排队 pldv
 派对 pldv4
+排列 pllx
 拍摄 plue
 排序 plxu
 偏好 pmhk
@@ -1657,6 +1679,8 @@
 同意 tsyi4
 同一个 tsyig
 通用 tsys
+图标 tubc
+图表 tubc3
 土地 tudi
 ↑ tuh
 • tuidm
@@ -1932,6 +1956,7 @@
 直译 viyi4y
 只要 viyk
 制造 vizk
+制作 vizo
 展开 vjkl
 战略 vjlt
 ㇯ vjm.
@@ -2196,6 +2221,8 @@
 吸管 xigr3
 喜欢 xihr
 习近平 xijnp
+细节 xijx
+洗劫 xijx2
 西南 xinj2
 习俗 xisu
 系统 xits
@@ -2281,6 +2308,7 @@
 应接不暇 y;jxbux yjbx
 影响 y;xd
 英语 y;yu
+压缩 yaso
 优点 ybdm3
 有关 ybgr1
 友好 ybhk
@@ -2405,6 +2433,7 @@
 约分 ytff1
 约束 ytuu
 越野 ytye
+预备 yubz
 遇到 yudk
 语法 yufa3
 雨尘 yuif
@@ -2436,6 +2465,7 @@
 自习 zixi2
 自信 zixn
 咱们 zjmf
+暂时 zjui
 早上 zkuh
 再次 zlci4
 坐标 zobc

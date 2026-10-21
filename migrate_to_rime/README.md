@@ -1,8 +1,10 @@
 # 解书音形 → RIME 移植（migrate_to_rime）
 
 把本仓库的「解书音形」码表移植为一套 RIME 输入方案（标识 `jieshu`，菜单名「解书音形」），
-在小狼毫（Weasel）与安卓同文（Trime）等 librime 发行版下可用。本目录是 **RIME 侧的全部真源**：
-导出脚本、Lua 模块、方案配置、离线回归都在这里；改这里 → 跑导出 → 部署生效。
+在 **Windows 小狼毫（Weasel）** 与 **安卓同文（Trime）** 两端可用（安卓端 2026-10-21 起
+初始支持，键盘为方案 H 布局，详见第七节）。本目录是 **RIME 侧的全部真源**：
+导出脚本、Lua 模块、方案配置、两端皮肤/键盘配置、离线回归都在这里；
+改这里 → 跑导出 → 部署生效。
 
 > 依据：RIME 官方《Rime with Schemata》、librime 源码（`speller.cc` / `abc_segmentor.cc` /
 > `entry_collector.cc` 等）、本仓库 Python 前端（`ime.py` + `manager/dictionary_frontend.py`）。
@@ -13,12 +15,14 @@
 
 ### 前置条件
 
-1. 已安装任一 librime 发行版（推荐 [小狼毫 Weasel](https://rime.im/)），并知道自己的
-   **RIME 用户资料夹**（小狼毫：托盘菜单「用户资料夹」打开的目录）。
+1. 已安装任一 librime 发行版（Windows 用 [小狼毫 Weasel](https://rime.im/)，
+   安卓用 [同文 Trime](https://github.com/osfans/trime) v3.3.x），并知道自己的
+   **RIME 用户资料夹**（小狼毫：托盘菜单「用户资料夹」打开的目录；安卓：手机
+   `/sdcard/rime` 目录）。
 2. 本机有 Python 3（导出脚本只依赖标准库）。
 3. 本仓库完整（导出脚本从仓库根 `config.py` 读取码表路径，码表真源在 `dict/`）。
 
-### 三步部署
+### 三步部署（Windows · 小狼毫 Weasel）
 
 ```
 第 1 步  在仓库根运行：
@@ -29,7 +33,26 @@
 第 3 步  小狼毫托盘 →「输入法设定」→ 勾选「解书音形」→ 确定（会自动再部署）
 ```
 
-**首次运行**第 1 步时，脚本会交互式询问 RIME 用户资料夹的绝对路径：
+### 三步部署（Android · 安卓同文 Trime）
+
+导出与部署路径同构，只是目标目录换成一个**预备文件夹**，再整体拷进手机：
+
+```
+第 1 步  在仓库根运行（--target 指向预备文件夹，脚本会自建目录）：
+            python migrate_to_rime\rime_export.py --target <预备文件夹>
+
+第 2 步  把预备文件夹里的全部内容复制到手机 /sdcard/rime/（同名同层级，不动其它文件）
+
+第 3 步  同文 App 内「重新布署」→ 方案选单切换到「解书音形」
+```
+
+> **安卓端要点**：手机侧须齐备 `jieshu.schema.yaml` + `jieshu.dict.yaml` +
+> 整个 `lua/` 目录（含 `lua/data/*.txt`）+ `trime.custom.yaml`；`weasel.custom.yaml`
+> 是小狼毫专用皮肤，安卓用不到（拷过去也无害，Trime 不读它）。
+> 键盘 `preset_keyboards/jieshu` 的 ID 等于 `schema_id`，切到解书方案即自动绑定，
+> 无需手动选布局（机制见第七节）。
+
+**首次运行**导出脚本（Windows 端）时，脚本会交互式询问 RIME 用户资料夹的绝对路径：
 
 - 粘贴路径回车即可，脚本会把该路径**写回仓库根 `config.py` 的 `RIME_USER_DIR`**，
   以后运行不再询问；
@@ -37,13 +60,15 @@
 - ⚠️ **如果你以后更换了 RIME 用户资料夹，必须同步修改 `config.py` 中的
   `RIME_USER_DIR` 一行**，否则导出仍会写入旧路径。
 
-导出完成后，`<RIME 用户资料夹>` 下会多出（全部以 `jieshu` 命名，不触碰其他方案文件）：
+导出完成后，`<RIME 用户资料夹>` 下会多出（文件名均为 `jieshu` / `weasel` / `trime` 前缀，
+不触碰其他方案文件）：
 
 ```
 <RIME 用户资料夹>\
-  jieshu.schema.yaml              # 输入方案定义（含 P4-E 的两个 switches）
+  jieshu.schema.yaml              # 输入方案定义（含 P4-E 的两个 switches）——两端共用
   jieshu.dict.yaml                # 方案声明的词典（安卓 Trime 部署必需，见下）
-  weasel.custom.yaml              # 小狼毫皮肤（「宣纸」双配色 + 字体布局）
+  weasel.custom.yaml              # 小狼毫皮肤（「宣纸」双配色 + 字体布局）——Windows 用
+  trime.custom.yaml               # 安卓同文键盘（方案 H 布局 + 3 个 preset_keys）——安卓用
   lua\jieshu_query.lua            # 查询层（候选的实际生产者）
   lua\jieshu_drop_native.lua      # 原生候选丢弃垫片
   lua\jieshu_gate.lua             # 输入流检入门控
@@ -53,6 +78,10 @@
   lua\data\jieshu_ciyu.txt        # 词表真源逐字节拷贝
 ```
 
+> **两端皮肤/键盘默认一并导出**（2026-10-21 起，不设开关）：同一份产物目录里两份都在，
+> 各端只读自己那一份——小狼毫不认 `trime.custom.yaml`，Trime 不认 `weasel.custom.yaml`，
+> 互不影响。这样安卓端只需「导出 → 整份拷进手机」，不必为两端分别处理。
+
 > **为什么 `jieshu.dict.yaml` 必须生成（2026-10-18 定稿）**：安卓同文（Trime v3.3.x）
 > 重新部署时会校验方案声明的 `translator/dictionary`，**缺该文件直接部署失败**
 > （实机确认）。Windows 小狼毫不读它——候选全部来自 `lua/data/*.txt`，词典候选被
@@ -60,8 +89,8 @@
 > 它不改变任何可见候选行为（依据见 2.3）。
 
 > **安卓（同文 Trime）部署要点**：需要 `jieshu.schema.yaml` + `jieshu.dict.yaml` +
-> 整个 `lua/` 目录（含 `lua/data/*.txt`）；`weasel.custom.yaml` 是小狼毫专用皮肤，安卓不需要。
-> 文件放进手机 RIME 用户资料夹后在 App 内「重新部署」即可。
+> 整个 `lua/` 目录（含 `lua/data/*.txt`）+ `trime.custom.yaml`；`weasel.custom.yaml` 是小狼毫专用皮肤，安卓不需要。
+> 文件放进手机 RIME 用户资料夹后在 App 内「重新布署」即可。
 
 > P4-E 的两个开关**本方案选择不登记** `default.custom.yaml` 的 `switcher/save_options`
 > —— 选单里能切换（靠 `jieshu.schema.yaml` 的 `switches:` 声明），但切走方案再切回来会
@@ -74,12 +103,20 @@
 
 - **码表更新后**：在 `main.py` 工具链里整理码表（真源永远是 `dict/`），然后重跑
   `python migrate_to_rime\rime_export.py` 并「重新部署」——一条命令同时刷新词典、
-  Lua 数据与方案配置。
-- **改方案 / 皮肤**：只改本目录的 `jieshu.schema.yaml` / `weasel.custom.yaml`，再跑导出回灌。
-  注意小狼毫「输入法设定」会回写已部署的 `weasel.custom.yaml`，下次导出以本目录真源为准覆盖。
+  Lua 数据与方案配置。安卓端同一条命令，把 `--target` 指向预备文件夹、再整份拷进手机即可。
+- **改方案 / 皮肤 / 键盘**：只改本目录的 `jieshu.schema.yaml` / `weasel.custom.yaml` /
+  `trime.custom.yaml`，再跑导出回灌。注意小狼毫「输入法设定」会回写已部署的
+  `weasel.custom.yaml`，下次导出以本目录真源为准覆盖。
 - `rime_export.py` 其他参数：`--single`（只读/校验单字真源、跳过词表，词典只含单字）、
-  `--skip-config`（只动词典与 Lua 数据，不碰方案/皮肤）、`--version <串>`（词典 version 字段）、
-  `--target <路径>`（本次临时指定资料夹，不写回 config）。
+  `--skip-config`（只动词典与 Lua 数据，不碰方案/皮肤/键盘）、`--version <串>`（词典 version 字段）、
+  `--target <路径>`（本次临时指定资料夹，不写回 config；安卓端用它指向预备文件夹）。
+
+### 发布计划
+
+计划在 **0.6.7 正式发布**时，把上述导出产物（`jieshu.schema.yaml` + `jieshu.dict.yaml` +
+`lua/` + `weasel.custom.yaml` + `trime.custom.yaml`）打包成压缩包放进 GitHub Release，
+用户下载解压到自己的 RIME 用户资料夹即可生效，无需自行运行导出脚本。
+（打包时排除导出脚本产生的 `*.bak` 备份文件。）
 
 ---
 
@@ -447,6 +484,7 @@ switches.FindOption([this](Switches::SwitchOption option) {
 | 自动上字                 | >3 码且当前页唯一「非点候选」自动上屏；判定在 Lua（`auto_commit_target`），上屏走 `ctx:select()` 原生链路；触发键=码字符（空格走原生 Confirm，`.` 带 peek，见 2.14）；预上字时目标候选 comment 挂「预」（2026-09-12 已复测） |
 | 码内 `0-9 . ;` 输入      | speller 收编，正常参与查字                                                                                                                                         |
 | 皮肤与外观                | 「宣纸」双配色 + 字体布局 + 页大小/字号/横竖排（`weasel.custom.yaml`；导出以本目录真源为准覆盖）                                                                                            |
+| 安卓同文键盘             | 方案 H 5 行布局（`trime.custom.yaml`）：大写锁定、方案选单、剪贴板、光标移动、逐字定位、清空等上滑动作；见第七节                                                                                          |
 | 导出闭环                 | 校验→渲染→逐字节同步→diff 摘要→原子写+备份                                                                                                                                |
 
 ## 四、暂不实现
@@ -479,3 +517,44 @@ switches.FindOption([this](Switches::SwitchOption option) {
 | R12 | 安卓 Trime 部署要求方案词典存在，缺 `jieshu.dict.yaml` 即部署失败 | 2026-10-18 起导出默认始终生成该词典；Windows 端行为不受影响（见 2.3.1）                                        |
 
 （R1–R6、R8、R9 已在历轮实测中解除或消解。）
+
+---
+
+## 七、安卓同文（Trime）键盘
+
+> 键盘真源：`migrate_to_rime/trime.custom.yaml`——补丁模式，只新增
+> `preset_keyboards/jieshu` 与 3 个 `preset_keys`（自动上字 / 优先上词 / 清空），
+> 不改任何已有域，故回滚只需删文件重新部署。
+> 布局取自 `mobile/src/ui/keymap.ts` 的**方案 H**（10 列 × 5 行），5 行形态与 Web 版默认一致。
+
+![同文（Trime）上的解书音形键盘](../help/手机键盘.png)
+
+*同文（Trime）上的解书音形键盘：数字行的上滑是 `!@#$%`（选第 1-5 候选）；
+末行左起为「大写 / Z / X / C / V / B / N / M / = / 退格」，键顶符号即上滑动作。*
+
+### 7.1 与 mobile/ 方案键盘的差异
+
+| 项 | mobile/（Web 原型） | 同文（Trime） | 说明 |
+| --- | --- | --- | --- |
+| 翻译 | D 键上滑（stub，未实现） | **未添加** | Trime 无内建翻译，暂不做 |
+| 形部表（部件表浮层） | Z 键上滑 | **未添加** | 裁决 3：暂不实现；Z 的上滑位暂借给英文撇号 |
+| 单引号 `'` | Row5 首键单击 | **Z 键上滑** | 原「'」键位改为默认大写键 |
+| 大写键 | `'` 键上滑（⇪） | 原「'」键位 = **大写键**（单击切换锁定，锁定时键位变青） | Trime 的 Shift 锁定必须由真正的 Shift 键承载，否则锁死后无法解锁（机制见 `trime.custom.yaml` 内注释） |
+| 候选排列与翻页 | 自绘候选条 + ∨ 翻页键 | **由同文系统接管，解书音形不额外配置** | 候选栏是键盘上方的独立视图；右上角「∨」展开全量候选浮窗 |
+| 其它输入行为 | —— | **基本与 weasel 对齐** | 编码、门控、逐字选择、自动上字、优先上词等完全一致（同一份 schema + 5 个 lua） |
+
+### 7.2 建议的同文设置
+
+- **候选栏每行候选数改为 5**（设置 → 虚拟键盘 → 候选栏每行候选数，preference key
+  `max_span_count`，默认 6）——与解书音形「一页 5 选」的 `menu/page_size: 5` 对齐，
+  候选排布即桌面端观感。若该设置项不可见，先把「横向候选样式」
+  （`horizontal_candidate_mode`）设为 **AUTO_FILL（均分宽度）**：只有该模式下
+  `max_span_count` 才真正决定每行候选数（源码：`CompactCandidateDelegate` + `AppPrefs`）。
+- 其余保持默认即可。
+
+### 7.3 其它说明
+
+- 键帽字母统一大写（`label_transform: uppercase`），与 Web 版设计稿一致；西文态自动回落小写。
+- 大写锁定期间输入法整体旁路（字母变大写、数字符号原样直通应用），再单击「大写」键即解除。
+- 键盘 ID 等于 `schema_id`（`jieshu`），切换到解书方案即自动绑定，无需在设置里选布局。
+- 键盘机制与实测结论（Shift 锁定、候选栏形态、5/6 行取舍）详见 `trime.custom.yaml` 的注释。

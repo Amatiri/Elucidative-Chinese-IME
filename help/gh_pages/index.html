@@ -1,0 +1,1581 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>解书音形 · 知音辨形，高效输入</title>
+<style>
+  /* ========== 基础重置与变量 ========== */
+  :root {
+    --paper: #f7f2e9;
+    --paper-deep: #efe7da;
+    --paper-lite: #fdfaf4;
+    --ink: #2c241e;
+    --ink-soft: #5a4e44;
+    --ink-faint: #8a7d70;
+    --cinnabar: #b33a2e;
+    --cinnabar-soft: rgba(179, 58, 46, 0.08);
+    --gold: #a8894a;
+    --line: rgba(90, 78, 68, 0.14);
+    --line-strong: rgba(90, 78, 68, 0.26);
+
+    --shadow-sm: 0 1px 2px rgba(44, 36, 30, 0.04), 0 8px 20px -12px rgba(44, 36, 30, 0.16);
+    --shadow-md: 0 2px 4px rgba(44, 36, 30, 0.04), 0 20px 44px -24px rgba(44, 36, 30, 0.30);
+    --shadow-lg: 0 34px 80px -44px rgba(44, 36, 30, 0.50);
+
+    --font-title: "KaiTi", "STKaiti", "Kaiti SC", "Songti SC", "SimSun", serif;
+    --font-body: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    --font-mono: "Courier New", "SFMono-Regular", Consolas, monospace;
+    --max-w: 1080px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* 宣纸纹理：极淡的竖向纤维感 + 两处晕染 */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.45;
+    background-image:
+      repeating-linear-gradient(90deg,
+        transparent 0px,
+        transparent 3px,
+        rgba(160, 140, 110, 0.035) 3px,
+        rgba(160, 140, 110, 0.035) 4px
+      ),
+      repeating-linear-gradient(0deg,
+        transparent 0px,
+        transparent 5px,
+        rgba(160, 140, 110, 0.018) 5px,
+        rgba(160, 140, 110, 0.018) 6px
+      ),
+      radial-gradient(ellipse at 20% 10%, rgba(200, 175, 135, 0.10), transparent 55%),
+      radial-gradient(ellipse at 80% 90%, rgba(180, 150, 120, 0.08), transparent 50%);
+  }
+
+  .page {
+    position: relative;
+    z-index: 1;
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  /* ========== 渐显动画 ========== */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition:
+      opacity 0.9s cubic-bezier(0.22, 0.61, 0.36, 1),
+      transform 0.9s cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-delay-1 { transition-delay: 0.12s; }
+  .reveal-delay-2 { transition-delay: 0.24s; }
+  .reveal-delay-3 { transition-delay: 0.36s; }
+  .reveal-delay-4 { transition-delay: 0.48s; }
+
+  /* ========== 顶部导航 ========== */
+  .topbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 40px;
+    background: linear-gradient(to bottom, rgba(247, 242, 233, 0.94), rgba(247, 242, 233, 0));
+    backdrop-filter: blur(3px);
+    transition: background 0.4s ease, box-shadow 0.4s ease;
+  }
+  .topbar.scrolled {
+    background: rgba(247, 242, 233, 0.96);
+    box-shadow: 0 1px 0 var(--line);
+  }
+  .topbar-mark {
+    font-family: var(--font-title);
+    font-size: 20px;
+    letter-spacing: 0.18em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .topbar-mark span { color: var(--cinnabar); }
+  .topbar-nav {
+    display: flex;
+    gap: 24px;
+    font-size: 14px;
+    letter-spacing: 0.06em;
+  }
+  .topbar-nav a {
+    color: var(--ink-soft);
+    text-decoration: none;
+    transition: color 0.25s;
+    position: relative;
+  }
+  .topbar-nav a::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 100%;
+    bottom: -4px;
+    height: 1px;
+    background: var(--cinnabar);
+    transition: right 0.3s ease;
+  }
+  .topbar-nav a:hover { color: var(--cinnabar); }
+  .topbar-nav a:hover::after { right: 0; }
+
+  /* ========== 首屏 ========== */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 140px 0 100px;
+    position: relative;
+  }
+
+  /* 首屏背景大字水印 */
+  .hero::before {
+    content: "解";
+    position: absolute;
+    right: -50px;
+    top: 48%;
+    transform: translateY(-50%);
+    font-family: var(--font-title);
+    font-size: clamp(240px, 34vw, 420px);
+    line-height: 1;
+    color: rgba(44, 36, 30, 0.028);
+    pointer-events: none;
+    user-select: none;
+    z-index: -1;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--font-body);
+    font-size: 13px;
+    letter-spacing: 0.32em;
+    color: var(--ink-faint);
+    margin-bottom: 28px;
+    text-transform: uppercase;
+  }
+
+  .hero-title {
+    font-family: var(--font-title);
+    font-size: clamp(64px, 11vw, 100px);
+    font-weight: 400;
+    line-height: 1.08;
+    letter-spacing: 0.06em;
+    color: var(--ink);
+    margin-bottom: 8px;
+    text-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.6),
+      0 14px 36px rgba(44, 36, 30, 0.10);
+  }
+  .hero-title .dot {
+    color: var(--cinnabar);
+    font-size: 0.45em;
+    vertical-align: middle;
+    margin: 0 8px;
+  }
+
+  .hero-sub {
+    font-family: var(--font-title);
+    font-size: clamp(20px, 2.6vw, 28px);
+    color: var(--ink-soft);
+    letter-spacing: 0.14em;
+    margin-bottom: 36px;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+  }
+
+  .hero-desc {
+    max-width: 600px;
+    font-size: 15px;
+    line-height: 2.05;
+    color: var(--ink-soft);
+    margin-bottom: 48px;
+  }
+  .hero-desc strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 72px;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 13px 30px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+  .btn-primary {
+    background: var(--ink);
+    color: var(--paper);
+    border: 1px solid var(--ink);
+    box-shadow: 0 14px 30px -18px rgba(44, 36, 30, 0.8);
+  }
+  .btn-primary:hover {
+    background: var(--cinnabar);
+    border-color: var(--cinnabar);
+    box-shadow: 0 16px 34px -18px rgba(179, 58, 46, 0.85);
+    transform: translateY(-1px);
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--ink-soft);
+    border: 1px solid var(--line-strong);
+  }
+  .btn-ghost:hover {
+    border-color: var(--ink-soft);
+    color: var(--ink);
+    background: rgba(255, 253, 249, 0.7);
+    transform: translateY(-1px);
+  }
+
+  /* 首屏印章式装饰 */
+  .hero-seal {
+    position: absolute;
+    right: 0;
+    bottom: 140px;
+    width: 92px;
+    height: 92px;
+    border: 1.5px solid var(--cinnabar);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-title);
+    font-size: 22px;
+    color: var(--cinnabar);
+    letter-spacing: 0.2em;
+    writing-mode: vertical-rl;
+    opacity: 0.55;
+    user-select: none;
+    transform: rotate(4deg);
+    animation: sealFloat 7s ease-in-out infinite;
+  }
+  .hero-seal::after {
+    content: "";
+    position: absolute;
+    inset: 4px;
+    border: 0.5px solid var(--cinnabar);
+    border-radius: 2px;
+    opacity: 0.6;
+  }
+  @keyframes sealFloat {
+    0%, 100% { transform: rotate(4deg) translateY(0); }
+    50% { transform: rotate(2.5deg) translateY(-8px); }
+  }
+
+  /* 首屏底部编码结构提示 */
+  .hero-code {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 15px;
+    letter-spacing: 0.06em;
+    color: var(--ink-faint);
+    border-top: 1px solid var(--line);
+    padding-top: 28px;
+    width: 100%;
+    max-width: 620px;
+  }
+  .hero-code .seg { color: var(--ink); }
+  .hero-code .seg-opt { color: var(--ink-faint); }
+  .hero-code .label {
+    font-family: var(--font-body);
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    color: var(--ink-faint);
+    margin-left: 12px;
+  }
+
+  /* ========== 通用区块 ========== */
+  .section {
+    padding: 100px 0;
+    position: relative;
+  }
+  .section + .section {
+    border-top: 1px solid var(--line);
+  }
+  /* 交替区块的淡色底纹 */
+  .section.tint::before {
+    content: "";
+    position: absolute;
+    top: 0; bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100vw;
+    background:
+      radial-gradient(ellipse 70% 50% at 50% 0%, rgba(200, 175, 135, 0.10), transparent 70%),
+      linear-gradient(180deg, rgba(239, 231, 218, 0.35), rgba(239, 231, 218, 0));
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .section-label {
+    font-family: var(--font-body);
+    font-size: 13px;
+    letter-spacing: 0.3em;
+    color: var(--cinnabar);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .section-label::before {
+    content: "";
+    display: inline-block;
+    width: 20px;
+    height: 1px;
+    background: var(--cinnabar);
+    vertical-align: middle;
+    margin-right: 10px;
+    opacity: 0.6;
+  }
+  .section-title {
+    font-family: var(--font-title);
+    font-size: clamp(32px, 4.2vw, 48px);
+    font-weight: 400;
+    line-height: 1.3;
+    letter-spacing: 0.06em;
+    color: var(--ink);
+    margin-bottom: 20px;
+    text-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.55),
+      0 10px 30px rgba(44, 36, 30, 0.06);
+  }
+  .section-lead {
+    max-width: 660px;
+    font-size: 15px;
+    line-height: 2.05;
+    color: var(--ink-soft);
+    margin-bottom: 56px;
+  }
+
+  /* ========== 快速开始 ========== */
+  .qs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+  }
+  .qs-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 26px 24px 22px;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    background: linear-gradient(160deg, rgba(255, 253, 249, 0.94), rgba(248, 243, 234, 0.55));
+    text-decoration: none;
+    color: inherit;
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    transition:
+      transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1),
+      box-shadow 0.4s ease,
+      border-color 0.4s ease;
+  }
+  .qs-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 100% 0%, rgba(179, 58, 46, 0.08), transparent 58%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+  }
+  .qs-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+    border-color: rgba(179, 58, 46, 0.32);
+  }
+  .qs-card:hover::after { opacity: 1; }
+  .qs-index {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.16em;
+    color: var(--cinnabar);
+    opacity: 0.85;
+    margin-bottom: 14px;
+  }
+  .qs-card h4 {
+    font-family: var(--font-title);
+    font-size: 21px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+  }
+  .qs-card p {
+    font-size: 14px;
+    line-height: 1.9;
+    color: var(--ink-soft);
+    flex: 1;
+    margin-bottom: 16px;
+  }
+  .qs-go {
+    display: inline-block;
+    font-size: 13.5px;
+    letter-spacing: 0.1em;
+    color: var(--cinnabar);
+    transition: transform 0.3s ease;
+  }
+  .qs-card:hover .qs-go { transform: translateX(5px); }
+
+  .version-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 30px;
+    padding-top: 24px;
+    border-top: 1px dashed var(--line);
+  }
+  .ver-badge {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    padding: 5px 14px;
+    border-radius: 100px;
+    border: 1px solid rgba(168, 137, 74, 0.42);
+    color: #7d6535;
+    background: rgba(168, 137, 74, 0.08);
+  }
+  .ver-badge.dev {
+    border-color: rgba(179, 58, 46, 0.32);
+    color: var(--cinnabar);
+    background: var(--cinnabar-soft);
+  }
+  .ver-note {
+    font-size: 13px;
+    color: var(--ink-faint);
+    letter-spacing: 0.02em;
+  }
+
+  /* ========== 理念区 ========== */
+  .philosophy-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+  .philosophy-quote {
+    font-family: var(--font-title);
+    font-size: clamp(24px, 3vw, 34px);
+    line-height: 1.75;
+    color: var(--ink);
+    letter-spacing: 0.06em;
+    padding-left: 28px;
+    border-left: 2px solid var(--cinnabar);
+    position: relative;
+  }
+  .philosophy-quote em {
+    font-style: normal;
+    color: var(--cinnabar);
+  }
+  .philosophy-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .p-card {
+    padding: 24px 28px;
+    background: linear-gradient(160deg, rgba(255, 253, 249, 0.92), rgba(250, 246, 237, 0.55));
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    box-shadow: var(--shadow-sm);
+    transition: border-color 0.35s, background 0.35s, transform 0.35s, box-shadow 0.35s;
+  }
+  .p-card:hover {
+    border-color: rgba(179, 58, 46, 0.30);
+    background: rgba(255, 253, 249, 0.96);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+  }
+  .p-card h4 {
+    font-family: var(--font-title);
+    font-size: 20px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    margin-bottom: 6px;
+  }
+  .p-card p {
+    font-size: 14px;
+    line-height: 1.9;
+    color: var(--ink-soft);
+  }
+
+  /* ========== 编码结构 ========== */
+  .code-structure {
+    display: flex;
+    align-items: stretch;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+  }
+  .code-block {
+    flex: 1;
+    min-width: 150px;
+    padding: 26px 20px;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    background: linear-gradient(160deg, rgba(255, 253, 249, 0.9), rgba(250, 246, 237, 0.5));
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.35s ease, border-color 0.35s, box-shadow 0.35s;
+  }
+  .code-block:hover {
+    transform: translateY(-5px);
+    border-color: rgba(179, 58, 46, 0.35);
+    box-shadow: var(--shadow-md);
+  }
+  .code-block .letters {
+    font-family: var(--font-mono);
+    font-size: 28px;
+    letter-spacing: 0.1em;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .code-block .role {
+    font-size: 13px;
+    letter-spacing: 0.14em;
+    color: var(--cinnabar);
+    margin-bottom: 6px;
+  }
+  .code-block .detail {
+    font-size: 13.5px;
+    line-height: 1.8;
+    color: var(--ink-faint);
+  }
+  .code-block.optional {
+    border-style: dashed;
+    background: transparent;
+    box-shadow: none;
+  }
+  .code-block.optional .letters { color: var(--ink-faint); }
+
+  .mechanisms {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 36px;
+  }
+  .mech-tag {
+    padding: 8px 18px;
+    font-size: 14px;
+    letter-spacing: 0.08em;
+    color: var(--ink-soft);
+    border: 1px solid var(--line);
+    border-radius: 100px;
+    background: rgba(255, 253, 249, 0.55);
+    transition: border-color 0.3s, color 0.3s, background 0.3s;
+  }
+  .mech-tag:hover {
+    border-color: rgba(179, 58, 46, 0.35);
+    color: var(--cinnabar);
+    background: rgba(255, 253, 249, 0.9);
+  }
+  .mech-note {
+    margin-top: 18px;
+    font-size: 13.5px;
+    color: var(--ink-faint);
+    max-width: 620px;
+  }
+
+  /* 图片展示 */
+  .shot {
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    overflow: hidden;
+    background: var(--paper-deep);
+    box-shadow: var(--shadow-md);
+    margin-top: 42px;
+    max-width: 700px;
+  }
+  .shot img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .shot figcaption {
+    padding: 12px 18px;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    color: var(--ink-faint);
+    border-top: 1px solid var(--line);
+    background: rgba(255, 253, 249, 0.72);
+  }
+
+  /* ========== 字例演示 ========== */
+  .demo-panel {
+    position: relative;
+    padding: 32px 34px 26px;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    background:
+      linear-gradient(180deg, rgba(255, 253, 249, 0.96), rgba(247, 242, 233, 0.85));
+    box-shadow: var(--shadow-lg), inset 0 1px 0 rgba(255, 255, 255, 0.75);
+    overflow: hidden;
+  }
+  .demo-panel::before {
+    content: "";
+    position: absolute;
+    inset: 8px;
+    border: 1px solid rgba(168, 137, 74, 0.16);
+    border-radius: 2px;
+    pointer-events: none;
+  }
+
+  .demo-input-row,
+  .demo-cand-row {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    position: relative;
+    z-index: 1;
+  }
+  .demo-input-row {
+    padding-bottom: 20px;
+    border-bottom: 1px dashed var(--line);
+    min-height: 62px;
+  }
+  .demo-cand-row { padding-top: 20px; min-height: 84px; }
+
+  .demo-label {
+    flex: none;
+    width: 44px;
+    font-size: 13px;
+    letter-spacing: 0.18em;
+    color: var(--ink-faint);
+  }
+  .demo-code {
+    font-family: var(--font-mono);
+    font-size: clamp(26px, 4vw, 34px);
+    letter-spacing: 0.14em;
+    color: var(--ink);
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+  .caret {
+    display: inline-block;
+    width: 2px;
+    height: 1.05em;
+    margin-left: 3px;
+    background: var(--cinnabar);
+    vertical-align: text-bottom;
+    animation: blink 1.05s steps(1) infinite;
+  }
+  @keyframes blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+
+  .demo-cand {
+    display: inline-block;
+    font-family: var(--font-title);
+    font-size: clamp(38px, 5vw, 48px);
+    line-height: 1.15;
+    color: var(--cinnabar);
+    text-shadow: 0 10px 26px rgba(179, 58, 46, 0.18);
+  }
+  .demo-cand.pop {
+    animation: candPop 0.42s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes candPop {
+    0% { transform: scale(0.82); opacity: 0.35; filter: blur(1px); }
+    100% { transform: scale(1); opacity: 1; filter: blur(0); }
+  }
+
+  .demo-note {
+    position: relative;
+    z-index: 1;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px dashed var(--line);
+    font-size: 14px;
+    line-height: 1.9;
+    color: var(--ink-soft);
+    min-height: 1.9em;
+  }
+
+  .demo-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 22px;
+  }
+  .demo-legend span {
+    font-size: 13px;
+    letter-spacing: 0.05em;
+    color: var(--ink-faint);
+    padding: 6px 14px;
+    border: 1px solid var(--line);
+    border-radius: 100px;
+    background: rgba(255, 253, 249, 0.6);
+  }
+  .demo-legend b {
+    font-family: var(--font-mono);
+    color: var(--cinnabar);
+    font-weight: 600;
+    margin-right: 4px;
+  }
+
+  /* 四字演示 */
+  .char-demo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 14px;
+    margin-top: 40px;
+  }
+  .char-demo {
+    padding: 24px 18px 18px;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    background: linear-gradient(160deg, rgba(255, 253, 249, 0.7), rgba(248, 243, 234, 0.4));
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    transition:
+      border-color 0.45s ease,
+      background 0.45s ease,
+      transform 0.45s ease,
+      box-shadow 0.45s ease;
+  }
+  .char-demo.done {
+    border-color: rgba(179, 58, 46, 0.35);
+    background: linear-gradient(160deg, rgba(255, 253, 249, 0.98), rgba(252, 246, 238, 0.8));
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+  }
+  .cd-char {
+    font-family: var(--font-title);
+    font-size: clamp(46px, 6vw, 58px);
+    line-height: 1.1;
+    color: var(--ink);
+    opacity: 0.10;
+    transform: scale(0.94);
+    transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.34, 1.4, 0.64, 1), color 0.5s;
+  }
+  .char-demo.done .cd-char {
+    opacity: 1;
+    transform: scale(1);
+    color: var(--ink);
+    text-shadow: 0 10px 26px rgba(44, 36, 30, 0.14);
+  }
+  .cd-code {
+    font-family: var(--font-mono);
+    font-size: 17px;
+    letter-spacing: 0.14em;
+    color: var(--cinnabar);
+    margin-top: 10px;
+    min-height: 1.5em;
+  }
+  .cd-note {
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--ink-faint);
+    margin-top: 6px;
+    min-height: 1.7em;
+  }
+
+  /* ========== 前端 / 设置 ========== */
+  .split-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 34px;
+  }
+  .split-col {
+    padding: 26px 28px;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    background: linear-gradient(160deg, rgba(255, 253, 249, 0.9), rgba(248, 243, 234, 0.5));
+    box-shadow: var(--shadow-sm);
+  }
+  .mini-title {
+    font-family: var(--font-title);
+    font-size: 21px;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    color: var(--ink);
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--line);
+  }
+  .plain-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+  }
+  .plain-list li {
+    position: relative;
+    padding-left: 20px;
+    font-size: 14px;
+    line-height: 1.85;
+    color: var(--ink-soft);
+  }
+  .plain-list li::before {
+    content: "";
+    position: absolute;
+    left: 2px;
+    top: 0.72em;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    border: 1px solid var(--cinnabar);
+    opacity: 0.7;
+  }
+  .plain-list li b {
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .plain-list code {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    padding: 1px 6px;
+    border-radius: 2px;
+    background: var(--cinnabar-soft);
+    color: var(--cinnabar);
+  }
+
+  /* ========== 学习路径 ========== */
+  .path-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border-left: 1px solid var(--line);
+    margin-left: 8px;
+  }
+  .path-item {
+    position: relative;
+    padding: 32px 0 32px 40px;
+    border-bottom: 1px solid var(--line);
+  }
+  .path-item:last-child { border-bottom: none; }
+  .path-item::before {
+    content: "";
+    position: absolute;
+    left: -4.5px;
+    top: 42px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--paper);
+    border: 1.5px solid var(--cinnabar);
+    transition: background 0.3s, box-shadow 0.3s;
+  }
+  .path-item:hover::before {
+    background: var(--cinnabar);
+    box-shadow: 0 0 0 4px var(--cinnabar-soft);
+  }
+  .path-stage {
+    font-family: var(--font-title);
+    font-size: 23px;
+    letter-spacing: 0.1em;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .path-stage span {
+    font-family: var(--font-body);
+    font-size: 13px;
+    letter-spacing: 0.16em;
+    color: var(--ink-faint);
+    margin-left: 12px;
+  }
+  .path-desc {
+    font-size: 14.5px;
+    line-height: 1.95;
+    color: var(--ink-soft);
+    max-width: 660px;
+  }
+
+  /* ========== 功能与工具 ========== */
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+  }
+  .feature-item {
+    padding: 22px 24px;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    background: linear-gradient(160deg, rgba(255, 253, 249, 0.86), rgba(248, 243, 234, 0.45));
+    box-shadow: var(--shadow-sm);
+    transition: border-color 0.35s, background 0.35s, transform 0.35s, box-shadow 0.35s;
+  }
+  .feature-item:hover {
+    border-color: rgba(179, 58, 46, 0.28);
+    background: rgba(255, 253, 249, 0.95);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+  }
+  .feature-item h4 {
+    font-family: var(--font-body);
+    font-size: 14.5px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    margin-bottom: 6px;
+    color: var(--ink);
+  }
+  .feature-item p {
+    font-size: 14px;
+    line-height: 1.85;
+    color: var(--ink-faint);
+  }
+
+  .tools-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 44px;
+  }
+  .tool-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 22px;
+    font-size: 14px;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+    text-decoration: none;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    background: rgba(255, 253, 249, 0.6);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+  }
+  .tool-link:hover {
+    border-color: var(--ink-soft);
+    color: var(--ink);
+    background: rgba(255, 253, 249, 0.96);
+    transform: translateY(-2px);
+  }
+  .tool-link .arrow {
+    font-size: 15px;
+    opacity: 0.5;
+    transition: transform 0.3s, opacity 0.3s;
+  }
+  .tool-link:hover .arrow { transform: translateX(4px); opacity: 1; }
+
+  /* ========== 页脚 ========== */
+  .footer {
+    padding: 64px 0 48px;
+    border-top: 1px solid var(--line);
+  }
+  .footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+  .footer-brand {
+    font-family: var(--font-title);
+    font-size: 26px;
+    letter-spacing: 0.1em;
+    color: var(--ink);
+  }
+  .footer-brand span { color: var(--cinnabar); }
+  .footer-note {
+    font-size: 13px;
+    line-height: 1.9;
+    color: var(--ink-faint);
+    text-align: right;
+  }
+  .footer-note a {
+    color: var(--ink-soft);
+    text-decoration: none;
+    border-bottom: 1px solid var(--line);
+    transition: color 0.25s, border-color 0.25s;
+  }
+  .footer-note a:hover {
+    color: var(--cinnabar);
+    border-color: var(--cinnabar);
+  }
+
+  /* ========== 响应式 ========== */
+  @media (max-width: 860px) {
+    .philosophy-grid,
+    .split-grid { grid-template-columns: 1fr; gap: 28px; }
+  }
+
+  @media (max-width: 760px) {
+    .page { padding: 0 22px; }
+    .topbar { padding: 14px 22px; }
+    .topbar-nav { gap: 14px; font-size: 13px; }
+    .topbar-nav a:nth-child(3),
+    .topbar-nav a:nth-child(5) { display: none; }
+
+    .hero { padding: 120px 0 72px; min-height: auto; }
+    .hero::before { font-size: 220px; right: -30px; opacity: 0.7; }
+    .hero-seal { width: 68px; height: 68px; font-size: 16px; bottom: 80px; opacity: 0.35; }
+    .hero-actions { margin-bottom: 48px; }
+
+    .philosophy-quote { font-size: 22px; padding-left: 20px; }
+
+    .code-block { min-width: 100%; }
+    .section { padding: 72px 0; }
+
+    .demo-panel { padding: 24px 20px 20px; }
+    .demo-label { width: 38px; font-size: 12.5px; }
+    .demo-input-row, .demo-cand-row { gap: 12px; }
+
+    .footer-inner { flex-direction: column; align-items: flex-start; }
+    .footer-note { text-align: left; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+    html { scroll-behavior: auto; }
+    .hero-seal { animation: none; }
+    .caret { animation: none; }
+    .demo-cand.pop { animation: none; }
+    .char-demo .cd-char { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ========== 顶部导航 ========== -->
+<header class="topbar" id="topbar">
+  <a href="#" class="topbar-mark">解书音形<span>.</span></a>
+  <nav class="topbar-nav">
+    <a href="#quickstart">开始</a>
+    <a href="#philosophy">理念</a>
+    <a href="#structure">编码</a>
+    <a href="#examples">示例</a>
+    <a href="#frontend">前端</a>
+    <a href="#path">学习</a>
+    <a href="#tools">工具</a>
+    <a href="https://github.com/Amatiri/Elucidative-Chinese-IME" target="_blank" rel="noopener">GitHub ↗</a>
+  </nav>
+</header>
+
+<main class="page">
+
+  <!-- ========== 首屏 ========== -->
+  <section class="hero">
+    <p class="hero-eyebrow reveal">Elucidative Chinese IME · 音形结合输入方案</p>
+
+    <h1 class="hero-title reveal reveal-delay-1">
+      解书音形<span class="dot">·</span>知音辨形
+    </h1>
+
+    <p class="hero-sub reveal reveal-delay-2">零重码 · 带调双拼 · 部首体系 · 挂表即用</p>
+
+    <p class="hero-desc reveal reveal-delay-3">
+      解书音形是一种<strong>音形结合、零重码、可自定义</strong>的现代汉字输入方案。
+      它以音切入，以义定形，在<strong>易学性</strong>与<strong>高效率</strong>之间取得平衡——
+      掌握拼音即可起步，记住少量形码规则，就能实现高速盲打。
+    </p>
+
+    <div class="hero-actions reveal reveal-delay-4">
+      <a class="btn btn-primary" href="#quickstart">快速开始</a>
+      <a class="btn btn-ghost" href="https://github.com/Amatiri/Elucidative-Chinese-IME" target="_blank" rel="noopener">查看 GitHub 仓库</a>
+    </div>
+
+    <div class="hero-code reveal reveal-delay-4">
+      <span class="seg">A B C</span>
+      <span class="seg">D</span>
+      <span class="seg-opt">E</span>
+      <span class="seg-opt">.F</span>
+      <span class="label">音码 → 主码 → 副码 → 补码</span>
+    </div>
+
+    <div class="hero-seal">解书</div>
+  </section>
+
+  <!-- ========== 快速开始 ========== -->
+  <section class="section tint" id="quickstart">
+    <p class="section-label reveal">Quick Start</p>
+    <h2 class="section-title reveal reveal-delay-1">三步之内，先敲第一个字。</h2>
+    <p class="section-lead reveal reveal-delay-2">
+      不必等规则背完再开始。你可以先在浏览器里试试手感，也可以把码表挂到 Rime 上，
+      或者把仓库克隆到本地，用管理工具一点点打磨自己的编码。
+    </p>
+
+    <div class="qs-grid">
+      <a class="qs-card reveal" href="https://frontend-mobile.netlify.app/" target="_blank" rel="noopener">
+        <span class="qs-index">01</span>
+        <h4>手机端 Web 演示</h4>
+        <p>无需安装、无需配置，在浏览器里直接体验解书音形的输入流程与候选逻辑。</p>
+        <span class="qs-go">打开演示 →</span>
+      </a>
+
+      <a class="qs-card reveal reveal-delay-2" href="https://github.com/Amatiri/Elucidative-Chinese-IME" target="_blank" rel="noopener">
+        <span class="qs-index">02</span>
+        <h4>克隆仓库运行</h4>
+        <p>gh repo clone Amatiri/Elucidative-Chinese-IME，安装依赖后运行 main.py 管理码表。</p>
+        <span class="qs-go">前往 GitHub →</span>
+      </a>
+
+      <a class="qs-card reveal reveal-delay-1" href="https://amatiri.github.io/Elucidative-Chinese-IME/migrate_to_rime/" target="_blank" rel="noopener">
+        <span class="qs-index">03</span>
+        <h4>迁移到 Rime</h4>
+        <p>使用 rime_export.py 导出码表，在 Rime 输入法框架中挂表即用，跨平台可用。</p>
+        <span class="qs-go">阅读迁移说明 →</span>
+      </a>
+
+
+    </div>
+
+    <div class="version-row reveal reveal-delay-3">
+      <span class="ver-badge">发布版本 v0.6.6</span>
+      <span class="ver-badge dev">开发版本 v0.6.7-beta</span>
+      <span class="ver-note">README 按最新开发内容实时更新</span>
+    </div>
+  </section>
+
+  <!-- ========== 理念 ========== -->
+  <section class="section" id="philosophy">
+    <p class="section-label reveal">Philosophy</p>
+    <h2 class="section-title reveal reveal-delay-1">编码，应当解释汉字，<br>而不是遮蔽汉字。</h2>
+    <p class="section-lead reveal reveal-delay-2">
+      解书音形的编码充分考虑字源字义，又以现代字型为准。它保持文化敏感：
+      编码反映汉字的结构演变和文化内涵，动态分配，注释避重。
+    </p>
+
+    <div class="philosophy-grid">
+      <blockquote class="philosophy-quote reveal">
+        “知音辨形，<br>高效输入。”<br>
+        <em style="font-size:0.6em; letter-spacing:0.1em; display:block; margin-top:16px;">—— 解书音形设计理念</em>
+      </blockquote>
+
+      <div class="philosophy-cards">
+        <div class="p-card reveal reveal-delay-1">
+          <h4>常用优先</h4>
+          <p>最常用的汉字获得最短的编码。输入频率决定码长分配，让高频操作尽可能轻快。</p>
+        </div>
+        <div class="p-card reveal reveal-delay-2">
+          <h4>零重码</h4>
+          <p>每个编码都有唯一汉字。取消候选翻页的干扰，让“想到即打出”成为可能。</p>
+        </div>
+        <div class="p-card reveal reveal-delay-3">
+          <h4>渐进学习</h4>
+          <p>初期只记音码与主码基础，中期在实战中熟悉副码，高级再掌握全规则。规则为效率服务，而非相反。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 编码结构 ========== -->
+  <section class="section tint" id="structure">
+    <p class="section-label reveal">Structure</p>
+    <h2 class="section-title reveal reveal-delay-1">ABCD(E)(.F)</h2>
+    <p class="section-lead reveal reveal-delay-2">
+      每个汉字的完整编码由音码、主码、副码与补码构成。
+      前三码必填，后两码可选——编码长度随复杂度自然伸缩。
+    </p>
+
+    <div class="code-structure">
+      <div class="code-block reveal">
+        <div class="letters">A B C</div>
+        <div class="role">音码 · 必填</div>
+        <div class="detail">搜狗双拼 + 声调，0 轻声。忠实记录真实、准确的发音。</div>
+      </div>
+      <div class="code-block reveal reveal-delay-1">
+        <div class="letters">D</div>
+        <div class="role">主码 · 必填</div>
+        <div class="detail">部首 / 独体区分形码。独体字按数字编码，合体字按部首字母编码。</div>
+      </div>
+      <div class="code-block optional reveal reveal-delay-2">
+        <div class="letters">E</div>
+        <div class="role">副码 · 可选</div>
+        <div class="detail">余字 / 查重注释形码。同音同主码时用于区分，多数常用字无需副码。</div>
+      </div>
+      <div class="code-block optional reveal reveal-delay-3">
+        <div class="letters">.F</div>
+        <div class="role">补码 · 可选</div>
+        <div class="detail">繁异 / 同义补充。日常输入很少用到，为特殊场景保留。</div>
+      </div>
+    </div>
+
+    <div class="mechanisms reveal reveal-delay-2">
+      <span class="mech-tag">码表排序</span>
+      <span class="mech-tag">前缀匹配</span>
+      <span class="mech-tag">自动上字</span>
+      <span class="mech-tag">自动拆分</span>
+      <span class="mech-tag">优先上词</span>
+    </div>
+    <p class="mech-note reveal reveal-delay-3">
+      五大机制协同，在“唯一确定”的前提下，让编码尽可能短。
+    </p>
+
+    <figure class="shot reveal reveal-delay-3">
+      <img
+        src="https://cdn.jsdelivr.net/gh/Amatiri/Elucidative-Chinese-IME@78ab99a/help/%E9%9F%B3%E7%A0%81%E9%94%AE%E4%BD%8D.png"
+        alt="解书音形音码键位图"
+        loading="lazy">
+      <figcaption>音码键位 · 搜狗双拼 + 声调；zh / ch / sh → v / i / u，零声母归 o</figcaption>
+    </figure>
+  </section>
+
+  <!-- ========== 字例演示 ========== -->
+  <section class="section" id="examples">
+    <p class="section-label reveal">Examples</p>
+    <h2 class="section-title reveal reveal-delay-1">一个字，一段拆解。</h2>
+    <p class="section-lead reveal reveal-delay-2">
+      从音码开始，编码随理解逐位加长——候选也随之收紧，直到唯一确定。
+      以「意」为例：只打声母先出「有」，补上韵、调、主码、副码，才终于落到「意」。
+    </p>
+
+    <!-- 单字打字机 -->
+    <div class="demo-panel reveal">
+      <div class="demo-input-row">
+        <span class="demo-label">输入</span>
+        <span class="demo-code" id="tw-code"></span><span class="caret"></span>
+      </div>
+      <div class="demo-cand-row">
+        <span class="demo-label">候选</span>
+        <span class="demo-cand" id="tw-cand">—</span>
+      </div>
+      <div class="demo-note" id="tw-note">音码 → 主码 → 副码，逐位收紧候选</div>
+
+      <div class="demo-legend">
+        <span><b>yi4</b>音码 · 去声</span>
+        <span><b>x</b>主码 · 心部</span>
+        <span><b>l</b>副码 · 上部「立」</span>
+      </div>
+    </div>
+
+    <!-- 解书音形 四字 -->
+    <div class="char-demo-grid">
+      <div class="char-demo" data-code="jx3k" data-note="音码 jx3 · 主码 k（角部）">
+        <div class="cd-char">解</div>
+        <div class="cd-code"></div>
+        <div class="cd-note"></div>
+      </div>
+      <div class="char-demo" data-code="uu11" data-note="音码 uu1 · 主码 1（竖形）">
+        <div class="cd-char">书</div>
+        <div class="cd-code"></div>
+        <div class="cd-note"></div>
+      </div>
+      <div class="char-demo" data-code="yn1r" data-note="音码 yn1 · 主码 r（日部）">
+        <div class="cd-char">音</div>
+        <div class="cd-code"></div>
+        <div class="cd-note"></div>
+      </div>
+      <div class="char-demo" data-code="x;2m" data-note="音码 x;2 · 主码 m（彡部）">
+        <div class="cd-char">形</div>
+        <div class="cd-code"></div>
+        <div class="cd-note"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 前端 / 设置 ========== -->
+  <section class="section tint" id="frontend">
+    <p class="section-label reveal">Interface &amp; Settings</p>
+    <h2 class="section-title reveal reveal-delay-1">看得见的候选，<br>看不见的规矩。</h2>
+    <p class="section-lead reveal reveal-delay-2">
+      前端默认以「内输」方式运行，只在输入法程序预设的框内输入；
+      同时按下 ← 与 → 可切换到「外输」，在任意全局输入框中输入，未输入编码时仅显示命令行窗口。
+      按 Esc + 1 可取消内外输切换，进入“仅内输”。
+    </p>
+    <p class="section-lead reveal reveal-delay-2">
+      以「ime.py」为准：
+    </p>
+
+    <figure class="shot reveal">
+      <img
+        src="https://cdn.jsdelivr.net/gh/Amatiri/Elucidative-Chinese-IME@81360c6/help/%E5%86%85%E8%BE%93%E5%89%8D%E7%AB%AF.png"
+        alt="解书音形内输前端界面"
+        loading="lazy">
+      <figcaption>内输前端 · 顶部输入框实时显示内容，候选区显示剩余编码</figcaption>
+    </figure>
+
+    <div class="split-grid">
+      <div class="split-col reveal reveal-delay-1">
+        <h3 class="mini-title">外观与设置</h3>
+        <ul class="plain-list">
+          <li><b>顶部输入框</b>：实时显示输入内容，支持文本编辑。</li>
+          <li><b>三个显示标签</b>：词语候选与多字词首选组合、当前单字候选列表、状态提示（如「字 1/2 页 1」，一般隐藏）。</li>
+          <li><b>底部状态栏</b>：设置选项与字典条目数统计。</li>
+          <li><b>自动上字</b>：输入编码超过 3 位且候选唯一时，自动上屏。</li>
+          <li><b>优先上词</b>：词语候选排在首选字之前，空格优先上屏词语。</li>
+          <li><b>形部表</b>：显示笔画 / 构形 / 部首编码参考表，窗口高度自动调整。</li>
+          <li><b>外输精简</b>：去掉标题栏与设置区，仅保留输入框和一行候选预览。</li>
+        </ul>
+      </div>
+
+      <div class="split-col reveal reveal-delay-2">
+        <h3 class="mini-title">输入功能</h3>
+        <ul class="plain-list">
+          <li><b>单字输入</b>：<code>Shift+1~5</code> 选择第 1–5 个候选，<code>空格</code> 选第一个，<code>↑ / ↓</code> 翻页。</li>
+          <li><b>自动拆分</b>：系统自动将长编码拆分为多个字码，也可输入 <code>'</code> 单引号显式分隔。</li>
+          <li><b>切换选字</b>：<code>=</code> 切到下一个字，<code>-</code> 切到上一个字。</li>
+          <li><b>上屏</b>：<code>空格</code> 上屏所有首选字（或词语），<code>Shift+1 / Shift+2</code> 按顺序上屏。</li>
+          <li><b>剪贴板同步</b>：输入内容自动复制到剪贴板。</li>
+          <li><b>外输 Enter</b>：保留原来的编码上屏，不替代为相应汉字。</li>
+          <li><b>简打要点</b>：单字简码注意前切与后切，避免被自动拆分或自动上字“吃掉”。</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 学习路径 ========== -->
+  <section class="section" id="path">
+    <p class="section-label reveal">Learning Path</p>
+    <h2 class="section-title reveal reveal-delay-1">先用，再学。</h2>
+    <p class="section-lead reveal reveal-delay-2">
+      解书音形适合追求认知效率、又不愿死记硬背的用户。
+      不必等规则背完才开始——从第一次敲键起，路径会自己展开。
+    </p>
+
+    <div class="path-list">
+      <div class="path-item reveal">
+        <div class="path-stage">初期 <span>音码 + 主码基础</span></div>
+        <p class="path-desc">掌握双拼音码，再了解主码的数字编码与关键部首。只记前四码，就能覆盖大部分日常输入。</p>
+      </div>
+      <div class="path-item reveal reveal-delay-1">
+        <div class="path-stage">中期 <span>副码与重码区分</span></div>
+        <p class="path-desc">在常用字实战中逐步熟悉副码规则。遇到同音同主码的字，自然记住区分方式，而非集中背诵。</p>
+      </div>
+      <div class="path-item reveal reveal-delay-2">
+        <div class="path-stage">高级 <span>全规则与特例</span></div>
+        <p class="path-desc">补码、未简字副码、余单笔画特殊编码——这些规则在需要时查阅即可，不必成为入门的负担。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 工具与资源 ========== -->
+  <section class="section tint" id="tools">
+    <p class="section-label reveal">Tools &amp; Resources</p>
+    <h2 class="section-title reveal reveal-delay-1">码表之外，<br>还有一整套工具。</h2>
+    <p class="section-lead reveal reveal-delay-2">
+      main.py 提供批量录入、添加单字、编辑修改、分析音区、整理码表、添加理据、查询字码、添加词语、猜测编码等管理功能。
+      部分能力已 CLI 化，运行
+      <code style="font-family:var(--font-mono); background:var(--cinnabar-soft); padding:2px 6px; border-radius:2px; font-size:0.9em; color:var(--cinnabar);">python main.py -h</code>
+      查看。
+    </p>
+
+    <div class="feature-grid">
+      <div class="feature-item reveal"><h4>批量录入</h4><p>输入一串汉字，自动生成音码，为每个读音指定形码，自动处理重码冲突。</p></div>
+      <div class="feature-item reveal reveal-delay-1"><h4>整理码表</h4><p>自动去重排序，一级简码优先，生成网页码表与理据数据。新克隆仓库建议先跑一次。</p></div>
+      <div class="feature-item reveal reveal-delay-2"><h4>添加理据</h4><p>为合体字补充手工理据，支持按序、随机、指定汉字三种模式，自动保存。</p></div>
+      <div class="feature-item reveal reveal-delay-3"><h4>查询字码</h4><p>输入汉字，显示已有编码，多个读音斜杠分隔，同时输出未编码汉字串。</p></div>
+      <div class="feature-item reveal"><h4>添加词语</h4><p>两字词自动生成组合编码，多字词支持默认或手动序列，可保存多个编码变体。</p></div>
+      <div class="feature-item reveal reveal-delay-1"><h4>猜测编码</h4><p>随机抽字，猜主码 / 猜副码，猜对后显示完整编码，以游戏方式巩固记忆。</p></div>
+    </div>
+
+    <div class="tools-row reveal reveal-delay-2">
+      <a class="tool-link" href="https://jmwztu.netlify.app/" target="_blank" rel="noopener">交互式键位图 <span class="arrow">→</span></a>
+      <a class="tool-link" href="https://iaxp.netlify.app/" target="_blank" rel="noopener">编码查询 <span class="arrow">→</span></a>
+      <a class="tool-link" href="https://amatiri.github.io/Elucidative-Chinese-IME/mobile" target="_blank" rel="noopener">移动端README <span class="arrow">→</span></a>
+      <a class="tool-link" href="https://amatiri.github.io/Elucidative-Chinese-IME/help/%E8%A7%84%E5%88%99%E6%96%87%E6%9C%AC.html" target="_blank" rel="noopener">完整编码规则 <span class="arrow">→</span></a>
+    </div>
+  </section>
+
+  <!-- ========== 页脚 ========== -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand reveal">解书音形<span>.</span></div>
+      <div class="footer-note reveal reveal-delay-1">
+        以音切入，以义定形。<br>
+        <a href="https://github.com/Amatiri/Elucidative-Chinese-IME" target="_blank" rel="noopener">github.com/Amatiri/Elucidative-Chinese-IME</a><br>
+        <span style="opacity:0.65;">规则文本为解释性归纳，实际编码为准。</span>
+      </div>
+    </div>
+  </footer>
+
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  var reduceMotion = window.matchMedia &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var sleep = function (ms) {
+    return new Promise(function (r) { setTimeout(r, ms); });
+  };
+
+  /* ========== 顶部导航滚动状态 ========== */
+  var topbar = document.getElementById('topbar');
+  window.addEventListener('scroll', function () {
+    topbar.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
+
+  /* ========== 渐显动画：IntersectionObserver ========== */
+  var revealEls = document.querySelectorAll('.reveal');
+
+  if ('IntersectionObserver' in window) {
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.12,
+      rootMargin: '0px 0px -40px 0px'
+    });
+
+    revealEls.forEach(function (el) { observer.observe(el); });
+  } else {
+    revealEls.forEach(function (el) { el.classList.add('is-visible'); });
+  }
+
+  /* ========== 字例一：「意」打字机 ========== */
+  var twCode = document.getElementById('tw-code');
+  var twCand = document.getElementById('tw-cand');
+  var twNote = document.getElementById('tw-note');
+  var twSection = document.getElementById('examples');
+
+  var FRAMES = [
+    { code: 'y',     cand: '有', note: '只打声母 · 先出最常用的字' },
+    { code: 'yi',    cand: '一', note: '补上韵码 · 候选收窄' },
+    { code: 'yi4',   cand: '一', note: '补上调码 · 仍是「一」' },
+    { code: 'yi4x',  cand: '忆', note: '补主码 x（心部）· 出「忆」' },
+    { code: 'yi4xl', cand: '意', note: '再补副码 l（上部「立」）· 唯一确定「意」' }
+  ];
+
+  var FINAL_NOTE = '音码 yi4 → 主码 x（心部）→ 副码 l（上部「立」），编码锁定为 yi4xl。';
+
+  function setCand(text) {
+    twCand.textContent = text;
+    twCand.classList.remove('pop');
+    // 强制回流以重启动画
+    void twCand.offsetWidth;
+    twCand.classList.add('pop');
+  }
+
+  async function playSingle() {
+    var prev = '';
+
+    twCode.textContent = '';
+    twCand.textContent = '—';
+    twCand.classList.remove('pop');
+    twNote.textContent = '音码 → 主码 → 副码，逐位收紧候选';
+    await sleep(1100);
+
+    for (var i = 0; i < FRAMES.length; i++) {
+      var f = FRAMES[i];
+      var added = f.code.slice(prev.length);
+
+      for (var j = 0; j < added.length; j++) {
+        twCode.textContent += added[j];
+        await sleep(170);
+      }
+
+      prev = f.code;
+      setCand(f.cand);
+      twNote.textContent = f.note;
+      await sleep(820);
+    }
+
+    twNote.textContent = FINAL_NOTE;
+    await sleep(3000);
+
+    playSingle(); // 循环播放
+  }
+
+  function renderSingleStatic() {
+    twCode.textContent = 'yi4xl';
+    twCand.textContent = '意';
+    twNote.textContent = FINAL_NOTE;
+  }
+
+  if (twSection && twCode) {
+    if (reduceMotion || !('IntersectionObserver' in window)) {
+      renderSingleStatic();
+    } else {
+      var startedSingle = false;
+      var singleIO = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting && !startedSingle) {
+            startedSingle = true;
+            playSingle();
+            singleIO.disconnect();
+          }
+        });
+      }, { threshold: 0.25 });
+      singleIO.observe(twSection);
+    }
+  }
+
+  /* ========== 字例二：「解书音形」四格 ========== */
+  var cdEls = Array.prototype.slice.call(document.querySelectorAll('.char-demo'));
+
+  async function playCharDemo(el) {
+    var codeEl = el.querySelector('.cd-code');
+    var noteEl = el.querySelector('.cd-note');
+    var code = el.dataset.code || '';
+
+    codeEl.textContent = '';
+    noteEl.textContent = '';
+
+    for (var i = 0; i < code.length; i++) {
+      codeEl.textContent += code[i];
+      await sleep(160);
+    }
+
+    el.classList.add('done');
+    noteEl.textContent = el.dataset.note || '';
+  }
+
+  async function playAllChars() {
+    for (var i = 0; i < cdEls.length; i++) {
+      await playCharDemo(cdEls[i]);
+      await sleep(340);
+    }
+  }
+
+  function renderCharsStatic() {
+    cdEls.forEach(function (el) {
+      el.querySelector('.cd-code').textContent = el.dataset.code || '';
+      el.querySelector('.cd-note').textContent = el.dataset.note || '';
+      el.classList.add('done');
+    });
+  }
+
+  if (cdEls.length) {
+    if (reduceMotion || !('IntersectionObserver' in window)) {
+      renderCharsStatic();
+    } else {
+      var grid = document.querySelector('.char-demo-grid');
+      var startedChars = false;
+      var charsIO = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting && !startedChars) {
+            startedChars = true;
+            playAllChars();
+            charsIO.disconnect();
+          }
+        });
+      }, { threshold: 0.3 });
+      charsIO.observe(grid);
+    }
+  }
+})();
+</script>
+
+</body>
+</html>

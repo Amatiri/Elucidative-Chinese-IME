@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>解书音形 · 编码规则</title>
+<style>
+  /* ========== 基础变量：完全沿用主页 ========== */
+  :root {
+    --paper: #f7f2e9;
+    --paper-deep: #efe7da;
+    --paper-lite: #fdfaf4;
+    --ink: #2c241e;
+    --ink-soft: #5a4e44;
+    --ink-faint: #8a7d70;
+    --cinnabar: #b33a2e;
+    --cinnabar-soft: rgba(179, 58, 46, 0.08);
+    --gold: #a8894a;
+    --line: rgba(90, 78, 68, 0.14);
+    --line-strong: rgba(90, 78, 68, 0.26);
+
+    --shadow-sm: 0 1px 2px rgba(44, 36, 30, 0.04), 0 8px 20px -12px rgba(44, 36, 30, 0.16);
+    --shadow-md: 0 2px 4px rgba(44, 36, 30, 0.04), 0 20px 44px -24px rgba(44, 36, 30, 0.30);
+
+    --font-title: "KaiTi", "STKaiti", "Kaiti SC", "Songti SC", "SimSun", serif;
+    --font-body: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    --font-mono: "Courier New", "SFMono-Regular", Consolas, monospace;
+
+    --sidebar-w: 200px;
+    --content-max: 900px;
+    --header-h: 56px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--header-h) + 24px);
+  }
+
+  body {
+    background-color: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.9;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* 宣纸纹理：与主页一致 */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.40;
+    background-image:
+      repeating-linear-gradient(90deg,
+        transparent 0px, transparent 3px,
+        rgba(160, 140, 110, 0.035) 3px, rgba(160, 140, 110, 0.035) 4px
+      ),
+      repeating-linear-gradient(0deg,
+        transparent 0px, transparent 5px,
+        rgba(160, 140, 110, 0.018) 5px, rgba(160, 140, 110, 0.018) 6px
+      ),
+      radial-gradient(ellipse at 20% 10%, rgba(200, 175, 135, 0.10), transparent 55%),
+      radial-gradient(ellipse at 80% 90%, rgba(180, 150, 120, 0.08), transparent 50%);
+  }
+
+  /* ========== 顶部条（移动端菜单按钮 + 标题） ========== */
+  .doc-header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    height: var(--header-h);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 0 24px;
+    background: rgba(247, 242, 233, 0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .doc-header-mark {
+    font-family: var(--font-title);
+    font-size: 18px;
+    letter-spacing: 0.14em;
+    color: var(--ink);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .doc-header-mark span { color: var(--cinnabar); }
+  .doc-header-title {
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    color: var(--ink-faint);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .menu-btn {
+    display: none;
+    width: 36px; height: 36px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--line-strong);
+    border-radius: 3px;
+    background: rgba(255, 253, 249, 0.7);
+    cursor: pointer;
+    font-size: 18px;
+    color: var(--ink-soft);
+    flex: none;
+  }
+
+  /* ========== 布局 ========== */
+  .doc-layout {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    max-width: 2000px;
+    margin: 0 auto;
+    padding: 0 28px;
+    padding-top: var(--header-h);
+    align-items: flex-start;
+  }
+
+  /* ========== 左侧导航栏 ========== */
+  .doc-sidebar {
+    position: sticky;
+    top: var(--header-h);
+    flex: none;
+    width: var(--sidebar-w);
+    max-height: calc(100vh - var(--header-h));
+    overflow-y: auto;
+    padding: 36px 24px 48px 0;
+    scrollbar-width: thin;
+    scrollbar-color: var(--line-strong) transparent;
+  }
+  .doc-sidebar::-webkit-scrollbar { width: 4px; }
+  .doc-sidebar::-webkit-scrollbar-thumb { background: var(--line-strong); border-radius: 2px; }
+
+  .sidebar-label {
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--cinnabar);
+    margin-bottom: 16px;
+    padding-left: 12px;
+  }
+  .sidebar-label::before {
+    content: "";
+    display: inline-block;
+    width: 14px; height: 1px;
+    background: var(--cinnabar);
+    vertical-align: middle;
+    margin-right: 8px;
+    opacity: 0.6;
+  }
+
+  .toc-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+  .toc-list li { position: relative; }
+
+  .toc-link {
+    display: block;
+    padding: 5px 12px 5px 14px;
+    font-size: 13.5px;
+    line-height: 1.7;
+    color: var(--ink-soft);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    border-radius: 0 2px 2px 0;
+  }
+  .toc-link:hover {
+    color: var(--ink);
+    background: rgba(255, 253, 249, 0.7);
+  }
+  .toc-link.is-active {
+    color: var(--cinnabar);
+    border-left-color: var(--cinnabar);
+    background: var(--cinnabar-soft);
+    font-weight: 500;
+  }
+
+  .toc-level-3 .toc-link {
+    padding-left: 30px;
+    font-size: 12.5px;
+    color: var(--ink-faint);
+  }
+  .toc-level-3 .toc-link.is-active {
+    color: var(--cinnabar);
+    border-left-color: rgba(179, 58, 46, 0.45);
+  }
+
+  /* ========== 正文区域 ========== */
+  .doc-content {
+    flex: 1;
+    min-width: 0;
+    max-width: var(--content-max);
+    margin: 0 auto;
+    padding: 48px 0 120px;
+  }
+
+  /* 正文标题层级：衬线标题 + 朱砂装饰，与主页一致 */
+  .doc-content h1 {
+    font-family: var(--font-title);
+    font-size: clamp(34px, 4.2vw, 44px);
+    font-weight: 400;
+    line-height: 1.3;
+    letter-spacing: 0.05em;
+    color: var(--ink);
+    margin: 0 0 12px;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.55), 0 10px 30px rgba(44, 36, 30, 0.06);
+  }
+  .doc-content h1 + p {
+    font-size: 14px;
+    color: var(--ink-faint);
+    letter-spacing: 0.04em;
+    margin-bottom: 36px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .doc-content h2 {
+    font-family: var(--font-title);
+    font-size: clamp(25px, 3vw, 30px);
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: 0.06em;
+    color: var(--ink);
+    margin: 64px 0 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+    scroll-margin-top: calc(var(--header-h) + 20px);
+  }
+  .doc-content h2:first-of-type { margin-top: 0; }
+
+  .doc-content h3 {
+    font-family: var(--font-title);
+    font-size: 21px;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    color: var(--ink);
+    margin: 40px 0 12px;
+    padding-left: 12px;
+    border-left: 2px solid var(--cinnabar);
+    scroll-margin-top: calc(var(--header-h) + 16px);
+  }
+
+  .doc-content h4 {
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+    margin: 28px 0 8px;
+    scroll-margin-top: calc(var(--header-h) + 12px);
+  }
+
+  .doc-content p {
+    margin: 0 0 14px;
+    color: var(--ink-soft);
+  }
+  .doc-content p strong, .doc-content li strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .doc-content p em { color: var(--cinnabar); font-style: normal; }
+
+  .doc-content a {
+    color: var(--cinnabar);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(179, 58, 46, 0.30);
+    transition: border-color 0.2s;
+  }
+  .doc-content a:hover { border-bottom-color: var(--cinnabar); }
+
+  /* 列表 */
+  .doc-content ul, .doc-content ol {
+    margin: 0 0 16px;
+    padding-left: 22px;
+    color: var(--ink-soft);
+  }
+  .doc-content li {
+    margin-bottom: 6px;
+    line-height: 1.85;
+  }
+  .doc-content li::marker { color: var(--cinnabar); opacity: 0.7; }
+
+  /* 分隔线 */
+  .doc-content hr {
+    border: none;
+    height: 1px;
+    background: var(--line);
+    margin: 36px 0;
+  }
+
+  /* 引用 / 提示块 */
+  .doc-content blockquote {
+    margin: 20px 0;
+    padding: 14px 20px;
+    border-left: 2px solid var(--gold);
+    background: rgba(168, 137, 74, 0.06);
+    color: var(--ink-soft);
+    font-size: 14px;
+    border-radius: 0 3px 3px 0;
+  }
+  .doc-content blockquote p:last-child { margin-bottom: 0; }
+
+  /* 代码 / 编码示例 */
+  .doc-content code {
+    font-family: var(--font-mono);
+    font-size: 0.88em;
+    padding: 1px 6px;
+    border-radius: 2px;
+    background: var(--cinnabar-soft);
+    color: var(--cinnabar);
+  }
+  .doc-content pre {
+    margin: 16px 0 20px;
+    padding: 18px 20px;
+    background: var(--paper-lite);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    overflow-x: auto;
+    box-shadow: var(--shadow-sm);
+  }
+  .doc-content pre code {
+    background: none;
+    color: var(--ink);
+    padding: 0;
+    font-size: 13.5px;
+    line-height: 1.75;
+    white-space: pre;
+  }
+
+  /* 表格：长文表格可横向滚动 */
+  .table-wrap {
+    overflow-x: auto;
+    margin: 16px 0 24px;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    background: rgba(255, 253, 249, 0.5);
+  }
+  .doc-content table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    line-height: 1.75;
+    min-width: 520px;
+  }
+  .doc-content th {
+    text-align: left;
+    padding: 10px 14px;
+    font-weight: 600;
+    color: var(--ink);
+    background: var(--paper-deep);
+    border-bottom: 1px solid var(--line-strong);
+    white-space: nowrap;
+  }
+  .doc-content td {
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink-soft);
+    vertical-align: top;
+  }
+  .doc-content tr:last-child td { border-bottom: none; }
+  .doc-content tr:hover td { background: rgba(255, 253, 249, 0.7); }
+
+  /* 部首表 / 部首次表 的紧凑多行文本 */
+  .compact-block {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 2;
+    color: var(--ink-soft);
+    padding: 12px 16px;
+    background: rgba(255, 253, 249, 0.55);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    margin: 10px 0 16px;
+    overflow-x: auto;
+  }
+
+  /* 返回顶部 */
+  .back-top {
+    position: fixed;
+    right: 28px;
+    bottom: 32px;
+    z-index: 50;
+    width: 40px; height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--line-strong);
+    border-radius: 50%;
+    background: rgba(247, 242, 233, 0.92);
+    color: var(--ink-soft);
+    font-size: 16px;
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s, transform 0.3s, border-color 0.3s, color 0.3s;
+    backdrop-filter: blur(4px);
+    box-shadow: var(--shadow-sm);
+  }
+  .back-top.show { opacity: 1; pointer-events: auto; }
+  .back-top:hover {
+    border-color: var(--cinnabar);
+    color: var(--cinnabar);
+    transform: translateY(-2px);
+  }
+
+  /* ========== 移动端：侧栏收为抽屉 ========== */
+  @media (max-width: 900px) {
+    .doc-layout { padding: 0 20px; padding-top: var(--header-h); }
+    .doc-sidebar {
+      position: fixed;
+      top: var(--header-h);
+      left: 0;
+      bottom: 0;
+      width: min(300px, 82vw);
+      max-height: none;
+      padding: 28px 20px 40px;
+      background: rgba(247, 242, 233, 0.98);
+      border-right: 1px solid var(--line);
+      box-shadow: 8px 0 40px -20px rgba(44, 36, 30, 0.35);
+      transform: translateX(-100%);
+      transition: transform 0.32s cubic-bezier(0.22, 0.61, 0.36, 1);
+      z-index: 90;
+      backdrop-filter: blur(10px);
+    }
+    .doc-sidebar.open { transform: translateX(0); }
+    .menu-btn { display: flex; }
+    .doc-content { padding-top: 32px; }
+    .back-top { right: 18px; bottom: 24px; }
+  }
+
+  @media (max-width: 600px) {
+    .doc-content h2 { margin-top: 48px; }
+    .doc-content h3 { margin-top: 32px; }
+    .doc-header { padding: 0 16px; gap: 10px; }
+    .doc-header-title { font-size: 12px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .doc-sidebar { transition: none; }
+    .back-top { transition: none; }
+  }
+
+  /* 打印：隐藏侧栏，恢复自然流 */
+  @media print {
+    .doc-header, .doc-sidebar, .back-top, .menu-btn { display: none !important; }
+    .doc-layout { display: block; padding: 0; }
+    .doc-content { max-width: 100%; padding: 0; }
+    body::before { display: none; }
+    .doc-content h2 { page-break-after: avoid; }
+    .doc-content pre, .doc-content table { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ========== 顶部条 ========== -->
+<header class="doc-header">
+  <button class="menu-btn" id="menuBtn" aria-label="打开目录" aria-expanded="false">☰</button>
+  <a href="#" class="doc-header-mark">解书音形<span>.</span></a>
+  <span class="doc-header-title">编码规则</span>
+</header>
+
+<div class="doc-layout">
+
+  <!-- ========== 左侧导航 ========== -->
+  <aside class="doc-sidebar" id="sidebar">
+    <p class="sidebar-label">目录</p>
+    <nav aria-label="文档目录">
+      <ul class="toc-list" id="tocList">
+        <!-- JS 从正文标题自动生成 -->
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- ========== 正文 ========== -->
+  <main class="doc-content" id="docContent">
+
+    <h1>解书音形编码规则</h1>
+
+    <h2 id="前言">前言</h2>
+    <p>解书音形是一种<strong>音形结合、零重码、可自定义</strong>的现代汉字输入方案,采用ABCD(E)(.F)的编码结构,兼顾<strong>易学性</strong>和<strong>高效率</strong>。本输入法秉承“<strong>知音辨形,高效输入</strong>”的理念,让用户在掌握拼音的基础上,通过少量形码规则即可实现高速盲打。解书音形的编码是一个充分考虑字源字义,又以现代字型为准的编码方案,保持文化敏感:编码反映汉字的结构演变和文化内涵,以音切入,以义定形,动态分配,注释避重。</p>
+    <p><a href="https://amatiri.github.io/Elucidative-Chinese-IME/">回到程序使用</a></p>
+
+    <h2 id="一、编码结构概览">一、编码结构概览</h2>
+    <p>每个汉字的完整编码由以下部分组成:</p>
+    <pre><code>ABCD(E)(.F)</code></pre>
+    <p>其中:</p>
+    <ul>
+      <li><strong>ABC(音码)</strong>:基础音码,忠实记录真实、准确的发音(必填)</li>
+      <li><strong>DEF(形码)</strong>:书写描述。有一个重要的原则:在规范、直觉、效率之间做平衡
+        <ul>
+          <li><strong>D</strong>:主码:部首/独体区分形码(必填)</li>
+          <li><strong>E</strong>:副码:余字/查重注释形码(可选)</li>
+          <li><strong>F</strong>:补码:繁异/同义补充形码(可选)</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h3 id="核心要点">核心要点:</h3>
+    <p><strong>核心思想</strong></p>
+    <p><strong>常用优先</strong>:最常用字编码最短 <strong>零重码</strong>:每个编码都有唯一汉字</p>
+    <p><strong>音码:</strong> 搜狗双拼+声调,0轻声。</p>
+    <p><strong>主码:</strong></p>
+    <ol>
+      <li><strong>独体数字编码(按优先级)</strong> 3开形(八) &gt; 6大形(大) &gt; 0闭形(口) &gt; 5称形(中) &gt; 1竖形(丨)
+        = 2横形(一) &gt; 4错形(㐅) &gt; 7偏形(厂) &gt; 9复形(复) &gt; 8奇形(乙)</li>
+      <li><strong>合体字母编码(部首→部首码)</strong>
+        <p><strong>关键部首码</strong>:</p>
+        <ul>
+          <li>j=金,k=口,m=木,r=人,s=丝,t=土,u=水,x=心,y=言</li>
+        </ul>
+        <p>完整部首表作为参考</p>
+      </li>
+    </ol>
+    <p><strong>副码:</strong></p>
+    <ol>
+      <li><strong>何时需要副码?</strong>
+        <p>同音码+同主码(前四码都相同)的若干合体字,除最常用字,其余字都需副码。</p>
+      </li>
+      <li><strong>副码选择顺序</strong> 空 &gt; 部首别码 &gt; 余字解析码 &gt; e &gt; ;</li>
+      <li><strong>核心方法</strong> 部件在部首表内取部首码,表外取初码</li>
+    </ol>
+    <p><strong>补码与特殊规则</strong></p>
+    <ol>
+      <li><strong>补码格式:.X</strong>
+        <ul>
+          <li>主要用于繁体字、异体字</li>
+          <li>日常输入很少用到</li>
+        </ul>
+      </li>
+      <li><strong>特殊规则摘要</strong>
+        <ul>
+          <li>独体字没有副码</li>
+          <li>未简字副码(若有)优先为;</li>
+          <li>余单笔画有特殊编码</li>
+        </ul>
+      </li>
+    </ol>
+    <p>键位图:<a href="https://jmwztu.netlify.app/">解书音形 · 交互式键位图</a></p>
+    <p>查询汉字: <a href="https://iaxp.netlify.app/">解书音形 · 编码查询</a></p>
+    <p><strong>设计理念总结</strong></p>
+    <ol>
+      <li><strong>三层结构</strong> 音码(ABC) → 形部(D) → 补充(E/F)
+        <ul>
+          <li>知道读音就能输入</li>
+          <li>记少量形码就能精确</li>
+        </ul>
+      </li>
+      <li><strong>渐进学习</strong>
+        <ul>
+          <li>初期:掌握音码,再掌握主码基础,只记前四码</li>
+          <li>中期:常用字实战练习,再逐步学习副码,区分重码</li>
+          <li>高级:掌握全规则</li>
+        </ul>
+      </li>
+      <li><strong>实用主义</strong>
+        <ul>
+          <li>规则为效率服务</li>
+          <li>相似字编码模式一致</li>
+        </ul>
+      </li>
+    </ol>
+    <p><strong>学习建议</strong>:<strong>先用再学</strong>、<strong>实战为主</strong>、<strong>善用工具</strong>。</p>
+    <p>这套输入法适合追求认知效率又不愿死记硬背的用户。该规则是对既有编码状况的解释性归纳描述,作用是帮助理解编码的内在逻辑和常见模式,而非机械地规定每个汉字必须如何编码。当与实际编码不一致时,以实际编码为准,并作为优化分配特例。</p>
+
+    <h2 id="二、音码编码规则">二、音码编码规则</h2>
+    <p><strong>转换原则</strong>:将全拼(不含声调)拆分为声母和韵母,分别映射到双拼字母,然后附加声调数字。整个过程是<strong>机械的、一一对应的</strong>,不引入额外变化。(严格使用搜狗双拼)</p>
+    <p><strong>初码(A)声母:</strong> zh,ch,sh→v,i,u。</p>
+    <p>零声母:a,o,e→o。全拼中不存在以i,u,ü开头的拼音,分别视为声母y,w,y。</p>
+    <p>其他声母同全拼。</p>
+    <p><strong>韵码(B)韵母:</strong></p>
+    <p>a,e,i,o,u同全拼。</p>
+    <p>iu→q,ua/ia→w,uan/üan/er→r,üe→t,uai/ü→y(声母jqxy的,ü→u),uo→o,un/ün→p,ong/iong→s,uang/iang→d,en→f,eng→g,ang→h,an→j,ao→k,ai→l,ei→z,ie→x,iao→c,ui→v,ou→b,in→n,ian→m,ing→;</p>
+    <p><em>以下为音码键位图</em></p>
+    <figure>
+      <img src="https://cdn.jsdelivr.net/gh/Amatiri/Elucidative-Chinese-IME@78ab99a/help/%E9%9F%B3%E7%A0%81%E9%94%AE%E4%BD%8D.png" alt="音码键位" style="max-width:100%; height:auto; border:1px solid var(--line); border-radius:3px;" loading="lazy">
+    </figure>
+    <p><strong>调码(C)声调:</strong></p>
+    <p>用数字标记:0为轻声,1为阴平,2为阳平,3为上声,4为去声。</p>
+    <p>多音字按其具体读音的声调分配调码。存在口语变调的字按变调后实际读音取码。</p>
+    <p>除此之外,还有一些特殊<strong>语气词</strong>音节需要特定编码补充,有:<br>
+    hng→hn,hm→hm,ng→nv,n→on,m→mv,ê→ei→oz。</p>
+
+    <h2 id="三、主码编码规则">三、主码编码规则</h2>
+    <p>主码是编码中的第四位,用于区分同音字。它将汉字分为<strong>独体字</strong>和<strong>合体字</strong>两大类,并赋予不同的编码规则。因此,主码又称“形部码”。</p>
+
+    <h3 id="1-合体字判定标准">1. 合体字判定标准</h3>
+    <p>一个汉字是否属于合体字,按照以下标准判断:</p>
+    <ul>
+      <li><strong>可拆分性</strong>:能够拆出<strong>非单笔画部首</strong>的字,视为合体字;否则为独体字。“拆”要求独立明显,不交错、不穿插、不粘连。取完部首后,剩下的部件应尽量成字,避免拆分出无意义的部件。</li>
+      <li><strong>现代字形原则</strong>:所有字源不清的字(包括错释、模棱两可、关系复杂、隶变等),统一按现代字形处理。※对于独体合体分辨不清的,也要优化分配(3.3)。</li>
+      <li><strong>解书拆分法</strong>:为了实现精确拆分,我们采用“解书”拆字法。</li>
+    </ul>
+
+    <h3 id="2-独体字的分类与优先级独体构形">2. 独体字的分类与优先级(独体构形)</h3>
+    <p>独体字根据其字形特征分为以下10类(主码为数字),并按照优先级从高到低排列:</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>类别</th><th>主码</th><th>特征说明</th><th>例字</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>开形</td><td>3</td><td>笔画相互分开</td><td>二三六八火</td></tr>
+          <tr><td>大形</td><td>6</td><td>横、撇、捺构成汉字主要框架</td><td>矢水米乘求</td></tr>
+          <tr><td>闭形</td><td>0</td><td>有占据主导地位的封闭部件</td><td>自酉曲凸甘</td></tr>
+          <tr><td>称形</td><td>5</td><td>可构成上下或左右对称</td><td>中且臣丞丽</td></tr>
+          <tr><td>竖形</td><td>1</td><td>字形瘦高,或有贯穿汉字的竖画</td><td>生主已幺毛</td></tr>
+          <tr><td>横形</td><td>2</td><td>字形矮宽,或有贯穿汉字的横画</td><td>人之而瓜也</td></tr>
+          <tr><td>错形</td><td>4</td><td>有占主导的交错粘连的笔画</td><td>刀舟正不壬</td></tr>
+          <tr><td>偏形</td><td>7</td><td>汉字重心不稳,左下角或右下角空缺</td><td>产勿今母耳</td></tr>
+          <tr><td>复形</td><td>9</td><td>结构复杂,包含多个符合上述形状的结构;或隶变后无法辨认拆形而导致的独体字</td><td>南先弗巳重</td></tr>
+          <tr><td>奇形</td><td>8</td><td>以上字形都不符合,或以上字形都被更常用的字占用所产生的重码独体字字形</td><td>乙乂丩厶</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>注意</strong>:</p>
+    <ul>
+      <li>优先级表示当某个汉字符合多个类别时,按优先级高的类别编码。横形与竖形实际上是同级互斥。</li>
+      <li>对于独体字的衍生,只有当衍生出的新字并未构成任何新构形时,才采用原构形;否则均认为原构形被打破,使用新构形。</li>
+      <li>独体字现代字形必须像独体字——这是判断复形独体字的重要标准。</li>
+    </ul>
+
+    <h3 id="3-合体字的部首选取规则">3. 合体字的部首选取规则</h3>
+    <p>合体字的主码为其<strong>部首</strong>的部首码,部首的选取遵循以下规则:(康熙部首+优化分配)</p>
+
+    <h4 id="3-1-基本原则">3.1 基本原则</h4>
+    <ol>
+      <li><strong>直觉优先:</strong> 按直觉如果能拆出一个明确无歧义的部首,则直接取该部首。</li>
+      <li><strong>康熙部首验证</strong>:如果按直觉拆出多个部首,或按直觉难以确定部首,则根据《康熙字典》所规定的部首确定。根据常识,部首优先为形旁。汉字的部首不能取自己(即不能用整个字作为自己的部首),但是可以取部首的变体。</li>
+      <li><strong>优化分配</strong>:若康熙部首取自己,或者在现代字形中难以辨认,或者出于避重、历史编码因素考虑,需要进行部首的优化分配(3.3)。</li>
+      <li><strong>部首表对应</strong>:大多数部首已在部首表中给出,直接对应其部首码(见部首表),如果不在部首表中,则需要进行处理(3.4)。</li>
+    </ol>
+
+    <h4 id="3-2-部首表部首次表">3.2 部首表&amp;部首次表(加粗为别码部首,需格外记忆)</h4>
+    <p><strong>部首表</strong></p>
+    <div class="compact-block">
+a:丶一丨丿乙乛<strong>𠃌</strong>乚𡿨<br>
+b:宀<strong>阝</strong>冫贝疒白卜八匕癶<br>
+c:<strong>车</strong>艹<strong>厂凵</strong>寸卄屮<br>
+d:刀歹大<strong>亠冖丷</strong>斗豆<br>
+e:&lt;无&gt;<br>
+f:风方父缶<strong>臼辰</strong>非<br>
+g:工广弓光囗革戈瓜艮谷骨<br>
+h:火户禾<strong>⺌羊</strong>虍黑<br>
+i:虫<strong>页雨弋彐彑</strong>臣赤𡗗尺<br>
+j:金巾廴冂几𠘨卩己见斤皀<br>
+k:口<strong>又舌用角</strong><br>
+l:娄<strong>云勹</strong>力龙老卤里卵<br>
+m:木<strong>彡釆</strong>马门皿毛目矛米麦<br>
+n:女牛鸟<strong>耒齿</strong><br>
+o:耳<strong>匚</strong>二儿<strong>㔾</strong><br>
+p:攴片<strong>殳</strong>丬皮<strong>髟㐅</strong><br>
+q:气犬<strong>豸</strong>欠青<br>
+r:人肉入日<strong>リ</strong><br>
+s:<strong>示</strong>丝<strong>石尸十</strong>厶巳<br>
+t:土<strong>彳幺夕</strong>田<br>
+u:<strong>攵</strong>水矢手食山士豕身<br>
+v:<strong>乑</strong>争舟止爪<strong>鬼</strong>支<br>
+w:王网瓦韦<strong>隹</strong>文<br>
+x:穴𰃮心西小<strong>巛</strong>血辛习<br>
+y:言酉月鱼衣尢聿业羽<strong>黾</strong>音<br>
+z:<strong>辶竹</strong>足子自走
+    </div>
+    <p><strong>部首次表</strong></p>
+    <div class="compact-block">
+a: dhupygkwv<br>
+b: ku;zglsaio<br>
+c: ekhypgi<br>
+d: klahpmbu<br>
+e:<br>
+f: ghubqiz<br>
+g: sdvmoexwfur<br>
+h: ouedylz<br>
+i: seuxohftpi<br>
+j: rnztifswmpd<br>
+k: byusj<br>
+l: bypiskutr<br>
+m: usbafnkoyil<br>
+n: yqcli<br>
+o: rbhpe<br>
+p: umyjibn<br>
+q: irvm;<br>
+r: fbuil<br>
+s: uikpjmw<br>
+t: uiyxm<br>
+u: wvibrjhnf<br>
+v: sgbiwmk<br>
+w: hxazvf<br>
+x: tdnicpmsb<br>
+y: jbtuihlexkn<br>
+z: vruipb
+    </div>
+    <p>注:a行收录单笔画,通过<strong>部首次码</strong>在副码中得到应用,主码不能取单笔画部首,因此不取a。</p>
+
+    <h4 id="3-3-优化分配方法">3.3 优化分配方法</h4>
+    <p>由于“现代字形,避重,历史”三个原因,部首的优化分配诞生了以下方法:</p>
+    <ol>
+      <li><strong>独体字/合体字判定</strong>:确保合体字判定准确。</li>
+      <li><strong>康熙部首为本字</strong>:按解书拆分进一步取部首。</li>
+      <li><strong>主码冲突</strong>:当不同部首对应同一部首码(字母)时,可以调整以避免重码。</li>
+      <li><strong>亲缘衍生忽略</strong>:若音码不同,可忽略亲缘衍生关系。</li>
+      <li><strong>特定部首规则</strong>:部分部首有特殊规则(如外“行”取彳,含廾取廾)。</li>
+      <li><strong>现代字形与左上原则</strong>:部首的选取需在现代汉字结构下具有区分度。如果传统部首因隶变、简化等原因在现代字形中难以辨认,或造成重码问题/与现代字形差异过大,则按解书拆分选取左/上/外部件。隶变后变得模糊难以辨认的部件,一般跳过不取。</li>
+      <li><strong>包围声旁处理</strong>:声旁特征不明显或被外部特征覆盖时,若仅此一字如此,则取外声旁;若多字如此,则取内部件。</li>
+      <li><strong>简体问题</strong>:有些简化字按简化前的繁体字形处理。</li>
+      <li><strong>简并/非部首字合理跳过</strong>:若有其他部首,则不取简并部首或者未收录的成字部首。</li>
+      <li><strong>字源参考</strong>:在无法决断时,可参考字源。</li>
+    </ol>
+    <p>尽管方法众多,但通常情况下,《康熙字典》所规定的部首就是最优解。</p>
+    <p>根据优化分配规则,需要着重理解的字例有:</p>
+    <p>巨5 平5 养d 就d 利h 临i 所j 月j 束k 乔k 事k 吏k 史k 数l 见m 贝m<br>
+    责q 音r 有r 旧r 旦r 更r 去t 冰u 皇w 买w 学x</p>
+
+    <h4 id="3-4-表外部首处理">3.4 表外部首处理</h4>
+    <p>以下部首不在部首表中,需进行如下调整:</p>
+    <p><strong>变体统一</strong>:<br>
+    亅→丨,夊夂→攵,廾→卄,⺈→刀,冃→日,疋𤴔龰→止,匸→匚,襾→西,龶→青,耂→老,灬→火,乂→㐅,𭠍→戈,巜→巛,𦣞→臣……</p>
+    <p><strong>非部首字代替</strong>(未收录的成字部首(独体),用其他的部首代替):<br>
+    夫→矢,正→止,长長镸→髟,玉→王,曰→日,申→田,干→十,无→二,牙→寸,甘→革,生→青,隶→聿,面→囗,韭→耒,飞→疒,鬥→门,兀→儿,毋母→女,亡→亠,朿→木……</p>
+    <p><strong>部首简并</strong>(部首本身包含其他部首(合体),进行简化合并):<br>
+    立→亠,鼠→臼,舛→夕,㫃→方,卧→臣,𮂱→禾,行→彳,𪧇→宀,亼→人,龠→人,鼻→自,齐(齊)→文,林→木,舍→人,多→夕,男→田,死→歹,比→匕,爻→㐅,玄→亠,禸→冂,至→土,色→刀,首→丷,香→禾,高→亠,鬯→匕,鬲→口,鹿→广,麻→广,黄黃→八,黍→禾,黹→业,鼎→目,鼓→支,龟→刀,厄→厂……</p>
+    <p><strong>罕部跳过</strong>(以下部首不采用,转而选取其他部件):<br>
+    氏,而。</p>
+
+    <h3 id="4-主码编码总结">4. 主码编码总结</h3>
+    <ul>
+      <li><strong>独体字</strong>:主码为数字(0-9),根据字形特征按优先级选取。</li>
+      <li><strong>合体字</strong>:主码为字母(b-z,不含a、e、;),对应部首表中的部首。</li>
+      <li><strong>禁用</strong>:a、e、; 不用于主码。</li>
+    </ul>
+
+    <h2 id="四、副码编码规则">四、副码编码规则</h2>
+    <p>副码是编码中的第五位,为<strong>可选扩展码</strong>。其主要作用是在前四码相同的一组字内实现<strong>零重码</strong>。副码的设计体现了“余部集合、部首传递”的核心思想。</p>
+    <p><strong>副码的存在规则</strong></p>
+    <ul>
+      <li><strong>副码省略原则</strong>:为缩短码长,最常用字<strong>没有副码</strong>(即空副码)。为统一码长,需要占位时使用a作为占空码,在码表中省略不写。</li>
+      <li><strong>独体字规则</strong>:独体字的副码一律为空,依靠主码数字区分实现零重码。</li>
+      <li><strong>常用度排序</strong>:在同一前四码组内,汉字按常用度排序:
+        <br>最常用字:空副码
+        <br>次常用字:优先占用高优先级字母
+        <br>后续字:若首选字母已被占用,则顺延至下一个可用字母</li>
+    </ul>
+    <p><strong>常用度判定标准</strong></p>
+    <p>当两个汉字常用度差别不大时,按以下优先级判定:可读性 &gt; 含义丰富度 &gt; 形声字声旁匹配度 &gt; 笔画数 &gt; 起笔。</p>
+    <p><strong>术语定义</strong></p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>术语</th><th>定义</th></tr></thead>
+        <tbody>
+          <tr><td><strong>余集合/余字</strong></td><td>汉字去除主码部首后剩余的部分,如果“余集合”成字,则称“余字”。</td></tr>
+          <tr><td><strong>余音</strong></td><td>余字的初码(双拼声母)</td></tr>
+          <tr><td><strong>余部</strong></td><td>余集合按“解书拆分”法进一步拆分的部件</td></tr>
+          <tr><td><strong>音似/音异</strong></td><td>余字与整字音码相似度。一般来说,余字的其中一个常用初码与整字相同为音似,否则为音异</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h3 id="副码选择优先级">副码选择优先级</h3>
+    <p>副码的选择遵循严格的优先级顺序:</p>
+    <p><strong>空副码 &gt; 部首别码 &gt; 余字解析码(余音/余部) &gt; e &gt; ;</strong></p>
+
+    <h4 id="1-部首别码">1. 部首别码</h4>
+    <p><strong>条件</strong>:余集合本身是《部首表》中的<strong>独立部首</strong>,且其部首码与其初码(余音)不同。则其部首码亦称为部首别码。反之若部首码与初码相同(音托),则称为无部首别码。对于有部首别码的部首,称为“别码部首”,需要着重记忆。</p>
+    <p><strong>例外</strong>:</p>
+    <ol>
+      <li>非部首字(如夫→矢)不在部首表中,无部首别码。</li>
+      <li>部首变体(如 龶→青)视作有部首别码。</li>
+    </ol>
+
+    <h4 id="2-余字解析码">2. 余字解析码</h4>
+    <p>当无部首别码时,按以下逻辑选择:(不成字视为难读,若余音被更高优先级的字占据,则取余部,反之同理)</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>情况</th><th>处理方式</th></tr></thead>
+        <tbody>
+          <tr><td><strong>余集合音似或难读</strong></td><td>优先取余部,可采用余部首传递</td></tr>
+          <tr><td><strong>余字音异且易读</strong></td><td>优先取余音,多个余音的,取常用余音。当余部失效时,允许在多个常用余音中次选</td></tr>
+          <tr><td><strong>独体字作余字</strong></td><td>尝试进一步拆分(见特殊规则3),若可拆分,则进入音似性+易读性判断,取余音或余部;若不可拆分,则只有余音。</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>递归嵌套规则</strong>:<br>
+    当余集合内部仍可拆分时,允许递归嵌套:</p>
+    <ul>
+      <li>“音”作为余字 → 余部“立” → “立”作为新余字 → 余部“亠”,余音l</li>
+      <li>“多”作为余字 → 余部“夕” → “夕”作为新余字 → 部首别码t,余音x</li>
+    </ul>
+    <h4 id="余部综合规则">余部综合规则</h4>
+    <p><strong>1. 余部首传递</strong></p>
+    <p>取余部时,如果余集合成字(合体字),则通常优先取余字的部首(参照主码取部首逻辑)作为副码来源。部首在部首表中则取部首码,不在表中则取初码。</p>
+    <p><strong>示例</strong>:</p>
+    <ul>
+      <li>“锌”:部首“钅”(金)→ 主码j,副字“辛”为合体字,部首为“立”,不在部首表,取初码l。</li>
+      <li>“锌”的副码取l(“辛”的部首)</li>
+    </ul>
+    <p><strong>2. 一般余集合选取</strong></p>
+    <p>余集合不成字时,按解书拆分顺序(左上→左下→右上→右下)依次考察各非单笔画部件。对每一部件,依次判断: 1.是否有部首别码,有→直接取为副码; 没有→2.是否易读, 难读→先跳过该部件; 易读→3.是否与整字音似, 音似→先跳过该部件; 音异→取部件常用初码。无码可取时可尝试进一步拆分,仍不可取时可逐步放开音似性和单笔画要求。</p>
+    <p><strong>3. 结构特殊规则</strong></p>
+    <p>在上下(左右)结构的字中,若满足以下条件:</p>
+    <ol>
+      <li>下(右)部为部首</li>
+      <li>上(左)部为音似余字</li>
+      <li>余字为上下(左右)结构,下(右)部为部首</li>
+    </ol>
+    <p>则取<strong>余字上(左)部</strong>作为副码,避免“抛外取内”。</p>
+    <p><strong>综合示例</strong>:</p>
+    <ol>
+      <li>“音”主码分析:
+        <ul>
+          <li>“音”在康熙字典中为“音部0画”</li>
+          <li>部首不能取自己,将“音”拆为“立”+“日”</li>
+          <li>“立”是简并部首(立→亠),“日”是表内部首</li>
+          <li>根据“简并部首跳过”原则,取“日”为部首 → 主码r</li>
+        </ul>
+      </li>
+      <li>“意”副码分析:
+        <ul>
+          <li>“意”为上下结构:上“音”下“心”</li>
+          <li>部首为“心”(下部),余字为“音”(上部)</li>
+          <li>“音”的余部为“立”+“日”,取上部“立”</li>
+          <li>“立”的初码为l</li>
+          <li>“意”的副码取l(余部“立”余音)</li>
+        </ul>
+      </li>
+    </ol>
+    <h4 id="特殊规则">特殊规则</h4>
+    <p><strong>1. 未简字处理</strong></p>
+    <p>在《通用规范汉字表》(8105)内,若有一个字<strong>未进行类推简化</strong>,缺失对应简体(或在表外但不能类推简化),称为“未简字”。</p>
+    <p><strong>规则</strong>:未简字的副码(若需)优先为;(分号)</p>
+    <p><strong>2. 余单笔画处理</strong></p>
+    <p>当一个字取完部首后<strong>仅剩单笔画</strong>,该笔画可取为副码。</p>
+    <p><strong>笔画与字母对应</strong>:“丶一丨丿乙乛𠃌乚𡿨”分别对应部首次码“dhupygkwv”。</p>
+    <p>有:系xi4sp/ji4sp。</p>
+    <p><strong>3 独体字余字拆分</strong></p>
+    <p>以下①-③条规则为<strong>或</strong>关系,满足任意一条即可判定为可拆分。为了增大拆分可能性,拆分时尽量拆成非单笔画结构。</p>
+    <p><strong>① 分离性可拆</strong>:汉字可分解为两个部件,至少其中一个部件不是单笔画且属于《部首表》,两个部件之间<strong>严格分离</strong>(即不粘连交错穿插,点接触也不行),即可拆分。</p>
+    <p><strong>② 字源性可拆</strong>:汉字可分解为两个部件,至少其中一个部件不是单笔画(若整字属于<strong>大形字</strong>(主码为6),则要求所有部件均不是单笔画),且康熙部首(不是单笔画)为两个部件之一,即可拆分。</p>
+    <p><strong>③ 结构性可拆: “丷亠”</strong>:汉字顶部存在“丷”或“亠”部件,且该部件未被其他笔画穿插或交错(允许外围粘连)。<strong>“冖”</strong>:汉字顶部存在“冖”部件,且其笔画是连续书写的,即可拆分,不受粘连/穿插/交错的限制。<strong>“勹”/“匚”</strong>:汉字以“勹”或“匚”作为包围外框(其他半包围外框如凵、冂等暂不适用)。<strong>“口”</strong>:汉字仅由两个部件组成,其中一个部件必须是“口”(不能是“日”“田”等变形),另一个部件必须是成字。满足任一结构特征即可拆分。</p>
+    <p><strong>④ 余音被占时次选</strong>:独体余字在前三条均不可拆分,但当余音被更高优先级字占据时:若其属于“非部首字代替”表(如干→十、兀→儿),可取代替目标的部首码作为副码;若不在“非部首字代替”表,但整字属于大形字(主码为6,即由于存在单笔画而被②筛掉的,比如“夬”),可取“大”部首码d。余音未被占据时仍取余音。</p>
+    <h4 id="宏观验证原则">宏观验证原则</h4>
+    <p>为确保编码系统的一致性和合理性,设置以下验证原则:</p>
+    <p><strong>1. 对称性原则</strong></p>
+    <p><strong>字形、结构相似的字,其编码模式应尽量保持一致。</strong></p>
+    <p><strong>2. 多条件优先</strong></p>
+    <p><strong>同时满足两个条件时,优先取支持原因多的条件。</strong></p>
+    <p><strong>3. 实用主义</strong></p>
+    <p>在规则冲突时,以实际编码效果和用户记忆负担为最终考量。</p>
+    <p><strong>4. 副码优化分配</strong></p>
+    <p>类似主码,副码也有适当优化分配。需要理解的字例有:进zw。</p>
+
+    <h2 id="五、简化解书拆分规则">五、简化解书拆分规则</h2>
+    <p>解书拆分规则本身<strong>不直接用于输入</strong>,而是作为主码和副码选取的<strong>理论依据和辅助工具</strong>,采用一套简洁的符号系统来描述汉字结构:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>类别</th><th>符号</th><th>含义</th></tr></thead>
+        <tbody>
+          <tr><td>左右结构</td><td>r.</td><td>⿰(左右并列)</td></tr>
+          <tr><td>左中右结构</td><td>rr.</td><td>⿲(左中右并列)</td></tr>
+          <tr><td>上下结构</td><td>i.</td><td>⿱(上下叠加)</td></tr>
+          <tr><td>上中下结构</td><td>ii.</td><td>⿳(上中下叠加)</td></tr>
+          <tr><td>包围结构</td><td>l.</td><td>⿸/⿹/⿺等(各种包围)</td></tr>
+          <tr><td>交错结构</td><td>x.</td><td>⿻(笔画交错,少用)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>部件表示法</strong></p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>表示法</th><th>格式</th><th>说明</th><th>示例</th></tr></thead>
+        <tbody>
+          <tr><td>部首双码</td><td>部首码 + 部首次码</td><td>部首在部首表中的位置对应部首次码在部首次表中的位置</td><td>贝 → bz</td></tr>
+          <tr><td>独体字码</td><td>前四码</td><td>独体字的完整四码表示</td><td>天 → tm16</td></tr>
+          <tr><td><strong>扩展字根</strong></td><td><strong>字根码(两位)</strong></td><td><strong>非部首表中的必要字符(见扩展字根表)</strong></td><td><strong>立 → ld</strong></td></tr>
+          <tr><td>简化表示</td><td>见下</td><td>减少记忆负担的简化形式</td><td>贝 → bb,立 → dj/lh</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>注释语法</strong></p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>符号</th><th>含义</th></tr></thead>
+        <tbody>
+          <tr><td>(u)</td><td>取部件的上部</td></tr>
+          <tr><td>(d)</td><td>取部件的下部</td></tr>
+          <tr><td>(l)</td><td>取部件的左部</td></tr>
+          <tr><td>(r)</td><td>取部件的右部</td></tr>
+          <tr><td>(f)</td><td>繁体形式</td></tr>
+          <tr><td>(j)</td><td>简体形式</td></tr>
+          <tr><td>(b)</td><td>变体形式</td></tr>
+          <tr><td>(x)</td><td>去掉某部分(少用)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>集合语法</strong></p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>符号</th><th>含义</th></tr></thead>
+        <tbody>
+          <tr><td>[]</td><td>将相关部件分组,如 [i. sj kb 4] 表示交错上下结构“𰀉”</td></tr>
+          <tr><td>々</td><td>重复前一部件</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>包围结构细调(写在集合最后)</strong></p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>符号</th><th>包围类型</th><th>包围方向</th></tr></thead>
+        <tbody>
+          <tr><td>1 2 3 4</td><td>⿹ ⿽ ⿺ ⿸</td><td>右上 右下 左下 左上</td></tr>
+          <tr><td>u x z y</td><td>⿵ ⿶ ⿷ ⿼</td><td>上三 下三 左三 右三</td></tr>
+          <tr><td>w</td><td>⿴</td><td>全包围</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>注:</strong> 在 <code>i.</code>/<code>r.</code> 中“4”可额外表示交错化。</p>
+    <p><strong>编码流程</strong></p>
+    <p><strong>步骤1:拆分</strong></p>
+    <p>按结构码递归拆分汉字至基础部件,直到所有部件都可用部首双码、独体字码或扩展字根表示。</p>
+    <p><strong>拆分原则:</strong></p>
+    <ul>
+      <li>优先按明显结构粗拆分(左右→上下→包围)</li>
+      <li>包围结构统一用 <code>l.</code> 表示</li>
+      <li>允许编码简写(如 <code>fu4r</code> 替代重复“付”结构)</li>
+    </ul>
+    <p><strong>步骤2:表示</strong></p>
+    <p>见上方“部件表示法”</p>
+    <p><strong>步骤3:组合</strong></p>
+    <p>按结构码组合部件序列,用空格分隔各部件。</p>
+    <p><strong>示例:</strong><br>
+    <code>“对”</code> → <code>r. ky cp</code></p>
+    <ul>
+      <li><code>r.</code>:左右结构</li>
+      <li><code>ky</code>:“又”的部首双码</li>
+      <li><code>cp</code>:“寸”的部首双码</li>
+    </ul>
+    <p><strong>扩展字根表(扩展中)</strong></p>
+    <p>扩展字根用于表示 <strong>非部首表中的必要字符</strong>,这些字符在汉字拆分中经常出现,但不是标准部首。</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>字根码</th><th>对应部件</th><th>字根码</th><th>对应部件</th><th>字根码</th><th>对应部件</th></tr></thead>
+        <tbody>
+          <tr><td>bh</td><td>㡀</td><td>bj</td><td>𠬝</td><td>bp</td><td>卑</td></tr>
+          <tr><td>bt</td><td>鼻</td><td>cj</td><td>册</td><td>cn</td><td>𢆉</td></tr>
+          <tr><td>di</td><td>𢎨</td><td>dr</td><td>⿷⿻𠂆一二</td><td>d;</td><td>鼎</td></tr>
+          <tr><td>fd</td><td>负</td><td>gc</td><td>𢦏</td><td>hb</td><td>丌</td></tr>
+          <tr><td>hh</td><td>𰀁</td><td>ib</td><td>⿲𠄌⺀⿲𠄌⺀㇂</td><td>ir</td><td>㐄</td></tr>
+          <tr><td>jc</td><td>龹</td><td>jg</td><td>𠀎</td><td>jj</td><td>巿</td></tr>
+          <tr><td>jk</td><td>叚</td><td>jq</td><td>介</td><td>ju</td><td>丩</td></tr>
+          <tr><td>ko</td><td>コ</td><td>kv</td><td>亏</td><td>ld</td><td>立</td></tr>
+          <tr><td>lg</td><td>鹿</td><td>ll</td><td>𠂢</td><td>md</td><td>龴</td></tr>
+          <tr><td>mg</td><td>麻</td><td>mh</td><td>母</td><td>mt</td><td>买</td></tr>
+          <tr><td>mz</td><td>𠃜</td><td>na</td><td>𠂇</td><td>nd</td><td>犮</td></tr>
+          <tr><td>nt</td><td>𰀂</td><td>nu</td><td>在</td><td>oj</td><td>卬</td></tr>
+          <tr><td>ok</td><td>𫠤</td><td>qc</td><td>乔</td><td>qw</td><td>齐</td></tr>
+          <tr><td>sb</td><td>𰀉</td><td>sd</td><td>𣶒</td><td>se</td><td>𢀖</td></tr>
+          <tr><td>ts</td><td>𭕄</td><td>ud</td><td>冘</td><td>vc</td><td>𠂋</td></tr>
+          <tr><td>vp</td><td>𠂤</td><td>wd</td><td>亡</td><td>wm</td><td>毋</td></tr>
+          <tr><td>wu</td><td>戊</td><td>xl</td><td>囟</td><td>xu</td><td>卂</td></tr>
+          <tr><td>yw</td><td>𠃓</td><td></td><td></td><td></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>注:</strong> 扩展字根表仍在扩展中,遇到新的常用非部首部件时可添加。dr 即「段」左半、ib 即「鼠」下半;𠂔 为 di 的变体。</p>
+    <p><strong>简化表示法(实际编码使用)</strong></p>
+    <p>在实际的输入法编码生成中,为简化处理,采用以下简化表示:</p>
+    <ol>
+      <li><strong>部首双码简化:</strong> 部首码 + <code>b</code>(作为部首提示)</li>
+      <li><strong>前四码简化:</strong>
+        <ul>
+          <li>独体字:取初码 + <code>d</code>(独体标记)</li>
+          <li>合体字作部件:取初码 + <code>h</code>(合体标记)</li>
+        </ul>
+      </li>
+      <li><strong>扩展字根简化:</strong>
+        <ul>
+          <li>部首简并的:用简并部首码 + <code>j</code></li>
+          <li>罕部跳过的:并入独体字表示</li>
+          <li>其他扩展字根:用占位符号 <code>ee</code></li>
+          <li>可进一步拆分的扩展字根:拆分表示</li>
+        </ul>
+      </li>
+      <li><strong>笔画简化:</strong> 根据副码的单笔画对应字母 + <code>a</code></li>
+    </ol>
+    <p><strong>核心原则</strong></p>
+    <ul>
+      <li>同一汉字可能有不同的拆分表示,允许人工调整</li>
+      <li>通过解书拆分识别“字义关联”的形旁部首,为合体字的主码选取提供依据</li>
+      <li>提供余集合拆分的部件依据,帮助确定副码的余音或余部</li>
+      <li>在编码冲突时提供讨论和验证的基础,帮助在多个可能编码中做出选择</li>
+    </ul>
+
+    <h2 id="六、补码编码规则">六、补码编码规则</h2>
+    <p>补码用于处理汉字在 Unicode 范围内的所有繁、异体形式,包括同义异写字、大写数字、通假古音字等,以前缀点 <code>.</code> 引导。补码一般用不到。<br>
+    通常,<code>.</code> 直接表示该字在常用语境下的 <strong>第一繁体</strong>(如“纪”之“紀”)。<br>
+    若某字仅有单一繁体且该字形有明显的地区差异,则使用地区后缀区分:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>后缀</th><th>含义</th></tr></thead>
+        <tbody>
+          <tr><td><code>.f</code></td><td>大陆繁体</td></tr>
+          <tr><td><code>.g</code></td><td>港澳异体</td></tr>
+          <tr><td><code>.t</code></td><td>台湾异体</td></tr>
+          <tr><td><code>.j</code></td><td>日本汉字</td></tr>
+          <tr><td><code>.u</code></td><td>通假/古音字</td></tr>
+          <tr><td><code>.k</code></td><td>韩国用字</td></tr>
+          <tr><td><code>.h</code></td><td>地方方言音</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>若某字对应多个常用繁体(如“复”之“復”、“複”)或某个罕见繁体(“坖”),则其补码的选取规则可参照副码(如取部首别码、部首传递等)。</p>
+    <h3 id="全覆盖与零重码">全覆盖与零重码</h3>
+    <ol>
+      <li>空码区类型
+        <ul>
+          <li><strong>拼音缺失区</strong>:如 <code>"bb"</code>(bou 不存在)、<code>"cc"</code> 等</li>
+          <li><strong>声调缺失区</strong>:调码 5-9(实际只有 0-4)</li>
+        </ul>
+      </li>
+      <li>利用方案
+        <ul>
+          <li><strong>预留区</strong>:<code>"bb0"</code> 用于无拼音汉字(已在管理工具中使用)</li>
+          <li><strong>编码空间疏散</strong>:对于过挤的音区,可适当调整音码,实现暂时疏散(如 yi4 疏散到 yi8)</li>
+          <li><strong>用户自定义区</strong>:其他空码区开放给用户自由定义</li>
+        </ul>
+      </li>
+    </ol>
+    <p>ABCDE.F 形式的<strong>解书码</strong>覆盖 Unicode 收录的所有汉字(不包括喃字等独立文字系统),并保持全局零重码。</p>
+
+    <h2 id="七、词语建议">七、词语建议</h2>
+    <h3 id="词语编码的核心原则">词语编码的核心原则</h3>
+    <p><strong>1. 基本定义</strong></p>
+    <ul>
+      <li><strong>广义词语</strong>:包括多字词、常用短语、自定义短语、输入法特征词、通用符号等</li>
+      <li><strong>补充功能</strong>:外置于“多字首选字”输入的辅助方法,旨在提高输入效率</li>
+    </ul>
+    <p><strong>2. 硬性规则</strong></p>
+    <ul>
+      <li><strong>最小长度</strong>:词语编码至少3位,且前三位不能包含数字。</li>
+      <li><strong>零重码</strong>:一个编码仅对应一个词语(但一个词语可对应多个编码)</li>
+      <li><strong>长度原则</strong>:常用词语分配短编码,非常用词语使用长编码</li>
+    </ul>
+    <h3 id="多字词编码建议">多字词编码建议</h3>
+    <p><strong>1. 二字词</strong></p>
+    <p>最简码(基本不用) = 第一字双拼码(即初码+韵码组合) + 第二字初码</p>
+    <p>扩展顺序:优先补充第二字的韵码(最常用) → 补充第二字调→主码</p>
+    <p><strong>2. 三字词</strong></p>
+    <p>最简码(基本不用) = 每个字初码组合</p>
+    <p>扩展顺序:补第一字韵码 → 补第二字韵码(最常用) → 补第三字韵→调→主码</p>
+    <p><strong>3. 四字词</strong></p>
+    <p>方案1(基本不用):第一字初码 + 第二字初码 + 第四字初码</p>
+    <p>方案2(常用):四个字各取初码</p>
+    <p>扩展顺序:补前三字韵码(常用) → 补第四字韵→调→主码</p>
+    <p><strong>4. 五字及以上</strong></p>
+    <p>方案1(基本不用):第一字初码 + 第二字初码 + 最后字初码</p>
+    <p>方案2(适应习惯,常用):前三字初码 + 最后字初码</p>
+    <p>扩展顺序:补所有字初码(常用) → 补最后字外的韵码 → 补最后字编码</p>
+    <p><strong>5. 繁体词语</strong></p>
+    <p>可在简体词语末尾添加 <code>.</code> 补码标记表示繁体变体。</p>
+    <h3 id="通用符号编码方案">通用符号编码方案</h3>
+    <p><strong>1. 编码结构</strong></p>
+    <p>类型符(1字母)+ 具体编码(至少2字母) = 3位最小码</p>
+    <p><strong>2. 类型符建议</strong></p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>类型符</th><th>符号类型</th><th>示例</th></tr></thead>
+        <tbody>
+          <tr><td>b</td><td>部首</td><td>bdh → 亠</td></tr>
+          <tr><td>r</td><td>日文假名</td><td>rka → か</td></tr>
+          <tr><td>d</td><td>中文标点</td><td>d.. → 。</td></tr>
+          <tr><td>t</td><td>特殊符号</td><td>tzo → "←"</td></tr>
+          <tr><td>g</td><td>希腊字母</td><td>gal → α</td></tr>
+          <tr><td>u</td><td>数学符号</td><td>uqh → ∑</td></tr>
+          <tr><td>v</td><td>中文相关</td><td>vr. → ⿰</td></tr>
+          <tr><td>i</td><td>国际音标</td><td>ias → ʌ</td></tr>
+          <tr><td>e</td><td>emoji</td><td>ewzxc → 😊</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>剩余符号待更新</strong></p>
+    <p><strong>3. 具体编码规则</strong></p>
+    <ul>
+      <li><strong>部首</strong>:部首双码,如“亠”→ bdh(d部首码,h为“亠”在d部首次表第4位。)</li>
+      <li><strong>假名</strong>:罗马字转写,如“か”→ rka</li>
+      <li><strong>其他</strong>:根据初码或双拼码组合转写</li>
+    </ul>
+
+  </main>
+</div>
+
+<!-- 返回顶部 -->
+<button class="back-top" id="backTop" aria-label="返回顶部">↑</button>
+
+<script>
+(function () {
+  'use strict';
+
+  var prefersReduced = window.matchMedia &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ========== 1. 从正文标题自动生成左侧目录 ========== */
+  var content = document.getElementById('docContent');
+  var tocList = document.getElementById('tocList');
+  var headings = content.querySelectorAll('h2, h3');
+
+  // 生成 slug（保留中文，但做安全处理）
+  function makeSlug(text, index) {
+    var slug = text
+      .replace(/[^\w\u4e00-\u9fa5]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .toLowerCase();
+    if (!slug) slug = 'section-' + index;
+    // 避免重复
+    var original = slug, n = 1;
+    while (document.getElementById(slug)) {
+      slug = original + '-' + n;
+      n++;
+    }
+    return slug;
+  }
+
+  var headingData = [];
+
+  headings.forEach(function (h, i) {
+    var level = parseInt(h.tagName.charAt(1), 10); // 2 或 3
+    var text = h.textContent.trim();
+
+    // 如果已有 id 则复用，否则生成
+    var id = h.id;
+    if (!id) {
+      id = makeSlug(text, i);
+      h.id = id;
+    }
+    headingData.push({ el: h, id: id, text: text, level: level });
+  });
+
+  // 构建目录 DOM
+  headingData.forEach(function (d) {
+    var li = document.createElement('li');
+    li.className = 'toc-level-' + d.level;
+
+    var a = document.createElement('a');
+    a.href = '#' + d.id;
+    a.className = 'toc-link';
+    a.textContent = d.text;
+    a.setAttribute('data-toc-target', d.id);
+
+    li.appendChild(a);
+    tocList.appendChild(li);
+  });
+
+  /* ========== 2. 滚动高亮：IntersectionObserver ========== */
+  var tocLinks = tocList.querySelectorAll('.toc-link');
+  var linkMap = {};
+  tocLinks.forEach(function (link) {
+    linkMap[link.getAttribute('data-toc-target')] = link;
+  });
+
+  var activeId = null;
+
+  function setActive(id) {
+    if (id === activeId) return;
+    if (activeId && linkMap[activeId]) {
+      linkMap[activeId].classList.remove('is-active');
+    }
+    if (id && linkMap[id]) {
+      linkMap[id].classList.add('is-active');
+    }
+    activeId = id;
+  }
+
+  // 只观察有目录项的标题
+  var observedEls = headingData.map(function (d) { return d.el; });
+
+  if ('IntersectionObserver' in window && observedEls.length) {
+    var observer = new IntersectionObserver(function (entries) {
+      // 在所有当前相交的标题中，选择最靠近视口顶部的那个
+      var topEntry = null;
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          if (!topEntry || entry.boundingClientRect.top < topEntry.boundingClientRect.top) {
+            topEntry = entry;
+          }
+        }
+      });
+      if (topEntry) {
+        setActive(topEntry.target.id);
+      }
+    }, {
+      // 参考实现：标题进入视口顶部 10%–20% 区域时激活
+      rootMargin: '-10% 0px -75% 0px',
+      threshold: 0
+    });
+
+    observedEls.forEach(function (el) { observer.observe(el); });
+
+    // 初始化：找到第一个已经在视口上半部分的标题
+    var firstVisible = observedEls.find(function (el) {
+      var rect = el.getBoundingClientRect();
+      return rect.top >= 0 && rect.top < window.innerHeight * 0.5;
+    });
+    if (firstVisible) setActive(firstVisible.id);
+  } else {
+    // 降级：scroll 事件
+    var onScroll = function () {
+      var current = null;
+      observedEls.forEach(function (el) {
+        var rect = el.getBoundingClientRect();
+        if (rect.top <= 120) current = el.id;
+      });
+      if (current) setActive(current);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
+
+  /* ========== 3. 点击目录：平滑滚动 + 更新 hash ========== */
+  tocLinks.forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      var id = link.getAttribute('data-toc-target');
+      var target = document.getElementById(id);
+      if (!target) return;
+
+      e.preventDefault();
+
+      if (prefersReduced) {
+        target.scrollIntoView({ block: 'start' });
+      } else {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+
+      // 更新 URL hash（不触发额外跳转）
+      if (history.pushState) {
+        history.pushState(null, '', '#' + id);
+      } else {
+        window.location.hash = id;
+      }
+
+      setActive(id);
+
+      // 移动端点击后关闭侧栏
+      if (window.innerWidth <= 900) {
+        closeSidebar();
+      }
+    });
+  });
+
+  /* ========== 4. 移动端侧栏抽屉 ========== */
+  var menuBtn = document.getElementById('menuBtn');
+  var sidebar = document.getElementById('sidebar');
+  var sidebarOpen = false;
+
+  function openSidebar() {
+    sidebarOpen = true;
+    sidebar.classList.add('open');
+    menuBtn.setAttribute('aria-expanded', 'true');
+  }
+  function closeSidebar() {
+    sidebarOpen = false;
+    sidebar.classList.remove('open');
+    menuBtn.setAttribute('aria-expanded', 'false');
+  }
+
+  if (menuBtn) {
+    menuBtn.addEventListener('click', function () {
+      sidebarOpen ? closeSidebar() : openSidebar();
+    });
+  }
+
+  // 点击侧栏外部关闭
+  document.addEventListener('click', function (e) {
+    if (!sidebarOpen) return;
+    if (sidebar.contains(e.target) || e.target === menuBtn) return;
+    closeSidebar();
+  });
+
+  // Esc 关闭
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && sidebarOpen) closeSidebar();
+  });
+
+  /* ========== 5. 返回顶部 ========== */
+  var backTop = document.getElementById('backTop');
+  var ticking = false;
+
+  function onScrollBackTop() {
+    if (!ticking) {
+      window.requestAnimationFrame(function () {
+        backTop.classList.toggle('show', window.scrollY > 600);
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }
+  window.addEventListener('scroll', onScrollBackTop, { passive: true });
+
+  backTop.addEventListener('click', function () {
+    if (prefersReduced) {
+      window.scrollTo(0, 0);
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  });
+
+  /* ========== 6. 表格包裹（让长表格可横向滚动） ========== */
+  var tables = content.querySelectorAll('table');
+  tables.forEach(function (table) {
+    if (table.parentNode.classList.contains('table-wrap')) return;
+    var wrap = document.createElement('div');
+    wrap.className = 'table-wrap';
+    table.parentNode.insertBefore(wrap, table);
+    wrap.appendChild(table);
+  });
+
+})();
+</script>
+
+</body>
+</html>

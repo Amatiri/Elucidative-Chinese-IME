@@ -1,14 +1,3 @@
-祐 yb4
-祕 mi4
-叚 xw2
-陧 nx4
-陞 ug1
-娀 ss1
-姞 ji2
-姱 kw1
-姤 gb4
-姶 oe4
-姽 gv3
 枲 xi3
 绖 dx2
 骃 yn1
@@ -20,7 +9,6 @@
 珪 gv1
 珛 xq4
 珹 ig2
-琊 ya2
 玼 ci3
 珖 gd1
 𪟝 ji4
@@ -167,7 +155,6 @@
 袪 qu1
 袗 vf3
 袯 bo2
-祧 tc1
 堲 ji2
 疍 dj4
 𨺙 ni4

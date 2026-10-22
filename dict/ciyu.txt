@@ -1621,6 +1621,7 @@
 条约 tcyt1
 特别 tebx
 醍醐灌顶 thgd tihugrd
+∨ tho4 txwj
 题材 ticl
 体裁 ticl2
 替代 tidl
@@ -1696,6 +1697,7 @@
 ↓ txw
 → tyb
 ○ tyr2
+∧ tyu3 tuhj
 ← tzo
 ∀ uaa urfyi
 沙漠 uamo

@@ -387,6 +387,141 @@
     overflow-x: auto;
   }
 
+  /* ========== 3.2 部首表交互：部首码按钮 + 单行卡片 ========== */
+  .picker-hint {
+    font-size: 13px;
+    color: var(--ink-faint);
+    margin: 0 0 10px;
+  }
+
+  .radical-picker { margin: 0 0 20px; }
+
+  .radical-letters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+  .radical-letter-btn {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--line-strong);
+    border-radius: 3px;
+    background: rgba(255, 253, 249, 0.7);
+    color: var(--ink-soft);
+    font-family: var(--font-mono);
+    font-size: 15px;
+    line-height: 1;
+    cursor: pointer;
+    transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+  }
+  .radical-letter-btn:hover {
+    color: var(--cinnabar);
+    border-color: var(--cinnabar);
+  }
+  .radical-letter-btn.is-active {
+    background: var(--cinnabar);
+    border-color: var(--cinnabar);
+    color: var(--paper-lite);
+  }
+  .radical-letter-btn.is-empty { opacity: 0.45; }
+
+  .radical-card {
+    display: flex;
+    align-items: center;
+    min-height: 78px;
+    padding: 14px 20px;
+    background: rgba(255, 253, 249, 0.55);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    box-shadow: var(--shadow-sm);
+  }
+  .radical-row {
+    display: none;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 2px 14px;
+    width: 100%;
+  }
+  .radical-row.is-active { display: flex; }
+
+  .radical-key {
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 15px;
+    color: var(--cinnabar);
+    padding-right: 14px;
+    margin-right: 4px;
+    border-right: 1px solid var(--line-strong);
+  }
+  .radical-row-none {
+    font-size: 20px;
+    color: var(--ink-faint);
+    letter-spacing: 0.2em;
+  }
+  .rad {
+    font-family: var(--font-title), "SimSun", "Songti SC", serif;
+    font-size: clamp(24px, 4.5vw, 32px);
+    line-height: 1.5;
+    color: var(--ink);
+  }
+  .rad.is-bie { font-weight: 700; }
+
+  /* ========== 3.2 部首次表：同行折叠开关 ========== */
+  .bucishou-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 14px 0 10px;
+  }
+  .bucishou-head p { margin: 0; }
+  .collapse-toggle {
+    flex: none;
+    padding: 3px 12px;
+    font-family: var(--font-body);
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+    background: rgba(255, 253, 249, 0.7);
+    border: 1px solid var(--line-strong);
+    border-radius: 3px;
+    cursor: pointer;
+    transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+  }
+  .collapse-toggle:hover {
+    color: var(--cinnabar);
+    border-color: var(--cinnabar);
+    background: #ffffff;
+  }
+
+  @media (max-width: 600px) {
+    .radical-letter-btn { width: 33px; height: 33px; font-size: 14px; }
+    .radical-card { padding: 12px 14px; min-height: 70px; }
+    .rad { font-size: clamp(22px, 7vw, 28px); }
+  }
+
+  /* 打印：隐藏按钮,展开全部部首行与部首次表 */
+  @media print {
+    .radical-letters { display: none !important; }
+    .radical-card {
+      display: block;
+      min-height: 0;
+      padding: 0;
+      border: none;
+      box-shadow: none;
+      background: none;
+    }
+    .radical-row { display: flex !important; }
+    .collapse-toggle { display: none !important; }
+    #bucishouBlock { display: block !important; }
+  }
+
   /* 返回顶部 */
   .back-top {
     position: fixed;
@@ -647,36 +782,16 @@
 
     <h4 id="3-2-部首表部首次表">3.2 部首表&amp;部首次表(加粗为别码部首,需格外记忆)</h4>
     <p><strong>部首表</strong></p>
-    <div class="compact-block">
-a:丶一丨丿乙乛<strong>𠃌</strong>乚𡿨<br>
-b:宀<strong>阝</strong>冫贝疒白卜八匕癶<br>
-c:<strong>车</strong>艹<strong>厂凵</strong>寸卄屮<br>
-d:刀歹大<strong>亠冖丷</strong>斗豆<br>
-e:&lt;无&gt;<br>
-f:风方父缶<strong>臼辰</strong>非<br>
-g:工广弓光囗革戈瓜艮谷骨<br>
-h:火户禾<strong>⺌羊</strong>虍黑<br>
-i:虫<strong>页雨弋彐彑</strong>臣赤𡗗尺<br>
-j:金巾廴冂几𠘨卩己见斤皀<br>
-k:口<strong>又舌用角</strong><br>
-l:娄<strong>云勹</strong>力龙老卤里卵<br>
-m:木<strong>彡釆</strong>马门皿毛目矛米麦<br>
-n:女牛鸟<strong>耒齿</strong><br>
-o:耳<strong>匚</strong>二儿<strong>㔾</strong><br>
-p:攴片<strong>殳</strong>丬皮<strong>髟㐅</strong><br>
-q:气犬<strong>豸</strong>欠青<br>
-r:人肉入日<strong>リ</strong><br>
-s:<strong>示</strong>丝<strong>石尸十</strong>厶巳<br>
-t:土<strong>彳幺夕</strong>田<br>
-u:<strong>攵</strong>水矢手食山士豕身<br>
-v:<strong>乑</strong>争舟止爪<strong>鬼</strong>支<br>
-w:王网瓦韦<strong>隹</strong>文<br>
-x:穴𰃮心西小<strong>巛</strong>血辛习<br>
-y:言酉月鱼衣尢聿业羽<strong>黾</strong>音<br>
-z:<strong>辶竹</strong>足子自走
+    <p class="picker-hint">点击部首码字母,下方卡片即显示对应部首行;同一时刻仅显示一行,加粗为别码部首。</p>
+    <div class="radical-picker">
+      <div class="radical-letters" id="radicalLetters" role="group" aria-label="部首码"></div>
+      <div class="radical-card" id="radicalCard" aria-live="polite"></div>
     </div>
-    <p><strong>部首次表</strong></p>
-    <div class="compact-block">
+    <div class="bucishou-head">
+      <p><strong>部首次表</strong></p>
+      <button type="button" class="collapse-toggle" id="bucishouToggle" aria-expanded="false" aria-controls="bucishouBlock">展开∨</button>
+    </div>
+    <div class="compact-block" id="bucishouBlock" hidden>
 a: dhupygkwv<br>
 b: ku;zglsaio<br>
 c: ekhypgi<br>
@@ -1323,6 +1438,114 @@ z: vruipb
     table.parentNode.insertBefore(wrap, table);
     wrap.appendChild(table);
   });
+
+  /* ========== 7. 部首表交互：部首码按钮 → 单行卡片（3.2） ========== */
+  // 数据与原紧凑块逐字一致;词尾 * 表示别码部首(加粗显示)
+  var RADICAL_ROWS = {
+    a: '丶 一 丨 丿 乙 乛 𠃌* 乚 𡿨',
+    b: '宀 阝* 冫 贝 疒 白 卜 八 匕 癶',
+    c: '车* 艹 厂* 凵* 寸 卄 屮',
+    d: '刀 歹 大 亠* 冖* 丷* 斗 豆',
+    e: '',
+    f: '风 方 父 缶 臼* 辰* 非',
+    g: '工 广 弓 光 囗 革 戈 瓜 艮 谷 骨',
+    h: '火 户 禾 ⺌* 羊* 虍 黑',
+    i: '虫 页* 雨* 弋* 彐* 彑* 臣 赤 𡗗 尺',
+    j: '金 巾 廴 冂 几 𠘨 卩 己 见 斤 皀',
+    k: '口 又* 舌* 用* 角*',
+    l: '娄 云* 勹* 力 龙 老 卤 里 卵',
+    m: '木 彡* 釆* 马 门 皿 毛 目 矛 米 麦',
+    n: '女 牛 鸟 耒* 齿*',
+    o: '耳 匚* 二 儿 㔾*',
+    p: '攴 片 殳* 丬 皮 髟* 㐅*',
+    q: '气 犬 豸* 欠 青',
+    r: '人 肉 入 日 リ*',
+    s: '示* 丝 石* 尸* 十* 厶 巳',
+    t: '土 彳* 幺* 夕* 田',
+    u: '攵* 水 矢 手 食 山 士 豕 身',
+    v: '乑* 争 舟 止 爪 鬼* 支',
+    w: '王 网 瓦 韦 隹* 文',
+    x: '穴 𰃮 心 西 小 巛* 血 辛 习',
+    y: '言 酉 月 鱼 衣 尢 聿 业 羽 黾* 音',
+    z: '辶* 竹* 足 子 自 走'
+  };
+
+  var radicalLetters = document.getElementById('radicalLetters');
+  var radicalCard = document.getElementById('radicalCard');
+
+  if (radicalLetters && radicalCard) {
+    var showRadicalRow = function (letter) {
+      radicalLetters.querySelectorAll('.radical-letter-btn').forEach(function (btn) {
+        var on = btn.getAttribute('data-letter') === letter;
+        btn.classList.toggle('is-active', on);
+        btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+      radicalCard.querySelectorAll('.radical-row').forEach(function (row) {
+        row.classList.toggle('is-active', row.getAttribute('data-letter') === letter);
+      });
+    };
+
+    // 26 个部首码按钮
+    Object.keys(RADICAL_ROWS).forEach(function (letter) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'radical-letter-btn';
+      btn.textContent = letter;
+      btn.setAttribute('data-letter', letter);
+      btn.setAttribute('aria-label', '部首码 ' + letter);
+      btn.setAttribute('aria-pressed', 'false');
+      if (!RADICAL_ROWS[letter]) btn.classList.add('is-empty');
+      btn.addEventListener('click', function () {
+        showRadicalRow(letter);
+      });
+      radicalLetters.appendChild(btn);
+    });
+
+    // 26 行部首卡片,默认仅显示 a 行
+    Object.keys(RADICAL_ROWS).forEach(function (letter) {
+      var row = document.createElement('div');
+      row.className = 'radical-row';
+      row.setAttribute('data-letter', letter);
+
+      var key = document.createElement('span');
+      key.className = 'radical-key';
+      key.textContent = letter;
+      row.appendChild(key);
+
+      var raw = RADICAL_ROWS[letter];
+      if (!raw) {
+        var none = document.createElement('span');
+        none.className = 'radical-row-none';
+        none.textContent = '〈无〉';
+        row.appendChild(none);
+      } else {
+        raw.split(' ').forEach(function (token) {
+          var isBie = token.charAt(token.length - 1) === '*';
+          var rad = document.createElement('span');
+          rad.className = 'rad' + (isBie ? ' is-bie' : '');
+          rad.textContent = isBie ? token.slice(0, -1) : token;
+          if (isBie) rad.title = '别码部首';
+          row.appendChild(rad);
+        });
+      }
+      radicalCard.appendChild(row);
+    });
+
+    showRadicalRow('a');
+  }
+
+  /* ========== 8. 部首次表折叠（3.2） ========== */
+  var buciToggle = document.getElementById('bucishouToggle');
+  var buciBlock = document.getElementById('bucishouBlock');
+
+  if (buciToggle && buciBlock) {
+    buciToggle.addEventListener('click', function () {
+      var expanded = buciToggle.getAttribute('aria-expanded') === 'true';
+      buciToggle.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+      buciToggle.textContent = expanded ? '展开∨' : '收起∧';
+      buciBlock.hidden = expanded;
+    });
+  }
 
 })();
 </script>

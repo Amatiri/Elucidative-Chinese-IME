@@ -1253,6 +1253,7 @@
 勾 gb4l
 构 gb4m
 媾 gb4n
+姤 gb4nh
 够 gb4t
 垢 gb4th
 诟 gb4y
@@ -1547,6 +1548,7 @@
 宄 gv3bj
 轨 gv3c
 庋 gv3g
+姽 gv3n
 匦 gv3o
 晷 gv3r
 鬼 gv3s
@@ -2498,6 +2500,7 @@
 棘 ji2mm
 楫 ji2mq
 嫉 ji2n
+姞 ji2nk
 佶 ji2r
 伋 ji2rj
 级 ji2s
@@ -3202,6 +3205,7 @@
 愦 kv4xg
 篑 kv4z
 夸 kw1d
+姱 kw1n
 侉 kw3r
 垮 kw3t
 胯 kw4r
@@ -3910,6 +3914,7 @@
 秘 mi4h
 蜜 mi4i
 嘧 mi4k
+祕 mi4s
 密 mi4u
 泌 mi4ub
 汨 mi4ur
@@ -4281,6 +4286,7 @@
 嗯 nv0k
 捏 nx1u
 乜 nx49
+陧 nx4b
 蘖 nx4c
 颞 nx4i
 镍 nx4j
@@ -4370,6 +4376,7 @@
 𫫇 oe4kx
 阏 oe4m
 鹗 oe4n
+姶 oe4nh
 腭 oe4r
 垩 oe4t
 饿 oe4u
@@ -5460,6 +5467,7 @@
 凇 ss1b
 菘 ss1c
 松 ss1m
+娀 ss1n
 淞 ss1u
 嵩 ss1ug
 忪 ss1x
@@ -5549,6 +5557,7 @@
 投 tb2u
 透 tb4z
 佻 tc1r
+祧 tc1s
 挑 tc1u
 苕 tc2c
 蜩 tc2i
@@ -5941,6 +5950,7 @@
 慎 uf4x
 生 ug11
 升 ug14
+陞 ug1b
 牲 ug1n
 昇 ug1r
 甥 ug1t
@@ -7311,6 +7321,7 @@
 辖 xw2c
 黠 xw2h
 霞 xw2i
+叚 xw2k
 柙 xw2m
 匣 xw2o
 狭 xw2q
@@ -7413,7 +7424,8 @@
 崖 ya2u
 涯 ya2uc
 岈 ya2uy
-玡 ya2w
+琊 ya2w
+玡 ya2wy
 哑 ya3k
 雅 ya3w
 亚 ya45

@@ -14,7 +14,7 @@ rime_export.py —— 把解书码表真源导出为 RIME 方案文件（实现�
 两端皮肤/键盘**默认一并导出**（不设开关，减少分支）：
   weasel.custom.yaml → 小狼毫（Weasel）皮肤；trime.custom.yaml → 安卓同文（Trime）键盘。
   同一份产物目录里两份都在，各端只读自己那一份，互不影响（详见 README 一、部署方法）。
-  安卓端用法：--target <预备文件夹> 导出后，把目录内容整体拷进手机 /sdcard/rime/。
+  安卓端用法：--target <预备文件夹> 导出后，把目录内容整体拷进手机trime/。
 
 ✅ 2026-10-18 起**恢复生成 jieshu.dict.yaml**：安卓 Trime 部署**强制要求**方案声明的
    词典文件存在（缺文件即部署失败，2026-10-18 实机确认）。Windows 端不读它（候选全部来自
@@ -485,7 +485,7 @@ def run(target_dir, with_ciyu=True, version=None, with_config=True):
         _sync_config_files(target_dir)
         print("[HINT] 配置已更新：")
         print("       · Windows 小狼毫 → 托盘菜单「重新部署」生效。")
-        print("       · 安卓同文 Trime → 把本目录内容整体拷进手机 /sdcard/rime/，"
+        print("       · 安卓同文 Trime → 把导出内容整体拷进手机用户文件夹，"
               "再在 App 内「重新布署」。")
 
 
@@ -498,7 +498,7 @@ def main(argv=None):
     parser.add_argument("--target", default=None,
                         help="RIME 用户资料夹绝对路径；缺省用 config.py 的 RIME_USER_DIR，"
                              "该值为空时交互式询问并写回 config.py"
-                             "（安卓端可指向预备文件夹，导出后拷进手机 /sdcard/rime/）")
+                             "（安卓端可指向预备文件夹，导出后拷进手机用户文件夹）")
     parser.add_argument("--single", action="store_true",
                         help="只读/校验单字真源、跳过词表读取（词典只含单字，调试用）")
     parser.add_argument("--skip-config", action="store_true",

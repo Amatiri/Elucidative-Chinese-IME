@@ -4,7 +4,7 @@
 #       RIME 引擎产物（jieshu.schema.yaml + jieshu.dict.yaml + 5 个 lua + lua/data）
 #       配套使用；引擎层零改动。
 #
-# 部署（手机 /sdcard/rime 目录）：
+# 部署（手机用户文件夹目录）：
 #   1. 拷贝本文件为 trime.custom.yaml（与 trime.yaml 同级，走 RIME patch 机制）；
 #   2. 同时部署 jieshu.schema.yaml / jieshu.dict.yaml / lua/jieshu_*.lua / lua/data/*.txt；
 #   3. 同文 App 内「重新布署」；

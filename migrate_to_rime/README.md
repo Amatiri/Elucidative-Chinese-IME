@@ -15,7 +15,9 @@
 1. 已安装任一 librime 发行版：Windows 用 [小狼毫 Weasel](https://rime.im/)，安卓用 [同文 Trime](https://github.com/osfans/trime) v3.3.x；
    
    并知道自己的**RIME 用户资料夹**（小狼毫：托盘菜单「用户资料夹」；安卓：APP 菜单→配置→用户文件夹）。
+
 2. 本机有 Python 3（导出脚本只依赖标准库）。
+
 3. 本仓库完整（导出脚本从仓库根 `config.py` 读取码表路径，真源在 `dict/`）。
 
 ### Windows · 小狼毫（Weasel）

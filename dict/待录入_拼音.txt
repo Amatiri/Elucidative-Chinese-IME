@@ -1,13 +1,3 @@
-枲 xi3
-绖 dx2
-骃 yn1
-𬘡 yn1
-𬳽 uf1
-𬘩 t;1
-𫄧 yj2
-恝 jw2
-珪 gv1
-珛 xq4
 珹 ig2
 玼 ci3
 珖 gd1
@@ -346,8 +336,6 @@
 𬘯 vp3
 骕 su4
 𫘧 lu4
-絜 jx2
-絜 xx2
 珷 wu3
 琡 iu4
 琟 wz2
@@ -561,7 +549,6 @@
 䃅 di1
 辒 wf1
 𬨎 yb2
-𫐓 rb2
 龆 tc2
 觜 zi1
 䣘 th2

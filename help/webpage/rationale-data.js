@@ -1,6 +1,6 @@
 // 解书音形 · 理据数据 — 手工维护，每行 1 条，勿手改格式
 // 写入：manager/rationale_add.py（整理排序：manager/file_processor.py）
-// 条目：1204
+// 条目：1205
 window.jieshuRationale = {
   "疤":"疒",
   "芭":"艹",
@@ -200,6 +200,7 @@ window.jieshuRationale = {
   "椟":"/",
   "毒":"龶→青(优先)",
   "笃":"/",
+  "𠂤":"闭形，リ→𠂤(師)",
   "跌":"/",
   "疔":"/",
   "町":"/",

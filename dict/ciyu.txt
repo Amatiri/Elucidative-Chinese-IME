@@ -713,6 +713,7 @@
 还有 hlyb
 还要 hlyk
 孩子 hlzi
+还在 hlzl
 获得 hode
 活动 hods
 火柴 hoil
@@ -855,6 +856,9 @@
 晶莹 j;y;2
 经验 j;yj
 静音 j;yn
+鲸鱼 j;yu
+敬语 j;yu3
+境遇 j;yu4
 脚本 jcbf
 交互 jchu
 教科书 jckeu
@@ -1287,6 +1291,7 @@
 偏向 pmxd
 便宜 pmyi
 偏移 pmyi2
+拼命 pnm;
 拼音 pnyn
 破坏 pohy
 普遍 pubm
@@ -1402,6 +1407,7 @@
 づ rdu
 ヅ rduk
 热门 remf
+热情 req;
 任何 rfhe
 人间 rfjm
 人类 rflz

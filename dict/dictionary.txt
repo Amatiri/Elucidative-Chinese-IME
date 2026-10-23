@@ -245,7 +245,7 @@
 佰 bl3r
 伯 bl3r.
 摆 bl3u
-捭 bl3ub
+捭 bl3us
 败 bl4b
 稗 bl4h
 呗 bl4k
@@ -917,6 +917,7 @@
 肚 du4r
 渡 du4u
 堆 dv1t
+𠂤 dv1t.r
 队 dv4b
 对 dv4c
 兑 dv4d
@@ -933,6 +934,7 @@
 牒 dx2p
 昳 dx2r
 碟 dx2s
+绖 dx2sv
 堞 dx2t
 垤 dx2tv
 谍 dx2y
@@ -1543,6 +1545,7 @@
 硅 gv1s
 圭 gv1t
 瑰 gv1w
+珪 gv1wt
 鲑 gv1y
 癸 gv3b
 宄 gv3bj
@@ -2889,6 +2892,7 @@
 颊 jw2i
 蛱 jw2ij
 铗 jw2j
+恝 jw2x
 袷 jw2y
 甲 jw35
 贾 jw3b
@@ -2931,6 +2935,7 @@
 㛃 jx2nd
 偈 jx2r
 结 jx2s
+絜 jx2sd
 碣 jx2sh
 洁 jx2u
 岊 jx2ub
@@ -4646,6 +4651,7 @@
 披 pi1uk
 疲 pi2b
 郫 pi2bb
+阰 pi2be
 陂 pi2bk
 芘 pi2c
 罴 pi2h
@@ -5832,6 +5838,7 @@
 厅 t;1c
 烃 t;1h
 听 t;1k
+𬘩 t;1s
 汀 t;1u
 葶 t;2c
 莛 t;2cj
@@ -5920,6 +5927,7 @@
 莘 uf1c
 呻 uf1k
 糁 uf1m
+𬳽 uf1mx
 娠 uf1n
 伸 uf1r
 侁 uf1rx
@@ -6498,7 +6506,7 @@
 旃 vj1f
 粘 vj1m
 毡 vj1mb
-瞻 vj1md
+瞻 vj1my
 沾 vj1u
 詹 vj1y
 谵 vj1yy
@@ -7062,6 +7070,7 @@
 葸 xi3c
 铣 xi3j
 喜 xi3k
+枲 xi3m
 禧 xi3s
 屣 xi3st
 徙 xi3t
@@ -7083,6 +7092,7 @@
 先 xm19
 㔾 xm19.j
 锨 xm1j
+铦 xm1jk
 籼 xm1m
 氙 xm1q
 仙 xm1r
@@ -7217,6 +7227,7 @@
 岫 xq4u
 溴 xq4uz
 琇 xq4w
+珛 xq4wy
 袖 xq4y
 臭 xq4z
 宣 xr1b
@@ -7351,6 +7362,7 @@
 偕 xx2rj
 协 xx2s
 叶 xx2s.k
+絜 xx2sd
 缬 xx2si
 携 xx2u
 撷 xx2ui
@@ -7440,6 +7452,7 @@
 呀 ya0k
 呦 yb1k
 耰 yb1n
+櫌 yb1n.m
 优 yb1r
 幽 yb1t
 攸 yb1u
@@ -7933,6 +7946,7 @@
 檐 yj2mv
 妍 yj2n
 研 yj2s
+𫄧 yj2sj
 沿 yj2u
 铅 yj2u.j
 岩 yj2us
@@ -8022,10 +8036,12 @@
 因 yn1g
 铟 yn1j
 喑 yn1k
+骃 yn1m
 姻 yn1n
 殷 yn1p
 氤 yn1q
 音 yn1r
+𬘡 yn1s
 堙 yn1t
 洇 yn1u
 愔 yn1x

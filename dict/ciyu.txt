@@ -927,6 +927,7 @@
 监察 jmia2
 检察 jmia2b
 坚持 jmii
+剪辑 jmji
 间接 jmjx1
 简洁 jmjx2
 见解 jmjx3
@@ -1277,6 +1278,7 @@
 皮肤 pifu
 批改 pigl
 批量 pild
+疲劳 pilk
 批判 pipj
 匹配 pipz
 批准 pivp

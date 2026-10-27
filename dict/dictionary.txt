@@ -350,6 +350,7 @@
 钚 bu4jb
 埠 bu4t
 埔 bu4tf
+埗 bu4tv
 步 bu4v
 瓿 bu4w
 怖 bu4x
@@ -460,6 +461,7 @@
 词 ci2y
 泚 ci3u
 此 ci3v
+玼 ci3w
 次 ci4b
 赐 ci4by
 刺 ci4d
@@ -1128,6 +1130,7 @@
 祓 fu2sk
 綍 fu2s;
 畐 fu2t
+垺 fu2tv
 扶 fu2u
 岪 fu2uf
 拂 fu2ug
@@ -1264,6 +1267,7 @@
 胱 gd1r
 垙 gd1t
 洸 gd1u
+珖 gd1w
 广 gd37
 犷 gd3q
 逛 gd4z
@@ -1732,6 +1736,7 @@
 颔 hj4i
 旱 hj4r
 旰 hj4rg
+垾 hj4t
 汉 hj4u
 汗 hj4ug
 捍 hj4ur
@@ -2130,6 +2135,7 @@
 埕 ig2tk
 塍 ig2ty
 澄 ig2u
+珹 ig2w
 惩 ig2x
 诚 ig2y
 裎 ig2yk
@@ -2307,6 +2313,7 @@
 涌 is1u
 㳘 is1uo
 艟 is1v
+珫 is1w
 忡 is1x
 憧 is1xt
 重 is29
@@ -2542,6 +2549,7 @@
 霁 ji4i
 既 ji4j
 觊 ji4jq
+𪟝 ji4l
 骥 ji4m
 妓 ji4n
 髻 ji4p
@@ -2646,6 +2654,7 @@
 金 jn1r
 禁 jn1s
 津 jn1u
+珒 jn1w
 襟 jn1y
 衿 jn1yr
 筋 jn1z
@@ -3347,6 +3356,7 @@
 莨 lh4c
 蒗 lh4cu
 阆 lh4m
+埌 lh4t
 浪 lh4u
 哩 li1k
 丽 li25
@@ -3428,6 +3438,7 @@
 𫵷 li4uc
 溧 li4ux
 𬍛 li4w
+珕 li4wl
 栗 li4x
 詈 li4y
 笠 li4z
@@ -3461,6 +3472,7 @@
 痨 lk2bl
 唠 lk2k
 劳 lk2l
+𫭼 lk2t
 崂 lk2u
 醪 lk2y
 荖 lk3c
@@ -5136,6 +5148,7 @@
 榷 qt4mw
 鹊 qt4n
 确 qt4s
+埆 qt4t
 汋 qt4u
 雀 qt4w
 隺 qt4wd
@@ -5856,6 +5869,7 @@
 町 t;3td
 挺 t;3u
 艇 t;3v
+珽 t;3w
 梃 t;4m
 是 ui4r
 痧 ua1b
@@ -6992,6 +7006,7 @@
 橡 xd4md
 像 xd4r
 巷 xd4s
+珦 xd4w
 夕 xi17
 西 xi10
 兮 xi1b
@@ -7153,18 +7168,18 @@
 见 xm4w.u
 心 xn13
 芯 xn1c
-莘 xn1cd
 薪 xn1cj
-辛 xn1d
+莘 xn1cs
 馨 xn1h
 馫 xn1h.x
 炘 xn1hj
 新 xn1j
 鑫 xn1jj
-锌 xn1jl
+锌 xn1js
 欣 xn1q
 歆 xn1qy
 昕 xn1r
+辛 xn1s
 忻 xn1x
 䜣 xn1y
 镡 xn2j
@@ -7192,6 +7207,7 @@
 浔 xp2uc
 洵 xp2ul
 珣 xp2w
+𬍤 xp2wc
 恂 xp2x
 询 xp2y
 鲟 xp2yc
@@ -7303,6 +7319,7 @@
 徐 xu2t
 栩 xu3m
 浒 xu3u
+珝 xu3w
 许 xu3y
 诩 xu3yy
 蓄 xu4c
@@ -7318,6 +7335,7 @@
 絮 xu4sr
 绪 xu4sv
 畜 xu4t
+垿 xu4tg
 洫 xu4u
 溆 xu4uk
 㳚 xu4uu
@@ -8057,6 +8075,7 @@
 圻 yn2t.
 夤 yn2tb
 淫 yn2u
+珢 yn2w
 訚 yn2y
 尹 yn37
 隐 yn3b
@@ -8165,6 +8184,7 @@
 勇 ys3l
 栐 ys3m
 俑 ys3r
+埇 ys3t
 泳 ys3u
 涌 ys3uy
 恿 ys3x

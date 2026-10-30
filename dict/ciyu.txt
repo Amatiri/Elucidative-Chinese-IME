@@ -41,6 +41,7 @@
 ⺈ bdkt
 丷 bdm
 冖 bdp
+本来 bfll
 本身 bfuf
 本质 bfvi
 蹦蹦跳跳 bgbgtct bbtt
@@ -99,8 +100,11 @@
 报道 bkdk4
 报告 bkgk
 保护 bkhu
+报仇 bkib
+报酬 bkib2
 保持 bkii
 包括 bkko
+包络 bklo4
 保留 bklq
 报名 bkm;
 保证 bkvg
@@ -122,6 +126,8 @@
 鞭长莫及 bmihmoj
 编辑 bmji
 边际 bmji4
+便捷 bmjx2
+辩解 bmjx3
 边界 bmjx4
 变量 bmld4
 便利 bmli4
@@ -215,6 +221,7 @@
 辶 bzv
 测试 ceu
 測試 ceu.
+层次 cgci
 仓库 chku
 词汇 cihv
 刺激 ciji
@@ -229,6 +236,7 @@
 参加 cjjw
 参考 cjkk
 参数 cjuu4
+残影 cjy;
 参与 cjyu
 残余 cjyu2
 操场 ckih
@@ -315,6 +323,8 @@
 道理 dkli
 道歉 dkqm
 ︵ dku
+导师 dkui1
+道士 dkui4
 倒数 dkuu
 导数 dkuu4
 导致 dkvi
@@ -333,6 +343,7 @@
 电话 dmhw
 点击 dmji
 电脑 dmnk
+电梯 dmti
 电视 dmui4
 电视机 dmuij
 电影院 dmy;y
@@ -373,6 +384,7 @@
 对牛弹琴 dvnqtjq dntq
 对齐 dvqi
 堆砌 dvqi4
+对照 dvvk
 对象 dvxd
 】 dvy
 对应 dvy;4
@@ -415,6 +427,7 @@
 分布 ffbu
 分别 ffbx
 奋斗 ffdb
+分离 ffli
 分类 fflz
 分配 ffpz
 分散 ffsj4
@@ -424,6 +437,7 @@
 氛围 ffwz2
 分享 ffxd
 分析 ffxi
+封装 fgvd
 风险 fgxm3
 房地产 fhdii
 方法 fhfa
@@ -433,6 +447,7 @@
 方案 fhoj
 放弃 fhqi
 放肆 fhsi
+访谈 fhtj
 方式 fhui
 反观 fjgr
 饭馆 fjgr3
@@ -456,6 +471,7 @@
 封妻荫子 fqyz fgqiynz
 服从 fucs
 辅导员 fudky
+付费 fufz
 覆盖 fugl
 符合 fuhe
 复合 fuhe2
@@ -517,6 +533,7 @@
 刚才 ghcl
 刚刚 ghgh1
 杠杆 ghgj
+钢筋 ghjn1
 觥筹交错 gijc gsibjcc
 ι gio
 Ι gioc
@@ -720,6 +737,7 @@
 获取 hoqu3
 或者 hove
 活着 hove0
+混凝土 hpn;t
 婚姻 hpyn
 换行 hrhh
 环境 hrj;
@@ -895,6 +913,11 @@
 计划 jihw
 继承 jiig
 基础 jiiu
+即将 jijd
+极具 jiju
+寄居 jiju1
+集聚 jiju4
+急剧 jiju4d
 即可 jike3
 即刻 jike4
 吉林 jiln
@@ -1049,6 +1072,7 @@
 接下来 jxxwl
 口罩 kbvk
 口语 kbyu
+矿洞 kdds
 矿泉水 kdqru
 课表 kebc
 课标 kebc1
@@ -1070,6 +1094,7 @@
 看来 kjll
 看着 kjve
 考察 kkia
+靠近 kkjn
 考虑 kkly
 考试 kkui
 开始 klui
@@ -1126,6 +1151,7 @@
 老虎 lkhu
 牢骚 lksk1
 老师 lkui
+劳务 lkwu
 联邦 lmbh
 联合 lmhe
 连接 lmjx
@@ -1170,6 +1196,7 @@
 明令禁止 m;l;jnv mljv
 明明 m;m;2
 明媚 m;mz
+名额 m;oe
 明确 m;qt
 明天 m;tm
 明知故问 m;viguw mvgw
@@ -1198,19 +1225,29 @@
 贸易 mkyi
 麦当劳 mldhl
 面对 mmdv
+免费 mmfz
 面积 mmji
 腼腆 mmtm
 面试 mmui
+敏感 mngj
 泯灭 mnmx
+模仿 mofh
+魔方 mofh1
+磨坊 mofh2
+模范 mofj
+模块 moky
 模拟 moni
 默认 morf
 模式 moui
 模型 mox;
 明日方舟 mrfv m;rifhv
 目标 mubc
+模板 mubj
+木板 mubj3
 目的 mudi
 目录 mulu4
 目前 muqm
+模样 muyh
 每次 mzci4
 每个 mzge
 没关系 mzgrx
@@ -1300,6 +1337,9 @@
 扑克 puke
 葡萄牙 putky
 普通 puts
+普适 puui
+朴实 puui2
+普世 puui4
 配合 pzhe
 配置 pzvi4
 培训 pzxp
@@ -1340,6 +1380,7 @@
 气势 qiui4l
 启示 qiui4o
 其中 qivs
+期望 qiwh
 企业 qiye4
 歧义 qiyi
 起义 qiyi4
@@ -1633,6 +1674,8 @@
 题材 ticl
 体裁 ticl2
 替代 tidl
+提纲 tigh
+提肛 tigh1
 提高 tigk
 提供 tigs
 提出 tiiu
@@ -1723,6 +1766,7 @@
 首先 ubxm
 双地支 uddivi
 ⟺ udjy
+双面 udmm
 双拼 udpn1
 ° udu4
 ≥ udydy uge
@@ -1847,6 +1891,7 @@
 ∴ usy
 输出 uuiu
 实时监测 uujc uiuijmc
+疏浚 uujp
 数据 uuju
 数据库 uujuk
 数量 uuld
@@ -1899,7 +1944,6 @@
 振动 vfds
 震动 vfds4
 针对 vfdv
-真正 vfvg
 政策 vgce
 政府 vgfu
 整个 vgge
@@ -1965,6 +2009,9 @@
 旨意 viyi4x
 直译 viyi4y
 只要 viyk
+支援 viyr
+职员 viyr2
+志愿 viyr4
 制造 vizk
 制作 vizo
 展开 vjkl
@@ -2052,14 +2099,20 @@
 祝福 vufu
 嘱咐 vufu4
 祝贺 vuhe
+逐渐 vujm
+竹简 vujm3
+主见 vujm4
 主任 vurf
 主人 vurf2
 助人为乐 vurfwzl vrwl
+主题 vuti2
+主体 vuti3
 主张 vuvh
 住宅 vuvl
 主席 vuxi
 注意 vuyi
 主义 vuyi4
+主演 vuyj3
 主要 vuyk
 ⿿ vvr.
 ⿻ vx.
@@ -2117,6 +2170,7 @@
 文件 wfjm
 稳健 wfjm4
 文件夹 wfjmj
+问卷 wfjr
 文明 wfm;
 温泉 wfqr
 温柔 wfrb
@@ -2140,11 +2194,13 @@
 无可奉告 wkfg wukefgg
 外面 wlmm
 我知道 wovid
+无敌 wudi
 无法 wufa
 无关 wugr
 五官 wugr1
 无关痛痒 wugrtsy wgty
 物理 wuli
+无理取闹 wuliqun wlqn
 无论 wulp
 雾霾 wuml
 武器 wuqi
@@ -2187,6 +2243,7 @@
 幸好 x;hk3
 星号 x;hk4
 形成 x;ig
+星期 x;qi
 形容词 x;rsc
 形式 x;ui
 行政 x;vg
@@ -2204,8 +2261,11 @@
 消除 xciu
 效率 xcly
 销售 xcub
+消失 xcui
 消息 xcxi
 效应 xcy;
+相比 xdbi
+想必 xdbi4
 相比而言 xdbiory xboy
 相等 xddg
 相对 xddv
@@ -2268,6 +2328,7 @@
 循环 xphr
 训练 xplm
 寻找 xpvk
+修订 xqd;4
 修复 xqfu
 修改 xqgl
 选拔 xrba
@@ -2366,6 +2427,7 @@
 意识 yiui2y
 艺术 yiuu
 已知 yivi1
+义务 yiwu
 依偎 yiwz1
 以为 yiwz2
 意味 yiwz4
@@ -2417,6 +2479,8 @@
 蕴含 yphj
 云南 ypnj
 运输 ypuu
+韵味 ypwz
+运维 ypwz2
 运行 ypx;
 允许 ypxu
 运作 ypzo
@@ -2430,6 +2494,7 @@
 院士 yrui45
 远视 yrui4s
 援助 yrvu
+原先 yrxm
 原因 yryn
 涌动 ysds
 用户 yshu
@@ -2462,6 +2527,7 @@
 增大 zgda4
 增加 zgjw
 增长 zgvh
+自定义 zid;yi
 字典 zidm
 自动 zids
 字符 zifu

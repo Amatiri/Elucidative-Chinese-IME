@@ -1,6 +1,6 @@
 // 解书音形 · 理据数据 — 手工维护，每行 1 条，勿手改格式
 // 写入：manager/rationale_add.py（整理排序：manager/file_processor.py）
-// 条目：1234
+// 条目：1235
 window.jieshuRationale = {
   "疤":"疒",
   "芭":"艹",
@@ -717,6 +717,7 @@ window.jieshuRationale = {
   "浓":"/",
   "唔":"nv2:正字「嗯」，吾\nwu2:口口(四码→吴)",
   "嗫":"口耳(四码→啮)",
+  "凝":"冫疑(四码→宁)",
   "狞":"/",
   "阿":"阝",
   "锕":"/",

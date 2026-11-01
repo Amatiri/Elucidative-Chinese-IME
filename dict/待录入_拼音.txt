@@ -1,13 +1,3 @@
-莰 kj3
-茝 il3
-𬜯 ld3
-鄀 ro4
-莶 xm1
-莝 co4
-䓖 qs2
-莙 jp1
-栻 ui4
-桠 ya1
 𬂩 jw1
 桄 gd1
 桄 gd4
@@ -233,7 +223,6 @@
 偰 xx4
 偡 vj4
 鸺 xq1
-偭 mm3
 偲 cl1
 偁 ig1
 㿠 hd4
@@ -560,7 +549,6 @@
 筶 gk4
 筦 gr3
 筤 lh2
-傺 ii4
 鹎 bz1
 僇 lu4
 艅 yu2
@@ -1058,7 +1046,6 @@
 瀵 ff4
 孅 xm1
 骦 ud1
-𬙋 xd1
 𤫉 xx4
 瓖 xd1
 鬘 mj2

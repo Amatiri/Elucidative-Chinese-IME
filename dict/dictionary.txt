@@ -512,6 +512,7 @@
 矬 co2u
 嵯 co2uh
 厝 co4c
+莝 co4cz
 剉 co4d
 错 co4j
 锉 co4jz
@@ -2215,6 +2216,7 @@
 啻 ii4kd
 眙 ii4m
 佁 ii4r
+傺 ii4rj
 赤 ii4t
 敕 ii4u
 饬 ii4ur
@@ -2273,6 +2275,7 @@
 柴 il2m
 豺 il2q
 侪 il2r
+茝 il3c
 虿 il4i
 戳 io1g
 踔 io1z
@@ -2684,6 +2687,7 @@
 近 jn4z
 进 jn4zw
 菌 jp1c
+莙 jp1ck
 军 jp1d
 龟 jp1dd
 麇 jp1g
@@ -3112,6 +3116,7 @@
 龛 kj1lh
 看 kj1m
 堪 kj1t
+莰 kj3c
 槛 kj3m
 侃 kj3r
 砍 kj3s
@@ -3318,6 +3323,7 @@
 量 ld2r
 俍 ld2rg
 两 ld35
+𬜯 ld3c
 俩 ld3r
 魉 ld3v
 凉 ld4b
@@ -4009,6 +4015,7 @@
 眄 mm3m
 娩 mm3n
 冕 mm3r
+偭 mm3rg
 腼 mm3rm
 缅 mm3s
 沔 mm3u
@@ -5131,6 +5138,7 @@
 劝 qr4l
 芎 qs1c
 邛 qs2b
+䓖 qs2c
 蛩 qs2i
 茕 qs2s
 琼 qs2w
@@ -5299,6 +5307,7 @@
 饶 rk2u
 扰 rk3u
 绕 rk4s
+鄀 ro4b
 若 ro4c
 叒 ro4c.k
 弱 ro4g
@@ -6059,6 +6068,7 @@
 释 ui4m
 釋 ui4m.
 柿 ui4md
+栻 ui4mg
 示 ui4o
 弑 ui4p
 䏡 ui4ro
@@ -6985,6 +6995,8 @@
 相 xd1m
 骧 xd1my
 缃 xd1s
+𬙋 xd1sy
+纕 xd1sy.
 湘 xd1u
 襄 xd1y
 箱 xd1z
@@ -7106,6 +7118,7 @@
 禊 xi4y
 先 xm19
 㔾 xm19.j
+莶 xm1c
 锨 xm1j
 铦 xm1jk
 籼 xm1m
@@ -7441,6 +7454,7 @@
 压 ya1c
 呀 ya1k
 哑 ya1ky
+桠 ya1m
 鸭 ya1n
 鸦 ya1ny
 垭 ya1t

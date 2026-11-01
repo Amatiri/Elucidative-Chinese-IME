@@ -219,6 +219,7 @@
 𥫗 bzr
 𧾷 bzu
 辶 bzv
+擦肩而过 cajmorg cjog
 测试 ceu
 測試 ceu.
 层次 cgci
@@ -303,6 +304,7 @@
 地铁 ditx
 地位 diwz
 第一 diyi
+抵罪 dizv4
 单独 djdu
 蛋黄 djhd
 但是 djui
@@ -481,6 +483,7 @@
 福建 fujm
 副码 fuma3s
 父亲 fuqn1
+芙蓉 furs
 复制 fuvi
 赋值 fuvi2
 福祉 fuvi3
@@ -1239,6 +1242,7 @@
 模拟 moni
 默认 morf
 模式 moui
+末尾 mowz
 模型 mox;
 明日方舟 mrfv m;rifhv
 目标 mubc
@@ -1281,6 +1285,8 @@
 年纪 nmji4
 年龄 nml;
 年轻 nmq;
+努力 nuli
+奴隶 nuli4
 内涵 nzhj
 内含 nzhj2
 内蒙古 nzmgg
@@ -1797,6 +1803,8 @@
 身体 ufti
 审题 ufti2
 神圣 ufug
+审视 ufui
+绅士 ufui4
 ∓ ufuvg
 甚至 ufvi
 ¬ ufz1
@@ -2413,6 +2421,7 @@
 一旦 yidj
 一点 yidm
 以后 yihb
+异常 yiih
 遗产 yiij
 已经 yij yij;
 意境 yij;4
@@ -2484,6 +2493,8 @@
 运行 ypx;
 允许 ypxu
 运作 ypzo
+缘故 yrgu
+远古 yrgu3
 愿景 yrj;
 原理 yrli
 原来 yrll

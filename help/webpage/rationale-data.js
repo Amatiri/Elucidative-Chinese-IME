@@ -1,6 +1,6 @@
 // 解书音形 · 理据数据 — 手工维护，每行 1 条，勿手改格式
 // 写入：manager/rationale_add.py（整理排序：manager/file_processor.py）
-// 条目：1235
+// 条目：1236
 window.jieshuRationale = {
   "疤":"疒",
   "芭":"艹",
@@ -668,6 +668,7 @@ window.jieshuRationale = {
   "宀":"b行部首",
   "眠":"/",
   "娩":"/",
+  "偭":"人囗(四码→冕，m→腼)",
   "缗":"/",
   "玟":"mn2:正字「珉」",
   "敏":"攵",

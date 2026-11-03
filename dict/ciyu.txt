@@ -1160,6 +1160,8 @@
 连接 lmjx
 链接 lmjx1
 廉洁 lmjx2
+联系 lmxi
+练习 lmxi2
 连续 lmxu
 邻居 lnju
 琳琅满目 lnlhmjm llmm
@@ -1173,6 +1175,7 @@
 流转 lqvr
 流行 lqx;
 流星 lqx;1
+流线 lqxm
 垄断 lsdr
 路程 luig
 路径 luj;
@@ -1385,6 +1388,8 @@
 起事 qiui4k
 气势 qiui4l
 启示 qiui4o
+气质 qivi
+旗帜 qivi4
 其中 qivs
 期望 qiwh
 企业 qiye4
@@ -1431,6 +1436,7 @@
 区域 quyu
 趋于 quyu2
 恰好 qwhk
+切削 qxxc
 ・ r.d
 ･ r.dh
 ー r;; r;;k
@@ -1866,6 +1872,9 @@
 视线 uixm4s
 适应 uiy;
 事业 uiye
+适宜 uiyi
+示意 uiyi4
+失忆 uiyi4x
 实验 uiyj
 食盐 uiyj2
 誓言 uiyj2k
@@ -2035,6 +2044,7 @@
 战事 vjui4k
 战争 vjvg
 展现 vjxm
+战役 vjyi
 找到 vkdk
 召唤 vkhr
 照常 vkih
@@ -2284,6 +2294,8 @@
 相互 xdhu
 相交 xdjc
 香蕉 xdjc1
+相接 xdjx1
+详解 xdjx3
 响亮 xdld
 向量 xdld4
 项链 xdlm
@@ -2364,6 +2376,7 @@
 畜牧 xumu
 序幕 xumu4
 需求 xuqq
+虚无 xuwu
 需要 xuyk
 仙之人兮列如麻 xvrm xvrxlrm
 下课 xwke
@@ -2410,6 +2423,7 @@
 鱿鱼 ybyu2d
 叶公好龙 yegshkl yghl
 也会 yehv
+冶金 yejn
 也能 yeng
 样子 yhzi
 以便 yibm4r
@@ -2506,6 +2520,7 @@
 远视 yrui4s
 援助 yrvu
 原先 yrxm
+愿意 yryi
 原因 yryn
 涌动 ysds
 用户 yshu

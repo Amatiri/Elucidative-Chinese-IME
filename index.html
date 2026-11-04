@@ -711,6 +711,38 @@
     100% { transform: scale(1); opacity: 1; filter: blur(0); }
   }
 
+  .demo-cand-line {
+    display: inline-flex;
+    align-items: baseline;
+    white-space: nowrap;
+  }
+  .demo-rest-wrap {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-left: 14px;
+  }
+  .demo-rest-label {
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    color: var(--ink-faint);
+  }
+  .demo-rest {
+    font-family: var(--font-mono);
+    font-size: clamp(20px, 2.6vw, 26px);
+    letter-spacing: 0.1em;
+    line-height: 1.15;
+    min-width: 2.2em;
+    min-height: 1.15em;
+    color: var(--cinnabar);
+  }
+  .demo-rest.empty {
+    font-family: var(--font-title);
+    font-size: 15px;
+    letter-spacing: 0.05em;
+    color: var(--ink-faint);
+  }
+
   .demo-note {
     position: relative;
     z-index: 1;
@@ -1044,6 +1076,8 @@
     .demo-panel { padding: 24px 20px 20px; }
     .demo-label { width: 38px; font-size: 12.5px; }
     .demo-input-row, .demo-cand-row { gap: 12px; }
+    .demo-rest-wrap { gap: 6px; margin-left: 10px; }
+    .demo-rest-label { font-size: 11px; letter-spacing: 0.08em; }
 
     .footer-inner { flex-direction: column; align-items: flex-start; }
     .footer-note { text-align: left; }
@@ -1169,11 +1203,11 @@
       <div class="philosophy-cards">
         <div class="p-card reveal reveal-delay-1">
           <h4>常用优先</h4>
-          <p>最常用的汉字获得最短的编码。输入频率决定码长分配，让高频操作尽可能轻快。</p>
+          <p>常用字在整理码表时就排在最前，也分到更短的编码。顺序事先定好，输入时只顺着码表查，不会因为你打得勤就临时改。</p>
         </div>
         <div class="p-card reveal reveal-delay-2">
           <h4>零重码</h4>
-          <p>每个编码都有唯一汉字。取消候选翻页的干扰，让“想到即打出”成为可能。</p>
+          <p>每个完整编码只对应一个汉字，不必翻页挑选。候选只提示还差哪几码，照着补全便唯一命中，想到即打出。</p>
         </div>
         <div class="p-card reveal reveal-delay-3">
           <h4>渐进学习</h4>
@@ -1181,6 +1215,10 @@
         </div>
       </div>
     </div>
+
+    <p class="mech-note reveal reveal-delay-3">
+      码表是根本，规则只是对它的解释；遇到不一致，以码表里的实际编码为准。码表在本地一次排好，输入时只顺着这份顺序查找，不联网、不统计、也不收集任何输入。
+    </p>
   </section>
 
   <!-- ========== 编码结构 ========== -->
@@ -1189,7 +1227,7 @@
     <h2 class="section-title reveal reveal-delay-1">ABCD(E)(.F)</h2>
     <p class="section-lead reveal reveal-delay-2">
       每个汉字的完整编码由音码、主码、副码与补码构成。
-      前四码必填，后两码可选——编码长度随复杂度自然伸缩。
+      前四码必填，后两码按需：同音又同主码时才补副码区分，遇到繁异、同义的场合才用补码，没有需要便停在四码。
     </p>
 
     <div class="code-structure">
@@ -1205,12 +1243,12 @@
       </div>
       <div class="code-block optional reveal reveal-delay-2">
         <div class="letters">E</div>
-        <div class="role">副码 · 可选</div>
+        <div class="role">副码 · 按需</div>
         <div class="detail">余字 / 查重注释形码。同音同主码时用于区分，多数常用字无需副码。</div>
       </div>
       <div class="code-block optional reveal reveal-delay-3">
         <div class="letters">.F</div>
-        <div class="role">补码 · 可选</div>
+        <div class="role">补码 · 按需</div>
         <div class="detail">繁异 / 同义补充。日常输入很少用到，为特殊场景保留。</div>
       </div>
     </div>
@@ -1224,6 +1262,10 @@
     </div>
     <p class="mech-note reveal reveal-delay-3">
       五大机制协同，在“唯一确定”的前提下，让编码尽可能短。
+    </p>
+
+    <p class="mech-note reveal reveal-delay-3">
+      字母之外，编码还会用到几个符号，各有分工：数字记声调和独体构形，点号便于标识补码，分号沿用双拼的 ing 韵母。它们不是额外的记忆负担，而是给声调、繁异和重码各留一个标识位，让编码分得更清楚。单引号 ' 不进编码，只是输入时手动断开两个字的操作键，和空格、选字键同类。
     </p>
 
     <figure class="shot reveal reveal-delay-3">
@@ -1240,7 +1282,7 @@
     <p class="section-label reveal">Examples</p>
     <h2 class="section-title reveal reveal-delay-1">一个字，一段拆解。</h2>
     <p class="section-lead reveal reveal-delay-2">
-      从音码开始，编码随理解逐位加长——候选也随之收紧，直到唯一确定。
+      从音码开始，一位位往下补，候选后面会跟上还差的编码，照着补全，字便唯一确定。
       以「意」为例：只打声母先出「有」，补上韵、调、主码、副码，才终于落到「意」。
     </p>
 
@@ -1252,7 +1294,13 @@
       </div>
       <div class="demo-cand-row">
         <span class="demo-label">候选</span>
-        <span class="demo-cand" id="tw-cand">—</span>
+        <span class="demo-cand-line">
+          <span class="demo-cand" id="tw-cand">—</span>
+          <span class="demo-rest-wrap">
+            <span class="demo-rest-label">剩余编码</span>
+            <span class="demo-rest empty" id="tw-rest">—</span>
+          </span>
+        </span>
       </div>
       <div class="demo-note" id="tw-note">音码 → 主码 → 副码，逐位收紧候选</div>
 
@@ -1262,6 +1310,10 @@
         <span><b>l</b>副码 · 上部「立」</span>
       </div>
     </div>
+
+    <p class="mech-note reveal">
+      候选后面那串，是它还差的编码——完整编码减去已打出的部分：打 y 时「有」后面跟 b3r，补到 yb3r 才是全码；到 yi4x 时「忆」后面空了，说明这位候选已打全，但后面仍排着带副码、补码的同音字。前端里它直接连在候选字后面，不是让你翻页挑字，而是一块提示板：等打熟了，眼睛只跟着编码走。
+    </p>
 
     <!-- 解书音形 四字 -->
     <div class="char-demo-grid">
@@ -1371,7 +1423,7 @@
       main.py 提供批量录入、添加单字、编辑修改、分析音区、整理码表、添加理据、查询字码、添加词语、猜测编码等管理功能。
       部分能力已 CLI 化，运行
       <code style="font-family:var(--font-mono); background:var(--cinnabar-soft); padding:2px 6px; border-radius:2px; font-size:0.9em; color:var(--cinnabar);">python main.py -h</code>
-      查看。
+      查看。若想在本机打开编码查询页，先运行一次整理码表（python main.py --sort）生成查询数据，本地页面才查得出来。
     </p>
 
     <div class="feature-grid">
@@ -1446,16 +1498,21 @@
   /* ========== 字例一：「意」打字机 ========== */
   var twCode = document.getElementById('tw-code');
   var twCand = document.getElementById('tw-cand');
+  var twRest = document.getElementById('tw-rest');
   var twNote = document.getElementById('tw-note');
   var twSection = document.getElementById('examples');
 
+  // full 为该帧首选字的完整编码；剩余编码 = full 去掉已输入前缀（同 ime.py 的 query_by_prefix）
   var FRAMES = [
-    { code: 'y',     cand: '有', note: '只打声母 · 先出最常用的字' },
-    { code: 'yi',    cand: '一', note: '补上韵码 · 候选收窄' },
-    { code: 'yi4',   cand: '一', note: '补上调码 · 仍是「一」' },
-    { code: 'yi4x',  cand: '忆', note: '补主码 x（心部）· 出「忆」' },
-    { code: 'yi4xl', cand: '意', note: '再补副码 l（上部「立」）· 唯一确定「意」' }
+    { code: 'y',     full: 'yb3r',  cand: '有', note: '只打声母 · 先出最常用的字' },
+    { code: 'yi',    full: 'yi12',  cand: '一', note: '补上韵码 · 候选收窄为「一」' },
+    { code: 'yi4',   full: 'yi42',  cand: '一', note: '补上调码 · 仍是「一」，但换了码位' },
+    { code: 'yi4x',  full: 'yi4x',  cand: '忆', note: '补主码 x（心部）· 出「忆」：四码已是全码，剩余为空' },
+    { code: 'yi4xl', full: 'yi4xl', cand: '意', note: '再补副码 l（上部「立」）· 五码唯一命中「意」，剩余为空' }
   ];
+
+  var FRAME_BY_CODE = {};
+  FRAMES.forEach(function (f) { FRAME_BY_CODE[f.code] = f; });
 
   var FINAL_NOTE = '音码 yi4 → 主码 x（心部）→ 副码 l（上部「立」），编码锁定为 yi4xl。';
 
@@ -1467,12 +1524,25 @@
     twCand.classList.add('pop');
   }
 
+  function setRest(full, code) {
+    var rest = full.slice(code.length);
+    if (rest === '') {
+      twRest.textContent = '（空）';
+      twRest.classList.add('empty');
+    } else {
+      twRest.textContent = rest;
+      twRest.classList.remove('empty');
+    }
+  }
+
   async function playSingle() {
     var prev = '';
 
     twCode.textContent = '';
     twCand.textContent = '—';
     twCand.classList.remove('pop');
+    twRest.textContent = '—';
+    twRest.classList.add('empty');
     twNote.textContent = '音码 → 主码 → 副码，逐位收紧候选';
     await sleep(1100);
 
@@ -1482,12 +1552,17 @@
 
       for (var j = 0; j < added.length; j++) {
         twCode.textContent += added[j];
+        // 每敲一键立即刷新候选与剩余编码，与前端逐键查询一致
+        var cur = FRAME_BY_CODE[twCode.textContent];
+        if (cur) {
+          setCand(cur.cand);
+          setRest(cur.full, cur.code);
+          twNote.textContent = cur.note;
+        }
         await sleep(170);
       }
 
       prev = f.code;
-      setCand(f.cand);
-      twNote.textContent = f.note;
       await sleep(820);
     }
 
@@ -1500,6 +1575,7 @@
   function renderSingleStatic() {
     twCode.textContent = 'yi4xl';
     twCand.textContent = '意';
+    setRest('yi4xl', 'yi4xl');
     twNote.textContent = FINAL_NOTE;
   }
 

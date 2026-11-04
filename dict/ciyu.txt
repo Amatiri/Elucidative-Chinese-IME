@@ -78,6 +78,7 @@
 比如 biru
 比赛 bisl
 必须 bixu
+辟邪 bixx
 毕业 biye
 必要 biyk
 版本 bjbf
@@ -232,6 +233,7 @@
 辞书 ciuu
 次数 ciuu4
 此外 ciwl
+刺猬 ciwz
 词语 ciyu
 餐馆 cjgr3
 参加 cjjw
@@ -422,6 +424,7 @@
 法兰西 faljx
 法律 faly
 发散 fasj
+法治 favi4
 发展 favj
 發展 favj.
 发现 faxm
@@ -482,6 +485,7 @@
 符号 fuhk
 福建 fujm
 副码 fuma3s
+富强 fuqd
 父亲 fuqn1
 芙蓉 furs
 复制 fuvi
@@ -700,6 +704,7 @@
 核实 heui2
 何时 heui2r
 核心 hexn
+和谐 hexx
 何意味 heyiwz
 盒子 hezi
 合资 hezi1
@@ -791,12 +796,14 @@
 沉默 ifmo
 城邦 igbh1
 程度 igdu4
+城郊 igjc1
 承诺 igno
 城市 igui
 城镇 igvf4
 成为 igwz
 称为 igwz2
 呈现 igxm
+诚信 igxn4
 程序 igxu
 程序员 igxuy
 常规 ihgv
@@ -845,6 +852,7 @@
 初次 iuci4
 除此之外 iuciviw icvw
 厨房 iufh
+初级 iuji2
 除了 iule
 处理 iuli3
 ʊ ius
@@ -875,6 +883,7 @@
 经营 j;y;
 精英 j;y;1
 晶莹 j;y;2
+敬业 j;ye
 经验 j;yj
 静音 j;yn
 鲸鱼 j;yu
@@ -917,6 +926,7 @@
 继承 jiig
 基础 jiiu
 即将 jijd
+积极 jiji
 极具 jiju
 寄居 jiju1
 集聚 jiju4
@@ -975,6 +985,7 @@
 减少 jmuk
 建筑 jmvu
 键位图 jmwztu
+简讯 jmxp
 建议 jmyi4
 检验 jmyj
 简言之 jmyjv
@@ -1022,6 +1033,7 @@
 举措 juco
 聚合 juhe
 居合 juhe2
+举荐 jujm
 拒绝 jujt
 距离 juli
 居民 jumn
@@ -1307,6 +1319,7 @@
 按下 ojxw
 奥地利 okdil
 澳门 okmf
+爱国 olgo2
 二次元 orciy
 而且 orqx
 儿童 orts
@@ -1640,6 +1653,7 @@
 四个 sige
 丝绸 siib
 四川 siir
+司机 siji
 思考 sikk
 四码 sima3s
 死亡 siwh
@@ -1655,6 +1669,8 @@
 所以 soyi
 损坏 sphy
 算法 srfa
+耸肩 ssjm
+送检 ssjm3
 松树 ssuu
 松鼠 ssuu3
 素材 sucl
@@ -1819,6 +1835,8 @@
 升级 ugji2
 胜利 ugli
 生理 ugli3
+升值 ugvi
+升职 ugvi2o
 生物 ugwu
 声音 ugyn
 剩余 ugyu2
@@ -1982,6 +2000,7 @@
 直播 vibo
 只不过 vibug
 制定 vid;
+值得 vide2
 知道 vidk
 指导 vidk3
 直到 vidk4
@@ -2346,6 +2365,7 @@
 信息 xnxi
 新增 xnzg
 循环 xphr
+巡回 xphv
 训练 xplm
 寻找 xpvk
 修订 xqd;4
@@ -2396,6 +2416,8 @@
 应对 y;dv
 应付 y;fu
 应该 y;gl
+营火 y;ho
+萤火虫 y;hoi
 英吉利 y;jil
 应接不暇 y;jxbux yjbx
 影响 y;xd
@@ -2409,6 +2431,7 @@
 游乐园 ybley
 有利于 ybliy
 又双叒叕 ybudrov
+友善 ybuj
 油脂 ybvi1
 优质 ybvi4
 幼稚 ybvi4h
@@ -2566,6 +2589,7 @@
 仔细 zixi
 自习 zixi2
 自信 zixn
+自由 ziyb
 咱们 zjmf
 暂时 zjui
 早上 zkuh
@@ -2573,6 +2597,7 @@
 坐标 zobc
 做到 zodk
 做了 zole
+座谈会 zotjh
 昨天 zotm
 作战 zovj
 作为 zowz

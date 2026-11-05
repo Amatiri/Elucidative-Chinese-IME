@@ -4,6 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>解书音形 · 编码规则</title>
+<meta name="description" content="解书音形编码规则全文：带调双拼音码、独体与合体主码、按需副码与补码、解书拆分规则及词语编码建议。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="解书音形 · 编码规则">
+<meta property="og:description" content="ABCD(E)(.F) 编码结构：以音切入，以义定形；含部首表、部首次表与完整规则正文。">
+<meta property="og:url" content="https://amatiri.github.io/Elucidative-Chinese-IME/help/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='6' y='6' width='52' height='52' rx='3' fill='none' stroke='%23b33a2e' stroke-width='3'/%3E%3Crect x='12' y='12' width='40' height='40' fill='none' stroke='%23b33a2e' stroke-width='1.5'/%3E%3C/svg%3E">
 <style>
   /* ========== 基础变量：完全沿用主页 ========== */
   :root {
@@ -22,8 +28,8 @@
     --shadow-sm: 0 1px 2px rgba(44, 36, 30, 0.04), 0 8px 20px -12px rgba(44, 36, 30, 0.16);
     --shadow-md: 0 2px 4px rgba(44, 36, 30, 0.04), 0 20px 44px -24px rgba(44, 36, 30, 0.30);
 
-    --font-title: "KaiTi", "STKaiti", "Kaiti SC", "Songti SC", "SimSun", serif;
-    --font-body: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    --font-title: "KaiTi", "STKaiti", "Kaiti SC", "Songti SC", "SimSun", "Noto Serif CJK SC", "Source Han Serif SC", "Noto Serif SC", serif;
+    --font-body: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", "Noto Sans CJK SC", sans-serif;
     --font-mono: "Courier New", "SFMono-Regular", Consolas, monospace;
 
     --sidebar-w: 200px;
@@ -32,6 +38,13 @@
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  /* 键盘焦点：仅键盘操作时出现，不影响鼠标点击与既有配色 */
+  :where(a, button, [tabindex]):focus-visible {
+    outline: 2px solid var(--cinnabar);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
 
   html {
     scroll-behavior: smooth;
@@ -599,6 +612,32 @@
     .doc-content pre, .doc-content table { page-break-inside: avoid; }
   }
 </style>
+<noscript><style>
+  /* 禁用 JS 时的可读性兜底：静态展开部首表 / 部首次表，侧栏恢复自然流 */
+  .picker-hint.js-only { display: none; }
+  .radical-letters { display: none !important; }
+  .radical-card {
+    display: block; min-height: 0; padding: 0;
+    border: none; box-shadow: none; background: none;
+  }
+  .radical-row {
+    display: flex !important;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .radical-row:last-child { border-bottom: none; }
+  #bucishouBlock[hidden] { display: block !important; }
+  .collapse-toggle { display: none !important; }
+  @media (max-width: 900px) {
+    .doc-layout { display: block; }
+    .doc-sidebar {
+      position: static; width: auto; max-height: none;
+      transform: none; border-right: none; box-shadow: none;
+      overflow: visible; padding: 20px 0;
+    }
+    .menu-btn { display: none !important; }
+  }
+</style></noscript>
 </head>
 <body>
 
@@ -618,6 +657,18 @@
       <ul class="toc-list" id="tocList">
         <!-- JS 从正文标题自动生成 -->
       </ul>
+      <noscript>
+        <ul class="toc-list">
+          <li class="toc-level-2"><a class="toc-link" href="#前言">前言</a></li>
+          <li class="toc-level-2"><a class="toc-link" href="#一、编码结构概览">一、编码结构概览</a></li>
+          <li class="toc-level-2"><a class="toc-link" href="#二、音码编码规则">二、音码编码规则</a></li>
+          <li class="toc-level-2"><a class="toc-link" href="#三、主码编码规则">三、主码编码规则</a></li>
+          <li class="toc-level-2"><a class="toc-link" href="#四、副码编码规则">四、副码编码规则</a></li>
+          <li class="toc-level-2"><a class="toc-link" href="#五、简化解书拆分规则">五、简化解书拆分规则</a></li>
+          <li class="toc-level-2"><a class="toc-link" href="#六、补码编码规则">六、补码编码规则</a></li>
+          <li class="toc-level-2"><a class="toc-link" href="#七、词语建议">七、词语建议</a></li>
+        </ul>
+      </noscript>
     </nav>
   </aside>
 
@@ -782,10 +833,38 @@
 
     <h4 id="3-2-部首表部首次表">3.2 部首表&amp;部首次表(加粗为别码部首,需格外记忆)</h4>
     <p><strong>部首表</strong></p>
-    <p class="picker-hint">点击部首码字母,下方卡片即显示对应部首行;同一时刻仅显示一行,加粗为别码部首。</p>
+    <p class="picker-hint js-only">点击部首码字母,下方卡片即显示对应部首行;同一时刻仅显示一行,加粗为别码部首。</p>
+    <noscript><p class="picker-hint">未启用 JavaScript：以下按部首码列出全部 26 行，加粗为别码部首；启用后可点击字母逐行筛选。</p></noscript>
     <div class="radical-picker">
       <div class="radical-letters" id="radicalLetters" role="group" aria-label="部首码"></div>
-      <div class="radical-card" id="radicalCard" aria-live="polite"></div>
+      <div class="radical-card" id="radicalCard" aria-live="polite">
+        <div class="radical-row" data-letter="a"><span class="radical-key">a</span><span class="rad">丶</span><span class="rad">一</span><span class="rad">丨</span><span class="rad">丿</span><span class="rad">乙</span><span class="rad">乛</span><span class="rad is-bie" title="别码部首">𠃌</span><span class="rad">乚</span><span class="rad">𡿨</span></div>
+        <div class="radical-row" data-letter="b"><span class="radical-key">b</span><span class="rad">宀</span><span class="rad is-bie" title="别码部首">阝</span><span class="rad">冫</span><span class="rad">贝</span><span class="rad">疒</span><span class="rad">白</span><span class="rad">卜</span><span class="rad">八</span><span class="rad">匕</span><span class="rad">癶</span></div>
+        <div class="radical-row" data-letter="c"><span class="radical-key">c</span><span class="rad is-bie" title="别码部首">车</span><span class="rad">艹</span><span class="rad is-bie" title="别码部首">厂</span><span class="rad is-bie" title="别码部首">凵</span><span class="rad">寸</span><span class="rad">卄</span><span class="rad">屮</span></div>
+        <div class="radical-row" data-letter="d"><span class="radical-key">d</span><span class="rad">刀</span><span class="rad">歹</span><span class="rad">大</span><span class="rad is-bie" title="别码部首">亠</span><span class="rad is-bie" title="别码部首">冖</span><span class="rad is-bie" title="别码部首">丷</span><span class="rad">斗</span><span class="rad">豆</span></div>
+        <div class="radical-row" data-letter="e"><span class="radical-key">e</span><span class="radical-row-none">〈无〉</span></div>
+        <div class="radical-row" data-letter="f"><span class="radical-key">f</span><span class="rad">风</span><span class="rad">方</span><span class="rad">父</span><span class="rad">缶</span><span class="rad is-bie" title="别码部首">臼</span><span class="rad is-bie" title="别码部首">辰</span><span class="rad">非</span></div>
+        <div class="radical-row" data-letter="g"><span class="radical-key">g</span><span class="rad">工</span><span class="rad">广</span><span class="rad">弓</span><span class="rad">光</span><span class="rad">囗</span><span class="rad">革</span><span class="rad">戈</span><span class="rad">瓜</span><span class="rad">艮</span><span class="rad">谷</span><span class="rad">骨</span></div>
+        <div class="radical-row" data-letter="h"><span class="radical-key">h</span><span class="rad">火</span><span class="rad">户</span><span class="rad">禾</span><span class="rad is-bie" title="别码部首">⺌</span><span class="rad is-bie" title="别码部首">羊</span><span class="rad">虍</span><span class="rad">黑</span></div>
+        <div class="radical-row" data-letter="i"><span class="radical-key">i</span><span class="rad">虫</span><span class="rad is-bie" title="别码部首">页</span><span class="rad is-bie" title="别码部首">雨</span><span class="rad is-bie" title="别码部首">弋</span><span class="rad is-bie" title="别码部首">彐</span><span class="rad is-bie" title="别码部首">彑</span><span class="rad">臣</span><span class="rad">赤</span><span class="rad">𡗗</span><span class="rad">尺</span></div>
+        <div class="radical-row" data-letter="j"><span class="radical-key">j</span><span class="rad">金</span><span class="rad">巾</span><span class="rad">廴</span><span class="rad">冂</span><span class="rad">几</span><span class="rad">𠘨</span><span class="rad">卩</span><span class="rad">己</span><span class="rad">见</span><span class="rad">斤</span><span class="rad">皀</span></div>
+        <div class="radical-row" data-letter="k"><span class="radical-key">k</span><span class="rad">口</span><span class="rad is-bie" title="别码部首">又</span><span class="rad is-bie" title="别码部首">舌</span><span class="rad is-bie" title="别码部首">用</span><span class="rad is-bie" title="别码部首">角</span></div>
+        <div class="radical-row" data-letter="l"><span class="radical-key">l</span><span class="rad">娄</span><span class="rad is-bie" title="别码部首">云</span><span class="rad is-bie" title="别码部首">勹</span><span class="rad">力</span><span class="rad">龙</span><span class="rad">老</span><span class="rad">卤</span><span class="rad">里</span><span class="rad">卵</span></div>
+        <div class="radical-row" data-letter="m"><span class="radical-key">m</span><span class="rad">木</span><span class="rad is-bie" title="别码部首">彡</span><span class="rad is-bie" title="别码部首">釆</span><span class="rad">马</span><span class="rad">门</span><span class="rad">皿</span><span class="rad">毛</span><span class="rad">目</span><span class="rad">矛</span><span class="rad">米</span><span class="rad">麦</span></div>
+        <div class="radical-row" data-letter="n"><span class="radical-key">n</span><span class="rad">女</span><span class="rad">牛</span><span class="rad">鸟</span><span class="rad is-bie" title="别码部首">耒</span><span class="rad is-bie" title="别码部首">齿</span></div>
+        <div class="radical-row" data-letter="o"><span class="radical-key">o</span><span class="rad">耳</span><span class="rad is-bie" title="别码部首">匚</span><span class="rad">二</span><span class="rad">儿</span><span class="rad is-bie" title="别码部首">㔾</span></div>
+        <div class="radical-row" data-letter="p"><span class="radical-key">p</span><span class="rad">攴</span><span class="rad">片</span><span class="rad is-bie" title="别码部首">殳</span><span class="rad">丬</span><span class="rad">皮</span><span class="rad is-bie" title="别码部首">髟</span><span class="rad is-bie" title="别码部首">㐅</span></div>
+        <div class="radical-row" data-letter="q"><span class="radical-key">q</span><span class="rad">气</span><span class="rad">犬</span><span class="rad is-bie" title="别码部首">豸</span><span class="rad">欠</span><span class="rad">青</span></div>
+        <div class="radical-row" data-letter="r"><span class="radical-key">r</span><span class="rad">人</span><span class="rad">肉</span><span class="rad">入</span><span class="rad">日</span><span class="rad is-bie" title="别码部首">リ</span></div>
+        <div class="radical-row" data-letter="s"><span class="radical-key">s</span><span class="rad is-bie" title="别码部首">示</span><span class="rad">丝</span><span class="rad is-bie" title="别码部首">石</span><span class="rad is-bie" title="别码部首">尸</span><span class="rad is-bie" title="别码部首">十</span><span class="rad">厶</span><span class="rad">巳</span></div>
+        <div class="radical-row" data-letter="t"><span class="radical-key">t</span><span class="rad">土</span><span class="rad is-bie" title="别码部首">彳</span><span class="rad is-bie" title="别码部首">幺</span><span class="rad is-bie" title="别码部首">夕</span><span class="rad">田</span></div>
+        <div class="radical-row" data-letter="u"><span class="radical-key">u</span><span class="rad is-bie" title="别码部首">攵</span><span class="rad">水</span><span class="rad">矢</span><span class="rad">手</span><span class="rad">食</span><span class="rad">山</span><span class="rad">士</span><span class="rad">豕</span><span class="rad">身</span></div>
+        <div class="radical-row" data-letter="v"><span class="radical-key">v</span><span class="rad is-bie" title="别码部首">乑</span><span class="rad">争</span><span class="rad">舟</span><span class="rad">止</span><span class="rad">爪</span><span class="rad is-bie" title="别码部首">鬼</span><span class="rad">支</span></div>
+        <div class="radical-row" data-letter="w"><span class="radical-key">w</span><span class="rad">王</span><span class="rad">网</span><span class="rad">瓦</span><span class="rad">韦</span><span class="rad is-bie" title="别码部首">隹</span><span class="rad">文</span></div>
+        <div class="radical-row" data-letter="x"><span class="radical-key">x</span><span class="rad">穴</span><span class="rad">𰃮</span><span class="rad">心</span><span class="rad">西</span><span class="rad">小</span><span class="rad is-bie" title="别码部首">巛</span><span class="rad">血</span><span class="rad">辛</span><span class="rad">习</span></div>
+        <div class="radical-row" data-letter="y"><span class="radical-key">y</span><span class="rad">言</span><span class="rad">酉</span><span class="rad">月</span><span class="rad">鱼</span><span class="rad">衣</span><span class="rad">尢</span><span class="rad">聿</span><span class="rad">业</span><span class="rad">羽</span><span class="rad is-bie" title="别码部首">黾</span><span class="rad">音</span></div>
+        <div class="radical-row" data-letter="z"><span class="radical-key">z</span><span class="rad is-bie" title="别码部首">辶</span><span class="rad is-bie" title="别码部首">竹</span><span class="rad">足</span><span class="rad">子</span><span class="rad">自</span><span class="rad">走</span></div>
+      </div>
     </div>
     <div class="bucishou-head">
       <p><strong>部首次表</strong></p>
@@ -1440,35 +1519,8 @@ z: vruipb
   });
 
   /* ========== 7. 部首表交互：部首码按钮 → 单行卡片（3.2） ========== */
-  // 数据与原紧凑块逐字一致;词尾 * 表示别码部首(加粗显示)
-  var RADICAL_ROWS = {
-    a: '丶 一 丨 丿 乙 乛 𠃌* 乚 𡿨',
-    b: '宀 阝* 冫 贝 疒 白 卜 八 匕 癶',
-    c: '车* 艹 厂* 凵* 寸 卄 屮',
-    d: '刀 歹 大 亠* 冖* 丷* 斗 豆',
-    e: '',
-    f: '风 方 父 缶 臼* 辰* 非',
-    g: '工 广 弓 光 囗 革 戈 瓜 艮 谷 骨',
-    h: '火 户 禾 ⺌* 羊* 虍 黑',
-    i: '虫 页* 雨* 弋* 彐* 彑* 臣 赤 𡗗 尺',
-    j: '金 巾 廴 冂 几 𠘨 卩 己 见 斤 皀',
-    k: '口 又* 舌* 用* 角*',
-    l: '娄 云* 勹* 力 龙 老 卤 里 卵',
-    m: '木 彡* 釆* 马 门 皿 毛 目 矛 米 麦',
-    n: '女 牛 鸟 耒* 齿*',
-    o: '耳 匚* 二 儿 㔾*',
-    p: '攴 片 殳* 丬 皮 髟* 㐅*',
-    q: '气 犬 豸* 欠 青',
-    r: '人 肉 入 日 リ*',
-    s: '示* 丝 石* 尸* 十* 厶 巳',
-    t: '土 彳* 幺* 夕* 田',
-    u: '攵* 水 矢 手 食 山 士 豕 身',
-    v: '乑* 争 舟 止 爪 鬼* 支',
-    w: '王 网 瓦 韦 隹* 文',
-    x: '穴 𰃮 心 西 小 巛* 血 辛 习',
-    y: '言 酉 月 鱼 衣 尢 聿 业 羽 黾* 音',
-    z: '辶* 竹* 足 子 自 走'
-  };
+  /* 部首表 26 行是 #radicalCard 内的静态 HTML（禁用 JS 时仍可读）；
+     JS 只负责生成筛选按钮与切换显示，不再持有第二份数据。 */
 
   var radicalLetters = document.getElementById('radicalLetters');
   var radicalCard = document.getElementById('radicalCard');
@@ -1485,8 +1537,11 @@ z: vruipb
       });
     };
 
-    // 26 个部首码按钮
-    Object.keys(RADICAL_ROWS).forEach(function (letter) {
+    // 字母与部首行均取自静态 HTML，数据源唯一
+    var radicalRows = Array.prototype.slice.call(radicalCard.querySelectorAll('.radical-row'));
+
+    radicalRows.forEach(function (row) {
+      var letter = row.getAttribute('data-letter');
       var btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'radical-letter-btn';
@@ -1494,41 +1549,11 @@ z: vruipb
       btn.setAttribute('data-letter', letter);
       btn.setAttribute('aria-label', '部首码 ' + letter);
       btn.setAttribute('aria-pressed', 'false');
-      if (!RADICAL_ROWS[letter]) btn.classList.add('is-empty');
+      if (!row.querySelector('.rad')) btn.classList.add('is-empty');
       btn.addEventListener('click', function () {
         showRadicalRow(letter);
       });
       radicalLetters.appendChild(btn);
-    });
-
-    // 26 行部首卡片,默认仅显示 a 行
-    Object.keys(RADICAL_ROWS).forEach(function (letter) {
-      var row = document.createElement('div');
-      row.className = 'radical-row';
-      row.setAttribute('data-letter', letter);
-
-      var key = document.createElement('span');
-      key.className = 'radical-key';
-      key.textContent = letter;
-      row.appendChild(key);
-
-      var raw = RADICAL_ROWS[letter];
-      if (!raw) {
-        var none = document.createElement('span');
-        none.className = 'radical-row-none';
-        none.textContent = '〈无〉';
-        row.appendChild(none);
-      } else {
-        raw.split(' ').forEach(function (token) {
-          var isBie = token.charAt(token.length - 1) === '*';
-          var rad = document.createElement('span');
-          rad.className = 'rad' + (isBie ? ' is-bie' : '');
-          rad.textContent = isBie ? token.slice(0, -1) : token;
-          if (isBie) rad.title = '别码部首';
-          row.appendChild(rad);
-        });
-      }
-      radicalCard.appendChild(row);
     });
 
     showRadicalRow('a');

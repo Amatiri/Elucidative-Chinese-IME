@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>解书音形 · 在 Rime 里挂表即用</title>
+<meta name="description" content="把解书音形码表挂到 Rime：一条命令导出方案文件，Windows 小狼毫与安卓同文两端可用。含三步部署、导出产物、上手键位与完整技术文档入口。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="解书音形 · 在 Rime 里挂表即用">
+<meta property="og:description" content="导出 → 部署 → 启用。同一份码表，Windows 小狼毫与安卓同文两端可用，不改动其它方案。">
+<meta property="og:url" content="https://amatiri.github.io/Elucidative-Chinese-IME/migrate_to_rime/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='6' y='6' width='52' height='52' rx='3' fill='none' stroke='%23b33a2e' stroke-width='3'/%3E%3Crect x='12' y='12' width='40' height='40' fill='none' stroke='%23b33a2e' stroke-width='1.5'/%3E%3C/svg%3E">
+<style>
+  /* ========== 基础变量：沿用官网 ========== */
+  :root {
+    --paper: #f7f2e9;
+    --paper-deep: #efe7da;
+    --paper-lite: #fdfaf4;
+    --ink: #2c241e;
+    --ink-soft: #5a4e44;
+    --ink-faint: #8a7d70;
+    --cinnabar: #b33a2e;
+    --cinnabar-soft: rgba(179, 58, 46, 0.08);
+    --gold: #a8894a;
+    --line: rgba(90, 78, 68, 0.14);
+    --line-strong: rgba(90, 78, 68, 0.26);
+
+    --shadow-sm: 0 1px 2px rgba(44, 36, 30, 0.04), 0 8px 20px -12px rgba(44, 36, 30, 0.16);
+    --shadow-md: 0 2px 4px rgba(44, 36, 30, 0.04), 0 20px 44px -24px rgba(44, 36, 30, 0.30);
+    --shadow-lg: 0 34px 80px -44px rgba(44, 36, 30, 0.50);
+
+    --font-title: "KaiTi", "STKaiti", "Kaiti SC", "Songti SC", "SimSun", "Noto Serif CJK SC", "Source Han Serif SC", "Noto Serif SC", serif;
+    --font-body: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", "Noto Sans CJK SC", sans-serif;
+    --font-mono: "Courier New", "SFMono-Regular", Consolas, monospace;
+    --max-w: 1080px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :where(a, button, [tabindex]):focus-visible {
+    outline: 2px solid var(--cinnabar);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.45;
+    background-image:
+      repeating-linear-gradient(90deg,
+        transparent 0px, transparent 3px,
+        rgba(160, 140, 110, 0.035) 3px, rgba(160, 140, 110, 0.035) 4px),
+      repeating-linear-gradient(0deg,
+        transparent 0px, transparent 5px,
+        rgba(160, 140, 110, 0.018) 5px, rgba(160, 140, 110, 0.018) 6px),
+      radial-gradient(ellipse at 20% 10%, rgba(200, 175, 135, 0.10), transparent 55%),
+      radial-gradient(ellipse at 80% 90%, rgba(180, 150, 120, 0.08), transparent 50%);
+  }
+
+  .page {
+    position: relative;
+    z-index: 1;
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  /* ========== 渐显 ========== */
+  .reveal {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 0.8s cubic-bezier(0.22, 0.61, 0.36, 1),
+                transform 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+  .reveal.is-visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.10s; }
+  .reveal-delay-2 { transition-delay: 0.20s; }
+  .reveal-delay-3 { transition-delay: 0.30s; }
+
+  /* ========== 顶部导航 ========== */
+  .topbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 14px 40px;
+    background: rgba(247, 242, 233, 0.94);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid transparent;
+    transition: background 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+  }
+  .topbar.scrolled {
+    background: rgba(247, 242, 233, 0.97);
+    border-bottom-color: var(--line);
+    box-shadow: 0 1px 12px rgba(44, 36, 30, 0.05);
+  }
+  .topbar-mark {
+    font-family: var(--font-title);
+    font-size: 19px;
+    letter-spacing: 0.16em;
+    color: var(--ink);
+    text-decoration: none;
+    white-space: nowrap;
+    flex: none;
+  }
+  .topbar-mark span { color: var(--cinnabar); }
+  .topbar-nav {
+    display: flex;
+    gap: 20px;
+    font-size: 13.5px;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+  .topbar-nav a {
+    color: var(--ink-soft);
+    text-decoration: none;
+    position: relative;
+    transition: color 0.25s;
+  }
+  .topbar-nav a::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 100%; bottom: -4px;
+    height: 1px;
+    background: var(--cinnabar);
+    transition: right 0.3s ease;
+  }
+  .topbar-nav a:hover { color: var(--cinnabar); }
+  .topbar-nav a:hover::after { right: 0; }
+  .topbar-nav a.back { color: var(--cinnabar); }
+
+  /* ========== 首屏 ========== */
+  .hero {
+    position: relative;
+    padding: 158px 0 78px;
+    border-bottom: 1px solid var(--line);
+  }
+  .hero::before {
+    content: "挂";
+    position: absolute;
+    right: -18px;
+    top: 46%;
+    transform: translateY(-50%);
+    font-family: var(--font-title);
+    font-size: clamp(190px, 27vw, 320px);
+    line-height: 1;
+    color: rgba(44, 36, 30, 0.028);
+    pointer-events: none;
+    user-select: none;
+    z-index: -1;
+  }
+  .hero-eyebrow {
+    font-size: 13px;
+    letter-spacing: 0.3em;
+    color: var(--ink-faint);
+    margin-bottom: 22px;
+  }
+  .hero-title {
+    font-family: var(--font-title);
+    font-size: clamp(40px, 6vw, 68px);
+    font-weight: 400;
+    line-height: 1.22;
+    letter-spacing: 0.05em;
+    color: var(--ink);
+    margin-bottom: 12px;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6), 0 12px 30px rgba(44, 36, 30, 0.08);
+  }
+  .hero-title .dot { color: var(--cinnabar); font-size: 0.5em; vertical-align: middle; margin: 0 6px; }
+  .hero-title .title-tail, .nowrap { white-space: nowrap; }
+  .hero-sub {
+    font-family: var(--font-title);
+    font-size: clamp(18px, 2.2vw, 24px);
+    letter-spacing: 0.12em;
+    color: var(--ink-soft);
+    margin-bottom: 28px;
+  }
+  .hero-desc {
+    max-width: 660px;
+    font-size: 15px;
+    line-height: 2.05;
+    color: var(--ink-soft);
+    margin-bottom: 34px;
+  }
+  .hero-desc strong { color: var(--ink); font-weight: 600; }
+  .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 38px; }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 28px;
+    font-size: 14px;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+  .btn-primary {
+    background: var(--ink);
+    color: var(--paper);
+    border: 1px solid var(--ink);
+    box-shadow: 0 14px 30px -18px rgba(44, 36, 30, 0.8);
+  }
+  .btn-primary:hover {
+    background: var(--cinnabar);
+    border-color: var(--cinnabar);
+    transform: translateY(-1px);
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--ink-soft);
+    border: 1px solid var(--line-strong);
+  }
+  .btn-ghost:hover {
+    border-color: var(--ink-soft);
+    color: var(--ink);
+    background: rgba(255, 253, 249, 0.7);
+    transform: translateY(-1px);
+  }
+  .badge-row { display: flex; flex-wrap: wrap; gap: 10px; }
+  .badge {
+    font-size: 12.5px;
+    letter-spacing: 0.04em;
+    padding: 6px 14px;
+    border-radius: 100px;
+    border: 1px solid var(--line);
+    color: var(--ink-soft);
+    background: rgba(255, 253, 249, 0.6);
+  }
+  .badge b { font-family: var(--font-mono); color: var(--cinnabar); font-weight: 600; margin-right: 6px; }
+
+  /* ========== 通用区块 ========== */
+  .section { padding: 88px 0; position: relative; }
+  .section + .section { border-top: 1px solid var(--line); }
+  .section.tint::before {
+    content: "";
+    position: absolute;
+    top: 0; bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100vw;
+    background:
+      radial-gradient(ellipse 70% 50% at 50% 0%, rgba(200, 175, 135, 0.10), transparent 70%),
+      linear-gradient(180deg, rgba(239, 231, 218, 0.35), rgba(239, 231, 218, 0));
+    pointer-events: none;
+    z-index: -1;
+  }
+  section[id] { scroll-margin-top: 84px; }
+  .section-label {
+    font-size: 13px;
+    letter-spacing: 0.3em;
+    color: var(--cinnabar);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .section-label::before {
+    content: "";
+    display: inline-block;
+    width: 20px; height: 1px;
+    background: var(--cinnabar);
+    vertical-align: middle;
+    margin-right: 10px;
+    opacity: 0.6;
+  }
+  .section-title {
+    font-family: var(--font-title);
+    font-size: clamp(30px, 3.8vw, 44px);
+    font-weight: 400;
+    line-height: 1.35;
+    letter-spacing: 0.05em;
+    color: var(--ink);
+    margin-bottom: 18px;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.55);
+  }
+  .section-lead {
+    max-width: 700px;
+    font-size: 15px;
+    line-height: 2.05;
+    color: var(--ink-soft);
+    margin-bottom: 44px;
+  }
+  .note {
+    font-size: 13.5px;
+    line-height: 1.9;
+    color: var(--ink-faint);
+    margin-top: 20px;
+    max-width: 720px;
+  }
+  .inline-link {
+    color: var(--cinnabar);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(179, 58, 46, 0.3);
+    white-space: nowrap;
+  }
+  .inline-link:hover { border-bottom-color: var(--cinnabar); }
+  code {
+    font-family: var(--font-mono);
+    font-size: 0.88em;
+    padding: 1px 6px;
+    border-radius: 2px;
+    background: var(--cinnabar-soft);
+    color: var(--cinnabar);
+  }
+
+  /* ========== 前置条件三卡 ========== */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 16px;
+  }
+  .info-card {
+    padding: 24px 24px 20px;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    background: linear-gradient(160deg, rgba(255, 253, 249, 0.94), rgba(248, 243, 234, 0.55));
+    box-shadow: var(--shadow-sm);
+  }
+  .info-card .idx {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.14em;
+    color: var(--cinnabar);
+    margin-bottom: 12px;
+  }
+  .info-card h3 {
+    font-family: var(--font-title);
+    font-size: 20px;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    margin-bottom: 8px;
+  }
+  .info-card p { font-size: 14px; line-height: 1.9; color: var(--ink-soft); }
+
+  /* ========== 三步时间线 ========== */
+  .step-list {
+    border-left: 1px solid var(--line);
+    margin-left: 10px;
+  }
+  .step-item {
+    position: relative;
+    padding: 0 0 34px 38px;
+  }
+  .step-item:last-child { padding-bottom: 0; }
+  .step-item::before {
+    content: "";
+    position: absolute;
+    left: -5px; top: 9px;
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: var(--paper);
+    border: 1.5px solid var(--cinnabar);
+  }
+  .step-no {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    color: var(--cinnabar);
+    margin-bottom: 4px;
+  }
+  .step-item h3 {
+    font-family: var(--font-title);
+    font-size: 22px;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    margin-bottom: 8px;
+  }
+  .step-item p { font-size: 14.5px; line-height: 1.95; color: var(--ink-soft); max-width: 680px; }
+
+  /* ========== 命令块 ========== */
+  .code-box {
+    margin: 18px 0 6px;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    background: var(--paper-lite);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    max-width: 760px;
+  }
+  .code-box-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 16px;
+    border-bottom: 1px solid var(--line);
+    background: rgba(239, 231, 218, 0.45);
+    font-size: 12.5px;
+    letter-spacing: 0.06em;
+    color: var(--ink-faint);
+  }
+  .copy-btn {
+    display: none;
+    font-family: var(--font-body);
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+    background: rgba(255, 253, 249, 0.8);
+    border: 1px solid var(--line-strong);
+    border-radius: 2px;
+    padding: 3px 10px;
+    cursor: pointer;
+  }
+  .js .copy-btn { display: inline-flex; }
+  .copy-btn:hover { color: var(--cinnabar); border-color: var(--cinnabar); }
+  .code-box pre {
+    margin: 0;
+    padding: 16px 18px;
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: 13.5px;
+    line-height: 1.8;
+    color: var(--ink);
+    white-space: pre;
+  }
+  .code-box pre code {
+    background: none;
+    color: inherit;
+    padding: 0;
+    font-size: inherit;
+  }
+
+  /* ========== 提示块 ========== */
+  .callout {
+    margin: 26px 0 0;
+    padding: 16px 22px;
+    border-left: 2px solid var(--gold);
+    background: rgba(168, 137, 74, 0.06);
+    border-radius: 0 3px 3px 0;
+    font-size: 14px;
+    line-height: 1.9;
+    color: var(--ink-soft);
+    max-width: 760px;
+  }
+  .callout.warn { border-left-color: var(--cinnabar); background: var(--cinnabar-soft); }
+  .callout b { color: var(--ink); font-weight: 600; }
+
+  /* ========== 两端卡片 ========== */
+  .platform-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .platform-card {
+    padding: 26px 28px;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    background: linear-gradient(160deg, rgba(255, 253, 249, 0.92), rgba(248, 243, 234, 0.5));
+    box-shadow: var(--shadow-sm);
+  }
+  .platform-card .kicker {
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    color: var(--ink-faint);
+    margin-bottom: 6px;
+  }
+  .mini-title {
+    font-family: var(--font-title);
+    font-size: 23px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    color: var(--ink);
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--line);
+  }
+  .plain-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .plain-list li {
+    position: relative;
+    padding-left: 20px;
+    font-size: 14px;
+    line-height: 1.85;
+    color: var(--ink-soft);
+  }
+  .plain-list li::before {
+    content: "";
+    position: absolute;
+    left: 2px; top: 0.72em;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    border: 1px solid var(--cinnabar);
+    opacity: 0.7;
+  }
+  .plain-list li b { color: var(--ink); font-weight: 600; }
+  .shot {
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    overflow: hidden;
+    background: var(--paper-deep);
+    box-shadow: var(--shadow-sm);
+    margin-top: 20px;
+  }
+  .shot img { display: block; width: 100%; height: auto; }
+  .shot figcaption {
+    padding: 10px 16px;
+    font-size: 12.5px;
+    line-height: 1.7;
+    color: var(--ink-faint);
+    border-top: 1px solid var(--line);
+    background: rgba(255, 253, 249, 0.72);
+  }
+
+  /* ========== 产物表 ========== */
+  .table-scroll {
+    overflow-x: auto;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    background: rgba(255, 253, 249, 0.55);
+  }
+  table {
+    width: 100%;
+    min-width: 560px;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    line-height: 1.75;
+  }
+  th {
+    text-align: left;
+    padding: 11px 16px;
+    font-weight: 600;
+    color: var(--ink);
+    background: var(--paper-deep);
+    border-bottom: 1px solid var(--line-strong);
+    white-space: nowrap;
+  }
+  td {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink-soft);
+    vertical-align: top;
+  }
+  tr:last-child td { border-bottom: none; }
+  td:first-child { font-family: var(--font-mono); font-size: 13px; color: var(--ink); white-space: nowrap; }
+  td code { white-space: nowrap; }
+
+  /* ========== 上手 / 接口卡 ========== */
+  .next-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+  }
+  .next-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 24px 24px 20px;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    background: linear-gradient(160deg, rgba(255, 253, 249, 0.94), rgba(248, 243, 234, 0.55));
+    box-shadow: var(--shadow-sm);
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+  }
+  .next-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+    border-color: rgba(179, 58, 46, 0.32);
+  }
+  .next-card .tag {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    color: var(--cinnabar);
+    margin-bottom: 12px;
+  }
+  .next-card h3 {
+    font-family: var(--font-title);
+    font-size: 20px;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    margin-bottom: 8px;
+  }
+  .next-card p {
+    font-size: 14px;
+    line-height: 1.9;
+    color: var(--ink-soft);
+    flex: 1;
+    margin-bottom: 12px;
+  }
+  .next-card .go {
+    font-size: 13.5px;
+    letter-spacing: 0.08em;
+    color: var(--cinnabar);
+  }
+
+  .key-legend { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+  .key-legend span {
+    font-size: 13px;
+    color: var(--ink-faint);
+    padding: 6px 14px;
+    border: 1px solid var(--line);
+    border-radius: 100px;
+    background: rgba(255, 253, 249, 0.6);
+  }
+  .key-legend b { font-family: var(--font-mono); color: var(--cinnabar); font-weight: 600; margin-right: 5px; }
+
+  /* ========== 进阶：技术文档入口 ========== */
+  .doc-panel {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 28px;
+    flex-wrap: wrap;
+    padding: 28px 30px;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    background: linear-gradient(160deg, rgba(255, 253, 249, 0.94), rgba(248, 243, 234, 0.5));
+    box-shadow: var(--shadow-sm);
+  }
+  .doc-panel h3 {
+    font-family: var(--font-title);
+    font-size: 22px;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    margin-bottom: 8px;
+  }
+  .doc-panel p { font-size: 14px; line-height: 1.9; color: var(--ink-soft); max-width: 560px; }
+  .doc-panel .btn { flex: none; }
+
+  /* ========== 资源链接 ========== */
+  .tools-row { display: flex; flex-wrap: wrap; gap: 12px; }
+  .tool-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 20px;
+    font-size: 13.5px;
+    letter-spacing: 0.05em;
+    color: var(--ink-soft);
+    text-decoration: none;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    background: rgba(255, 253, 249, 0.6);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+  }
+  .tool-link:hover {
+    border-color: var(--ink-soft);
+    color: var(--ink);
+    background: rgba(255, 253, 249, 0.96);
+    transform: translateY(-2px);
+  }
+  .tool-link .arrow { opacity: 0.5; transition: transform 0.3s, opacity 0.3s; }
+  .tool-link:hover .arrow { transform: translateX(4px); opacity: 1; }
+
+  /* ========== 页脚 ========== */
+  .footer { padding: 60px 0 46px; border-top: 1px solid var(--line); }
+  .footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 22px;
+  }
+  .footer-brand {
+    font-family: var(--font-title);
+    font-size: 25px;
+    letter-spacing: 0.1em;
+    color: var(--ink);
+  }
+  .footer-brand span { color: var(--cinnabar); }
+  .footer-note { font-size: 13px; line-height: 1.9; color: var(--ink-faint); text-align: right; }
+  .footer-note a {
+    color: var(--ink-soft);
+    text-decoration: none;
+    border-bottom: 1px solid var(--line);
+  }
+  .footer-note a:hover { color: var(--cinnabar); border-bottom-color: var(--cinnabar); }
+
+  /* ========== 响应式 ========== */
+  @media (max-width: 860px) {
+    .platform-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 760px) {
+    .page { padding: 0 22px; }
+    .topbar { padding: 10px 22px 8px; flex-wrap: wrap; row-gap: 4px; }
+    .topbar-mark { font-size: 17px; }
+    .topbar-nav {
+      width: 100%;
+      gap: 12px;
+      font-size: 12px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .topbar-nav::-webkit-scrollbar { display: none; }
+    .hero { padding: 132px 0 60px; }
+    .hero::before { font-size: 180px; right: -20px; opacity: 0.7; }
+    .section { padding: 64px 0; }
+    .section-lead { margin-bottom: 32px; }
+    .code-box pre { font-size: 12.5px; }
+    .doc-panel { padding: 22px 20px; }
+    .footer-inner { flex-direction: column; align-items: flex-start; }
+    .footer-note { text-align: left; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+    html { scroll-behavior: auto; }
+  }
+</style>
+<noscript><style>.reveal{opacity:1!important;transform:none!important;transition:none!important}</style></noscript>
+</head>
+<body>
+
+<!-- ========== 顶部导航：回官网 + 站内锚点 + 仓库 ========== -->
+<header class="topbar" id="topbar">
+  <a class="topbar-mark" href="https://amatiri.github.io/Elucidative-Chinese-IME/">解书音形<span>.</span></a>
+  <nav class="topbar-nav" aria-label="页内导航">
+    <a class="back" href="https://amatiri.github.io/Elucidative-Chinese-IME/">← 官网</a>
+    <a href="#prepare">准备</a>
+    <a href="#start">部署</a>
+    <a href="#platforms">两端</a>
+    <a href="#files">产物</a>
+    <a href="#after">上手</a>
+    <a href="#advanced">进阶</a>
+    <a href="#resources">资源</a>
+    <a href="https://github.com/Amatiri/Elucidative-Chinese-IME" target="_blank" rel="noopener">GitHub ↗</a>
+  </nav>
+</header>
+
+<main class="page">
+
+  <!-- ========== 首屏 ========== -->
+  <section class="hero">
+    <p class="hero-eyebrow reveal">RIME · 挂表即用</p>
+    <h1 class="hero-title reveal reveal-delay-1">在 Rime 里<span class="dot">·</span><span class="title-tail">用上解书音形</span></h1>
+    <p class="hero-sub reveal reveal-delay-2">跑一次导出脚本，两端都能用</p>
+    <p class="hero-desc reveal reveal-delay-2">
+      想在 <strong>Rime</strong> 里用解书音形，先把一套方案文件放进用户资料夹。方案标识 <code>jieshu</code>，
+      <span class="nowrap">菜单名「解书音形」</span>。在仓库根跑一次导出，重新部署、勾选方案，<strong>Windows 小狼毫（Weasel）</strong>
+      和<strong>安卓同文（Trime）</strong>就能打字。码表还是 <code>dict/</code> 里那份，脚本不改它；
+      你装过的其他方案也不受影响。
+    </p>
+    <div class="hero-actions reveal reveal-delay-3">
+      <a class="btn btn-primary" href="#start">开始部署 →</a>
+      <a class="btn btn-ghost" href="https://frontend-mobile.netlify.app/" target="_blank" rel="noopener">先在浏览器里试试</a>
+    </div>
+    <div class="badge-row reveal reveal-delay-3">
+      <span class="badge"><b>01</b>Python 3 · 仅标准库</span>
+      <span class="badge"><b>02</b>Windows · 小狼毫 Weasel</span>
+      <span class="badge"><b>03</b>Android · 同文 Trime v3.3.x</span>
+    </div>
+  </section>
+
+  <!-- ========== 准备 ========== -->
+  <section class="section tint" id="prepare">
+    <p class="section-label reveal">Before You Start</p>
+    <h2 class="section-title reveal reveal-delay-1">先确认三件事。</h2>
+    <p class="section-lead reveal reveal-delay-2">
+      部署用的是仓库自带的导出脚本，标准库就够，不用另外装东西。
+    </p>
+
+    <div class="card-grid">
+      <div class="info-card reveal">
+        <div class="idx">01 / RIME</div>
+        <h3>已装 librime 发行版</h3>
+        <p>Windows 用 <a class="inline-link" href="https://rime.im/" target="_blank" rel="noopener">小狼毫 Weasel</a>，安卓用 <a class="inline-link" href="https://github.com/osfans/trime" target="_blank" rel="noopener">同文 Trime</a> v3.3.x。还得知道 <b>RIME 用户资料夹</b>在哪：小狼毫在托盘菜单「用户资料夹」，同文在 App 菜单 → 配置 → 用户文件夹。</p>
+      </div>
+      <div class="info-card reveal reveal-delay-1">
+        <div class="idx">02 / PYTHON</div>
+        <h3>本机有 Python 3</h3>
+        <p>导出脚本 <code>rime_export.py</code> 只依赖标准库，不用 pip 安装任何东西。</p>
+      </div>
+      <div class="info-card reveal reveal-delay-2">
+        <div class="idx">03 / REPO</div>
+        <h3>仓库是完整的</h3>
+        <p>脚本从仓库根 <code>config.py</code> 读取码表路径，真源在 <code>dict/</code>。
+          <a class="inline-link" href="https://github.com/Amatiri/Elucidative-Chinese-IME" target="_blank" rel="noopener">克隆仓库</a> 后，命令都在仓库根执行。</p>
+      </div>
+    </div>
+
+    <div class="callout reveal reveal-delay-2">
+      想先看看手感，<a class="inline-link" href="https://frontend-mobile.netlify.app/" target="_blank" rel="noopener">手机端 Web 演示</a>在浏览器里就能打开，输入流程和候选逻辑都能试，
+      不用装任何东西。顺手了再回来挂表。
+    </div>
+  </section>
+
+  <!-- ========== 三步部署 ========== -->
+  <section class="section" id="start">
+    <p class="section-label reveal">Deploy</p>
+    <h2 class="section-title reveal reveal-delay-1">导出、部署、启用。</h2>
+    <p class="section-lead reveal reveal-delay-2">
+      三步打完就能出字。两端跑的是同一份方案和查询逻辑，文件落点不同：
+      Windows 直接写进用户资料夹，安卓先导出到预备文件夹，再整份拷进手机。
+    </p>
+
+    <div class="step-list">
+      <div class="step-item reveal">
+        <div class="step-no">STEP 01</div>
+        <h3>在仓库根导出</h3>
+        <p>Windows 小狼毫直接跑第一条；安卓同文用第二条，先导出到一个预备文件夹。</p>
+        <div class="code-box">
+          <div class="code-box-head"><span>Windows · 小狼毫</span><button type="button" class="copy-btn">复制</button></div>
+          <pre><code>python migrate_to_rime\rime_export.py</code></pre>
+        </div>
+        <div class="code-box">
+          <div class="code-box-head"><span>Android · 同文（先导出到预备文件夹）</span><button type="button" class="copy-btn">复制</button></div>
+          <pre><code>python migrate_to_rime\rime_export.py --target &lt;预备文件夹&gt;</code></pre>
+        </div>
+        <div class="callout warn">
+          第一次运行会问 RIME 用户资料夹的绝对路径，答完写进仓库根 <code>config.py</code> 的
+          <code>RIME_USER_DIR</code>，以后不再问。留空就放弃，一个文件也不写。
+          换了资料夹记得同步改这一行，不然还往旧路径写。
+        </div>
+      </div>
+
+      <div class="step-item reveal reveal-delay-1">
+        <div class="step-no">STEP 02</div>
+        <h3>让 Rime 读进去</h3>
+        <p>Windows 在托盘菜单选「重新部署」。安卓把预备文件夹里的内容全部复制到手机 RIME 用户文件夹，再到 App 内「重新部署」。</p>
+      </div>
+
+      <div class="step-item reveal reveal-delay-2">
+        <div class="step-no">STEP 03</div>
+        <h3>切换到「解书音形」</h3>
+        <p>Windows 在托盘「输入法设定」里勾选「解书音形」，确定后会自动再部署；安卓在方案选单里切换到「解书音形」。</p>
+        <p class="note">打 <code>bu44</code> 出「不」、<code>ba13</code> 出「八」，能看到字就装好了。</p>
+      </div>
+    </div>
+
+    <div class="callout reveal reveal-delay-2">
+      0.6.7 正式发布时打算把导出产物打包进
+      <a class="inline-link" href="https://github.com/Amatiri/Elucidative-Chinese-IME/releases" target="_blank" rel="noopener">GitHub Release</a>，
+      到时候解压到 RIME 用户资料夹就能用，脚本也不用跑。
+    </div>
+  </section>
+
+  <!-- ========== 两端 ========== -->
+  <section class="section tint" id="platforms">
+    <p class="section-label reveal">Platforms</p>
+    <h2 class="section-title reveal reveal-delay-1">选你的那一端。</h2>
+    <p class="section-lead reveal reveal-delay-2">
+      两端的编码、门控、逐字选择、自动上字、优先上词都按同一套逻辑跑，共用一份
+      <code>jieshu.schema.yaml</code> 和 <span class="nowrap">5 个 Lua 模块</span>。皮肤与键盘各一份，
+      导出时一起给，各端只认自己那份。
+    </p>
+
+    <div class="platform-grid">
+      <div class="platform-card reveal">
+        <p class="kicker">WINDOWS</p>
+        <h3 class="mini-title">小狼毫 Weasel</h3>
+        <ul class="plain-list">
+          <li>在仓库根跑 <code>python migrate_to_rime\rime_export.py</code>，脚本会把文件写进你的用户资料夹。</li>
+          <li>托盘菜单选「重新部署」。</li>
+          <li>「输入法设定」里勾选「解书音形」，确定后自动再部署。</li>
+          <li><code>weasel.custom.yaml</code> 管皮肤，宣纸双配色和字体布局都在里面。</li>
+          <li>「输入法设定」会回写已部署的皮肤文件，下次导出按本目录的真源覆盖回去。</li>
+        </ul>
+      </div>
+
+      <div class="platform-card reveal reveal-delay-1">
+        <p class="kicker">ANDROID</p>
+        <h3 class="mini-title">同文 Trime</h3>
+        <ul class="plain-list">
+          <li>导出时加 <code>--target &lt;预备文件夹&gt;</code>，脚本会自己建目录。</li>
+          <li>把预备文件夹里的内容全部复制到手机 RIME 用户文件夹。</li>
+          <li>App 内「重新部署」，再到方案选单切换到「解书音形」。</li>
+          <li>键盘是方案 H（10 列 × 5 行），键盘 ID 和方案 ID 同名，切换方案就自动绑定。</li>
+          <li>候选栏每行候选数设成 5。找不到这一项，先把「横向候选样式」调成 AUTO_FILL。</li>
+        </ul>
+        <figure class="shot">
+          <img src="https://cdn.jsdelivr.net/gh/Amatiri/Elucidative-Chinese-IME@cf88bd4/help/%E6%89%8B%E6%9C%BA%E9%94%AE%E7%9B%98.png"
+               alt="同文 Trime 上的解书音形键盘" loading="lazy">
+          <figcaption>同文键盘 · 数字行上滑取 <code>!@#$%</code> 选第 1–5 候选；<code>Z</code> 上滑输入单引号 <code>'</code>，原「'」键位为大写键</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <p class="note reveal">
+      与手机端 Web 原型相比，同文上暂不做翻译与部件表浮层，候选排列与翻页由同文系统接管；
+      差异逐项对照与键盘机制说明见<a class="inline-link" href="https://github.com/Amatiri/Elucidative-Chinese-IME/blob/main/migrate_to_rime/README.md" target="_blank" rel="noopener">完整技术文档 · 第三节</a>。
+    </p>
+  </section>
+
+  <!-- ========== 导出产物 ========== -->
+  <section class="section" id="files">
+    <p class="section-label reveal">What Gets Installed</p>
+    <h2 class="section-title reveal reveal-delay-1">只会新增这些文件。</h2>
+    <p class="section-lead reveal reveal-delay-2">
+      文件名都以 <code>jieshu</code> / <code>weasel</code> / <code>trime</code> 开头，落在你的 RIME 用户资料夹里，
+      其他方案和用户词库不动。脚本按校验 → 渲染 → 逐字节同步 → diff 摘要 → 原子写走一遍，另留一份 <code>*.bak</code> 备份。
+    </p>
+
+    <div class="table-scroll reveal">
+      <table>
+        <thead>
+          <tr><th>文件</th><th>作用</th><th>端</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>jieshu.schema.yaml</td><td>方案定义，含自动上字 / 优先上词两个开关</td><td>两端共用</td></tr>
+          <tr><td>jieshu.dict.yaml</td><td>方案声明的词典；Trime 部署校验必需</td><td>两端部署</td></tr>
+          <tr><td>weasel.custom.yaml</td><td>小狼毫皮肤：宣纸双配色 + 字体布局</td><td>Windows</td></tr>
+          <tr><td>trime.custom.yaml</td><td>同文键盘：方案 H 布局 + 3 个 preset_keys</td><td>Android</td></tr>
+          <tr><td>lua/jieshu_*.lua</td><td>5 个模块：查询、原生候选垫片、门控、逐字定位、自动上字</td><td>两端共用</td></tr>
+          <tr><td>lua/data/jieshu_single.txt</td><td>单字真源逐字节拷贝，查询层运行期直读</td><td>两端共用</td></tr>
+          <tr><td>lua/data/jieshu_ciyu.txt</td><td>词表真源逐字节拷贝</td><td>两端共用</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout warn reveal">
+      <code>jieshu.dict.yaml</code> 别删。同文重新部署会校验方案声明的词典，缺了直接失败；
+      小狼毫不读它，导出也照样生成。两端皮肤和键盘互不认，整份拷进去不会打架。
+    </div>
+  </section>
+
+  <!-- ========== 装好之后：新用户引导 + 接口 ========== -->
+  <section class="section tint" id="after">
+    <p class="section-label reveal">First Keys</p>
+    <h2 class="section-title reveal reveal-delay-1">装好了，然后呢？</h2>
+    <p class="section-lead reveal reveal-delay-2">
+      先照着余码提示打几个字。候选后面那串是还差的编码，补全就唯一命中。
+      碰上同音同主码的字，再回头翻副码规则也来得及。
+    </p>
+
+    <div class="card-grid">
+      <div class="info-card reveal">
+        <div class="idx">SINGLE</div>
+        <h3>单字</h3>
+        <p><code>bu44</code> → 不；<code>ba13</code> → 八；<code>ba13.</code> → 捌（补码点号）。</p>
+      </div>
+      <div class="info-card reveal reveal-delay-1">
+        <div class="idx">CHAIN</div>
+        <h3>连续编码</h3>
+        <p><code>bu44ba13</code> →「不八」链；<code>yig</code> →「一个」。系统自动拆分长编码。</p>
+      </div>
+      <div class="info-card reveal reveal-delay-2">
+        <div class="idx">PHRASE</div>
+        <h3>词语与分段</h3>
+        <p><code>ceu</code> →「测试」；用 <code>'</code> 手动分段，<code>b;du'ceu</code> →「病毒测试」。</p>
+      </div>
+    </div>
+
+    <div class="key-legend reveal reveal-delay-2">
+      <span><b>!@#$%</b>Shift+1~5 选第 1–5 候选</span>
+      <span><b>空格</b>首选上屏</span>
+      <span><b>↑ / ↓</b>翻页</span>
+      <span><b>'</b>手动分段</span>
+      <span><b>= / -</b>逐字定位与回退</span>
+    </div>
+
+    <div class="next-grid" style="margin-top:38px;">
+      <a class="next-card reveal" href="https://amatiri.github.io/Elucidative-Chinese-IME/help/" target="_blank" rel="noopener">
+        <span class="tag">01 / RULES</span>
+        <h3>完整编码规则</h3>
+        <p>音码、主码、按需的副码和补码，部首表、解书拆分规则也在里面。碰到某个字想知道为什么这么编，再翻。</p>
+        <span class="go">阅读规则 →</span>
+      </a>
+      <a class="next-card reveal reveal-delay-1" href="https://jmwztu.netlify.app/" target="_blank" rel="noopener">
+        <span class="tag">02 / KEYMAP</span>
+        <h3>交互式键位图</h3>
+        <p>搜狗双拼 + 声调的键位对照，记不住韵母落在哪个键时查一下。</p>
+        <span class="go">打开键位图 →</span>
+      </a>
+      <a class="next-card reveal reveal-delay-2" href="https://iaxp.netlify.app/" target="_blank" rel="noopener">
+        <span class="tag">03 / LOOKUP</span>
+        <h3>编码查询</h3>
+        <p>输入汉字反查编码，或用整理码表后的本地查询页离线查。</p>
+        <span class="go">查询汉字 →</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ========== 进阶：指回真源 ========== -->
+  <section class="section" id="advanced">
+    <p class="section-label reveal">Go Deeper</p>
+    <h2 class="section-title reveal reveal-delay-1">要改配置，先看真源。</h2>
+    <p class="section-lead reveal reveal-delay-2">
+      这一页只讲怎么装。实现概要、功能表、组件顺序和维护要点、同文键盘差异、回滚办法，
+      都写在 <code>migrate_to_rime/README.md</code> 里。要改方案、皮肤或键位，先读那份。
+    </p>
+
+    <div class="card-grid">
+      <div class="info-card reveal">
+        <div class="idx">MAINTENANCE</div>
+        <h3>日常维护</h3>
+        <p>码表更新后，在 <code>main.py</code> 整理真源，再重跑一次导出并「重新部署」，一次刷新词典、Lua 数据与方案配置。</p>
+      </div>
+      <div class="info-card reveal reveal-delay-1">
+        <div class="idx">CAUTION</div>
+        <h3>改配置前必看</h3>
+        <p>组件顺序有硬约束；<code>engine/filters</code> 不要加 <code>uniquifier</code>；开关默认开要写 <code>reset: 1</code>。
+          七条都在 2.3 节。</p>
+      </div>
+      <div class="info-card reveal reveal-delay-2">
+        <div class="idx">ROLLBACK</div>
+        <h3>回滚</h3>
+        <p>删掉用户资料夹下 <code>jieshu*</code>、<code>build/jieshu*</code>、<code>lua/jieshu_*</code> 与对应皮肤文件，
+          取消勾选方案再重新部署。仓库和 <code>dict/</code> 不用动。</p>
+      </div>
+    </div>
+
+    <div class="doc-panel reveal reveal-delay-2" style="margin-top:26px;">
+      <div>
+        <h3>migrate_to_rime/README.md</h3>
+        <p>导出脚本、Lua 模块、方案配置、两端皮肤和键盘，连部署与维护的细节都写在这里。这一页只管装到能打字，细节就不重复了。</p>
+      </div>
+      <a class="btn btn-ghost" href="https://github.com/Amatiri/Elucidative-Chinese-IME/blob/main/migrate_to_rime/README.md" target="_blank" rel="noopener">阅读完整文档 →</a>
+    </div>
+  </section>
+
+  <!-- ========== 资源：接口导向 ========== -->
+  <section class="section tint" id="resources">
+    <p class="section-label reveal">Elsewhere</p>
+    <h2 class="section-title reveal reveal-delay-1">其他入口</h2>
+    <p class="section-lead reveal reveal-delay-2">
+      官网是入口，这一页讲怎么把码表挂到 Rime。下面这些链接，用得上哪个就点哪个。
+    </p>
+    <div class="tools-row reveal reveal-delay-2">
+      <a class="tool-link" href="https://amatiri.github.io/Elucidative-Chinese-IME/">回到官网 <span class="arrow">→</span></a>
+      <a class="tool-link" href="https://amatiri.github.io/Elucidative-Chinese-IME/help/" target="_blank" rel="noopener">完整编码规则 <span class="arrow">→</span></a>
+      <a class="tool-link" href="https://frontend-mobile.netlify.app/" target="_blank" rel="noopener">手机端 Web 演示 <span class="arrow">→</span></a>
+      <a class="tool-link" href="https://amatiri.github.io/Elucidative-Chinese-IME/mobile/" target="_blank" rel="noopener">移动端 README <span class="arrow">→</span></a>
+      <a class="tool-link" href="https://github.com/Amatiri/Elucidative-Chinese-IME/blob/main/migrate_to_rime/README.md" target="_blank" rel="noopener">完整技术文档 <span class="arrow">→</span></a>
+      <a class="tool-link" href="https://github.com/Amatiri/Elucidative-Chinese-IME" target="_blank" rel="noopener">GitHub 仓库 <span class="arrow">→</span></a>
+      <a class="tool-link" href="https://github.com/Amatiri/Elucidative-Chinese-IME/releases" target="_blank" rel="noopener">Releases <span class="arrow">→</span></a>
+    </div>
+  </section>
+
+  <!-- ========== 页脚 ========== -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand reveal">解书音形<span>.</span></div>
+      <div class="footer-note reveal reveal-delay-1">
+        以音切入，以义定形。<br>
+        <a href="https://amatiri.github.io/Elucidative-Chinese-IME/">返回官网</a> ·
+        <a href="https://github.com/Amatiri/Elucidative-Chinese-IME" target="_blank" rel="noopener">github.com/Amatiri/Elucidative-Chinese-IME</a><br>
+        <span style="opacity:0.65;">部署细节以 migrate_to_rime/README.md 为准。</span>
+      </div>
+    </div>
+  </footer>
+
+</main>
+
+<script>
+(function () {
+  'use strict';
+  document.documentElement.classList.add('js');
+
+  /* 顶栏滚动状态 */
+  var topbar = document.getElementById('topbar');
+  window.addEventListener('scroll', function () {
+    topbar.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
+
+  /* 渐显 */
+  var revealEls = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+    revealEls.forEach(function (el) { observer.observe(el); });
+  } else {
+    revealEls.forEach(function (el) { el.classList.add('is-visible'); });
+  }
+
+  /* 复制命令：纯渐进增强，失败时退回手动选择 */
+  document.querySelectorAll('.copy-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var box = btn.parentNode.parentNode;
+      var code = box.querySelector('code');
+      var text = code ? code.textContent.trim() : '';
+      function ok() {
+        btn.textContent = '已复制';
+        setTimeout(function () { btn.textContent = '复制'; }, 1800);
+      }
+      function fail() {
+        btn.textContent = '请手动选择';
+        setTimeout(function () { btn.textContent = '复制'; }, 2400);
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(ok, fail);
+      } else {
+        fail();
+      }
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

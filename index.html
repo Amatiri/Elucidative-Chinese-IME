@@ -4,6 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>解书音形 · 知音辨形，高效输入</title>
+<meta name="description" content="解书音形是一种音形结合、零重码、可自定义的现代汉字输入方案：带调双拼 + 部首体系，掌握拼音即可起步，记住少量形码规则即可高速盲打。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="解书音形 · 知音辨形，高效输入">
+<meta property="og:description" content="以音切入，以义定形。零重码 · 带调双拼 · 部首体系 · 挂表即用。">
+<meta property="og:url" content="https://amatiri.github.io/Elucidative-Chinese-IME/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='6' y='6' width='52' height='52' rx='3' fill='none' stroke='%23b33a2e' stroke-width='3'/%3E%3Crect x='12' y='12' width='40' height='40' fill='none' stroke='%23b33a2e' stroke-width='1.5'/%3E%3C/svg%3E">
 <style>
   /* ========== 基础重置与变量 ========== */
   :root {
@@ -23,13 +29,20 @@
     --shadow-md: 0 2px 4px rgba(44, 36, 30, 0.04), 0 20px 44px -24px rgba(44, 36, 30, 0.30);
     --shadow-lg: 0 34px 80px -44px rgba(44, 36, 30, 0.50);
 
-    --font-title: "KaiTi", "STKaiti", "Kaiti SC", "Songti SC", "SimSun", serif;
-    --font-body: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    --font-title: "KaiTi", "STKaiti", "Kaiti SC", "Songti SC", "SimSun", "Noto Serif CJK SC", "Source Han Serif SC", "Noto Serif SC", serif;
+    --font-body: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", "Noto Sans CJK SC", sans-serif;
     --font-mono: "Courier New", "SFMono-Regular", Consolas, monospace;
     --max-w: 1080px;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  /* 键盘焦点：仅键盘操作时出现，不影响鼠标点击与既有配色 */
+  :where(a, button, [tabindex]):focus-visible {
+    outline: 2px solid var(--cinnabar);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
 
   html { scroll-behavior: smooth; }
 
@@ -128,6 +141,7 @@
   .topbar-nav a {
     color: var(--ink-soft);
     text-decoration: none;
+    white-space: nowrap;
     transition: color 0.25s;
     position: relative;
   }
@@ -428,7 +442,7 @@
     opacity: 0.85;
     margin-bottom: 14px;
   }
-  .qs-card h4 {
+  .qs-card h3 {
     font-family: var(--font-title);
     font-size: 21px;
     font-weight: 400;
@@ -521,7 +535,7 @@
     transform: translateY(-3px);
     box-shadow: var(--shadow-md);
   }
-  .p-card h4 {
+  .p-card h3 {
     font-family: var(--font-title);
     font-size: 20px;
     font-weight: 400;
@@ -966,7 +980,7 @@
     transform: translateY(-3px);
     box-shadow: var(--shadow-md);
   }
-  .feature-item h4 {
+  .feature-item h3 {
     font-family: var(--font-body);
     font-size: 14.5px;
     font-weight: 600;
@@ -1058,10 +1072,25 @@
 
   @media (max-width: 760px) {
     .page { padding: 0 22px; }
-    .topbar { padding: 14px 22px; }
-    .topbar-nav { gap: 14px; font-size: 13px; }
+    .topbar {
+      padding: 12px 22px 8px;
+      flex-wrap: wrap;
+      row-gap: 6px;
+    }
+    .topbar-mark { font-size: 18px; letter-spacing: 0.12em; }
+    .topbar-nav {
+      width: 100%;
+      gap: 18px;
+      font-size: 13px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .topbar-nav::-webkit-scrollbar { display: none; }
     .topbar-nav a:nth-child(3),
     .topbar-nav a:nth-child(5) { display: none; }
+    /* 窄屏 section 上内边距只有 72px，顶栏约 77px，补 24px 防锚点遮挡 */
+    section[id] { scroll-margin-top: 24px; }
 
     .hero { padding: 120px 0 72px; min-height: auto; }
     .hero::before { font-size: 220px; right: -30px; opacity: 0.7; }
@@ -1092,6 +1121,7 @@
     .char-demo .cd-char { transition: none; }
   }
 </style>
+<noscript><style>.reveal{opacity:1!important;transform:none!important;transition:none!important}</style></noscript>
 </head>
 <body>
 
@@ -1156,21 +1186,21 @@
     <div class="qs-grid">
       <a class="qs-card reveal" href="https://frontend-mobile.netlify.app/" target="_blank" rel="noopener">
         <span class="qs-index">01</span>
-        <h4>手机端 Web 演示</h4>
+        <h3>手机端 Web 演示</h3>
         <p>无需安装、无需配置，在浏览器里直接体验解书音形的输入流程与候选逻辑。</p>
         <span class="qs-go">打开演示 →</span>
       </a>
 
       <a class="qs-card reveal reveal-delay-2" href="https://github.com/Amatiri/Elucidative-Chinese-IME" target="_blank" rel="noopener">
         <span class="qs-index">02</span>
-        <h4>克隆仓库运行</h4>
+        <h3>克隆仓库运行</h3>
         <p>gh repo clone Amatiri/Elucidative-Chinese-IME，安装依赖后运行 main.py 管理码表。</p>
         <span class="qs-go">前往 GitHub →</span>
       </a>
 
       <a class="qs-card reveal reveal-delay-1" href="https://amatiri.github.io/Elucidative-Chinese-IME/migrate_to_rime/" target="_blank" rel="noopener">
         <span class="qs-index">03</span>
-        <h4>迁移到 Rime</h4>
+        <h3>迁移到 Rime</h3>
         <p>使用 rime_export.py 导出码表，在 Rime 输入法框架中挂表即用，跨平台可用。</p>
         <span class="qs-go">阅读迁移说明 →</span>
       </a>
@@ -1202,15 +1232,15 @@
 
       <div class="philosophy-cards">
         <div class="p-card reveal reveal-delay-1">
-          <h4>常用优先</h4>
+          <h3>常用优先</h3>
           <p>常用字在整理码表时就排在最前，也分到更短的编码。顺序事先定好，输入时只顺着码表查，不会因为你打得勤就临时改。</p>
         </div>
         <div class="p-card reveal reveal-delay-2">
-          <h4>零重码</h4>
+          <h3>零重码</h3>
           <p>每个完整编码只对应一个汉字，不必翻页挑选。候选只提示还差哪几码，照着补全便唯一命中，想到即打出。</p>
         </div>
         <div class="p-card reveal reveal-delay-3">
-          <h4>渐进学习</h4>
+          <h3>渐进学习</h3>
           <p>初期只记音码与主码基础，中期在实战中熟悉副码，高级再掌握全规则。规则为效率服务，而非相反。</p>
         </div>
       </div>
@@ -1272,7 +1302,7 @@
       <img
         src="https://cdn.jsdelivr.net/gh/Amatiri/Elucidative-Chinese-IME@78ab99a/help/%E9%9F%B3%E7%A0%81%E9%94%AE%E4%BD%8D.png"
         alt="解书音形音码键位图"
-        loading="lazy">
+        loading="eager">
       <figcaption>音码键位 · 搜狗双拼 + 声调；zh / ch / sh → v / i / u，零声母归 o</figcaption>
     </figure>
   </section>
@@ -1357,7 +1387,7 @@
       <img
         src="https://cdn.jsdelivr.net/gh/Amatiri/Elucidative-Chinese-IME@81360c6/help/%E5%86%85%E8%BE%93%E5%89%8D%E7%AB%AF.png"
         alt="解书音形内输前端界面"
-        loading="lazy">
+        loading="eager">
       <figcaption>内输前端 · 顶部输入框实时显示内容，候选区显示剩余编码</figcaption>
     </figure>
 
@@ -1427,12 +1457,12 @@
     </p>
 
     <div class="feature-grid">
-      <div class="feature-item reveal"><h4>批量录入</h4><p>输入一串汉字，自动生成音码，为每个读音指定形码，自动处理重码冲突。</p></div>
-      <div class="feature-item reveal reveal-delay-1"><h4>整理码表</h4><p>自动去重排序，一级简码优先，生成网页码表与理据数据。新克隆仓库建议先跑一次。</p></div>
-      <div class="feature-item reveal reveal-delay-2"><h4>添加理据</h4><p>为合体字补充手工理据，支持按序、随机、指定汉字三种模式，自动保存。</p></div>
-      <div class="feature-item reveal reveal-delay-3"><h4>查询字码</h4><p>输入汉字，显示已有编码，多个读音斜杠分隔，同时输出未编码汉字串。</p></div>
-      <div class="feature-item reveal"><h4>添加词语</h4><p>两字词自动生成组合编码，多字词支持默认或手动序列，可保存多个编码变体。</p></div>
-      <div class="feature-item reveal reveal-delay-1"><h4>猜测编码</h4><p>随机抽字，猜主码 / 猜副码，猜对后显示完整编码，以游戏方式巩固记忆。</p></div>
+      <div class="feature-item reveal"><h3>批量录入</h3><p>输入一串汉字，自动生成音码，为每个读音指定形码，自动处理重码冲突。</p></div>
+      <div class="feature-item reveal reveal-delay-1"><h3>整理码表</h3><p>自动去重排序，一级简码优先，生成网页码表与理据数据。新克隆仓库建议先跑一次。</p></div>
+      <div class="feature-item reveal reveal-delay-2"><h3>添加理据</h3><p>为合体字补充手工理据，支持按序、随机、指定汉字三种模式，自动保存。</p></div>
+      <div class="feature-item reveal reveal-delay-3"><h3>查询字码</h3><p>输入汉字，显示已有编码，多个读音斜杠分隔，同时输出未编码汉字串。</p></div>
+      <div class="feature-item reveal"><h3>添加词语</h3><p>两字词自动生成组合编码，多字词支持默认或手动序列，可保存多个编码变体。</p></div>
+      <div class="feature-item reveal reveal-delay-1"><h3>猜测编码</h3><p>随机抽字，猜主码 / 猜副码，猜对后显示完整编码，以游戏方式巩固记忆。</p></div>
     </div>
 
     <div class="tools-row reveal reveal-delay-2">
@@ -1467,6 +1497,8 @@
   var sleep = function (ms) {
     return new Promise(function (r) { setTimeout(r, ms); });
   };
+
+  var playRounds = 0;
 
   /* ========== 顶部导航滚动状态 ========== */
   var topbar = document.getElementById('topbar');
@@ -1569,7 +1601,8 @@
     twNote.textContent = FINAL_NOTE;
     await sleep(3000);
 
-    playSingle(); // 循环播放
+    // 播满 3 轮即停在终态；页面切到后台时停止，避免无谓的定时器
+    if (++playRounds < 3 && !document.hidden) { playSingle(); }
   }
 
   function renderSingleStatic() {

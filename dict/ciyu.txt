@@ -12,6 +12,7 @@
 亅 bau
 𡿨 bav
 乚 baw
+把握 bawo
 冫 bb;
 疒 bbg
 㡀 bbh
@@ -75,6 +76,7 @@
 𡗗 bip
  bip1
 㐄 bir
+必然 birj
 比如 biru
 比赛 bisl
 必须 bixu
@@ -254,6 +256,7 @@
 错误 cowu
 存储 cpiu
 存在 cpzl
+聪明 csm;
 促进 cujn
 脆弱 cvro
 。 d..
@@ -472,6 +475,7 @@
 范围 fjwz
 反应 fjy;
 反映 fjy;4
+翻页 fjye
 翻译 fjyi
 封妻荫子 fqyz fgqiynz
 服从 fucs
@@ -529,6 +533,7 @@
 Η getc
 格式 geui
 各种 gevs
+革新 gexn
 根据 gfju
 跟随 gfsv
 γ gga
@@ -663,6 +668,7 @@
 Τ gtac
 θ gth
 Θ gthc
+古代 gudl
 估计 guji
 顾客 guke
 姑娘 gund
@@ -749,6 +755,8 @@
 婚姻 hpyn
 换行 hrhh
 环境 hrj;
+环节 hrjx
+缓解 hrjx3
 红包 hsbk
 红领巾 hsl;j
 鸿蒙 hsmg2
@@ -770,6 +778,8 @@
 会议 hvyi
 回忆 hvyi4
 会员 hvyr
+话题 hwti
+滑梯 hwti1
 画蛇添足 hwuetmz hutz
 话说 hwuo
 化学 hwxt
@@ -869,6 +879,7 @@
 经过 j;go
 精华 j;hw
 净化 j;hw4
+经常 j;ih
 经济 j;ji
 警纪 j;ji4
 经纪 j;ji4s
@@ -940,6 +951,7 @@
 技能 jing
 机器 jiqi
 极其 jiqi2
+佶屈聱牙 jiquoky jqoy
 既然 jirj
 计算 jisr
 计算机 jisrj
@@ -1089,6 +1101,7 @@
 口语 kbyu
 矿洞 kdds
 矿泉水 kdqru
+况且 kdqx
 课表 kebc
 课标 kebc1
 科创 keid
@@ -1133,10 +1146,13 @@
 领域 l;yu
 拉风 lafg
 拉缝 lafg4
+垃圾 laji
 了解 lcjx
 了结 lcjx2
 辽宁 lcn;
+聊天 lctm
 两个 ldge
+量级 ldji2
 粮食 ldui
 良莠不齐 ldybbuq lybq
 厉害 lihl
@@ -1184,6 +1200,8 @@
 论文 lpwf
 留存 lqcp
 流程 lqig
+浏览 lqlj
+流通 lqts
 流转 lqvr
 流行 lqx;
 流星 lqx;1
@@ -1229,6 +1247,7 @@
 马克思 makes
 马尔萨斯 maorsas
 马上 mauh
+某个 mbge
 某人 mbrf
 某种 mbvs3
 某些 mbxx1
@@ -1236,6 +1255,8 @@
 描写 mcxx
 懵懂 mgds3
 盲打 mhda3
+弥补 mibu
+密布 mibu4
 密度 midu
 米哈游 mihay
 曼波 mjbo1
@@ -1245,6 +1266,8 @@
 面对 mmdv
 免费 mmfz
 面积 mmji
+面临 mmln
+面前 mmqm
 腼腆 mmtm
 面试 mmui
 敏感 mngj
@@ -1253,7 +1276,9 @@
 魔方 mofh1
 磨坊 mofh2
 模范 mofj
+模糊 mohu
 模块 moky
+莫名其妙 mom;qim
 模拟 moni
 默认 morf
 模式 moui
@@ -1362,6 +1387,7 @@
 普适 puui
 朴实 puui2
 普世 puui4
+撇掉 pxdc
 配合 pzhe
 配置 pzvi4
 培训 pzxp
@@ -1380,6 +1406,7 @@
 清晰 q;xi
 情绪 q;xu
 憔悴 qccv
+巧合 qche
 巧妙 qcmc
 祈祷 qidk3
 期待 qidl
@@ -1597,6 +1624,8 @@
 す rsu
 ス rsuk
 容易 rsyi
+荣誉 rsyu
+冗余 rsyu2
 た rta
 タ rtak
 て rte
@@ -1738,6 +1767,7 @@
 台湾 tlwj
 天津 tmjn
 添加 tmjw
+天马行空 tmmax;k tmxk
 填写 tmxx
 天涯 tmya
 ♂ tnj2
@@ -1790,14 +1820,17 @@
 寿命 ubm;
 ∉ ubuy
 受制于 ubviy
+受众 ubvs4
 守株待兔 ubvudlt uvdt
 首先 ubxm
+手写 ubxx
 双地支 uddivi
 ⟺ udjy
 双面 udmm
 双拼 udpn1
 ° udu4
 ≥ udydy uge
+舍本逐末 uebfvum ubvm
 ∃ uee ucpzl
 社会 uehv
 社交 uejc
@@ -1907,6 +1940,7 @@
 ∠ ujc3
 山东 ujds
 ∫ ujf
+擅长 ujih
 删除 ujiu
 山西 ujxi
 陕西 ujxi1
@@ -1992,6 +2026,7 @@
 整数 vguu4
 政治 vgvi
 账号 vhhk
+掌控 vhks
 中华人民共和国 vhrmghg vhrg
 中華人民共和國 vhrmghg. vhrg.
 震撼首发 vhuf vfhjubf
@@ -2228,6 +2263,8 @@
 晚上 wjuh
 完善 wjuj
 完整 wjvg
+万一 wjyi1
+玩意 wjyi4
 无可奉告 wkfg wukefgg
 外面 wlmm
 我知道 wovid
@@ -2305,6 +2342,7 @@
 想必 xdbi4
 相比而言 xdbiory xboy
 相等 xddg
+相当 xddh
 相对 xddv
 想法 xdfa
 相辅相成 xdfuxdi xfxi
@@ -2324,6 +2362,7 @@
 相同 xdts2
 享受 xdub
 详细 xdxi
+想要 xdyk
 西班牙 xibjy
 西北 xibz3
 习惯 xigr
@@ -2421,6 +2460,7 @@
 英吉利 y;jil
 应接不暇 y;jxbux yjbx
 影响 y;xd
+应用 y;ys
 英语 y;yu
 压缩 yaso
 优点 ybdm3
@@ -2464,6 +2504,7 @@
 意境 yij;4
 以及 yiji
 意见 yijm4
+依旧 yijq
 以来 yill2
 旖旎 yini3
 意思 yisi0
@@ -2473,6 +2514,8 @@
 意识 yiui2y
 艺术 yiuu
 已知 yivi1
+以外 yiwl
+意外 yiwl4
 义务 yiwu
 依偎 yiwz1
 以为 yiwz2
@@ -2558,6 +2601,7 @@
 约束 ytuu
 越野 ytye
 预备 yubz
+预测 yuce
 遇到 yudk
 语法 yufa3
 雨尘 yuif
@@ -2571,6 +2615,9 @@
 于是 yuui
 与众不同 yuvsbut yvbt
 语文 yuwf
+语言 yuyj
+预言 yuyj2
+语音 yuyn
 责任 zerf4
 怎么样 zfmey
 增大 zgda4
@@ -2581,6 +2628,7 @@
 自动 zids
 字符 zifu
 自己 zij
+字母 zimu
 自然 zirj
 自身 ziuf
 自治 zivi
@@ -2590,12 +2638,14 @@
 自习 zixi2
 自信 zixn
 自由 ziyb
+自娱自乐 ziyuzil zyzl
 咱们 zjmf
 暂时 zjui
 早上 zkuh
 再次 zlci4
 坐标 zobc
 做到 zodk
+做法 zofa
 做了 zole
 座谈会 zotjh
 昨天 zotm

@@ -1772,6 +1772,16 @@
 天涯 tmya
 ♂ tnj2
 ♀ tny3
+① tqr1
+⑩ tqr10
+② tqr2
+③ tqr3
+④ tqr4
+⑤ tqr5
+⑥ tqr6
+⑦ tqr7
+⑧ tqr8
+⑨ tqr9
 团队 trdv
 同步 tsbu
 通道 tsdk

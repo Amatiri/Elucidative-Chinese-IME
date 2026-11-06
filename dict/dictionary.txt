@@ -6626,6 +6626,7 @@
 沼 vk3ud
 兆 vk45
 照 vk4h
+曌 vk4h.m
 召 vk4k
 棹 vk4m
 罩 vk4w

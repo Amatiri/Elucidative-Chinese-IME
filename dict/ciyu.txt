@@ -944,6 +944,9 @@
 急剧 jiju4d
 即可 jike3
 即刻 jike4
+激励 jili
+机理 jili3
+吉利 jili4
 吉林 jiln
 记录 jilu
 纪录 jilu4
@@ -1168,6 +1171,8 @@
 例如 liru
 离散 lisj
 历史 liui
+理智 livi
+荔枝 livi1
 理性 lix;4
 理由 liyb
 利益 liyi
@@ -1207,6 +1212,7 @@
 流星 lqx;1
 流线 lqxm
 垄断 lsdr
+芦荟 luhv4
 路程 luig
 路径 luj;
 路人 lurf
@@ -1408,6 +1414,7 @@
 憔悴 qccv
 巧合 qche
 巧妙 qcmc
+枪杆 qdgj
 祈祷 qidk3
 期待 qidl
 启动 qids
@@ -1473,6 +1480,9 @@
 区分 quff
 区间 qujm1
 取款 qukr
+区位 quwz
+取为 quwz2
+趣味 quwz4
 区域 quyu
 趋于 quyu2
 恰好 qwhk
@@ -1728,6 +1738,7 @@
 特别 tebx
 醍醐灌顶 thgd tihugrd
 ∨ tho4 txwj
+汤汁 thvi
 题材 ticl
 体裁 ticl2
 替代 tidl
@@ -2387,6 +2398,7 @@
 喜上眉梢 xiuhmzu
 蟋蟀 xiuy
 希望 xiwh
+蜥蜴 xiyi4
 吸引 xiyn
 西藏 xizh
 洗澡 xizk
@@ -2441,6 +2453,8 @@
 学院 xtyr
 学园 xtyr2
 许多 xudo
+蓄积 xuji
+续集 xuji2
 序列 xulx
 畜牧 xumu
 序幕 xumu4

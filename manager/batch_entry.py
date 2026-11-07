@@ -1,14 +1,18 @@
 import os
+import tempfile
 from config import DATA_FILE
 from manager.dictionary import load_dictionary
 from manager.file_processor import process_file
 import re
 from pypinyin import pinyin, Style
 
-# 待录入表：与码表同目录，供录毕回写
+# 待录入表：与码表同目录，供录毕回写（纯汉字连写，无换行）
 PENDING_FILE = os.path.join(os.path.dirname(DATA_FILE), "待录入.txt")
-# 待录入拼音表：批量录入"txt"的音码来源（由 agent_workspace/sync_pending_pinyin.py 维护）
+# 待录入拼音表：批量录入 "txt" 的音码来源，也是录毕回写的权威音码依据；
+# 补齐/排序/格式化仍由 agent_workspace/sync_pending_pinyin.py 负责。
 PENDING_PINYIN_FILE = os.path.join(os.path.dirname(DATA_FILE), "待录入_拼音.txt")
+# 辅表音码格式，与 load_pending_entries() 的校验口径一致
+_AUX_CODE_RE = re.compile(r"[a-z][a-z;][0-9]")
 BATCH_SIZE = 10
 
 final_dict = {
@@ -242,9 +246,88 @@ def extract_chinese(text):
     )
 
 
-def sync_pending_file():
-    """录毕回写：移除待录入表中全读音已录入的字"""
-    existing, _ = load_dictionary()
+def _read_text(path):
+    """二进制读取 + utf-8-sig 解码；不做换行转换，保留原始 CRLF。"""
+    with open(path, "rb") as f:
+        return f.read().decode("utf-8-sig")
+
+
+def _read_aux_lines(path):
+    """辅表 → 含行尾符的原始行列表；保留原文本以便过滤后原样写回。"""
+    return _read_text(path).splitlines(keepends=True)
+
+
+def _atomic_write_text(path, text):
+    """同目录临时文件 + os.replace 原子写；utf-8 无 BOM，换行按字面写入。"""
+    directory = os.path.dirname(path) or "."
+    fd, tmp_path = tempfile.mkstemp(
+        dir=directory, prefix="." + os.path.basename(path) + ".", suffix=".tmp"
+    )
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8", newline="") as f:
+            f.write(text)
+        os.replace(tmp_path, path)
+    except BaseException:
+        if os.path.exists(tmp_path):
+            os.remove(tmp_path)
+        raise
+
+
+def compute_pending_sync(main_chars, aux_lines, existing):
+    """纯计算：以辅表音码为权威判定已录入条目，产出两张表的写回内容。
+
+    main_chars : 主表去重后的汉字列表（保持顺序）
+    aux_lines  : 辅表原始行列表（含行尾符）
+    existing   : (汉字, 音码) 集合，来自 load_dictionary()
+    返回 (新主表文本, 新辅表行列表, 主表删字列表, 辅表删条目列表, 告警列表)
+
+    音码来源：辅表中该字列出的全部音码即权威，不再调用 pypinyin；辅表查不到
+    该字时才用 hanzi_to_abc 兜底，且兜底音码只用于判定、不补写辅表。
+    """
+    warnings = []
+    aux_by_char = {}
+    parsed = []                 # [(原始行文本, (汉字, 音码) 或 None)]
+    for lineno, raw_line in enumerate(aux_lines, 1):
+        stripped = raw_line.strip()
+        if not stripped:
+            parsed.append((raw_line, None))
+            continue
+        parts = re.split(r"[\t ]+", stripped, maxsplit=1)
+        if len(parts) == 2 and _AUX_CODE_RE.fullmatch(parts[1].strip()):
+            hanzi, code = parts[0].strip(), parts[1].strip()
+            parsed.append((raw_line, (hanzi, code)))
+            aux_by_char.setdefault(hanzi, []).append(code)
+        else:
+            warnings.append(f"第 {lineno} 行格式异常（应为「汉字 空格 音码」），已保留：{stripped}")
+            parsed.append((raw_line, None))
+
+    keep_chars, removed_chars = [], []
+    for ch in main_chars:
+        codes = aux_by_char.get(ch)
+        if not codes:
+            codes = hanzi_to_abc(ch)
+            if not codes:
+                warnings.append(f"{ch} 辅表无条目且 pypinyin 无音码，保守保留")
+                keep_chars.append(ch)
+                continue
+            warnings.append(f"{ch} 辅表无音码条目，暂用 pypinyin 判定：{' '.join(codes)}")
+        if all((ch, code) in existing for code in codes):
+            removed_chars.append(ch)
+        else:
+            keep_chars.append(ch)
+
+    new_aux_lines, removed_entries = [], []
+    for raw_line, entry in parsed:
+        if entry and entry in existing:
+            removed_entries.append(entry)
+            continue
+        new_aux_lines.append(raw_line)
+
+    return "".join(keep_chars), new_aux_lines, removed_chars, removed_entries, warnings
+
+
+def _sync_pending_file_legacy(existing):
+    """原回写逻辑：pypinyin 全读音判定、仅写主表（from_table=False 时的回退）。"""
     with open(PENDING_FILE, encoding='utf-8-sig') as f:
         chars = extract_chinese(f.read())
     keep, removed, seen = [], [], set()
@@ -267,6 +350,50 @@ def sync_pending_file():
         print(f"已移除，剩余 {len(keep)} 字")
     else:
         print("未移除")
+
+
+def sync_pending_file(from_table=False):
+    """录毕回写：移除待录入表中已录入的字与条目。
+
+    from_table=True（批量录入输入 txt 时）：音码以 待录入_拼音.txt 为权威，
+    一次确认后同时删减主表（按字）与辅表（按行），不受 pypinyin 多余异读影响。
+    from_table=False：保留原先基于 pypinyin 全读音的判定（防御性回退）。
+    """
+    existing, _ = load_dictionary()
+    if not from_table:
+        _sync_pending_file_legacy(existing)
+        return
+    if not os.path.exists(PENDING_PINYIN_FILE):
+        print(f"待录入拼音表不存在：{PENDING_PINYIN_FILE}")
+        return
+
+    main_chars = list(dict.fromkeys(extract_chinese(_read_text(PENDING_FILE))))
+    aux_lines = _read_aux_lines(PENDING_PINYIN_FILE)
+    new_main, new_aux, removed_chars, removed_entries, warnings = compute_pending_sync(
+        main_chars, aux_lines, existing
+    )
+    for msg in warnings:
+        print(f"[告警] {msg}")
+    if not removed_chars and not removed_entries:
+        print("待录入表无需回写")
+        return
+    print(f"主表将移除 {len(removed_chars)} 字：{''.join(removed_chars)}")
+    preview = " ".join(f"{h}{c}" for h, c in removed_entries[:30])
+    if len(removed_entries) > 30:
+        preview += " …"
+    print(f"辅表将移除 {len(removed_entries)} 条：{preview}")
+    try:
+        ans = input("从两张待录入表移除以上条目？(y/n): ").strip().lower()
+    except (EOFError, KeyboardInterrupt):
+        print("\n未移除")
+        return
+    if ans not in ('y', 'yes'):
+        print("未移除")
+        return
+    _atomic_write_text(PENDING_FILE, new_main)
+    _atomic_write_text(PENDING_PINYIN_FILE, "".join(new_aux))
+    print(f"已移除：主表 {len(removed_chars)} 字、辅表 {len(removed_entries)} 条；"
+          f"主表剩余 {len(main_chars) - len(removed_chars)} 字、辅表剩余 {len(new_aux)} 行")
 
 
 def batch_add_entries():
@@ -402,7 +529,7 @@ def batch_add_entries():
         print(f"完成！汉字条目：{single_count}")
         os.remove(temp_file)
         if from_file:
-            sync_pending_file()
+            sync_pending_file(from_table=from_file)
     except ImportError:
         import subprocess
         subprocess.run(["python", "vgli.py"])

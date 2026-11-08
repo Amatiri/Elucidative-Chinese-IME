@@ -1035,6 +1035,7 @@
 沨 fg1up
 冯 fg2b
 缝 fg2s
+浲 fg2u
 逢 fg2z
 讽 fg3y
 奉 fg4i
@@ -1747,6 +1748,7 @@
 晗 hj2r
 涵 hj2u
 汗 hj2ug
+浛 hj2uk
 韩 hj2w
 喊 hj3k
 阚 hj3m
@@ -3002,6 +3004,7 @@
 届 jx4s
 界 jx4t
 玠 jx4w
+悈 jx4x
 诫 jx4y
 价 jx0r
 茎 j;1c
@@ -3201,6 +3204,7 @@
 醌 kp1yr
 阃 kp3m
 捆 kp3u
+悃 kp3x
 困 kp4g
 宽 kr1b
 髋 kr1g
@@ -3368,6 +3372,7 @@
 靓 ld4q
 量 ld4r
 晾 ld4rj
+悢 ld4x
 谅 ld4y
 踉 ld4z
 肋 le1r
@@ -4178,7 +4183,8 @@
 美 mz3h
 镁 mz3j
 每 mz3r
-躾 mz3u
+浼 mz3u
+躾 mz3uh.j
 寐 mz4b
 味 mz4k
 妹 mz4n
@@ -5213,6 +5219,7 @@
 榷 qt4mw
 鹊 qt4n
 确 qt4s
+𬒈 qt4sx
 埆 qt4t
 汋 qt4u
 雀 qt4w
@@ -5496,6 +5503,7 @@
 饲 si4u
 汜 si4ue
 泗 si4us
+涘 si4uy
 肆 si4y
 笥 si4z
 思 si0x
@@ -7703,6 +7711,7 @@
 夷 yi26
 宜 yi2b
 痍 yi2bd
+宧 yi2bi
 贻 yi2bt
 疑 yi2bu
 彝 yi2c
@@ -8153,6 +8162,7 @@
 杳 yk3m
 舀 yk3v
 窈 yk3x
+窅 yk3xm
 疟 yk4b.h
 药 yk4c
 耀 yk4g

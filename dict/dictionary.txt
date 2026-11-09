@@ -332,6 +332,7 @@
 渤 bo2ul
 浡 bo2uz
 舶 bo2v
+袯 bo2y
 箔 bo2z
 跛 bo3z
 簸 bo3zq
@@ -631,6 +632,7 @@
 铫 dc4jv
 吊 dc4k
 掉 dc4u
+窎 dc4x
 调 dc4y
 嘚 de1k
 锝 de2j
@@ -751,6 +753,7 @@
 担 dj4ur
 石 dj4ur.s
 澹 dj4uv
+疍 dj4v
 惮 dj4x
 诞 dj4y
 刀 dk14
@@ -828,6 +831,7 @@
 玷 dm4w
 惦 dm4x
 簟 dm4z
+剟 do1d
 咄 do1k
 哆 do1kt
 多 do1t
@@ -996,6 +1000,7 @@
 否 fb3k
 芬 ff1c
 分 ff1d
+翂 ff1fd
 吩 ff1k
 棻 ff1m
 氛 ff1q
@@ -1154,6 +1159,7 @@
 孚 fu2v
 罘 fu2w
 韨 fu2wk
+琈 fu2wv
 怫 fu2x
 服 fu2y
 黻 fu2yb
@@ -1317,6 +1323,7 @@
 个 ge31
 葛 ge3c
 合 ge3k
+哿 ge3kj
 盖 ge3m
 舸 ge3v
 虼 ge4i
@@ -1750,6 +1757,7 @@
 汗 hj2ug
 浛 hj2uk
 韩 hj2w
+琀 hj2wk
 喊 hj3k
 阚 hj3m
 罕 hj3w
@@ -1861,6 +1869,7 @@
 鹮 hr2n
 鬟 hr2p
 缳 hr2s
+𬘫 hr2sw
 垸 hr2t
 洹 hr2u
 峘 hr2ug
@@ -2163,6 +2172,7 @@
 塍 ig2ty
 澄 ig2u
 珹 ig2w
+珵 ig2wk
 惩 ig2x
 诚 ig2y
 裎 ig2yk
@@ -2212,6 +2222,7 @@
 眵 ii1m
 媸 ii1n
 鸱 ii1nd
+𫄨 ii1s
 魑 ii1v
 笞 ii1z
 匙 ii2b
@@ -2347,6 +2358,7 @@
 珫 is1w
 忡 is1x
 憧 is1xt
+翀 is1y
 重 is29
 种 is2h
 虫 is2k
@@ -2546,6 +2558,7 @@
 佶 ji2r
 伋 ji2rj
 级 ji2s
+堲 ji2t
 汲 ji2u
 岌 ji2uj
 嵴 ji2ur
@@ -2714,6 +2727,7 @@
 缙 jn4sr
 浸 jn4u
 浕 jn4um
+琎 jn4w
 近 jn4z
 进 jn4zw
 菌 jp1c
@@ -3705,6 +3719,7 @@
 笼 ls3z
 弄 ls4c
 哢 ls4k
+䂮 lt4s
 略 lt4t
 掠 lt4u
 噜 lu1k
@@ -4261,6 +4276,7 @@
 旎 ni3f
 祢 ni3s
 拟 ni3u
+𨺙 ni4b
 睨 ni4m
 倪 ni4m.
 匿 ni4o
@@ -4359,6 +4375,7 @@
 呶 nu3k
 努 nu3l
 胬 nu3r
+砮 nu3s
 怒 nu4x
 嗯 nv2k
 唔 nv2k.w
@@ -4730,6 +4747,7 @@
 郫 pi2bb
 阰 pi2be
 陂 pi2bk
+陴 pi2bs
 芘 pi2c
 罴 pi2h
 蚍 pi2i
@@ -5041,6 +5059,7 @@
 琪 qi2wb
 琦 qi2wd
 鳍 qi2y
+鮨 qi2y;
 芑 qi3c
 启 qi3h
 啓 qi3h.f
@@ -5242,6 +5261,7 @@
 岖 qu1uo
 岨 qu1uq
 诎 qu1y
+袪 qu1yt
 趋 qu1z
 癯 qu2b
 蕖 qu2c
@@ -5888,6 +5908,7 @@
 酮 ts2y
 𫍣 ts2yk
 桶 ts3m
+㛚 ts3n
 侗 ts3r
 统 ts3s
 統 ts3s.
@@ -5905,6 +5926,7 @@
 图 tu2g
 圖 tu2g.
 図 tu2g.j
+𬳿 tu2m
 屠 tu2s
 徒 tu2t
 涂 tu2u
@@ -6452,6 +6474,7 @@
 缜 vf3s
 畛 vf3t
 诊 vf3y
+袗 vf3yr
 阵 vf4b
 赈 vf4bf
 震 vf4i
@@ -6465,6 +6488,7 @@
 症 vg1b
 蒸 vg1c
 争 vg1d
+烝 vg1h
 铮 vg1j
 凧 vg1jj
 钲 vg1jv
@@ -6812,6 +6836,7 @@
 畖 wa1tg
 挖 wa1u
 洼 wa1ug
+窊 wa1x
 娃 wa2n
 瓦 wa34
 佤 wa3r
@@ -6935,6 +6960,7 @@
 梧 wu2m
 浯 wu2u
 峿 wu2uk
+珸 wu2w
 午 wu31
 五 wu34
 庑 wu3g
@@ -7209,6 +7235,7 @@
 阋 xi4m
 细 xi4s
 屃 xi4sb
+绤 xi4sg
 系 xi4sp
 潟 xi4u
 饩 xi4uq
@@ -7390,6 +7417,7 @@
 绚 xr4s
 渲 xr4u
 泫 xr4ud
+琄 xr4w
 凶 xs1c
 芎 xs1cg
 兄 xs1k
@@ -7527,6 +7555,7 @@
 邂 xx4z
 躞 xx4zk
 兴 x;1b
+骍 x;1m
 猩 x;1q
 星 x;1r
 腥 x;1rr
@@ -7717,6 +7746,7 @@
 彝 yi2c
 荑 yi2cd
 移 yi2h
+扅 yi2hd
 颐 yi2i
 咦 yi2k
 眙 yi2m
@@ -7737,6 +7767,7 @@
 乙 yi38
 苡 yi3c
 旖 yi3f
+扆 yi3h
 蚁 yi3i
 钇 yi3j
 椅 yi3m

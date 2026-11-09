@@ -366,9 +366,12 @@
 敦煌 dphd
 — dpv
 ￥ dqm
+锻炼 drlm
+断连 drlm2
 短暂 drzj
 动词 dsci
 动画 dshw
+动力 dsli
 动漫 dsmj
 动态 dstl
 东西 dsx
@@ -445,6 +448,7 @@
 氛围 ffwz2
 分享 ffxd
 分析 ffxi
+锋利 fgli
 封装 fgvd
 风险 fgxm3
 房地产 fhdii
@@ -612,6 +616,7 @@
 惯例 grli4r
 关联 grlm
 观念 grnm
+关停 grt;
 管制 grvi
 观众 grvs
 关注 grvu
@@ -687,6 +692,7 @@
 归化 gvhw4
 规律 gvly
 规模 gvmo
+归途 gvtu
 贵州 gvvb
 规则 gvze
 恭喜发财 gxfc gsxifac
@@ -819,6 +825,7 @@
 常规 ihgv
 场景 ihj;
 长江 ihjd
+厂商 ihuh
 尝试 ihui
 常数 ihuu4
 常用 ihys
@@ -925,6 +932,8 @@
 基本 jibf
 记得 jide2
 基地 jidi
+积淀 jidm
+祭典 jidm3
 极端 jidr
 机构 jigb
 机关 jigr
@@ -938,6 +947,9 @@
 基础 jiiu
 即将 jijd
 积极 jiji
+激进 jijn
+基金 jijn1
+饥馑 jijn3
 极具 jiju
 寄居 jiju1
 集聚 jiju4
@@ -954,6 +966,7 @@
 技能 jing
 机器 jiqi
 极其 jiqi2
+集权 jiqr
 佶屈聱牙 jiquoky jqoy
 既然 jirj
 计算 jisr
@@ -1144,6 +1157,7 @@
 灵活 l;ho
 灵魂 l;hp
 零重码 l;ism
+另类 l;lz
 另外 l;wl
 另一个 l;yig
 领域 l;yu
@@ -1201,6 +1215,7 @@
 吝啬 lnse
 临时 lnui
 逻辑 loji
+螺旋 loxr
 论述 lpuu
 论文 lpwf
 留存 lqcp
@@ -1268,6 +1283,7 @@
 曼波 mjbo1
 耄耋 mkdx
 贸易 mkyi
+毛躁 mkzk
 麦当劳 mldhl
 面对 mmdv
 免费 mmfz
@@ -1313,6 +1329,7 @@
 美术 mzuu
 没有 mzy
 柠檬 n;mg
+凝滞 n;vi4
 宁夏 n;xw
 哪个 nage
 那里 nali
@@ -1343,6 +1360,7 @@
 俄罗斯 oelos
 额外 oewl
 昂贵 ohgv
+暗黄 ojhd
 安徽 ojhv
 安居乐业 ojjuley
 安全 ojqr
@@ -1361,7 +1379,10 @@
 评论 p;lp
 屏幕 p;mu
 平台 p;tl
+漂移 pcyi
+飘逸 pcyi4
 蓬勃 pgbo
+棚屋 pgwu
 朋友 pgyb
 疲惫 pibz
 披风 pifg1
@@ -1398,6 +1419,7 @@
 配置 pzvi4
 培训 pzxp
 培养 pzyh
+培育 pzyu
 青海 q;hl
 清楚 q;iu
 清除 q;iu2
@@ -1723,6 +1745,7 @@
 停止 t;vi
 停滞 t;vi4
 它们 tamf
+拓印 tayn
 © tbjqr
 头脑 tbnk3
 投入 tbru
@@ -1883,6 +1906,7 @@
 绅士 ufui4
 ∓ ufuvg
 甚至 ufvi
+审议 ufyi
 ¬ ufz1
 √ ugfhk tdv4
 生活 ugh
@@ -1901,6 +1925,7 @@
 上课 uhke
 上面 uhmm
 上屏 uhp;
+上升 uhug
 社会主义 uhvy
 上午 uhwu
 上限 uhxm4
@@ -1910,6 +1935,7 @@
 失策 uice4
 时代 uidl
 十分 uiff
+释放 uifh
 示范 uifj
 师范 uifj4
 × uig2 tco4
@@ -2359,6 +2385,7 @@
 消失 xcui
 消息 xcxi
 效应 xcy;
+效益 xcyi
 相比 xdbi
 想必 xdbi4
 相比而言 xdbiory xboy
@@ -2427,6 +2454,7 @@
 新增 xnzg
 循环 xphr
 巡回 xphv
+巡查 xpia
 训练 xplm
 寻找 xpvk
 修订 xqd;4
@@ -2474,6 +2502,7 @@
 协调 xxtc
 协同 xxts
 谢谢 xxxx
+协议 xxyi
 写作 xxzo
 协作 xxzo4
 应对 y;dv
@@ -2596,6 +2625,7 @@
 运维 ypwz2
 运行 ypx;
 允许 ypxu
+运用 ypys
 运作 ypzo
 缘故 yrgu
 远古 yrgu3

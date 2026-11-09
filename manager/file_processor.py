@@ -187,130 +187,6 @@ def sort_file_by_second_part(input_file, output_file):
         print(f"错误: {e}")
     return None
 
-
-def merge_files_to_ahk(dictionary_file, ciyu_file, output_file):
-    """合并词典和词库生成AHK热键文件"""
-    result_dict = {}
-    try:
-        with open(dictionary_file, 'r', encoding='utf-8-sig') as f:
-            for line_num, line in enumerate(f, 1):
-                line = line.strip()
-                if not line or line.startswith(';'):
-                    continue
-                parts = line.split()
-                if len(parts) >= 2:
-                    value = parts[0]
-                    key = parts[1]
-                    result_dict[key] = value
-                else:
-                    print(f"警告: {dictionary_file} 第{line_num}行格式不正确: {line}")
-    except FileNotFoundError:
-        print(f"错误: 找不到文件 {dictionary_file}")
-        return
-    try:
-        with open(ciyu_file, 'r', encoding='utf-8-sig') as f:
-            for line_num, line in enumerate(f, 1):
-                line = line.strip()
-                if not line or line.startswith(';'):
-                    continue
-                parts = line.split()
-                if len(parts) >= 2:
-                    value = parts[0]
-                    key = parts[1]
-                    result_dict[key] = value
-                else:
-                    print(f"警告: {ciyu_file} 第{line_num}行格式不正确: {line}")
-    except FileNotFoundError:
-        print(f"错误: 找不到文件 {ciyu_file}")
-        return
-    try:
-        with open(output_file, 'w', encoding='utf-8') as f:
-            for zi, ma in first_level_map.items():
-                f.write(f':o:{ma[0]} ::{zi}"\n')
-            for key, value in result_dict.items():
-                f.write(f':o:{key} ::{value}\n')
-            print(f"成功生成AHK文件: {output_file}")
-            print(f"共生成 {len(result_dict)} 个热键")
-    except IOError as e:
-        print(f"错误: 无法写入文件 {output_file}: {e}")
-
-
-def process_second_part(text):
-    """处理编码第二部分，转换为简化格式"""
-    if '.' in text:
-        text = text.split('.')[0]
-    if len(text) < 2:
-        return text.lower()
-    daydue = ["pqwertyuio", "masdfghjkl", "zxcvbncvbn"]
-    chars = list(text)
-    if len(chars) >= 2 and chars[1] == ';':
-        mapping = {
-            'b': 'd', 'd': 'd', 'j': 'a', 'l': 'v', 'm': 'v',
-            'n': 'v', 'p': 'd', 'q': 'a', 't': 'd', 'x': 'a', 'y': 'd'
-        }
-        first_char = chars[0].lower()
-        chars[1] = mapping.get(first_char, 'a')
-    while len(chars) < 4:
-        chars.append('a')
-    if chars[3].isdigit():
-        tone = chars[2]
-        d_digit = chars[3]
-        third_char = 'a' if tone in ['1', '2'] else 'e'
-        if tone == '0':
-            row = 2
-        elif tone in ['1', '3']:
-            row = 0
-        else:
-            row = 1
-        if d_digit.isdigit() and 0 <= int(d_digit) <= 9:
-            fourth_char = daydue[row][int(d_digit)]
-        else:
-            fourth_char = 'a'
-        result = chars[0] + chars[1] + third_char + fourth_char
-    else:
-        d_letter = chars[3]
-        has_e_code = len(chars) >= 5 and (chars[4].isalpha() or chars[4] == ";")
-        if has_e_code:
-            e_code = chars[4]
-            if e_code == ';':
-                e_code = 'e'
-            fourth_char = e_code
-        else:
-            tone = chars[2]
-            fourth_char = 'a' if tone in ['1', '2'] else 'e'
-        result = chars[0] + chars[1] + d_letter + fourth_char
-    result = re.sub(r'[^a-z]', '', result)
-    return result[:4]
-
-
-def process_filey(input_file, output_file):
-    """处理词典文件生成简化编码版本"""
-    try:
-        with open(input_file, 'r', encoding='utf-8-sig') as infile:
-            lines = infile.readlines()
-        with open(output_file, 'w', encoding='utf-8') as outfile:
-            for line in lines:
-                line = line.strip()
-                if not line:
-                    outfile.write('\n')
-                    continue
-                parts = line.split(' ', 1)
-                if len(parts) == 2:
-                    first_part = parts[0]
-                    second_part = parts[1]
-                    processed_second = process_second_part(second_part)
-                    if processed_second:
-                        outfile.write(f"{first_part} {processed_second}\n")
-                else:
-                    outfile.write(f"{line}\n")
-            for zi, ma in first_level_map.items():
-                outfile.write(f'{zi} {ma[0]}\n')
-    except FileNotFoundError:
-        print(f"错误：找不到文件 {input_file}")
-    except Exception as e:
-        print(f"处理文件时发生错误: {e}")
-
-
 def _parse_js_object(content, pattern):
     """按括号配对截取 JS 文本中的对象字面量并解析为 dict；失败返回 {}。"""
     match = re.search(pattern, content)
@@ -518,7 +394,6 @@ def main_menu():
     """整理码表主入口"""
     single_count = process_file(DATA_FILE, DATA_FILE)
     phrase_count = sort_file_by_second_part(CIYU_FILE, CIYU_FILE)
-    #process_filey(DATA_FILE, DATA_NO_NUMBER_FILE)
     web_chars, web_phrases = build_web_data()
     rationale_count = build_rationale_data()
     return single_count, phrase_count, web_chars, web_phrases, rationale_count

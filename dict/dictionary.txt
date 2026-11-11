@@ -471,6 +471,7 @@
 玼 ci3w
 次 ci4b
 赐 ci4by
+莿 ci4c
 刺 ci4d
 朿 ci4d.m
 伺 ci4r
@@ -835,6 +836,7 @@
 咄 do1k
 哆 do1kt
 多 do1t
+㙍 do1tv
 掇 do1u
 裰 do1y
 夺 do2c
@@ -1562,6 +1564,7 @@
 锢 gu4j
 梏 gu4m
 估 gu4r
+堌 gu4t
 故 gu4u
 崮 gu4ug
 鲴 gu4y
@@ -2577,6 +2580,7 @@
 給 ji3s.
 纪 ji3sj
 挤 ji3u
+掎 ji3ud
 济 ji3uq
 濟 ji3uq.
 旡 ji49
@@ -2749,6 +2753,7 @@
 捃 jp4uk
 浚 jp4uu
 隽 jp4w
+珺 jp4wk
 丩 jq18
 啾 jq1k
 阄 jq1m
@@ -3218,6 +3223,7 @@
 醌 kp1yr
 阃 kp3m
 捆 kp3u
+壸 kp3ud
 悃 kp3x
 困 kp4g
 宽 kr1b
@@ -3226,6 +3232,7 @@
 窾 kr3x
 倥 ks1r
 硿 ks1s
+埪 ks1t
 崆 ks1u
 空 ks1x
 箜 ks1z
@@ -3402,6 +3409,7 @@
 塄 lg2t
 崚 lg2u
 冷 lg3b
+堎 lg4t
 愣 lg4x
 啷 lh1k
 郎 lh2b
@@ -4409,6 +4417,7 @@
 苧 n;2c
 咛 n;2k
 柠 n;2m
+聍 n;2o
 狞 n;2q
 拧 n;2u
 拧 n;3u
@@ -5028,6 +5037,7 @@
 荠 qi2c
 萁 qi2cb
 蕲 qi2cd
+䓫 qi2ck
 芪 qi2cu
 𬨂 qi2cv
 奇 qi2d
@@ -5050,6 +5060,7 @@
 綦 qi2sq
 祇 qi2su
 圻 qi2t
+埼 qi2td
 畦 qi2tg
 崎 qi2u
 淇 qi2ub
@@ -5722,6 +5733,7 @@
 帑 th3j
 倘 th3r
 傥 th3rd
+埫 th3t
 躺 th3u
 淌 th3uu
 烫 th4h
@@ -5840,6 +5852,7 @@
 腆 tm3r
 町 tm3t
 忝 tm3x
+掭 tm4u
 脱 to1r
 侂 to1rg
 圫 to1t
@@ -5862,6 +5875,7 @@
 庹 to3g
 椭 to3m
 妥 to3v
+萚 to4c
 唾 to4k
 柝 to4m
 拓 to4u
@@ -6232,6 +6246,7 @@
 膳 uj4r
 禅 uj4s
 缮 uj4sk
+𫮃 uj4t
 擅 uj4u
 汕 uj4uu
 讪 uj4y
@@ -6435,6 +6450,7 @@
 蜇 ve2iu
 哲 ve2k
 喆 ve2kj
+晢 ve2r
 磔 ve2s
 折 ve2u
 谪 ve2y
@@ -6702,6 +6718,7 @@
 涿 vo1uu
 卓 vo2b
 茁 vo2c
+䓬 vo2cb
 灼 vo2h
 镯 vo2j
 啄 vo2k
@@ -7148,6 +7165,7 @@
 郗 xi1bj
 皙 xi1bm
 茜 xi1c
+菥 xi1cm
 鼷 xi1f
 谿 xi1g
 稀 xi1h
@@ -7597,6 +7615,7 @@
 睚 ya2m
 伢 ya2r
 衙 ya2t
+堐 ya2tc
 崖 ya2u
 涯 ya2uc
 岈 ya2uy
@@ -8157,6 +8176,7 @@
 堰 yj4t
 滟 yj4u
 餍 yj4uc
+掞 yj4uh
 雁 yj4w
 谚 yj4y
 谳 yj4yx

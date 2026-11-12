@@ -1778,6 +1778,7 @@
 剔除 tiiu2
 提交 tijc
 题目 timu
+提取 tiqu
 提示 tiui
 提问 tiwf
 体系 tixi

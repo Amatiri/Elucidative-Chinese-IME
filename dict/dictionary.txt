@@ -133,10 +133,11 @@
 毖 bi4bx
 弊 bi4c
 苾 bi4cb
-蓖 bi4cp
+薜 bi4ck
+萆 bi4cp
 荜 bi4cs
 蔽 bi4cu
-薜 bi4cx
+蓖 bi4cx
 毙 bi4d
 庇 bi4g
 芘 bi4g.c
@@ -712,6 +713,7 @@
 弟 di41
 的 di4b
 蒂 di4c
+菂 di4cb
 帝 di4j
 棣 di4m
 杕 di4md
@@ -978,6 +980,7 @@
 鼎 d;3m
 酊 d;3y
 定 d;4b
+萣 d;4c
 钉 d;4j
 锭 d;4jb
 铤 d;4jt
@@ -1002,13 +1005,13 @@
 否 fb3k
 芬 ff1c
 分 ff1d
-翂 ff1fd
 吩 ff1k
 棻 ff1m
 氛 ff1q
 纷 ff1s
 玢 ff1w
 酚 ff1y
+翂 ff1yd
 鼢 ff2f
 焚 ff2h
 棼 ff2m
@@ -2264,7 +2267,7 @@
 觇 ij1j
 梴 ij1m
 搀 ij1u
-掺 ij1us
+掺 ij1uc
 辿 ij1z
 单 ij25
 單 ij25.
@@ -2938,6 +2941,7 @@
 葭 jw1ck
 镓 jw1j
 加 jw1l
+㔔 jw1l.k
 枷 jw1m
 𬂩 jw1md
 佳 jw1r
@@ -3756,6 +3760,7 @@
 赂 lu4bg
 辘 lu4c
 辂 lu4cg
+菉 lu4ci
 蓼 lu4cy
 鹿 lu4g
 戮 lu4gy
@@ -4392,6 +4397,7 @@
 乜 nx49
 陧 nx4b
 蘖 nx4c
+菍 nx4cx
 颞 nx4i
 镍 nx4j
 镊 nx4jo
@@ -5256,6 +5262,7 @@
 隺 qt4wd
 悫 qt4x
 曲 qu10
+䓛 qu1c
 黢 qu1h
 蛆 qu1i
 蛐 qu1iq
@@ -5786,6 +5793,7 @@
 覃 tj2x
 谈 tj2y
 谭 tj2yx
+菼 tj3c
 钽 tj3j
 毯 tj3m
 坦 tj3t
@@ -5808,6 +5816,7 @@
 萄 tk2c
 啕 tk2k
 桃 tk2m
+梼 tk2mu
 淘 tk2u
 洮 tk2uv
 逃 tk2z
@@ -6630,6 +6639,7 @@
 桎 vi4m
 骘 vi4mb
 栉 vi4mj
+梽 vi4mx
 鸷 vi4n
 狾 vi4q
 智 vi4r
@@ -8496,6 +8506,7 @@
 遇 yu4z
 英 y;1c
 罂 y;1f
+䓨 y;1fc
 应 y;1g
 嘤 y;1k
 樱 y;1m

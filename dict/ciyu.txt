@@ -303,11 +303,13 @@
 第二 dior4
 地盘 dipj
 底盘 dipj2
+底气 diqi4
 的确 diqt
 地区 diqu
 敌人 dirf
 地铁 ditx
 地位 diwz
+抵押 diya
 第一 diyi
 抵罪 dizv4
 单独 djdu
@@ -341,6 +343,7 @@
 （ dkz
 （） dkzy
 代表 dlbc
+贷款 dlkr
 带来 dlll
 代码 dlma
 代替 dlti
@@ -994,6 +997,7 @@
 检察 jmia2b
 坚持 jmii
 剪辑 jmji
+渐渐 jmjm
 间接 jmjx1
 简洁 jmjx2
 见解 jmjx3
@@ -1226,6 +1230,7 @@
 浏览 lqlj
 流通 lqts
 流转 lqvr
+流亡 lqwh
 流行 lqx;
 流星 lqx;1
 流线 lqxm
@@ -1279,6 +1284,7 @@
 描写 mcxx
 懵懂 mgds3
 盲打 mhda3
+莽夫 mhfu
 弥补 mibu
 密布 mibu4
 密度 midu
@@ -1500,6 +1506,7 @@
 确实 qtui2
 区别 qubx
 取得 qude
+取缔 qudi4
 渠道 qudk
 取到 qudk4
 驱动 quds
@@ -1713,6 +1720,7 @@
 ゾ rzok
 ず rzu
 ズ rzuk
+洒脱 sato
 搜狗输入法 sbgbuuruf
 搜索 sbso
 四个 sige
@@ -1918,6 +1926,7 @@
 升级 ugji2
 胜利 ugli
 生理 ugli3
+省略 uglt
 升值 ugvi
 升职 ugvi2o
 生物 ugwu
@@ -2443,6 +2452,7 @@
 显然 xmrj
 现实 xmui
 显示 xmui4
+鲜榨 xmva
 限制 xmvi4
 线性 xmx;4
 线性方程组 xmx;fhigz
@@ -2669,9 +2679,11 @@
 淤积 yuji1
 预览 yulj
 舆论 yulp
+雨棚 yupg2
 预期 yuqi
 与其 yuqi2
 于是 yuui
+预兆 yuvk
 与众不同 yuvsbut yvbt
 语文 yuwf
 语言 yuyj

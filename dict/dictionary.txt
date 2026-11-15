@@ -66,6 +66,7 @@
 奔 bf1c
 锛 bf1j
 栟 bf1m
+犇 bf1n
 本 bf36
 苯 bf3c
 畚 bf3t
@@ -412,6 +413,7 @@
 秉 b;36
 邴 b;3b
 炳 b;3h
+蛃 b;3i
 柄 b;3m
 昺 b;3r
 屏 b;3s
@@ -692,6 +694,7 @@
 提 di1uu
 的 di2b
 荻 di2c
+𬱖 di2i
 镝 di2j
 嘀 di2k
 籴 di2m
@@ -893,6 +896,7 @@
 簖 dr4z
 东 ds14
 東 ds14.
+𬟽 ds1i
 咚 ds1k
 鸫 ds1n
 氡 ds1q
@@ -1005,6 +1009,7 @@
 珐 fa4w
 缶 fb34
 否 fb3k
+覅 fc4x
 芬 ff1c
 分 ff1d
 吩 ff1k
@@ -2677,6 +2682,7 @@
 裥 jm3ym
 简 jm3z
 蹇 jm3zb
+趼 jm3zk
 笕 jm3zm
 贱 jm4b
 荐 jm4c
@@ -2760,6 +2766,7 @@
 竣 jp4d
 骏 jp4m
 俊 jp4r
+晙 jp4ru
 峻 jp4u
 捃 jp4uk
 浚 jp4uu
@@ -3257,6 +3264,7 @@
 空 ks4x
 刳 ku1d
 骷 ku1g
+圐 ku1gw
 哭 ku1k
 枯 ku1m
 矻 ku1s
@@ -3438,6 +3446,7 @@
 莨 lh4c
 蒗 lh4cu
 阆 lh4m
+㫰 lh4r
 埌 lh4t
 浪 lh4u
 崀 lh4ug
@@ -3741,6 +3750,7 @@
 笼 ls3z
 弄 ls4c
 哢 ls4k
+圙 lt4g
 䂮 lt4s
 略 lt4t
 掠 lt4u
@@ -4954,6 +4964,7 @@
 苹 p;2c
 荓 p;2cb
 萍 p;2cu
+蚲 p;2i
 凭 p;2j
 帡 p;2jb
 枰 p;2m
@@ -5091,6 +5102,7 @@
 琦 qi2wd
 鳍 qi2y
 鮨 qi2y;
+跂 qi2z
 芑 qi3c
 启 qi3h
 啓 qi3h.f
@@ -5416,6 +5428,7 @@
 驲 ri4m
 然 rj2h
 燃 rj2hh
+蚺 rj2i
 髯 rj2p
 冉 rj35
 苒 rj3c
@@ -7551,6 +7564,7 @@
 硖 xw2s
 峡 xw2u
 瑕 xw2w
+翈 xw2y
 遐 xw2z
 下 xw41
 厦 xw4c

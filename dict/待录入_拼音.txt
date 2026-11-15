@@ -1,13 +1,3 @@
-翈 xw2
-㫰 lh4
-晙 jp4
-𬱖 di2
-趼 jm3
-跂 qi2
-蛃 b;3
-蚲 p;2
-𬟽 ds1
-蚺 rj2
 啴 ij3
 䎃 rj3
 崧 ss1
@@ -197,7 +187,6 @@
 翙 hv4
 𫖮 yi3
 圌 iv2
-圐 ku1
 赒 vb1
 鿏 ml4
 铹 lk2
@@ -210,7 +199,6 @@
 锎 kl1
 𬭎 hs2
 锓 qn3
-犇 bf1
 颋 t;3
 稌 tu2
 筀 gv4
@@ -484,7 +472,6 @@
 蜾 go3
 幖 bc1
 嶍 xi2
-圙 lt4
 𨱏 da1
 锺 vs1
 锼 sb1

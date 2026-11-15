@@ -377,6 +377,7 @@
 动力 dsli
 动漫 dsmj
 动态 dstl
+动物 dswu
 东西 dsx
 ！ dth
 〉 dudy
@@ -889,6 +890,7 @@
 井底之蛙 j;diviw jdvw
 经典 j;dm3
 经过 j;go
+惊呼 j;hu
 精华 j;hw
 净化 j;hw4
 经常 j;ih
@@ -961,6 +963,7 @@
 急剧 jiju4d
 即可 jike3
 即刻 jike4
+击溃 jikv
 激励 jili
 机理 jili3
 吉利 jili4
@@ -1157,6 +1160,7 @@
 恐惧 ksju
 控制 ksvi
 酷狗 kugb
+圐圙 kult
 快捷 kyjx
 块钱 kyqm
 快速 kysu4
@@ -2131,6 +2135,8 @@
 质数 viuu4l
 植树 viuu4m
 直抒胸臆 viuuxsy vuxy
+植物 viwu
+职务 viwu4
 执行 vix;
 秩序 vixu
 只需 vixu1
@@ -2595,6 +2601,7 @@
 意义 yiyi44
 严格 yjge
 阉割 yjge1
+烟火 yjho
 眼睛 yjj;
 眼镜 yjj;4
 研究 yjjq

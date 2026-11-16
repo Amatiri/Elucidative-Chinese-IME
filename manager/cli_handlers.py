@@ -5,7 +5,8 @@ import tempfile
 import webbrowser
 from pathlib import Path
 from .dictionary import ensure_data_file, query_chars, load_dictionary
-from .batch_entry import batch_add_entries
+from .batch_entry import (batch_add_entries, generate_pending_list,
+                          load_pending_entries, extract_chinese, batch_abc_zone_lines)
 from .single_entry import single_add_entry, modify_entry
 from .abc_analyzer import interactive_mode, analyze_abc_zone
 from .file_processor import main_menu, sort_file_by_second_part, process_file
@@ -119,6 +120,35 @@ def handle_analyze(args):
         if len(abc) < 2 or not (abc[0].isalpha() and abc[-1].isdigit()):
             raise OperationError(f"音码格式错误：{args.analyze}（应为如 bc1 的格式）")
         analyze_abc_zone(abc)
+
+
+def handle_batch_abc(args):
+    """--batch-abc 只查不录：显示每个汉字各读音的全部同音区汉字。"""
+    try:
+        sys.stdout.reconfigure(encoding="utf-8")
+    except (AttributeError, ValueError):
+        pass
+
+    raw = "".join(args.batch_abc).strip()
+    if not raw:
+        raise OperationError("--batch-abc 需要提供汉字串或 txt。")
+
+    if raw == "txt":
+        pending_list, count, full_dict = load_pending_entries()
+        if not count:
+            print("待录入拼音表无可显示条目（表为空或均已录入）。")
+            return
+    else:
+        chars = extract_chinese(raw)
+        if not chars:
+            raise OperationError("--batch-abc 未检测到汉字。")
+        pending_list, count, full_dict = generate_pending_list(chars, interactive=False)
+        if not count:
+            print("所输入汉字的音码均已录入，无可显示条目。")
+            return
+
+    for line in batch_abc_zone_lines(pending_list, full_dict):
+        print(line)
 
 
 def handle_rationale(args):

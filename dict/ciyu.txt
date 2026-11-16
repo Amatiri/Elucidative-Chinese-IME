@@ -249,6 +249,7 @@
 菜单 cldj
 采访 clfh
 才会 clhv
+材料 cllc
 才能 clng
 采取 clqu
 采用 clys
@@ -273,6 +274,7 @@
 打开 dakl
 大量 dald
 答案 daoj
+大致 davi4
 大众 davs
 大小 daxc
 大学 daxt
@@ -465,6 +467,7 @@
 放肆 fhsi
 访谈 fhtj
 方式 fhui
+反复 fjfu
 反观 fjgr
 饭馆 fjgr3
 返回 fjhv
@@ -817,6 +820,7 @@
 ə ies
 沉默 ifmo
 城邦 igbh1
+承担 igdj
 程度 igdu4
 城郊 igjc1
 承诺 igno
@@ -915,6 +919,7 @@
 敬语 j;yu3
 境遇 j;yu4
 脚本 jcbf
+教材 jccl2
 交互 jchu
 教科书 jckeu
 交流 jclq
@@ -994,6 +999,8 @@
 基于 jiyu2
 犄角旮旯 jjgl jijcgal
 季姬击鸡记 jjjjj
+检测 jmce
+监测 jmce4
 简单 jmdj
 检查 jmia
 监察 jmia2
@@ -1080,7 +1087,6 @@
 矩阵 juvf
 居中 juvs
 举行 jux;
-纪释析义输入法 juxf juxyurf
 纪释析义 juxy jiuixiyi
 具有 juyb
 解书音形 juyx jxuuynx
@@ -1126,6 +1132,7 @@
 口罩 kbvk
 口语 kbyu
 矿洞 kdds
+框架 kdjw
 矿泉水 kdqru
 况且 kdqx
 课表 kebc
@@ -1142,6 +1149,7 @@
 可以 keyi
 肯定 kfd;
 肯德基 kfdej
+可持续发展 kixfv
 看到 kjdk4
 看见 kjjm
 看看 kjkj4
@@ -1294,6 +1302,8 @@
 密度 midu
 米哈游 mihay
 曼波 mjbo1
+满足 mjzu
+矛盾 mkdp
 耄耋 mkdx
 贸易 mkyi
 毛躁 mkzk
@@ -1377,6 +1387,7 @@
 暗黄 ojhd
 安徽 ojhv
 安居乐业 ojjuley
+案例 ojli
 安全 ojqr
 按照 ojvk
 按下 ojxw
@@ -1460,7 +1471,6 @@
 期间 qijm
 起来 qil
 期末 qimo4
-期末考试 qimokku
 其他 qita
 其它 qita1
 其实 qiui
@@ -1980,6 +1990,7 @@
 实施 uiui1
 时时 uiui2
 事实 uiui2b
+实时 uiui2r
 实实在在 uiuizlz
 ⊥ uivvi
 实行 uix;
@@ -2003,7 +2014,6 @@
 ³ ujb3
 ∩ ujc1
 ∠ ujc3
-山东 ujds
 ∫ ujf
 擅长 ujih
 删除 ujiu
@@ -2024,7 +2034,6 @@
 △ usjx
 ∴ usy
 输出 uuiu
-实时监测 uujc uiuijmc
 疏浚 uujp
 数据 uuju
 数据库 uujuk
@@ -2320,6 +2329,7 @@
 网盘 whpj
 王者 whve
 望文生义 whwfugy wwuy
+往往 whwh
 网页 whye
 亡羊补牢 whyhbul wybl
 完毕 wjbi
@@ -2385,6 +2395,7 @@
 星号 x;hk4
 形成 x;ig
 星期 x;qi
+形容 x;rs
 形容词 x;rsc
 形式 x;ui
 行政 x;vg
@@ -2555,7 +2566,6 @@
 游戏 ybxi
 优先 ybxm
 优秀 ybxq
-有意思 ybyisi0
 由于 ybyu
 鱿鱼 ybyu2d
 叶公好龙 yegshkl yghl

@@ -1460,6 +1460,7 @@
 聒 go1o
 埚 go1t
 涡 go1u
+崞 go1ux
 过 go1z
 国 go2g
 國 go2g.
@@ -1770,6 +1771,7 @@
 含 hj2k
 晗 hj2r
 涵 hj2u
+崡 hj2uc
 汗 hj2ug
 浛 hj2uk
 韩 hj2w
@@ -1917,6 +1919,7 @@
 竑 hs2d
 弘 hs2g
 虹 hs2i
+𫟹 hs2j
 吰 hs2k
 闳 hs2m
 鸿 hs2n
@@ -2300,6 +2303,7 @@
 产 ij37
 刬 ij3d
 铲 ij3j
+啴 ij3k
 阐 ij3m
 骣 ij3ms
 旵 ij3r
@@ -2524,6 +2528,7 @@
 𩉜 ji1g.
 积 ji1h
 稽 ji1hy
+𫓯 ji1j
 叽 ji1k
 唧 ji1kj
 咭 ji1kk
@@ -2849,9 +2854,9 @@
 噱 jt2kh
 矍 jt2km
 橛 jt2m
+𫘝 jt2mg
+駃 jt2mg.
 桷 jt2mk
-駃 jt2m;
-𫘝 jt2m;.
 鴃 jt2n
 鷢 jt2nc
 獗 jt2q
@@ -5433,6 +5438,7 @@
 冉 rj35
 苒 rj3c
 染 rj3m
+䎃 rj3y
 荛 rk2c
 桡 rk2m
 娆 rk2n
@@ -5634,6 +5640,7 @@
 娀 ss1n
 淞 ss1u
 嵩 ss1ug
+崧 ss1um
 忪 ss1x
 㞞 ss2s
 𪨊 ss2s.
@@ -6578,9 +6585,9 @@
 璋 vh1w
 长 vh34
 長 vh34.
+仉 vh3r
 涨 vh3u
 掌 vh3uu
-仉 vh3uu.r
 丈 vh44
 账 vh4b
 障 vh4bl
@@ -7518,7 +7525,7 @@
 圩 xu1t.y
 魆 xu1v
 虚 xu1y
-𬣙 xu1yy.
+𬣙 xu1yy
 徐 xu2t
 栩 xu3m
 冔 xu3r
@@ -7625,13 +7632,14 @@
 陉 x;2bg
 刑 x;2d
 钘 x;2j
+铏 x;2jd
 形 x;2m
 𫰛 x;2n
 硎 x;2s
 行 x;2t
 型 x;2td
 荥 x;2u
-饧 x;2ur
+饧 x;2uy
 省 x;3m
 擤 x;3u
 醒 x;3y
@@ -8294,6 +8302,7 @@
 圻 yn2t.
 夤 yn2tb
 淫 yn2u
+崟 yn2uj
 珢 yn2w
 訚 yn2y
 尹 yn37
@@ -8642,6 +8651,7 @@
 咨 zi1k
 嗞 zi1kd
 吱 zi1kv
+粢 zi1m
 姿 zi1n
 龇 zi1nc
 髭 zi1p
@@ -8766,6 +8776,7 @@
 族 zu2f
 镞 zu2j
 足 zu2k
+崒 zu2u
 阻 zu3b
 俎 zu3r
 组 zu3s

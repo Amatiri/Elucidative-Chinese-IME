@@ -10,6 +10,7 @@ from manager.cli_handlers import (
     handle_query,
     handle_sort,
     handle_analyze,
+    handle_batch_abc,
     handle_rationale,
     handle_add,
     handle_modify,
@@ -222,8 +223,9 @@ def parse_args():
                         help="整理码表（排序、去重，自动处理所有码表文件）")
     parser.add_argument("--analyze", nargs="?", const="__interactive__", metavar="音码",
                         help="分析指定音区（如 bc1），不传参数则进入交互模式")
-    parser.add_argument("--batch", action="store_true",
-                        help="批量录入（暂不支持非交互）")
+    parser.add_argument("--batch-abc", nargs="+", metavar="汉字/txt",
+                        help="只查不录：为输入汉字生成音码并显示各读音的全部同音区汉字；"
+                             "接受汉字串或 txt（读取待录入拼音表）")
     parser.add_argument("--add", action="store_true",
                         help="添加单字（配合 --char 和 --code 使用）")
     parser.add_argument("--code", help="编码（配合 --add、--modify、--ciyu）")
@@ -259,7 +261,8 @@ def main():
     if args.dict is not None:
         conflict_flags = [
             (args.show, "--show"), (bool(args.query), "--query"), (args.sort, "--sort"),
-            (args.analyze is not None, "--analyze"), (args.batch, "--batch"),
+            (args.analyze is not None, "--analyze"),
+            (bool(args.batch_abc), "--batch-abc"),
             (args.add, "--add"), (args.modify, "--modify"), (args.rationale, "--rationale"),
             (args.ciyu, "--ciyu"), (args.guess, "--guess"),
             (args.keymap, "--keymap"), (args.query_web, "--query-web"),
@@ -321,6 +324,8 @@ def main():
         handle_sort(args)
     elif args.analyze is not None:
         handle_analyze(args)
+    elif args.batch_abc:
+        handle_batch_abc(args)
     elif args.rationale:
         handle_rationale(args)
     elif args.add:
@@ -330,7 +335,7 @@ def main():
     elif args.ciyu:
         handle_ciyu(args)
     else:
-        unsupported = [args.batch, args.guess]
+        unsupported = [args.guess]
         if any(unsupported):
             raise OperationError("该子命令目前仅支持交互模式，请无参数运行后从菜单中选择。")
 

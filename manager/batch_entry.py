@@ -140,19 +140,25 @@ def hanzi_to_abc(hanzi):
     return abc_codes if abc_codes else []
 
 
-def generate_pending_list(hanzi_string):
-    """生成待录入列表，拼音转换失败时提示手动输入音码"""
+def generate_pending_list(hanzi_string, interactive=True):
+    """生成待录入列表，拼音转换失败时提示手动输入音码。
+
+    interactive=False（CLI 只查不录路径）时不弹 input()，直接采用 bb0 兜底。
+    """
     existing_dict, full_dict = load_dictionary()
     pending_list = []
     for hanzi in hanzi_string:
         abc_codes = hanzi_to_abc(hanzi)
         if not abc_codes:
-            manual_code = input(f"{hanzi} 音码转换失败，请手动输入，回车则bb0: ").strip()
-            if manual_code:
-                if len(manual_code) == 3 and not manual_code[0].isdigit() and not manual_code[1].isdigit() and manual_code[2].isdigit():
-                    abc_codes = [manual_code]
+            if interactive:
+                manual_code = input(f"{hanzi} 音码转换失败，请手动输入，回车则bb0: ").strip()
+                if manual_code:
+                    if len(manual_code) == 3 and not manual_code[0].isdigit() and not manual_code[1].isdigit() and manual_code[2].isdigit():
+                        abc_codes = [manual_code]
+                    else:
+                        print(f"{manual_code}格式错误，使用bb0")
+                        abc_codes = ['bb0']
                 else:
-                    print(f"{manual_code}格式错误，使用bb0")
                     abc_codes = ['bb0']
             else:
                 abc_codes = ['bb0']
@@ -168,6 +174,45 @@ def generate_pending_list(hanzi_string):
             for abc_code in missing_codes:
                 pending_list.append((hanzi, abc_code))
     return pending_list, len(pending_list), full_dict
+
+
+def batch_abc_zone_lines(pending_list, full_dict):
+    """按 batch_add_entries 展示段格式生成同音区显示行（只查不录，不写文件）。
+
+    镜像自 batch_add_entries 的 425-451 行（同音区展示）与 489-491 行
+    （已编码完毕），改动需同步。空音码（该字全部读音均已录入）按交互式
+    输出标题 + 「字 已编码完毕」。full_dict 来自 load_dictionary()，含补码字。
+    """
+    hanzi_abc_map = {}
+    for hanzi, abc_code in pending_list:
+        if not abc_code:
+            continue
+        if hanzi not in hanzi_abc_map:
+            hanzi_abc_map[hanzi] = []
+        if abc_code not in hanzi_abc_map[hanzi]:
+            hanzi_abc_map[hanzi].append(abc_code)
+
+    lines = []
+    for hanzi, abc_code in pending_list:
+        if not abc_code:
+            lines.append(f"========{hanzi}========")
+            lines.append(f"{hanzi} 已编码完毕")
+            continue
+        current = hanzi_abc_map[hanzi]
+        index = current.index(abc_code)
+        if abc_code == current[0]:
+            lines.append(f"========{hanzi}========")
+        position = f"{index + 1}/{len(current)}"
+        entries = full_dict.get(abc_code, [])
+        if entries:
+            # 已有同音字：其完整编码前 3 位即为音码，无需额外输出音码
+            lines.append(f"{position}存在")
+            for entry_hanzi, entry_code in entries:
+                lines.append(f"***{entry_hanzi} {entry_code}***")
+        else:
+            # 无同音字：无可借读的音码，补输出音码以保留「查」的作用
+            lines.append(f"{position}暂无 {abc_code}")
+    return lines
 
 
 def load_pending_entries():

@@ -10,6 +10,9 @@ PACKAGE_LIST = ["pypinyin", "keyboard", "pyperclip", "pywin32"]
 # ===== RIME 迁移（migrate_to_rime/rime_export.py）=====
 RIME_USER_DIR = ""
 
+# ===== 水杉辅助码导出（agent_workspace/msime_export.py）=====
+MSIME_DIR = ""
+
 # 编码相关常量
 CODE_CHARS = "1234567890qwertyuiopasdfghjklzxcvbnm;'."
 SURROUND_CHARS = "1234567890qwertyuiopasdfghjklzxcvbnm;'.-= "

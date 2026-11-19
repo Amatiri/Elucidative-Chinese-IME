@@ -503,6 +503,8 @@
 福建 fujm
 副码 fuma3s
 富强 fuqd
+肤浅 fuqm
+付钱 fuqm2
 父亲 fuqn1
 芙蓉 furs
 复制 fuvi
@@ -901,6 +903,8 @@
 经济 j;ji
 警纪 j;ji4
 经纪 j;ji4s
+精简 j;jm
+镜检 j;jm3
 境界 j;jx
 经历 j;li
 经理 j;li3

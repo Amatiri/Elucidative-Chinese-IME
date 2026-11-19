@@ -2254,6 +2254,7 @@
 鸱 ii1nd
 𫄨 ii1s
 魑 ii1v
+瓻 ii1w
 笞 ii1z
 匙 ii2b
 茌 ii2c
@@ -2400,6 +2401,7 @@
 出 iu15
 䢺 iu1b
 樗 iu1m
+䝙 iu1q
 初 iu1y
 除 iu2b
 厨 iu2c
@@ -2548,6 +2550,8 @@
 鸡 ji1n
 犄 ji1nd
 姬 ji1ni
+齑 ji1nq
+齐 ji1nq.q
 㚻 ji1nt
 肌 ji1r
 缉 ji1s
@@ -2563,8 +2567,6 @@
 激 ji1uu
 玑 ji1w
 羁 ji1wg
-齑 ji1wj
-齐 ji1wj.q
 讥 ji1y
 期 ji1yq
 跻 ji1z
@@ -2643,6 +2645,7 @@
 祭 ji4sr
 绩 ji4sz
 垍 ji4t
+徛 ji4td
 技 ji4u
 济 ji4uq
 濟 ji4uq.
@@ -3029,8 +3032,8 @@
 劫 jx2l
 劼 jx2lk
 睫 jx2m
+桀 jx2mi
 桔 jx2mk
-桀 jx2mt
 婕 jx2n
 㛃 jx2nd
 偈 jx2r
@@ -3674,6 +3677,7 @@
 骡 lo2m
 椤 lo2mw
 猡 lo2q
+脶 lo2r
 罗 lo2w
 逻 lo2z
 箩 lo2zw
@@ -3913,6 +3917,7 @@
 坽 l;2tr
 泠 l;2u
 崚 l;2ut
+舲 l;2v
 玲 l;2w
 瓴 l;2wr
 翎 l;2y
@@ -6364,6 +6369,7 @@
 书 uu11
 尗 uu14
 陎 uu1b
+鄃 uu1by
 输 uu1c
 菽 uu1ck
 蔬 uu1cv
@@ -6469,6 +6475,7 @@
 周 vb1k
 啁 vb1kk
 粥 vb1m
+鸼 vb1n
 洲 vb1u
 诌 vb1y
 轴 vb2c
@@ -6861,6 +6868,7 @@
 术 vu26
 瘃 vu2b
 烛 vu2h
+舳 vu2v
 逐 vu2z
 竺 vu2zo
 躅 vu2zu
@@ -7500,6 +7508,7 @@
 楦 xr4mb
 昡 xr4r
 绚 xr4s
+衒 xr4t
 渲 xr4u
 泫 xr4ud
 琄 xr4w
@@ -8566,6 +8575,7 @@
 滪 yu4ui
 饫 yu4uy
 愈 yu4x
+悆 yu4xr
 誉 yu4y
 裕 yu4yg
 谕 yu4yr

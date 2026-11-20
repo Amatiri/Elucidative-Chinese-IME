@@ -358,6 +358,7 @@
 电梯 dmti
 电视 dmui4
 电视机 dmuij
+电影 dmy;
 电影院 dmy;y
 典雅 dmya
 电压 dmya1
@@ -392,6 +393,7 @@
 》 duy
 读音 duyn
 《 duz
+独自 duzi4
 《》 duzy
 对比 dvbi
 对不起 dvbuq
@@ -441,6 +443,7 @@
 發展 favj.
 发现 faxm
 法则 faze
+否则 fbze
 分布 ffbu
 分别 ffbx
 奋斗 ffdb
@@ -970,6 +973,8 @@
 寄居 jiju1
 集聚 jiju4
 急剧 jiju4d
+季节 jijx
+集结 jijx2
 即可 jike3
 即刻 jike4
 击溃 jikv
@@ -1056,6 +1061,7 @@
 进入 jnru
 禁入 jnru4
 浸入 jnru42
+近似 jnsi
 今天 jntm
 进退 jntv
 金属 jnuu
@@ -1194,6 +1200,7 @@
 两个 ldge
 量级 ldji2
 粮食 ldui
+两者 ldve
 良莠不齐 ldybbuq lybq
 厉害 lihl
 例句 liju
@@ -1814,6 +1821,7 @@
 体验 tiyj
 体育 tiyu
 探究 tjjq
+坦克 tjke
 探索 tjso
 坍缩 tjso1
 探讨 tjtk
@@ -1974,6 +1982,7 @@
 时光 uigd
 事故 uigu
 时候 uihb
+适合 uihe
 市场 uiih
 实际 uiji
 世纪 uiji4s
@@ -2014,10 +2023,23 @@
 试验 uiyj4
 使用 uiys
 实在 uizl
-º ujb0
+⁰ ujb0
 ¹ ujb1
 ² ujb2 up;fh
 ³ ujb3
+⁴ ujb4
+⁵ ujb5
+⁶ ujb6
+⁷ ujb7
+⁸ ujb8
+⁹ ujb9
+闪避 ujbi
+ⁱ ujbia
+善变 ujbm
+ᵐ ujbma
+ⁿ ujbn
+扇贝 ujbz
+ᶻ ujbza
 ∩ ujc1
 ∠ ujc3
 ∫ ujf
@@ -2068,6 +2090,18 @@
 水平 uvp;
 ‱ uwfv
 ∞ uwq
+₀ uxb0
+₁ uxb1
+₂ uxb2
+₃ uxb3
+₄ uxb4
+₅ uxb5
+₆ uxb6
+₇ uxb7
+₈ uxb8
+₉ uxb9
+ᵢ uxbi
+ₙ uxbn
 ∼ uxdsi udgjw ufucs
 ≤ uxydy ule
 ≈ uydy
@@ -2590,6 +2624,7 @@
 以后 yihb
 异常 yiih
 遗产 yiij
+遗传 yiir
 已经 yij yij;
 意境 yij;4
 以及 yiji
@@ -2630,6 +2665,7 @@
 严正 yjvg44
 严重 yjvs
 要点 ykdm
+邀请 ykq;
 要求 ykqq
 钥匙 ykui0
 一目了然 ymlr yimulcr
@@ -2643,6 +2679,7 @@
 淫秽 ynhv4
 音码 ynma3s
 隐秘 ynmi
+引擎 ynq;
 引起 ynqi
 因素 ynsu
 印刷 ynuw
@@ -2706,6 +2743,10 @@
 预期 yuqi
 与其 yuqi2
 于是 yuui
+预制 yuvi
+预支 yuvi1
+阈值 yuvi2
+预置 yuvi4
 预兆 yuvk
 与众不同 yuvsbut yvbt
 语文 yuwf

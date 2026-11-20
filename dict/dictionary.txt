@@ -524,6 +524,7 @@
 痤 co2b
 矬 co2u
 嵯 co2uh
+脞 co3r
 厝 co4c
 莝 co4cz
 剉 co4d
@@ -2206,6 +2207,7 @@
 惩 ig2x
 诚 ig2y
 裎 ig2yk
+庱 ig3g
 骋 ig3m
 裎 ig3y
 逞 ig3z
@@ -2616,6 +2618,7 @@
 掎 ji3ud
 济 ji3uq
 濟 ji3uq.
+鱾 ji3y
 旡 ji49
 际 ji4b
 際 ji4b.
@@ -3072,6 +3075,7 @@
 精 j;1m
 粳 j;1mg
 睛 j;1mq
+猄 j;1q
 晶 j;1r
 腈 j;1rq
 经 j;1s
@@ -3831,6 +3835,7 @@
 䴕 lx4n
 鬣 lx4p
 猎 lx4q
+脟 lx4r
 埒 lx4t
 洌 lx4u
 峛 lx4ud
@@ -4324,6 +4329,7 @@
 霓 ni2i
 铌 ni2j
 呢 ni2k
+猊 ni2q
 倪 ni2r
 伲 ni2rs
 尼 ni2s
@@ -5395,6 +5401,7 @@
 擎 q;2u
 情 q;2x
 苘 q;3c
+庼 q;3g
 顷 q;3i
 请 q;3y
 亲 q;4d
@@ -5805,6 +5812,7 @@
 锑 ti1j
 梯 ti1m
 体 ti1m.r
+䏲 ti1r
 擿 ti1u
 踢 ti1z
 荑 ti2c
@@ -6202,12 +6210,15 @@
 鸤 ui1n
 䴓 ui1nj
 狮 ui1q
+獅 ui1q.
 师 ui1r
 湿 ui1u
 浉 ui1ur
 诗 ui1y
+詩 ui1y.
 十 ui25
 实 ui2b
+實 ui2b.
 莳 ui2c
 炻 ui2h
 蚀 ui2i
@@ -6221,6 +6232,7 @@
 拾 ui2u
 湜 ui2ur
 识 ui2y
+識 ui2y.
 鲥 ui2yr
 豕 ui34
 矢 ui36
@@ -6247,6 +6259,7 @@
 舐 ui4ku
 噬 ui4kz
 势 ui4l
+勢 ui4l.
 释 ui4m
 釋 ui4m.
 柿 ui4md
@@ -6258,6 +6271,7 @@
 仕 ui4ru
 似 ui4ry
 视 ui4s
+視 ui4s.
 饰 ui4u
 拭 ui4ug
 峙 ui4us
@@ -6723,6 +6737,7 @@
 忮 vi4xs
 窒 vi4xt
 识 vi4y
+識 vi4y.
 踬 vi4z
 占 vj1b
 旃 vj1f
@@ -7180,6 +7195,7 @@
 枵 xc1mh
 骁 xc1my
 鸮 xc1n
+猇 xc1q
 硝 xc1s
 绡 xc1sh
 消 xc1u
@@ -7304,6 +7320,7 @@
 习 xi23
 習 xi23.
 隰 xi2b
+𠅤 xi2d
 席 xi2g
 觋 xi2j
 檄 xi2m

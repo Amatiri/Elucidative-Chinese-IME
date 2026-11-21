@@ -223,6 +223,7 @@
 𧾷 bzu
 辶 bzv
 擦肩而过 cajmorg cjog
+策略 celt
 测试 ceu
 測試 ceu.
 层次 cgci
@@ -945,6 +946,8 @@
 将近 jdjn
 奖金 jdjn1
 讲解 jdjx
+降解 jdjx3
+疆界 jdjx4
 江苏 jdsu
 江西 jdxi
 鞠躬尽瘁 jgjc jugsjnc
@@ -1134,6 +1137,8 @@
 截图 jxtu
 接受 jxub4
 解释 jxui
+届时 jxui2
+揭示 jxui4
 介绍 jxuk
 结束 jxuu
 借助 jxvu
@@ -1218,6 +1223,7 @@
 理智 livi
 荔枝 livi1
 理性 lix;4
+理想 lixd
 理由 liyb
 利益 liyi
 礼仪 liyi2
@@ -1984,6 +1990,7 @@
 时候 uihb
 适合 uihe
 市场 uiih
+视角 uijc
 实际 uiji
 世纪 uiji4s
 实际上 uijiu

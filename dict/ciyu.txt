@@ -572,6 +572,7 @@
 感觉 gjjt
 感冒 gjmk
 甘肃 gjsu
+感谢 gjxx
 κ gka
 Κ gkac
 高跟鞋 gkgfx
@@ -784,6 +785,7 @@
 湖北 hubz
 互联网 hulmw
 湖南 hunj
+呼啸 huxc
 互相 huxd
 回报 hvbk
 汇报 hvbk4
@@ -1437,6 +1439,7 @@
 批准 pivp
 判断 pjdr
 炮弹 pkdj
+咆哮 pkxc
 排队 pldv
 派对 pldv4
 排列 pllx
@@ -2591,6 +2594,8 @@
 萤火虫 y;hoi
 英吉利 y;jil
 应接不暇 y;jxbux yjbx
+映射 y;ue
+影射 y;ue4
 影响 y;xd
 应用 y;ys
 英语 y;yu

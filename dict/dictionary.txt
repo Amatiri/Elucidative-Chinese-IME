@@ -558,6 +558,7 @@
 璁 cs1w
 淙 cs2u
 琮 cs2w
+悰 cs2x
 丛 cs2y
 粗 cu1m
 殂 cu2d
@@ -914,6 +915,7 @@
 懂 ds3x
 冻 ds4b
 动 ds4l
+働 ds4l.j
 栋 ds4m
 姛 ds4n
 侗 ds4r
@@ -1329,6 +1331,7 @@
 圪 ge1t
 搁 ge1u
 饹 ge1uu
+袼 ge1y
 革 ge25
 隔 ge2b
 葛 ge2c
@@ -1880,6 +1883,7 @@
 阍 hp1m
 婚 hp1n
 昏 hp1r
+惛 hp1x
 浑 hp2u
 混 hp2uk
 馄 hp2ur
@@ -1920,6 +1924,7 @@
 漶 hr4ux
 患 hr4x
 鲩 hr4y
+逭 hr4z
 轰 hs1c
 薨 hs1d
 烘 hs1h
@@ -2067,6 +2072,7 @@
 滑 hw2u
 划 hw4d
 桦 hw4m
+枠 hw4m.j
 婳 hw4n
 化 hw4r
 华 hw4s
@@ -2366,6 +2372,7 @@
 辵 io4m
 龊 io4n
 绰 io4s
+惙 io4x
 蝽 ip1i
 椿 ip1m
 春 ip1r
@@ -2550,6 +2557,7 @@
 𩉜 ji1g.
 积 ji1h
 稽 ji1hy
+𮂱 ji1hy.
 𫓯 ji1j
 叽 ji1k
 唧 ji1kj
@@ -3033,7 +3041,7 @@
 结 jx1s
 街 jx1t
 接 jx1u
-揭 jx1ur
+揭 jx1uh
 孑 jx21
 㔾 jx28
 疌 jx29
@@ -3266,12 +3274,14 @@
 括 ko4uk
 焜 kp1h
 锟 kp1j
+鶤 kp1n
 髡 kp1p
 昆 kp1r
 坤 kp1t
 堃 kp1t.f
 琨 kp1w
 鲲 kp1y
+裈 kp1yj
 醌 kp1yr
 阃 kp3m
 捆 kp3u
@@ -3548,6 +3558,7 @@
 励 li4l
 粒 li4m
 枥 li4mc
+栃 li4mc.j
 朸 li4me
 栎 li4ml
 粝 li4mw
@@ -4706,6 +4717,7 @@
 𭏦 ol4t.
 餲 ol4u
 爱 ol4v
+愛 ol4v.
 瑷 ol4w
 噢 oo1k
 哦 oo2k
@@ -5248,6 +5260,8 @@
 琴 qn2w
 覃 qn2x
 寝 qn3b
+寢 qn3b.
+𪧇 qn3b.p
 吣 qn4k
 沁 qn4u
 揿 qn4uj
@@ -5381,6 +5395,7 @@
 袷 qw1y
 拤 qw2u
 卡 qw31
+峠 qw3u
 髂 qw4g
 洽 qw4u
 恰 qw4x
@@ -5435,6 +5450,7 @@
 糅 rb2mm
 揉 rb2u
 蹂 rb2z
+禸 rb2z.j
 肉 rb4r
 惹 re3x
 热 re4h
@@ -5737,6 +5753,7 @@
 穗 sv4h
 燧 sv4hz
 碎 sv4s
+砕 sv4s.
 祟 sv4si
 岁 sv4u
 邃 sv4x
@@ -5871,6 +5888,7 @@
 潭 tj2u
 澹 tj2uv
 覃 tj2x
+惔 tj2xy
 谈 tj2y
 谭 tj2yx
 菼 tj3c
@@ -5925,6 +5943,7 @@
 天 tm16
 添 tm1u
 田 tm20
+畑 tm2h
 钿 tm2j
 甜 tm2k
 阗 tm2m
@@ -6168,6 +6187,7 @@
 珅 uf1w
 诜 uf1y
 𬬹 uf2j
+榊 uf2m
 什 uf2r
 神 uf2s
 审 uf3b
@@ -6251,6 +6271,7 @@
 识 ui2y
 識 ui2y.
 鲥 ui2yr
+辻 ui2z
 豕 ui34
 矢 ui36
 史 ui3k
@@ -6607,7 +6628,6 @@
 争 vg1d
 烝 vg1h
 铮 vg1j
-凧 vg1jj
 钲 vg1jv
 睁 vg1m
 狰 vg1q
@@ -6617,6 +6637,7 @@
 挣 vg1ud
 怔 vg1x
 筝 vg1z
+凧 vg1z.j
 整 vg3u
 拯 vg3ui
 正 vg44
@@ -7397,6 +7418,7 @@
 㳄 xm2u.q
 挦 xm2uc
 舷 xm2v
+𫍯 xm2y
 险 xm3b
 冼 xm3bx
 藓 xm3c
@@ -7441,6 +7463,7 @@
 新 xn1j
 鑫 xn1jj
 锌 xn1js
+噺 xn1k
 欣 xn1q
 歆 xn1qy
 昕 xn1r
@@ -7551,6 +7574,7 @@
 芎 xs1cg
 兄 xs1k
 匈 xs1l
+匂 xs1l.j
 胸 xs1r
 汹 xs1u
 讻 xs1y
@@ -7568,6 +7592,7 @@
 踅 xt2z
 雪 xt3i
 鳕 xt3y
+鱈 xt3y.
 血 xt42
 坹 xt4t
 谑 xt4y
@@ -7580,6 +7605,7 @@
 须 xu1m
 盱 xu1my
 媭 xu1n
+欻 xu1q
 胥 xu1r
 旴 xu1ry
 砉 xu1s
@@ -8264,6 +8290,7 @@
 兖 yj3db
 剡 yj3dh
 鼹 yj3f
+㫃 yj3fr
 䶮 yj3l
 眼 yj3m
 俨 yj3r
@@ -8355,6 +8382,7 @@
 堙 yn1t
 洇 yn1u
 愔 yn1x
+𬤇 yn1y
 寅 yn2b
 鄞 yn2bj
 荶 yn2c
@@ -8756,6 +8784,7 @@
 糌 zj1m
 簪 zj1z
 咱 zj2k
+寁 zj3b
 昝 zj3r
 攒 zj3u
 拶 zj3ux

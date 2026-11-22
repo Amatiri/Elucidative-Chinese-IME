@@ -1,13 +1,3 @@
-惛 hp1
-惔 tj2
-悰 cs2
-惙 io4
-寁 zj3
-逭 hr4
-𬤇 yn1
-𫍯 xm2
-袼 ge1
-裈 kp1
 祲 jn4
 𫍲 xc3
 谞 xu1
@@ -164,7 +154,6 @@
 𬮱 yn1
 焞 tp1
 𬊤 ij3
-欻 xu1
 𣸣 ff2
 溚 da2
 溁 y;2

@@ -91,6 +91,7 @@
 𠀎 bjg
 办公室 bjgsu
 巿 bjj
+班级 bjji
 叚 bjk
 搬迁 bjqm
 钅 bjr
@@ -147,6 +148,7 @@
 播放 bofh
 卬 boj
 𫠤 bok
+博美 bomz
 博士 boui
 博物馆 bowug
 丬 bpj
@@ -533,6 +535,7 @@
 构成 gbig
 构建 gbjm
 购买 gbml
+沟通 gbts
 购物 gbwu
 χ gch
 Χ gchc
@@ -548,6 +551,8 @@
 革命 gem;
 ε gep
 Ε gepc
+歌曲 gequ
+各取 gequ3
 η get
 Η getc
 格式 geui
@@ -663,6 +668,7 @@
 公立 gsli4d
 公民 gsmn
 功能 gsng
+公平 gsp;
 公司 gssi
 宫廷 gst;
 共同 gsts
@@ -818,6 +824,7 @@
 查询 iaxp2
 差异 iayi
 差一点 iayid
+查阅 iayt
 ð idh
 创建 idjm
 创新 idxn
@@ -940,6 +947,7 @@
 教室 jcui4
 搅屎棍 jcuig
 交往 jcwh
+教训 jcxp
 交易 jcyi
 教义 jcyi4
 教育 jcyu
@@ -1512,7 +1520,9 @@
 黔驴技穷 qljq qmlyjiq
 前端 qmdr
 前后 qmhb
+乾坤 qmkp
 钱库 qmku
+签名 qmm;
 前面 qmmm
 潜能 qmng
 缱绻 qmqr
@@ -1529,6 +1539,8 @@
 全部 qrbu
 权当 qrdh1
 全国 qrgo
+全歼 qrjm1
+劝谏 qrjm4
 权力 qrli
 权利 qrli4
 全面 qrmm
@@ -1759,16 +1771,20 @@
 搜索 sbso
 四个 sige
 丝绸 siib
+思潮 siik
 四川 siir
 司机 siji
 思考 sikk
+思虑 sily
 四码 sima3s
 死亡 siwh
 思想 sixd
 私信 sixn
+思绪 sixu
 私有 siyb
 散步 sjbu4
 扫描 skmc
+塞进 sljn
 死而后已 sohy siorhby
 所属国 souug
 缩小 soxc
@@ -1788,11 +1804,13 @@
 随时 svui
 随着 svve
 四则运算 szys sizeyps
+停服 t;fu2
 停止 t;vi
 停滞 t;vi4
 它们 tamf
 拓印 tayn
 © tbjqr
+透明 tbm;
 头脑 tbnk3
 投入 tbru
 投资 tbzi
@@ -1819,6 +1837,8 @@
 踢出 tiiu1
 剔除 tiiu2
 提交 tijc
+体积 tiji
+提及 tiji2
 题目 timu
 提取 tiqu
 提示 tiui
@@ -1884,6 +1904,8 @@
 图标 tubc
 图表 tubc3
 土地 tudi
+突发 tufa
+土法 tufa3
 ↑ tuh
 • tuidm
 图库 tuku
@@ -1910,6 +1932,7 @@
 ⊂ ubkhj
 收敛 ublm
 寿命 ubm;
+授权 ubqr
 ∉ ubuy
 受制于 ubviy
 受众 ubvs4
@@ -2154,6 +2177,7 @@
 中华人民共和国 vhrmghg vhrg
 中華人民共和國 vhrmghg. vhrg.
 震撼首发 vhuf vfhjubf
+掌握 vhwo
 ⿱ vi.
 指标 vibc
 直播 vibo
@@ -2288,6 +2312,7 @@
 中華民國 vshwmng. vhmg.
 忠诚 vsig
 终结 vsjx2
+重力 vsli
 种植 vsvi2
 终止 vsvi3
 重要 vsyk
@@ -2410,6 +2435,8 @@
 物是人非 wurf wuuirff
 无所谓 wusow
 雾凇 wuss
+物体 wuti
+五体投地 wutitbd wttd
 无数 wuuu
 武术 wuuu4
 物质 wuvi
@@ -2521,6 +2548,8 @@
 显示 xmui4
 鲜榨 xmva
 限制 xmvi4
+显著 xmvu
+现行 xmx;2
 线性 xmx;4
 线性方程组 xmx;fhigz
 线性相关 xmx;xdg xxxg
@@ -2583,6 +2612,7 @@
 歇斯底里 xxsidil
 协调 xxtc
 协同 xxts
+些许 xxxu
 谢谢 xxxx
 协议 xxyi
 写作 xxzo
@@ -2662,6 +2692,8 @@
 一些 yixx
 一样 yiyh
 意义 yiyi44
+医院 yiyr
+意愿 yiyr4
 严格 yjge
 阉割 yjge1
 烟火 yjho
@@ -2762,6 +2794,9 @@
 预兆 yuvk
 与众不同 yuvsbut yvbt
 语文 yuwf
+语义 yuyi
+雨衣 yuyi1
+寓意 yuyi4
 语言 yuyj
 预言 yuyj2
 语音 yuyn
